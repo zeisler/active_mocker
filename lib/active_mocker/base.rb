@@ -4,8 +4,8 @@ module ActiveMocker
 
     attr_reader :model_definition, :model_name
 
-    def initialize(model_name, relative_path='')
-      @model_definition = ModelReader.new(model_name.tableize.singularize , relative_path)
+    def initialize(model_name, relative_path='', options={})
+      @model_definition = ModelReader.new(model_name.tableize.singularize , relative_path, options)
       @model_definition.klass
       @model_name = model_name
     end

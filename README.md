@@ -1,6 +1,6 @@
 # ActiveMocker
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.png?branch=master)](https://travis-ci.org/zeisler/active_mocker)
-TODO: Write a gem description
+Create mocks from active record models without loading rails or running a datebase
 
 ## Installation
 

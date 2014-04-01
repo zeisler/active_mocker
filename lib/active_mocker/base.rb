@@ -1,5 +1,11 @@
 module ActiveMocker
 
+  #TODO DRY up method creation
+  #TODO have instance variable array for instance method
+  #TODO have class variable array for class method
+  #TODO enable support for active_hash as base class
+  #TODO work on options interface
+
   class Base
 
     attr_reader :model_name,

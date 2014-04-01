@@ -14,9 +14,11 @@ module ActiveMocker
                 :mass_assignment,
                 :model_relationships,
                 :schema_attributes,
-                :model_methods
+                :model_methods,
+                :active_hash_as_base
 
     def initialize(options={})
+      @active_hash_as_base = options.fetch(:active_hash_as_base, false)
       @schema_attributes   = options.fetch(:schema_attributes,   true)
       @model_relationships = options.fetch(:model_relationships, true)
       @model_methods       = options.fetch(:model_methods,       true)
@@ -27,7 +29,9 @@ module ActiveMocker
 
     def mock(model_name)
       @model_name = model_name
-      mock_class
+      plain_mock_class unless active_hash_as_base
+      active_hash_mock_class if active_hash_as_base
+      return @klass
     end
 
     def model_definition
@@ -46,17 +50,34 @@ module ActiveMocker
       return table
     end
 
-    def mock_class
+    def active_hash_mock_class
       add_method_mock_of
-      add_instance_methods     if model_methods
-      add_mock_instance_method if model_methods
-      add_mock_class_method    if model_methods
+      if model_methods
+        add_instance_methods
+        add_mock_instance_method
+        add_mock_class_method
+        add_class_methods
+      end
+      klass  = create_klass
+      fields = table_definition.column_names + model_definition.relationships
+      klass.class_eval do
+        klass.fields(*fields)
+      end
+
+    end
+
+    def plain_mock_class
+      add_method_mock_of
+      if model_methods
+        add_instance_methods
+        add_mock_instance_method
+        add_mock_class_method
+        add_class_methods
+      end
       add_relationships        if model_relationships
-      add_class_methods        if model_methods
       add_column_names_method  if schema_attributes
       add_table_attributes     if schema_attributes
       create_initializer       if mass_assignment
-      return @klass
     end
 
     def create_initializer
@@ -163,8 +184,8 @@ module ActiveMocker
 
     def const_class
       remove_const(mock_class_name) if class_exists? mock_class_name
-      return Object.const_set(mock_class_name, Class.new) unless Object.const_defined?(mock_class_name)
-      return Object.const_get(mock_class_name, false)
+      return Object.const_set(mock_class_name ,Class.new(ActiveHash::Base)) if active_hash_as_base
+      return Object.const_set(mock_class_name ,Class.new()) unless active_hash_as_base
     end
 
     def remove_const(class_name)

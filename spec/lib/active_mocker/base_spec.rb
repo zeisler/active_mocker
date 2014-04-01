@@ -212,20 +212,44 @@ describe ActiveMocker::Base do
 
   end
 
+  context 'option active_hash_as_base' do
 
-  describe 'have attributes from schema' do
+    describe 'true' do
+      require 'active_hash'
+      let(:base_options){{active_hash_as_base: true}}
 
-    xit 'uses ActiveHash'
+      it 'uses active_hase::base as superclass' do
+        expect(mock_class.superclass.name).to eq 'ActiveHash::Base'
+      end
 
-    xit 'makes plain ruby class' do
+      it 'can mass asign attributes to constructor' do
+        result = mock_class.new(first_name: "Sam", last_name: 'Walton')
+        expect(result.first_name).to eq 'Sam'
+        expect(result.last_name).to eq 'Walton'
+      end
+
+      it 'can save to class and then find instance by attribute' do
+
+        record = mock_class.create(first_name: "Sam", last_name: 'Walton')
+        expect(mock_class.find_by_first_name("Sam")).to eq record
+
+      end
+
+    end
+
+    describe 'false' do
+      let(:base_options){{active_hash_as_base: false}}
+
+      it 'has object as supper class' do
+        expect(mock_class.superclass.name).to eq 'Object'
+
+      end
 
     end
 
   end
 
   describe 'mass_assignment' do
-
-
 
     it "can pass any or all attributes from schema in initializer" do
       result = mock_class.new(first_name: "Sam", last_name: 'Walton')

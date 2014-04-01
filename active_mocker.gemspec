@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~>2.14"
   spec.add_development_dependency "i18n", "~>0.6"
   spec.add_development_dependency "activesupport", "~>4.0"
+  spec.add_development_dependency "active_hash", "~>1.3"
 
   #spec.add_development_dependency "debase", "~>0.0"
   #spec.add_development_dependency "ruby-debug-ide", "~>0.4"

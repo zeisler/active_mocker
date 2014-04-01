@@ -99,6 +99,38 @@ describe ActiveMocker::Base do
 
     end
 
+    describe 'conflict of instance mocks and class mocks' do
+
+      let(:model_file){
+        StringReader.new <<-eos
+        class Person < ActiveRecord::Base
+          def bar(name, type=nil)
+          end
+
+          def self.bar
+          end
+        end
+        eos
+      }
+
+      it 'can mock instance method and class method of the same name' do
+        result = mock_class.new
+        result.mock_instance_method(:bar) do  |name, type=nil|
+          "Now implemented with #{name} and #{type}"
+        end
+        result = result.bar('foo', 'type')
+        expect(result).to eq "Now implemented with foo and type"
+        expect{mock_class.bar}.to raise_error('::bar is not Implemented for Class: PersonMock')
+
+        mock_class.mock_class_method(:bar) do
+          "Now implemented"
+        end
+        expect{mock_class.bar}.to_not raise_error
+        expect(mock_class.bar).to eq("Now implemented")
+      end
+
+    end
+
     describe 'instance methods' do
 
       let(:model_file){
@@ -118,7 +150,7 @@ describe ActiveMocker::Base do
 
       it 'can be implemented dynamically' do
 
-        mock_class.instance_variable_set(:@bar, ->(name, type=nil){ "Now implemented with #{name} and #{type}" })
+        mock_class.instance_variable_set(:@instance_bar, ->(name, type=nil){ "Now implemented with #{name} and #{type}" })
         result = mock_class.new
         result = result.bar('foo', 'type')
         expect(result).to eq "Now implemented with foo and type"
@@ -215,6 +247,5 @@ describe ActiveMocker::Base do
     end
 
   end
-
 
 end

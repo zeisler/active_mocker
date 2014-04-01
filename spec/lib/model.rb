@@ -15,6 +15,10 @@ class Model < ActiveRecord::Base
 
   end
 
+  def self.foo
+
+  end
+
   def super
 
   end

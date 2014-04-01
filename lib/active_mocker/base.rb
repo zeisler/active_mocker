@@ -50,6 +50,7 @@ module ActiveMocker
       add_method_mock_of
       add_instance_methods     if model_methods
       add_mock_instance_method if model_methods
+      add_mock_class_method    if model_methods
       add_relationships        if model_relationships
       add_class_methods        if model_methods
       add_column_names_method  if schema_attributes
@@ -95,11 +96,25 @@ module ActiveMocker
       klass = create_klass
       model_definition.instance_methods_with_arguments.each do |method|
         m = method.keys.first
+        params      = Reparameterize.call(method.values.first)
+        params_pass = Reparameterize.call(method.values.first, true)
+        klass.instance_variable_set("@instance_#{m}", eval_lambda(params, %Q[raise "##{m} is not Implemented for Class: #{klass.name}"]))
+        block = eval_lambda(params, %Q[ self.class.instance_variable_get("@instance_#{m}").call(#{params_pass})])
+        klass.instance_eval do
+          define_method(m, block)
+        end
+      end
+    end
+
+    def add_class_methods
+      klass = create_klass
+      model_definition.class_methods_with_arguments.each do |method|
+        m = method.keys.first
         params = Reparameterize.call(method.values.first)
         params_pass = Reparameterize.call(method.values.first, true)
-        klass.instance_variable_set("@#{m}", eval_lambda(params, %Q[raise "##{m} is not Implemented for Class: #{klass.name}"]))
-        block = eval_lambda(params, %Q[ self.class.instance_variable_get("@#{m}").call(#{params_pass})])
-        klass.instance_eval do
+        klass.class_variable_set("@@klass_#{m}", eval_lambda(params, %Q[raise "::#{m} is not Implemented for Class: #{klass.name}"]))
+        block = eval_lambda(params, %Q[ class_variable_get("@@klass_#{m}").call(#{params_pass})])
+        klass.singleton_class.class_eval do
           define_method(m, block)
         end
       end
@@ -113,18 +128,21 @@ module ActiveMocker
       klass = create_klass
       klass.singleton_class.class_eval do
         define_method(:mock_instance_method) do |method, &block|
-          klass.instance_variable_set("@#{method.to_s}", block)
+          klass.instance_variable_set("@instance_#{method.to_s}", block)
+        end
+      end
+      klass.instance_eval do
+        define_method(:mock_instance_method) do |method, &block|
+          klass.instance_variable_set("@instance_#{method.to_s}", block)
         end
       end
     end
 
-    def add_class_methods
+    def add_mock_class_method
       klass = create_klass
-      model_definition.class_methods.each do |m|
-        klass.singleton_class.class_eval do
-          define_method(m) do
-            raise "::#{m} is not Implemented for Class: #{klass.name}"
-          end
+      klass.singleton_class.class_eval do
+        define_method(:mock_class_method) do |method, &block|
+          class_variable_set("@@klass_#{method.to_s}", block)
         end
       end
     end

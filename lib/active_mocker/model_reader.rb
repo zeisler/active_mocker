@@ -30,7 +30,7 @@ module ActiveMocker
     end
 
     def class_methods
-      (klass.methods - Object.methods - instance_methods - ActiveRecord::Base.methods)
+      klass.methods(false)
     end
 
     def class_methods_with_arguments

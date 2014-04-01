@@ -22,9 +22,8 @@ describe ActiveMocker::ModelReader do
 
   describe '#class_methods' do
 
-
     it 'returns all public class methods' do
-      expect(subject.class_methods).to eq([:duper, :named])
+      expect(subject.class_methods).to eq([:duper, :named, :foo])
     end
 
   end
@@ -48,7 +47,7 @@ describe ActiveMocker::ModelReader do
   describe '#class_methods_with_arguments' do
 
     it 'returns all public instance methods' do
-      expect(subject.class_methods_with_arguments).to eq([{:duper=>[[:req, :value], [:rest, :args]]}, {:named=>[[:req, :name], [:opt, :value], [:opt, :options]]}])
+      expect(subject.class_methods_with_arguments).to eq( [{:duper=>[[:req, :value], [:rest, :args]]}, {:named=>[[:req, :name], [:opt, :value], [:opt, :options]]}, {:foo=>[]}] )
     end
 
   end

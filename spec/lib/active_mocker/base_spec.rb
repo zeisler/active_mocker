@@ -32,21 +32,48 @@ describe ActiveMocker::Base do
       StringReader.new <<-eos
         ActiveRecord::Schema.define(version: 20140327205359) do
 
-              create_table "people", force: true do |t|
-                t.integer  "company_id"
-                t.string   "first_name",        limit: 128
-                t.string   "middle_name",       limit: 128
-                t.string   "last_name",         limit: 128
-                t.string   "address_1",         limit: 200
-                t.string   "address_2",         limit: 100
-                t.string   "city",              limit: 100
-                t.integer  "state_id"
-                t.integer  "zip_code_id"
-              end
-
+            create_table "people", force: true do |t|
+              t.integer  "account_id"
+              t.string   "first_name",        limit: 128
+              t.string   "last_name",         limit: 128
+              t.string   "address",         limit: 200
+              t.string   "city",              limit: 100
             end
+
+          end
       eos
     }
+
+  describe '::column_names' do
+
+    it 'returns an array of column names found from the schema.rb file' do
+      expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city"])
+    end
+
+  end
+
+  describe 'mass_assignment' do
+
+    it "can pass any or all attributes from schema in initializer" do
+      result = mock_class.new(first_name: "Sam", last_name: 'Walton')
+      expect(result.first_name).to eq 'Sam'
+      expect(result.last_name).to eq 'Walton'
+
+    end
+
+    context 'set to false' do
+
+      it 'will fail' do
+        mock = described_class.new(sub_options.merge({mass_assignment: false}))
+        person = mock.mock("Person")
+        expect{
+          person.new(first_name: "Sam", last_name: 'Walton')
+        }.to raise_error ArgumentError
+      end
+
+    end
+
+  end
 
   describe '#mock_class' do
 
@@ -150,15 +177,6 @@ describe ActiveMocker::Base do
 
       it 'can be implemented dynamically' do
 
-        mock_class.instance_variable_set(:@instance_bar, ->(name, type=nil){ "Now implemented with #{name} and #{type}" })
-        result = mock_class.new
-        result = result.bar('foo', 'type')
-        expect(result).to eq "Now implemented with foo and type"
-
-      end
-
-      it 'can be implemented dynamically' do
-
         mock_class.mock_instance_method(:bar) do  |name, type=nil|
           "Now implemented with #{name} and #{type}"
         end
@@ -188,10 +206,13 @@ describe ActiveMocker::Base do
         expect{mock_class.class_method}.to raise_error('::class_method is not Implemented for Class: PersonMock')
       end
 
-      xit 'can be implemented as follows' do
+      it 'can be implemented as follows' do
 
-
-        expect(mock_class.named).to eq "Now implemented"
+        mock_class.mock_class_method(:class_method) do
+          "Now implemented"
+        end
+        expect{mock_class.class_method}.to_not raise_error
+        expect(mock_class.class_method).to eq("Now implemented")
 
       end
 
@@ -203,35 +224,60 @@ describe ActiveMocker::Base do
 
   end
 
-  describe '::column_names' do
-
-
-    it 'returns an array of column names found from the schema.rb file' do
-      expect(mock_class.column_names).to eq(["company_id", "first_name", "middle_name", "last_name", "address_1", "address_2", "city", "state_id", "zip_code_id"])
-    end
-
-  end
-
   context 'option active_hash_as_base' do
 
     describe 'true' do
       require 'active_hash'
       let(:base_options){{active_hash_as_base: true}}
 
+      let(:model_file){
+        StringReader.new <<-eos
+        class Person < ActiveRecord::Base
+          belongs_to :account
+
+          def bar
+          end
+
+        end
+        eos
+      }
+
       it 'uses active_hase::base as superclass' do
         expect(mock_class.superclass.name).to eq 'ActiveHash::Base'
       end
 
-      it 'can mass asign attributes to constructor' do
-        result = mock_class.new(first_name: "Sam", last_name: 'Walton')
+      it 'can mass assign attributes to constructor' do
+        result = mock_class.new(first_name: "Sam", last_name: 'Walton', account: 0)
         expect(result.first_name).to eq 'Sam'
         expect(result.last_name).to eq 'Walton'
+        expect(result.account).to eq 0
       end
 
       it 'can save to class and then find instance by attribute' do
 
         record = mock_class.create(first_name: "Sam", last_name: 'Walton')
         expect(mock_class.find_by_first_name("Sam")).to eq record
+
+      end
+
+      it '::column_names' do
+        expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city"])
+      end
+
+      it '#mock_of' do
+        expect(mock_class.new.mock_of).to eq 'Person'
+      end
+
+      it 'instance methods from model' do
+        expect{mock_class.new.bar}.to raise_error '#bar is not Implemented for Class: PersonMock'
+      end
+
+      it 'instance method can be mocked' do
+
+        mock_class.instance_variable_set(:@instance_bar, ->(){ "Now implemented" })
+        result = mock_class.new
+        result = result.bar
+        expect(result).to eq "Now implemented"
 
       end
 
@@ -243,29 +289,6 @@ describe ActiveMocker::Base do
       it 'has object as supper class' do
         expect(mock_class.superclass.name).to eq 'Object'
 
-      end
-
-    end
-
-  end
-
-  describe 'mass_assignment' do
-
-    it "can pass any or all attributes from schema in initializer" do
-      result = mock_class.new(first_name: "Sam", last_name: 'Walton')
-      expect(result.first_name).to eq 'Sam'
-      expect(result.last_name).to eq 'Walton'
-
-    end
-
-    context 'set to false' do
-
-      it 'will fail' do
-        mock = described_class.new(sub_options.merge({mass_assignment: false}))
-        person = mock.mock("Person")
-        expect{
-          person.new(first_name: "Sam", last_name: 'Walton')
-        }.to raise_error ArgumentError
       end
 
     end

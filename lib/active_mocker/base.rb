@@ -51,17 +51,20 @@ module ActiveMocker
     end
 
     def active_hash_mock_class
+
+      add_column_names_method  if schema_attributes
+      klass  = create_klass
+      fields = table_definition.column_names + model_definition.relationships
+      klass.class_eval do
+        klass.fields(*fields)
+      end
+
       add_method_mock_of
       if model_methods
         add_instance_methods
         add_mock_instance_method
         add_mock_class_method
         add_class_methods
-      end
-      klass  = create_klass
-      fields = table_definition.column_names + model_definition.relationships
-      klass.class_eval do
-        klass.fields(*fields)
       end
 
     end

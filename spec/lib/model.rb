@@ -5,13 +5,13 @@ class Model < ActiveRecord::Base
   has_one :account
   has_and_belongs_to_many :disclosure
 
-  def self.duper
+  def self.duper(value, *args)
 
   end
 
-  scope :named, -> { }
+  scope :named, ->(name, value=nil, options={}) { }
 
-  def foo
+  def foo(foobar, value)
 
   end
 

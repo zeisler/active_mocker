@@ -4,23 +4,52 @@ module ActiveMocker
     class Schema
 
       def self.define(version: version, &block)
-        schema = SchemaParser.new
+        search_result = search_cache(@table_search)
+        search_result unless search_result.nil?
+        schema = parse
         schema.instance_eval(&block)
-        {tables: schema.tables}
+        add_to_cache schema.tables.first
+        schema.tables.first
+      end
+
+      def self.parse
+        SchemaParser.new(@table_search)
+      end
+
+      def self.add_to_cache(table)
+        @@tables_cache ||= []
+        @@tables_cache << table unless table.nil?
+      end
+
+      def self.search_cache(table_name)
+        @@tables_cache ||= []
+        @@tables_cache.find do |h|
+          h.name == table_name
+        end
+      end
+
+      def self.clear_cache
+        @@tables_cache = []
+      end
+
+      def self.search(table_name)
+        @table_search = table_name
       end
 
     end
 
     class SchemaParser
 
-      attr_reader :tables
+      attr_reader :tables, :table_search
 
-      def initialize
+      def initialize(table_search)
+        @table_search = table_search
         @tables = []
+
       end
 
-      def create_table(name, force: force, &block)
-        tables << {table_name: name, fields: CreateTable.new.instance_eval(&block)}
+      def create_table(name, options={}, &block)
+        tables << ActiveMocker::Table.new(name, CreateTable.new.instance_eval(&block)) if name == table_search
       end
 
       def method_missing(meth, *args)
@@ -42,7 +71,7 @@ module ActiveMocker
     end
 
     def base_field(type, args)
-      fields << {name: args.shift, type: type, options: args}
+      fields << Field.new(name: args.shift, type: type, options: args)
     end
 
   end

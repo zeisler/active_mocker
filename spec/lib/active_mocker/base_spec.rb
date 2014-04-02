@@ -301,15 +301,6 @@ describe ActiveMocker::Base do
         expect{mock_class.new.bar}.to raise_error '#bar is not Implemented for Class: PersonMock'
       end
 
-      it 'instance method can be mocked' do
-
-        mock_class.instance_variable_set(:@instance_bar, ->(){ "Now implemented" })
-        result = mock_class.new
-        result = result.bar
-        expect(result).to eq "Now implemented"
-
-      end
-
     end
 
     describe 'false' do

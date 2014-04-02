@@ -25,6 +25,10 @@ class Model < ActiveRecord::Base
 
   end
 
+  def self.bang!
+
+  end
+
   private
 
   def bar

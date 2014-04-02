@@ -57,10 +57,8 @@ module ActiveMocker
 
       add_method_mock_of
       if model_methods
-        add_instance_methods
-        add_mock_instance_method
-        add_mock_class_method
         add_class_methods
+        add_instance_methods
       end
 
     end
@@ -68,10 +66,8 @@ module ActiveMocker
     def plain_mock_class
       add_method_mock_of
       if model_methods
-        add_instance_methods
-        add_mock_instance_method
-        add_mock_class_method
         add_class_methods
+        add_instance_methods
       end
       add_relationships        if model_relationships
       add_column_names_method  if schema_attributes
@@ -118,11 +114,14 @@ module ActiveMocker
         m = method.keys.first
         params      = Reparameterize.call(method.values.first)
         params_pass = Reparameterize.call(method.values.first, true)
-        klass.instance_variable_set("@instance_#{m}", eval_lambda(params, %Q[raise "##{m} is not Implemented for Class: #{klass.name}"]))
-        block = eval_lambda(params, %Q[ self.class.instance_variable_get("@instance_#{m}").call(#{params_pass})])
-        klass.instance_eval do
-          define_method(m, block)
-        end
+
+        klass.send(:model_methods_template)[m] = eval_lambda(params, %Q[raise "##{m} is not Implemented for Class: #{klass.name}"])
+
+        klass.class_eval <<-eos, __FILE__, __LINE__+1
+          def #{m}(#{params})
+            model_instance_methods[#{m.inspect}].call(#{params_pass})
+          end
+        eos
       end
     end
 
@@ -132,39 +131,19 @@ module ActiveMocker
         m = method.keys.first
         params = Reparameterize.call(method.values.first)
         params_pass = Reparameterize.call(method.values.first, true)
-        klass.class_variable_set("@@klass_#{m}", eval_lambda(params, %Q[raise "::#{m} is not Implemented for Class: #{klass.name}"]))
-        block = eval_lambda(params, %Q[ class_variable_get("@@klass_#{m}").call(#{params_pass})])
-        klass.singleton_class.class_eval do
-          define_method(m, block)
-        end
+
+        klass.send(:model_class_methods)[m] = eval_lambda(params, %Q[raise "::#{m} is not Implemented for Class: #{klass.name}"])
+
+        klass.class_eval <<-eos, __FILE__, __LINE__+1
+          def self.#{m}(#{params})
+            model_class_methods[#{m.inspect}].call(#{params_pass})
+          end
+        eos
       end
     end
 
     def eval_lambda(arguments, block)
       eval(%Q[ ->(#{arguments}){ #{block} }])
-    end
-
-    def add_mock_instance_method
-      klass = create_klass
-      klass.singleton_class.class_eval do
-        define_method(:mock_instance_method) do |method, &block|
-          klass.instance_variable_set("@instance_#{method.to_s}", block)
-        end
-      end
-      klass.instance_eval do
-        define_method(:mock_instance_method) do |method, &block|
-          klass.instance_variable_set("@instance_#{method.to_s}", block)
-        end
-      end
-    end
-
-    def add_mock_class_method
-      klass = create_klass
-      klass.singleton_class.class_eval do
-        define_method(:mock_class_method) do |method, &block|
-          class_variable_set("@@klass_#{method.to_s}", block)
-        end
-      end
     end
 
     def add_column_names_method
@@ -183,8 +162,11 @@ module ActiveMocker
 
     def const_class
       remove_const(mock_class_name) if class_exists? mock_class_name
-      return Object.const_set(mock_class_name ,Class.new(ActiveHash::Base)) if active_hash_as_base
-      return Object.const_set(mock_class_name ,Class.new()) unless active_hash_as_base
+      klass = Object.const_set(mock_class_name ,Class.new(ActiveHash::Base)) if active_hash_as_base
+      klass = Object.const_set(mock_class_name ,Class.new()) unless active_hash_as_base
+      klass.extend ModelClassMethods
+      klass.include ModelInstanceMethods
+      klass
     end
 
     def remove_const(class_name)
@@ -203,6 +185,43 @@ module ActiveMocker
     end
 
   end
+
+  module ModelInstanceMethods
+
+    def mock_instance_method(method, &block)
+      model_instance_methods[method] = block
+    end
+
+    private
+
+    def model_instance_methods
+      @model_instance_methods ||= self.class.send(:model_methods_template).dup
+    end
+
+  end
+
+  module ModelClassMethods
+
+    def mock_instance_method(method, &block)
+      model_methods_template[method] = block
+    end
+
+    def mock_class_method(method, &block)
+      model_class_methods[method] = block
+    end
+
+    private
+
+    def model_class_methods
+      @model_class_methods ||= HashWithIndifferentAccess.new
+    end
+
+    def model_methods_template
+      @model_methods_template ||= HashWithIndifferentAccess.new
+    end
+
+  end
+
 
 end
 

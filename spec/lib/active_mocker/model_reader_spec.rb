@@ -1,5 +1,7 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
+require 'logger'
+require 'active_mocker/logger'
 require 'string_reader'
 require 'file_reader'
 require 'active_mocker/logger'
@@ -24,7 +26,7 @@ describe ActiveMocker::ModelReader do
   describe '#class_methods' do
 
     it 'returns all public class methods' do
-      expect(subject.class_methods).to eq([:duper, :named, :foo])
+      expect(subject.class_methods).to eq([:duper, :named, :foo, :bang!])
     end
 
   end
@@ -48,7 +50,7 @@ describe ActiveMocker::ModelReader do
   describe '#class_methods_with_arguments' do
 
     it 'returns all public instance methods' do
-      expect(subject.class_methods_with_arguments).to eq( [{:duper=>[[:req, :value], [:rest, :args]]}, {:named=>[[:req, :name], [:opt, :value], [:opt, :options]]}, {:foo=>[]}] )
+      expect(subject.class_methods_with_arguments).to eq( [{:duper=>[[:req, :value], [:rest, :args]]}, {:named=>[[:req, :name], [:opt, :value], [:opt, :options]]}, {:foo=>[]}, {:bang! =>[]}])
     end
 
   end

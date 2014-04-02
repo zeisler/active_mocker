@@ -49,8 +49,8 @@ Or install it yourself as:
     require 'active_mocker'
 
     ActiveMocker::Base.configure do |config|
-      config.schema_file = 'file is being inject as string'
-      config.model_dir   = 'file is being inject as string'
+      config.schema_file = "#{APP_ROOT}/db/schema.rb"
+      config.model_dir   = "#{APP_ROOT}/app/models"
     # Dependency injection
       config.schema_file_reader = schema_file
       config.model_file_reader  = model_file
@@ -60,6 +60,8 @@ Or install it yourself as:
       config.model_relationships = true  #default
       config.model_methods       = true  #default
       config.mass_assignment     = true  #default
+     # Logging
+      config.log_level = Logger::WARN    #default
     end
 
     mocker = ActiveMocker::Base.new({schema: {path: [path to schema.rb file]},

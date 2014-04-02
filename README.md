@@ -121,7 +121,7 @@ Or install it yourself as:
       belongs_to :account
 
       def bar(name)
-        puts bar
+        puts name
       end
 
     end
@@ -129,6 +129,22 @@ Or install it yourself as:
      mock_class.new.bar('foo', 'type')
         => ArgumentError: wrong number of arguments (2 for 1)
 
+
+    app/models/person.rb
+
+    class Person < ActiveRecord::Base
+      belongs_to :account
+
+      def foo(name, type=nil)
+        puts name
+      end
+
+    end
+
+    mock_class.mock_instance_method(:bar) do  |name, type=nil|
+      "Now implemented with #{name} and #{type}"
+    end
+      => NameError: undefined method `bar' for class `PersonMock'
 
 
 ### When the schema changes

@@ -146,13 +146,36 @@ Or install it yourself as:
     end
       => NameError: undefined method `bar' for class `PersonMock'
 
+### Enable ActiveHash support
+ActiveHash is a simple base class that allows you to use a ruby hash as a readonly datasource for an ActiveRecord-like model.
+  [zilkey/active_hash](https://github.com/zilkey/active_hash)
 
-### When the schema changes
+
+
+    ActiveMocker::Base.configure do |config|
+      config.active_hash_as_base = true
+    end
+
+    ActiveMocker::Base.mock('Person').superclass
+      => ActiveHash::Base
+
+    dustin = PersonMock.create(first_name: 'Dustin')
+      => #<PersonMock @attributes={:first_name=>"Dustin" :id=>1}>
+
+    PersonMock.all
+      => [#<PersonMock: @attributes={:first_name=>"Dustin", :id=>1}>]
+
+     dustin.last_name = 'Zeisler'
+       => "Zeisler"
+
+     dustin.save
+       => true
+
 
 
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/active_mocker/fork )
+1. Fork it ( http://github.com/zeisler/active_mocker/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

@@ -8,11 +8,11 @@ require 'active_mocker/reparameterize'
 
 describe ActiveMocker::ModelReader do
 
-  let(:subject){ described_class.new({path: File.expand_path('../../', __FILE__)}).parse('Model') }
+  let(:subject){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}).parse('Model') }
 
   describe '#parse' do
 
-    let(:subject){ described_class.new({path: File.expand_path('../../', __FILE__)}) }
+    let(:subject){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}) }
 
     it 'takes a model name to the active_record model class' do
       subject.parse('Model')
@@ -109,7 +109,7 @@ describe ActiveMocker::ModelReader do
       )
     }
 
-    let(:subject){described_class.new({path: File.expand_path('../../', __FILE__), file_reader: example_model})}
+    let(:subject){described_class.new({model_dir: File.expand_path('../../', __FILE__), file_reader: example_model})}
 
     let(:search){subject.parse('Person')}
 

@@ -10,6 +10,8 @@ require 'active_support/all'
 
 describe ActiveMocker::SchemaReader do
 
+  let(:schema_file){ File.join(File.expand_path('../../', __FILE__), 'schema.rb') }
+
   let(:example_schema){
     StringReader.new(
         <<-eos
@@ -55,7 +57,7 @@ describe ActiveMocker::SchemaReader do
 
   context 'inject string_reader as file_reader' do
 
-    let(:subject){described_class.new({path: File.expand_path('../../', __FILE__), file_reader: example_schema})}
+    let(:subject){described_class.new({schema_file:nil, file_reader: example_schema})}
 
     let(:search){subject.search('people')}
 
@@ -70,13 +72,13 @@ describe ActiveMocker::SchemaReader do
 
   context 'reads from file' do
 
-    let(:subject){described_class.new({path: File.expand_path('../../', __FILE__)})}
+    let(:subject){described_class.new({schema_file: schema_file})}
 
 
     describe '#search' do
 
       it 'takes a table name and will return its attributes' do
-        described_class.new({path: File.expand_path('../../', __FILE__)}).search("people")
+        described_class.new({schema_file: schema_file}).search("people")
       end
 
     end
@@ -112,13 +114,11 @@ describe ActiveMocker::SchemaReader do
     it 'returns an exception if table not found in schema.rb' do
       expect{
         described_class.new(
-            {path: File.expand_path('../../', __FILE__)}
+            {schema_file: schema_file}
         ).search("disclosures")
       }.to raise_error 'disclosures table not found.'
     end
 
-
   end
-
 
 end

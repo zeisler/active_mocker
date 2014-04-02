@@ -48,6 +48,20 @@ Or install it yourself as:
 
     require 'active_mocker'
 
+    ActiveMocker::Base.configure do |config|
+      config.schema_file = 'file is being inject as string'
+      config.model_dir   = 'file is being inject as string'
+    # Depenency injection
+      config.schema_file_reader = schema_file
+      config.model_file_reader  = model_file
+    # Additional Options
+      config.active_hash_as_base = false #default
+      config.schema_attributes   = true  #default
+      config.model_relationships = true  #default
+      config.model_methods       = true  #default
+      config.mass_assignment     = true  #default
+    end
+
     mocker = ActiveMocker::Base.new({schema: {path: [path to schema.rb file]},
                                      model:  {path: [dir of rails models]}}
 

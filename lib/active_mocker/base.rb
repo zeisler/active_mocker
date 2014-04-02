@@ -1,42 +1,39 @@
 module ActiveMocker
 
-  #TODO DRY up method creation
-  #TODO have instance variable array for instance method
-  #TODO have class variable array for class method
-  #TODO enable support for active_hash as base class
-  #TODO work on options interface
-
   class Base
+    extend Config
+    extend Forwardable
+    @@_self = self
+    def_delegators :@@_self,
+                   :mass_assignment,
+                   :model_relationships,
+                   :schema_attributes,
+                   :model_methods,
+                   :active_hash_as_base,
+                   :model_dir,
+                   :schema_file,
+                   :model_file_reader,
+                   :schema_file_reader
 
-    attr_reader :model_name,
-                :model_options,
-                :options_schema,
-                :mass_assignment,
-                :model_relationships,
-                :schema_attributes,
-                :model_methods,
-                :active_hash_as_base
+    attr_reader :model_name, :klass
 
-    def initialize(options={})
-      @active_hash_as_base = options.fetch(:active_hash_as_base, false)
-      @schema_attributes   = options.fetch(:schema_attributes,   true)
-      @model_relationships = options.fetch(:model_relationships, true)
-      @model_methods       = options.fetch(:model_methods,       true)
-      @mass_assignment     = options.fetch(:mass_assignment,     true)
-      @model_options       = options[:model]
-      @options_schema      = options[:schema]
+    def initialize(model_name)
+      @model_name = model_name
+      plain_mock_class       unless active_hash_as_base
+      active_hash_mock_class if active_hash_as_base
     end
 
-    def mock(model_name)
-      @model_name = model_name
-      plain_mock_class unless active_hash_as_base
-      active_hash_mock_class if active_hash_as_base
-      return @klass
+    def self.configure(&block)
+      config(&block)
+    end
+
+    def self.mock(model_name)
+      self.new(model_name).klass
     end
 
     def model_definition
       return @model_definition unless @model_definition.nil?
-      @model_definition = ModelReader.new(model_options).parse(model_file_name)
+      @model_definition = ModelReader.new({model_dir: model_dir, file_reader: model_file_reader}).parse(model_file_name)
     end
 
     def model_file_name
@@ -45,14 +42,14 @@ module ActiveMocker
 
     def table_definition
       table_name = model_name.tableize
-      table = SchemaReader.new(options_schema).search(table_name)
+      table = SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader}).search(table_name)
       raise "#{table_name} table not found." if table.nil?
       return table
     end
 
     def active_hash_mock_class
 
-      add_column_names_method  if schema_attributes
+      add_column_names_method
       klass  = create_klass
       fields = table_definition.column_names + model_definition.relationships
       klass.class_eval do

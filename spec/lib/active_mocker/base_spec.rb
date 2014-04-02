@@ -2,6 +2,7 @@ require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
 require 'string_reader'
 require 'active_mocker/table'
+require 'active_mocker/config'
 require 'active_mocker/reparameterize'
 require 'active_mocker/field'
 require 'active_mocker/active_record'
@@ -13,13 +14,25 @@ require 'active_support/all'
 
 describe ActiveMocker::Base do
 
-  let(:base_options){{}}
-  let(:sub_options){{schema: {path: File.expand_path('../../', __FILE__), file_reader: schema_file},
-                     model:  {path:  File.expand_path('../../', __FILE__), file_reader: model_file}}}
+  let(:mock_class){described_class.mock('Person')}
 
-  let(:subject){ described_class.new(base_options.merge(sub_options))}
+  before(:each) do
 
-  let(:mock_class){subject.mock('Person')}
+    ActiveMocker::Base.configure do |config|
+      config.schema_file = 'file is being inject as string'
+      config.model_dir   = 'file is being inject as string'
+      # Depenency injection
+      config.schema_file_reader = schema_file
+      config.model_file_reader  = model_file
+      # Additional Options
+      config.active_hash_as_base = false #default
+      config.schema_attributes   = true  #default
+      config.model_relationships = true  #default
+      config.model_methods       = true  #default
+      config.mass_assignment     = true  #default
+    end
+
+  end
 
     let(:model_file){
       StringReader.new <<-eos
@@ -64,8 +77,8 @@ describe ActiveMocker::Base do
     context 'set to false' do
 
       it 'will fail' do
-        mock = described_class.new(sub_options.merge({mass_assignment: false}))
-        person = mock.mock("Person")
+        described_class.mass_assignment = false
+        person = described_class.mock("Person")
         expect{
           person.new(first_name: "Sam", last_name: 'Walton')
         }.to raise_error ArgumentError
@@ -227,8 +240,25 @@ describe ActiveMocker::Base do
   context 'option active_hash_as_base' do
 
     describe 'true' do
+
+      before(:each) do
+
+        ActiveMocker::Base.configure do |config|
+          config.schema_file = 'file is being inject as string'
+          config.model_dir   = 'file is being inject as string'
+          # Depenency injection
+          config.schema_file_reader = schema_file
+          config.model_file_reader  = model_file
+          # Additional Options
+          config.active_hash_as_base = true
+          config.schema_attributes   = false
+          config.model_relationships = false
+          config.model_methods       = true
+          config.mass_assignment     = false
+        end
+
+      end
       require 'active_hash'
-      let(:base_options){{active_hash_as_base: true}}
 
       let(:model_file){
         StringReader.new <<-eos

@@ -2,11 +2,11 @@ module ActiveMocker
 
   class SchemaReader
 
-    attr_reader :model_name, :relative_path, :file_reader, :table
+    attr_reader :model_name, :schema_file, :file_reader, :table
 
     def initialize(options={})
       @file_reader = options[:file_reader] ||= FileReader
-      @relative_path = options[:path]
+      @schema_file = options[:schema_file]
     end
 
     def search(model_name)
@@ -37,7 +37,7 @@ module ActiveMocker
     end
 
     def read_file
-      file_reader.read("#{relative_path}/schema.rb")
+      file_reader.read(schema_file)
     end
 
   end

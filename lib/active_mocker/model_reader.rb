@@ -2,11 +2,11 @@ module ActiveMocker
 
   class ModelReader
 
-    attr_reader :model_name, :relative_path, :file_reader
+    attr_reader :model_name, :model_dir, :file_reader
 
     def initialize(options={})
       @file_reader = options[:file_reader] ||= FileReader
-      @relative_path = options[:path]
+      @model_dir   = options[:model_dir]
     end
 
     def parse(model_name)
@@ -26,7 +26,7 @@ module ActiveMocker
     end
 
     def read_file
-      file_reader.read("#{relative_path}/#{model_name}.rb")
+      file_reader.read("#{model_dir}/#{model_name}.rb")
     end
 
     def class_methods

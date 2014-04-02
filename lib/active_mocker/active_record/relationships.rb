@@ -13,22 +13,22 @@ module Relationships
 
   def has_many(*args)
     @has_many ||= []
-    @has_many.push args
+    @has_many.push [args.first]
   end
 
   def has_one(*args)
     @has_one ||= []
-    @has_one.push args
+    @has_one.push [args.first]
   end
 
   def belongs_to(*args)
     @belongs_to ||= []
-    @belongs_to.push args
+    @belongs_to.push [args.first]
   end
 
   def has_and_belongs_to_many(*args)
     @has_and_belongs_to_many ||= []
-    @has_and_belongs_to_many.push args
+    @has_and_belongs_to_many.push [args.first]
   end
 
 end

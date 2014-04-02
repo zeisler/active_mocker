@@ -1,6 +1,6 @@
 class Model < ActiveRecord::Base
 
-  belongs_to :company
+  belongs_to :company, class_name: 'PlanServiceCategory'
   has_many :users
   has_one :account
   has_and_belongs_to_many :disclosure

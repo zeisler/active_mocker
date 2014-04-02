@@ -121,5 +121,7 @@ describe ActiveMocker::ModelReader do
 
   end
 
+  describe
+
 end
 

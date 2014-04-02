@@ -1,5 +1,7 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
+require 'logger'
+require 'active_mocker/logger'
 require 'string_reader'
 require 'active_mocker/table'
 require 'active_mocker/config'
@@ -30,6 +32,8 @@ describe ActiveMocker::Base do
       config.model_relationships = true  #default
       config.model_methods       = true  #default
       config.mass_assignment     = true  #default
+      # Logging
+      config.log_level = Logger::DEBUG       #default
     end
 
   end

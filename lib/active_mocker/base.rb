@@ -1,5 +1,4 @@
 module ActiveMocker
-
   class Base
     extend Config
     extend Forwardable

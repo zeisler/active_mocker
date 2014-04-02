@@ -4,6 +4,8 @@ class Model < ActiveRecord::Base
   has_many :users
   has_one :account
   has_and_belongs_to_many :disclosure
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
 
   def self.duper(value, *args)
 

@@ -11,11 +11,13 @@ module ActiveMocker
                   :model_methods,
                   :mass_assignment,
                   :schema_file_reader,
-                  :model_file_reader
+                  :model_file_reader,
+                  :log_level
 
     def config
       default
       yield self
+      Logger_.level = log_level
     end
 
     def default
@@ -26,6 +28,7 @@ module ActiveMocker
       model_relationships = true
       model_methods       = true
       mass_assignment     = true
+      log_level           = Logger::WARN
     end
 
   end

@@ -1,5 +1,7 @@
 require "active_mocker/version"
 $:.unshift File.expand_path('../../', __FILE__)
+require 'logger'
+require 'active_mocker/logger'
 require 'active_support/all'
 require 'active_mocker/table'
 require 'active_mocker/field'

@@ -2,6 +2,7 @@ require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
 require 'string_reader'
 require 'file_reader'
+require 'active_mocker/logger'
 require 'active_mocker/active_record'
 require 'active_mocker/model_reader'
 require 'active_mocker/reparameterize'

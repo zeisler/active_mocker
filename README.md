@@ -171,7 +171,9 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
      dustin.save
        => true
 
+### Known Limitations
 
+::mock model names and table names must follow the default ActiveRecord naming pattern.
 
 ## Contributing
 

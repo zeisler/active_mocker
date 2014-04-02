@@ -41,7 +41,7 @@ Or install it yourself as:
       belongs_to :account
 
       def bar(name, type=nil)
-        puts bar
+        puts name
       end
 
     end
@@ -64,10 +64,7 @@ Or install it yourself as:
       config.log_level = Logger::WARN    #default
     end
 
-    mocker = ActiveMocker::Base.new({schema: {path: [path to schema.rb file]},
-                                     model:  {path: [dir of rails models]}}
-
-    mocker.mock('Person')
+    ActiveMocker::Base.mock('Person')
         => PersonMock
 
     PersonMock.column_names

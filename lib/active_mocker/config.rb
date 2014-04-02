@@ -14,19 +14,25 @@ module ActiveMocker
                   :model_file_reader
 
     def config
-      default
+      @@first_load ||= reload_default
       yield self
+      check_required_settings
     end
 
-    def default
-      schema_file         = nil
-      model_dir           = nil
-      active_hash_as_base = false
-      schema_attributes   = true
-      model_relationships = true
-      model_methods       = true
-      mass_assignment     = true
-      log_level           = Logger::WARN
+    def reload_default
+      @schema_file         = nil
+      @model_dir           = nil
+      @active_hash_as_base = false
+      @schema_attributes   = true
+      @model_relationships = true
+      @model_methods       = true
+      @mass_assignment     = true
+      @log_level           = Logger::WARN
+    end
+
+    def check_required_settings
+      raise 'schema_file must be specified'if schema_file.nil?
+      raise 'model_dir must be specified'if model_dir.nil?
     end
 
     def log_level=(level)

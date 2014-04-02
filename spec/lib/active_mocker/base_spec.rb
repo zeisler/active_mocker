@@ -21,21 +21,26 @@ describe ActiveMocker::Base do
   before(:each) do
 
     ActiveMocker::Base.configure do |config|
+      # Required Options
       config.schema_file = 'file is being inject as string'
       config.model_dir   = 'file is being inject as string'
       # Dependency injection
       config.schema_file_reader = schema_file
       config.model_file_reader  = model_file
       # Additional Options
-      config.active_hash_as_base = false #default
-      config.schema_attributes   = true  #default
-      config.model_relationships = true  #default
-      config.model_methods       = true  #default
-      config.mass_assignment     = true  #default
+      #config.active_hash_as_base = false #default
+      #config.schema_attributes   = true  #default
+      #config.model_relationships = true  #default
+      #config.model_methods       = true  #default
+      #config.mass_assignment     = true  #default
       # Logging
       config.log_level = Logger::WARN       #default
     end
 
+  end
+
+  after(:each) do
+    ActiveMocker::Base.reload_default
   end
 
     let(:model_file){
@@ -248,17 +253,7 @@ describe ActiveMocker::Base do
       before(:each) do
 
         ActiveMocker::Base.configure do |config|
-          config.schema_file = 'file is being inject as string'
-          config.model_dir   = 'file is being inject as string'
-          # Depenency injection
-          config.schema_file_reader = schema_file
-          config.model_file_reader  = model_file
-          # Additional Options
           config.active_hash_as_base = true
-          config.schema_attributes   = false
-          config.model_relationships = false
-          config.model_methods       = true
-          config.mass_assignment     = false
         end
 
       end
@@ -324,6 +319,30 @@ describe ActiveMocker::Base do
         expect(mock_class.superclass.name).to eq 'Object'
 
       end
+
+    end
+
+  end
+
+  describe '::configure' do
+
+    it 'requires schema_file' do
+      ActiveMocker::Base.reload_default
+      expect{
+        ActiveMocker::Base.configure {
+        }
+      }.to raise_error
+
+    end
+
+
+    it 'requires model_dir' do
+      ActiveMocker::Base.reload_default
+      expect{
+        ActiveMocker::Base.configure { |c|
+          c.schema_file = 'dir'
+        }
+      }.to raise_error
 
     end
 

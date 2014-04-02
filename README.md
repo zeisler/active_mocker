@@ -49,6 +49,7 @@ Or install it yourself as:
     require 'active_mocker'
 
     ActiveMocker::Base.configure do |config|
+    # Required Options
       config.schema_file = "#{APP_ROOT}/db/schema.rb"
       config.model_dir   = "#{APP_ROOT}/app/models"
     # Dependency injection

@@ -51,7 +51,7 @@ Or install it yourself as:
     ActiveMocker::Base.configure do |config|
       config.schema_file = 'file is being inject as string'
       config.model_dir   = 'file is being inject as string'
-    # Depenency injection
+    # Dependency injection
       config.schema_file_reader = schema_file
       config.model_file_reader  = model_file
     # Additional Options

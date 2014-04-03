@@ -44,6 +44,9 @@ Or install it yourself as:
         puts name
       end
 
+      def self.bar
+      end
+
     end
 
     require 'active_mocker'
@@ -94,7 +97,7 @@ Or install it yourself as:
              => NoMethodError: undefined method `first_name=' for #<PersonMock:0x007f860abf6b10>
 
 
-### Mocking instance methods
+### Mocking instance and class methods
 
      person_mock.bar
         => ArgumentError: wrong number of arguments (0 for 1..2)
@@ -109,6 +112,10 @@ Or install it yourself as:
 
      mock_class.new.bar('foo', 'type')
         => "Now implemented with foo and type"
+
+     mock_class.mock_class_method(:baz) do
+       "Now implemented"
+     end
 
 ### When the model changes the mock fails
 

@@ -77,7 +77,23 @@ describe ActiveMocker::Base do
 
   end
 
-  describe
+  describe '#read_attribute' do
+
+    it 'will access attributes' do
+      mock_class.new.read_attribute("800_number")
+    end
+
+  end
+
+  describe '#write_attribute' do
+
+    it 'will access attributes' do
+      person = mock_class.new
+      person.write_attribute("800_number", 100)
+      expect(person.read_attribute("800_number")).to eq 100
+    end
+
+  end
 
   describe 'mass_assignment' do
 

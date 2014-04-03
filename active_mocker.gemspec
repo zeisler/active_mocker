@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dustin Zeisler"]
   spec.email         = ["dustin@zive.me"]
   spec.summary       = %q{Create mocks from active record models without loading rails or running a database}
-  spec.description   = %q{Create mocks from active record models without loading rails or running a database. The Mocks methods have the same arguments as the AR model and if they change you get a error in your test.}
+  spec.description   = %q{Create mocks from active record models without loading rails or running a database. The Mock's methods have the same arguments as the AR model and if they change you get a error in your test.}
   spec.homepage      = "https://github.com/zeisler/active_mocker"
   spec.license       = "MIT"
 
@@ -17,6 +17,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
+
+  spec.required_ruby_version = '>= 1.9.3'
 
   spec.add_runtime_dependency "activesupport", "~>4.0"
 

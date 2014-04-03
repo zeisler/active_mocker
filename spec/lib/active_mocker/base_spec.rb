@@ -62,6 +62,7 @@ describe ActiveMocker::Base do
               t.string   "last_name",         limit: 128
               t.string   "address",         limit: 200
               t.string   "city",              limit: 100
+              t.string   "800_number",              limit: 100
             end
 
           end
@@ -71,7 +72,7 @@ describe ActiveMocker::Base do
   describe '::column_names' do
 
     it 'returns an array of column names found from the schema.rb file' do
-      expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city"])
+      expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city", "800_number"])
     end
 
   end
@@ -292,7 +293,7 @@ describe ActiveMocker::Base do
       end
 
       it '::column_names' do
-        expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city"])
+        expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city","800_number"])
       end
 
       it '#mock_of' do

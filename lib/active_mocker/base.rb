@@ -104,8 +104,18 @@ module ActiveMocker
     def add_table_attributes
       klass = create_klass
       table_definition.column_names.each do |m|
-        klass.instance_variable_set("@#{m}", nil)
-        klass.class_eval { attr_accessor m }
+
+        klass.send(:schema_attributes_template)[m] = nil
+
+        klass.class_eval <<-eos, __FILE__, __LINE__+1 unless m =~ /^\d/
+          def #{m}
+            schema_attributes[#{m.inspect}]
+          end
+
+          def #{m}=(value)
+            schema_attributes[#{m.inspect}] = value
+          end
+        eos
       end
     end
 
@@ -200,6 +210,9 @@ module ActiveMocker
       @model_instance_methods ||= self.class.send(:model_methods_template).dup
     end
 
+    def schema_attributes
+      @schema_attributes ||= self.class.send(:schema_attributes_template).dup
+    end
   end
 
   module ModelClassMethods
@@ -212,6 +225,10 @@ module ActiveMocker
       model_class_methods[method] = block
     end
 
+    def column_names
+      schema_attributes_template
+    end
+
     private
 
     def model_class_methods
@@ -222,8 +239,11 @@ module ActiveMocker
       @model_methods_template ||= HashWithIndifferentAccess.new
     end
 
-  end
+    def schema_attributes_template
+      @schema_attributes_template ||= HashWithIndifferentAccess.new
+    end
 
+  end
 
 end
 

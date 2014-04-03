@@ -77,7 +77,7 @@ Or install it yourself as:
      person_mock.first_name
         => "Dustin"
 
-### When schema.rb changes the mock fails
+### When schema.rb changes, the mock fails
 
      #db/schema.rb
 

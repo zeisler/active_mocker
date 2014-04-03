@@ -52,12 +52,8 @@ Or install it yourself as:
     # Required Options
       config.schema_file = "#{APP_ROOT}/db/schema.rb"
       config.model_dir   = "#{APP_ROOT}/app/models"
-    # Dependency injection
-      config.schema_file_reader = schema_file
-      config.model_file_reader  = model_file
     # Additional Options
       config.active_hash_as_base = false #default
-      config.active_hash_ext     = false #default
       config.schema_attributes   = true  #default
       config.model_relationships = true  #default
       config.model_methods       = true  #default
@@ -127,8 +123,8 @@ Or install it yourself as:
 
     end
 
-     mock_class.new.bar('foo', 'type')
-        => ArgumentError: wrong number of arguments (2 for 1)
+    mock_class.new.bar('foo', 'type')
+      => ArgumentError: wrong number of arguments (2 for 1)
 
 
     app/models/person.rb
@@ -152,7 +148,6 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
   [zilkey/active_hash](https://github.com/zilkey/active_hash)
 
 
-
     ActiveMocker::Base.configure do |config|
       config.active_hash_as_base = true
     end
@@ -172,15 +167,10 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
      dustin.save
        => true
 
-### Additional ActiveHash extentions
-
-    ActiveMocker::Base.configure do |config|
-      config.active_hash_as_base = true
-      config.active_hash_ext     = true
-    end
+### Additional ActiveHash extentions for matching ActiveRecord
 
 
-    #update method
+#### #update method
 
     person = PersonMock.create(first_name: 'Justin')
 
@@ -190,9 +180,9 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
         => 'Dustin'
 
 
-    ::destroy_all
+#### ::destroy_all
 
-     mock_class.create
+    mock_class.create
 
     mock_class.count
         => 1
@@ -202,9 +192,18 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
     mock_class.count
         => 0
 
+
+    ::find_by
+
+    person = PersonMock.create(first_name: 'Dustin')
+
+    PersonMock.find_by(first_name: 'Dustin') == person
+      => true
+
+
 ### Known Limitations
 
-::mock model names and table names must follow the default ActiveRecord naming pattern.
+**::mock** model names and table names must follow the default ActiveRecord naming pattern.
 
 ## Contributing
 

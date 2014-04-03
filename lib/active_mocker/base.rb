@@ -12,8 +12,8 @@ module ActiveMocker
                    :model_dir,
                    :schema_file,
                    :model_file_reader,
-                   :schema_file_reader,
-                   :active_hash_ext
+                   :schema_file_reader
+
 
     attr_reader :model_name, :klass
 
@@ -164,7 +164,7 @@ module ActiveMocker
     def const_class
       remove_const(mock_class_name) if class_exists? mock_class_name
       klass = Object.const_set(mock_class_name ,Class.new(ActiveHash::Base)) if active_hash_as_base
-      klass.send(:include, ActiveHash::ARApi) if active_hash_ext
+      klass.send(:include, ActiveHash::ARApi) if active_hash_as_base
       klass = Object.const_set(mock_class_name ,Class.new()) unless active_hash_as_base
       klass.extend ModelClassMethods
       klass.send(:include, ModelInstanceMethods) # is a private method for ruby 2.0.0

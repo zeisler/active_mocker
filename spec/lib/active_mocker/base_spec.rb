@@ -17,10 +17,7 @@ require 'active_hash/ar_api'
 
 describe ActiveMocker::Base do
 
-  let(:mock_class){described_class.mock('Person')}
-
   before(:each) do
-
     ActiveMocker::Base.configure do |config|
       # Required Options
       config.schema_file = 'file is being inject as string'
@@ -39,6 +36,10 @@ describe ActiveMocker::Base do
     end
 
   end
+
+  let(:mock_class){
+    described_class.mock('Person')
+  }
 
   after(:each) do
     ActiveMocker::Base.reload_default
@@ -310,7 +311,6 @@ describe ActiveMocker::Base do
 
         ActiveMocker::Base.configure do |config|
           config.active_hash_as_base = true
-          config.active_hash_ext     = true
         end
 
       end
@@ -349,6 +349,11 @@ describe ActiveMocker::Base do
 
         expect(mock_class.count).to eq 0
 
+      end
+
+      it '::find_by' do
+        person = mock_class.create(first_name: 'dustin')
+        expect(mock_class.find_by(first_name: 'dustin')).to eq person
       end
 
     end

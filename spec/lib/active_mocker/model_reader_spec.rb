@@ -11,7 +11,7 @@ require 'active_mocker/reparameterize'
 
 describe ActiveMocker::ModelReader do
 
-  let(:subject){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}).parse('Model') }
+  let(:subject){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}).parse('model') }
 
   describe '#parse' do
 

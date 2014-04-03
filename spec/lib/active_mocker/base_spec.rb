@@ -79,7 +79,7 @@ describe ActiveMocker::Base do
     it "can pass any or all attributes from schema in initializer" do
       result = mock_class.new(first_name: "Sam", last_name: 'Walton')
       expect(result.first_name).to eq 'Sam'
-      expect(result.last_name).to eq 'Walton'
+      expect(result.last_name).to eq 'Waltons'
 
     end
 

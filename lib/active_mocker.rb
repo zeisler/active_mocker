@@ -16,6 +16,7 @@ require 'active_mocker/base'
 require 'active_mocker/active_record'
 require 'active_mocker/model_reader'
 require 'active_mocker/reparameterize'
+require 'active_hash/ar_api'
 module ActiveMocker
 
 end

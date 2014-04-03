@@ -77,6 +77,8 @@ describe ActiveMocker::Base do
 
   end
 
+  describe
+
   describe 'mass_assignment' do
 
     it "can pass any or all attributes from schema in initializer" do

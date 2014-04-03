@@ -109,11 +109,11 @@ module ActiveMocker
 
         klass.class_eval <<-eos, __FILE__, __LINE__+1 unless m =~ /^\d/
           def #{m}
-            schema_attributes[#{m.inspect}]
+            read_attribute(#{m.inspect})
           end
 
           def #{m}=(value)
-            schema_attributes[#{m.inspect}] = value
+            write_attribute(#{m.inspect}, value)
           end
         eos
       end
@@ -202,6 +202,14 @@ module ActiveMocker
 
     def mock_instance_method(method, &block)
       model_instance_methods[method] = block
+    end
+
+    def read_attribute(attr)
+      schema_attributes[attr]
+    end
+
+    def write_attribute(attr, value)
+      schema_attributes[attr] = value
     end
 
     private

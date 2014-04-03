@@ -165,7 +165,7 @@ module ActiveMocker
       klass = Object.const_set(mock_class_name ,Class.new(ActiveHash::Base)) if active_hash_as_base
       klass = Object.const_set(mock_class_name ,Class.new()) unless active_hash_as_base
       klass.extend ModelClassMethods
-      klass.include ModelInstanceMethods
+      klass.send(:include, ModelInstanceMethods) # is a private method for ruby 2.0.0
       klass
     end
 

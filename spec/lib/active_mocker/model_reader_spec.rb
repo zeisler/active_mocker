@@ -18,7 +18,7 @@ describe ActiveMocker::ModelReader do
     let(:subject){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}) }
 
     it 'takes a model name to the active_record model class' do
-      subject.parse('Model')
+      subject.parse('model')
     end
 
   end
@@ -114,7 +114,7 @@ describe ActiveMocker::ModelReader do
 
     let(:subject){described_class.new({model_dir: File.expand_path('../../', __FILE__), file_reader: example_model})}
 
-    let(:search){subject.parse('Person')}
+    let(:search){subject.parse('person')}
 
     it 'let not read a file but return a string instead to be evaluated' do
       expect(search.relationships_types.belongs_to).to eq  [[:zip_code]]

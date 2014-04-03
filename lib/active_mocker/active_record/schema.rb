@@ -3,7 +3,8 @@ module ActiveMocker
 
     class Schema
 
-      def self.define(version: version, &block)
+      def self.define(options, &block)
+        version = options[:version]
         search_result = search_cache(@table_search)
         search_result unless search_result.nil?
         schema = parse
@@ -71,7 +72,7 @@ module ActiveMocker
     end
 
     def base_field(type, args)
-      fields << Field.new(name: args.shift, type: type, options: args)
+      fields << Field.new(args.shift, type, args)
     end
 
   end

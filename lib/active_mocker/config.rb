@@ -11,7 +11,9 @@ module ActiveMocker
                   :model_methods,
                   :mass_assignment,
                   :schema_file_reader,
-                  :model_file_reader
+                  :model_file_reader,
+                  :active_hash_ext
+
 
     def config
       @@first_load ||= reload_default
@@ -27,6 +29,7 @@ module ActiveMocker
       @model_relationships = true
       @model_methods       = true
       @mass_assignment     = true
+      @active_hash_ext     = false
       @log_level           = Logger::WARN
     end
 

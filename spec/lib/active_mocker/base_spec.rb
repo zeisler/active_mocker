@@ -13,6 +13,7 @@ require 'active_mocker/schema_reader'
 require 'active_mocker/active_record/schema'
 require 'active_mocker/base'
 require 'active_support/all'
+require 'active_hash/ar_api'
 
 describe ActiveMocker::Base do
 
@@ -271,7 +272,7 @@ describe ActiveMocker::Base do
         eos
       }
 
-      it 'uses active_hase::base as superclass' do
+      it 'uses active_hash::base as superclass' do
         expect(mock_class.superclass.name).to eq 'ActiveHash::Base'
       end
 
@@ -299,6 +300,55 @@ describe ActiveMocker::Base do
 
       it 'instance methods from model' do
         expect{mock_class.new.bar}.to raise_error '#bar is not Implemented for Class: PersonMock'
+      end
+
+    end
+
+    describe 'option active_hash_ext' do
+
+      before(:each) do
+
+        ActiveMocker::Base.configure do |config|
+          config.active_hash_as_base = true
+          config.active_hash_ext     = true
+        end
+
+      end
+
+      require 'active_hash'
+
+      let(:model_file){
+        StringReader.new <<-eos
+        class Person < ActiveRecord::Base
+          belongs_to :account
+
+          def bar
+          end
+
+        end
+        eos
+      }
+
+      it '#update' do
+
+        person = mock_class.create(first_name: 'Justin')
+
+        person.update(first_name: 'Dustin')
+
+        expect(person.first_name).to eq 'Dustin'
+
+      end
+
+      it '::destroy_all' do
+
+        mock_class.create
+
+        expect(mock_class.count).to eq 1
+
+        mock_class.destroy_all
+
+        expect(mock_class.count).to eq 0
+
       end
 
     end

@@ -171,6 +171,36 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
      dustin.save
        => true
 
+### Additional ActiveHash extentions
+
+    ActiveMocker::Base.configure do |config|
+      config.active_hash_as_base = true
+      config.active_hash_ext     = true
+    end
+
+
+    #update method
+
+    person = PersonMock.create(first_name: 'Justin')
+
+    person.update(first_name: 'Dustin')
+
+    person.first_name
+        => 'Dustin'
+
+
+    ::destroy_all
+
+     mock_class.create
+
+    mock_class.count
+        => 1
+
+    mock_class.destroy_all
+
+    mock_class.count
+        => 0
+
 ### Known Limitations
 
 ::mock model names and table names must follow the default ActiveRecord naming pattern.

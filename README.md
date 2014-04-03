@@ -57,6 +57,7 @@ Or install it yourself as:
       config.model_file_reader  = model_file
     # Additional Options
       config.active_hash_as_base = false #default
+      config.active_hash_ext     = false #default
       config.schema_attributes   = true  #default
       config.model_relationships = true  #default
       config.model_methods       = true  #default

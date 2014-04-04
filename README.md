@@ -180,7 +180,6 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
 #### #update method
 
     person = PersonMock.create(first_name: 'Justin')
-
     person.update(first_name: 'Dustin')
 
     person.first_name
@@ -189,21 +188,18 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
 
 #### ::destroy_all
 
-    mock_class.create
-
-    mock_class.count
+    PersonMock.create
+    PersonMock.count
         => 1
 
-    mock_class.destroy_all
-
-    mock_class.count
+    PersonMock.destroy_all
+    PersonMock.count
         => 0
 
 
 #### ::find_by
 
     person = PersonMock.create(first_name: 'Dustin')
-
     PersonMock.find_by(first_name: 'Dustin') == person
       => true
 

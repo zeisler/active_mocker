@@ -32,7 +32,7 @@ describe ActiveMocker::Base do
       #config.model_methods       = true  #default
       #config.mass_assignment     = true  #default
       # Logging
-      config.log_level = Logger::WARN       #default
+      config.log_level = Logger::DEBUG       #default
     end
 
   end

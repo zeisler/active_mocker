@@ -1,5 +1,6 @@
 class Model < ActiveRecord::Base
-
+  include FooBar
+  extend Baz
   belongs_to :company, class_name: 'PlanServiceCategory'
   has_many :users
   has_one :account

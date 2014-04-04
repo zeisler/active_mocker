@@ -77,7 +77,7 @@ Or install it yourself as:
      person_mock.first_name
         => "Dustin"
 
-### When schema.rb changes the mock fails
+### When schema.rb changes, the mock fails
 
      #db/schema.rb
 
@@ -117,7 +117,7 @@ Or install it yourself as:
        "Now implemented"
      end
 
-### When the model changes the mock fails
+### When the model changes, the mock fails
 
     #app/models/person.rb
 
@@ -200,7 +200,7 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
         => 0
 
 
-    ::find_by
+#### ::find_by
 
     person = PersonMock.create(first_name: 'Dustin')
 

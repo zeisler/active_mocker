@@ -13,6 +13,10 @@ module ActiveMocker
       extend UnknownClassMethod
       extend UnknownModule
       extend ConstMissing
+
+      def self.const_missing(name)
+        # Logger_.debug "ActiveMocker :: Can't can't find Constant #{name} from class #{}."
+      end
     end
   end
 end

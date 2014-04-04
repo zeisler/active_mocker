@@ -26,10 +26,11 @@ module ActiveMocker
           m = Module.new
           m.module_eval(read_file)
         rescue NameError => e
+          raise e
           result = e.to_s.scan /::(\w*)$/ # gets the Constant name from error
           const_name = result.flatten.first
           Logger_.debug "ActiveMocker :: Can't can't find Constant #{const_name} from class #{model_name}..\n #{caller}"
-          Object.const_set(const_name,const_name)
+          # Object.const_set(const_name,const_name)
           next
         end
         failure = false

@@ -5,7 +5,7 @@ module ActiveHash
     module FindBy
 
       def find_by(options = {})
-        send("find_by_#{options.keys.first}", options.values.first)
+        send(:where, options).first
       end
 
     end

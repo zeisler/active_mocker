@@ -208,6 +208,12 @@ describe ActiveMocker::Base do
         class Person < ActiveRecord::Base
           def bar(name, type=nil)
           end
+
+          def foo
+          end
+
+          def baz
+          end
         end
         eos
       }
@@ -228,6 +234,20 @@ describe ActiveMocker::Base do
         result = result.bar('foo', 'type')
         expect(result).to eq "Now implemented with foo and type"
 
+      end
+
+      it 'can reference another mock' do
+
+        mock_class.mock_instance_method(:bar) do  |name, type=nil|
+          "Now implemented with #{name} and #{type}"
+        end
+
+        mock_class.mock_instance_method(:baz) do
+          bar("name", 'type')
+        end
+
+        expect(mock_class.new.bar("name", 'type')).to eq "Now implemented with name and type"
+        expect(mock_class.new.baz).to eq "Now implemented with name and type"
       end
 
     end

@@ -14,7 +14,6 @@ module ActiveMocker
                    :model_file_reader,
                    :schema_file_reader
 
-
     attr_reader :model_name, :klass
 
     def initialize(model_name)
@@ -130,7 +129,8 @@ module ActiveMocker
 
         klass.class_eval <<-eos, __FILE__, __LINE__+1
           def #{m}(#{params})
-            model_instance_methods[#{m.inspect}].call(#{params_pass})
+            block =  model_instance_methods[#{m.inspect}].to_proc
+            instance_exec(*[#{params_pass}], &block)
           end
         eos
       end
@@ -154,7 +154,7 @@ module ActiveMocker
     end
 
     def eval_lambda(arguments, block)
-      eval(%Q[ ->(#{arguments}){ #{block} }])
+      eval(%Q[ ->(#{arguments}){ #{block} }],binding, __FILE__, __LINE__)
     end
 
     def add_column_names_method

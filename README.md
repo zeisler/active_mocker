@@ -3,7 +3,6 @@
 
 Create mocks from active record models without loading rails or running a database.
 
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -51,7 +50,7 @@ Or install it yourself as:
 
     require 'active_mocker'
 
-    ActiveMocker::Base.configure do |config|
+    ActiveMocker.configure do |config|
     # Required Options
       config.schema_file = "#{APP_ROOT}/db/schema.rb"
       config.model_dir   = "#{APP_ROOT}/app/models"
@@ -65,13 +64,13 @@ Or install it yourself as:
       config.log_level = Logger::WARN    #default
     end
 
-    ActiveMocker::Base.mock('Person')
+    ActiveMocker.mock('Person')
         => PersonMock
 
     PersonMock.column_names
         => ["account_id", "first_name", "last_name", "address", "city"]
 
-    person_mock = PersonMock.new(first_name: "Dustin", last_name: "Zeisler", account: mocker.mock('Account').new)
+    person_mock = PersonMock.new(first_name: "Dustin", last_name: "Zeisler", account: ActiveMocker.mock('Account').new)
         => #<PersonMock @first_name="Dustin", @last_name="Zeisler">
 
      person_mock.first_name
@@ -106,14 +105,14 @@ Or install it yourself as:
         => RuntimeError: #bar is not Implemented for Class: PersonMock
 
 
-     mock_class.mock_instance_method(:bar) do  |name, type=nil|
+     person_mock.mock_instance_method(:bar) do  |name, type=nil|
         "Now implemented with #{name} and #{type}"
      end
 
-     mock_class.new.bar('foo', 'type')
+     person_mock.new.bar('foo', 'type')
         => "Now implemented with foo and type"
 
-     mock_class.mock_class_method(:baz) do
+     person_mock.mock_class_method(:baz) do
        "Now implemented"
      end
 
@@ -130,7 +129,7 @@ Or install it yourself as:
 
     end
 
-    mock_class.new.bar('foo', 'type')
+    person_mock.new.bar('foo', 'type')
       => ArgumentError: wrong number of arguments (2 for 1)
 
 
@@ -145,7 +144,7 @@ Or install it yourself as:
 
     end
 
-    mock_class.mock_instance_method(:bar) do  |name, type=nil|
+    person_mock.mock_instance_method(:bar) do  |name, type=nil|
       "Now implemented with #{name} and #{type}"
     end
       => NameError: undefined method `bar' for class `PersonMock'
@@ -155,11 +154,11 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
   [zilkey/active_hash](https://github.com/zilkey/active_hash)
 
 
-    ActiveMocker::Base.configure do |config|
+    ActiveMocker.configure do |config|
       config.active_hash_as_base = true
     end
 
-    ActiveMocker::Base.mock('Person').superclass
+    ActiveMocker.mock('Person').superclass
       => ActiveHash::Base
 
     dustin = PersonMock.create(first_name: 'Dustin')
@@ -174,7 +173,7 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
      dustin.save
        => true
 
-### Additional ActiveHash extentions for matching ActiveRecord
+### Additional ActiveHash extensions for matching ActiveRecord
 
 
 #### #update method

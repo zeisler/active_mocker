@@ -224,15 +224,15 @@ module ActiveMocker
       schema_attributes[attr] = value
     end
 
+    private
+
     def delegate_to_model_instance(method, *args)
-      self.class.delegate_to_model_instance(method, *args)
+      self.class.send(:delegate_to_model_instance, method, *args)
     end
 
     def delegate_to_model_class(method, *args)
-      self.class.delegate_to_model_class(method, *args)
+      self.class.send(:delegate_to_model_class, method, *args)
     end
-
-    private
 
     def model_instance_methods
       @model_instance_methods ||= self.class.send(:model_methods_template).dup
@@ -258,6 +258,8 @@ module ActiveMocker
       schema_attributes_template
     end
 
+    private
+
     def delegate_to_model_instance(method, *args)
       model_class_instance.send(method, *args)
     end
@@ -265,8 +267,6 @@ module ActiveMocker
     def delegate_to_model_class(method, *args)
       model_class.send(method, *args)
     end
-
-    private
 
     def model_class_methods
       @model_class_methods ||= HashWithIndifferentAccess.new

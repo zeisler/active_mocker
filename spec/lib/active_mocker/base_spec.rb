@@ -291,7 +291,6 @@ describe ActiveMocker::Base do
 
         end
 
-
       end
 
     end

@@ -7,20 +7,12 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   before(:each) do
     ActiveMocker::Base.configure do |config|
-      # Required Options
       config.schema_file = project_root + '/lib/active_record/db/schema.rb'
       config.model_dir   = project_root + '/lib/active_record/app/models'
-      # Additional Options
-      # Dependency injection
-      config.schema_file_reader = nil
-      config.model_file_reader  = nil
-      config.active_hash_as_base = true #default
-      #config.schema_attributes   = true  #default
-      #config.model_relationships = true  #default
-      #config.model_methods       = true  #default
-      #config.mass_assignment     = true  #default
-      # Logging
-      config.log_level = Logger::WARN       #default
+      config.schema_file_reader  = nil
+      config.model_file_reader   = nil
+      config.active_hash_as_base = true
+      config.log_level = Logger::WARN
     end
     ActiveMocker::Base.mock('Person')
   end

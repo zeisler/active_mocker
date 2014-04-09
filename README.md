@@ -208,6 +208,9 @@ ActiveHash is a simple base class that allows you to use a ruby hash as a readon
 * **::mock** model names and table names must follow the default ActiveRecord naming pattern.
 * Included/extended module methods will not be included on the mock.
 
+## Inspiration
+Thanks to Jeff Olfert for being my original inspiration for this project.
+
 ## Contributing
 
 1. Fork it ( http://github.com/zeisler/active_mocker/fork )

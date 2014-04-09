@@ -208,11 +208,6 @@ describe ActiveMocker::Base do
         StringReader.new <<-eos
         class Person < ActiveRecord::Base
           def bar(name, type=nil)
-            name + ' bar' + foo + ' ' +type
-          end
-
-          def foo
-            'foo'
           end
 
           def baz
@@ -253,13 +248,49 @@ describe ActiveMocker::Base do
         expect(mock_class.new.baz).to eq "Now implemented with name and type"
       end
 
-      it 'can call real code by delegating to model' do
+      context 'can call real code by delegating to model' do
 
-        mock_class.mock_instance_method(:bar) do  |name, type=nil|
-          delegate_to_model_instance(:bar, name, type)
+        let(:model_file){
+          StringReader.new <<-eos
+        class Person < ActiveRecord::Base
+          def bar(name, type=nil)
+            name + ' bar' + foo + ' ' +type
+          end
+
+          def foo
+            'foo'
+          end
+
+          def baz
+          end
+
+          def self.foobar
+            'foobar'
+          end
+        end
+          eos
+        }
+
+        it 'can delegate instance method to models instance method' do
+
+          mock_class.mock_instance_method(:bar) do  |name, type=nil|
+            delegate_to_model_instance(:bar, name, type)
+          end
+
+          expect(mock_class.new.bar('name','type')).to eq  "name barfoo type"
+
         end
 
-        expect(mock_class.new.bar('name','type')).to eq  "name barfoo type"
+        it 'can delegate class method to models class method' do
+
+          mock_class.mock_class_method(:foobar) do
+            delegate_to_model_class(:foobar)
+          end
+
+          expect(mock_class.foobar).to eq  "foobar"
+
+        end
+
 
       end
 

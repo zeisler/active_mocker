@@ -3,6 +3,7 @@ $:.unshift File.expand_path('../../', __FILE__)
 require 'logger'
 require 'active_mocker/logger'
 require 'string_reader'
+require 'active_mocker/public_methods'
 require 'active_mocker/table'
 require 'active_mocker/config'
 require 'active_mocker/reparameterize'
@@ -18,7 +19,7 @@ require 'active_hash/ar_api'
 describe ActiveMocker::Base do
 
   before(:each) do
-    ActiveMocker::Base.configure do |config|
+    ActiveMocker.configure do |config|
       # Required Options
       config.schema_file = 'file is being inject as string'
       config.model_dir   = 'file is being inject as string'
@@ -38,7 +39,7 @@ describe ActiveMocker::Base do
   end
 
   let(:mock_class){
-    described_class.mock('Person')
+    ActiveMocker.mock('Person')
   }
 
   after(:each) do
@@ -207,9 +208,11 @@ describe ActiveMocker::Base do
         StringReader.new <<-eos
         class Person < ActiveRecord::Base
           def bar(name, type=nil)
+            name + ' bar' + foo + ' ' +type
           end
 
           def foo
+            'foo'
           end
 
           def baz
@@ -248,6 +251,16 @@ describe ActiveMocker::Base do
 
         expect(mock_class.new.bar("name", 'type')).to eq "Now implemented with name and type"
         expect(mock_class.new.baz).to eq "Now implemented with name and type"
+      end
+
+      it 'can call real code by delegating to model' do
+
+        mock_class.mock_instance_method(:bar) do  |name, type=nil|
+          delegate_to_model_instance(:bar, name, type)
+        end
+
+        expect(mock_class.new.bar('name','type')).to eq  "name barfoo type"
+
       end
 
     end

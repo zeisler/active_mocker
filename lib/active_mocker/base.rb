@@ -47,20 +47,17 @@ module ActiveMocker
     end
 
     def active_hash_mock_class
-
-      add_column_names_method
       klass  = create_klass
       fields = table_definition.column_names + model_definition.relationships
       klass.class_eval do
         klass.fields(*fields)
       end
-
+      add_column_names_method
       add_method_mock_of
       if model_methods
         add_class_methods
         add_instance_methods
       end
-
     end
 
     def plain_mock_class
@@ -69,34 +66,47 @@ module ActiveMocker
         add_class_methods
         add_instance_methods
       end
+      add_table_attributes     if schema_attributes
       add_relationships        if model_relationships
       add_column_names_method  if schema_attributes
-      add_table_attributes     if schema_attributes
       create_initializer       if mass_assignment
     end
 
     def create_initializer
       klass = create_klass
-      klass.instance_eval do
-        define_method('initialize') do |options={}|
-          options.each {|method, value| send("#{method}=", value)}
+      klass.class_eval <<-'eos', __FILE__, __LINE__+1
+        def initialize(options={})
+          options.each {|method, value| write_attribute(method, value) }
         end
-      end
+      eos
     end
 
     def add_relationships
       klass = create_klass
       model_definition.relationships.each do |m|
-        klass.instance_variable_set("@#{m}", nil)
-        klass.class_eval { attr_accessor m }
+        klass.send(:schema_attributes_template)[m] = nil
+        begin
+          klass.class_eval <<-eos, __FILE__, __LINE__+1
+            def #{m}
+              read_attribute(#{m.inspect})
+            end
+
+            def #{m}=(value)
+              write_attribute(#{m.inspect}, value)
+            end
+          eos
+        rescue SyntaxError
+          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
+        end
       end
     end
 
     def add_method_mock_of
       klass = create_klass
-      klass.class_variable_set(:@@model_name, model_name)
+      m_name = model_name
+      klass.instance_variable_set(:@model_class, model_definition.klass)
       klass.instance_eval do
-        define_method(:mock_of) {klass.class_variable_get :@@model_name}
+        define_method(:mock_of) {m_name}
       end
     end
 
@@ -105,16 +115,19 @@ module ActiveMocker
       table_definition.column_names.each do |m|
 
         klass.send(:schema_attributes_template)[m] = nil
+        begin
+          klass.class_eval <<-eos, __FILE__, __LINE__+1
+            def #{m}
+              read_attribute(#{m.inspect})
+            end
 
-        klass.class_eval <<-eos, __FILE__, __LINE__+1 unless m =~ /^\d/
-          def #{m}
-            read_attribute(#{m.inspect})
-          end
-
-          def #{m}=(value)
-            write_attribute(#{m.inspect}, value)
-          end
-        eos
+            def #{m}=(value)
+              write_attribute(#{m.inspect}, value)
+            end
+          eos
+        rescue SyntaxError
+          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
+        end
       end
     end
 
@@ -142,12 +155,11 @@ module ActiveMocker
         m = method.keys.first
         params = Reparameterize.call(method.values.first)
         params_pass = Reparameterize.call(method.values.first, true)
-
         klass.send(:model_class_methods)[m] = eval_lambda(params, %Q[raise "::#{m} is not Implemented for Class: #{klass.name}"])
-
         klass.class_eval <<-eos, __FILE__, __LINE__+1
           def self.#{m}(#{params})
-            model_class_methods[#{m.inspect}].call(#{params_pass})
+            block =  model_class_methods[#{m.inspect}].to_proc
+            instance_exec(*[#{params_pass}], &block)
           end
         eos
       end
@@ -212,6 +224,14 @@ module ActiveMocker
       schema_attributes[attr] = value
     end
 
+    def delegate_to_model_instance(method, *args)
+      self.class.delegate_to_model_instance(method, *args)
+    end
+
+    def delegate_to_model_class(method, *args)
+      self.class.delegate_to_model_class(method, *args)
+    end
+
     private
 
     def model_instance_methods
@@ -221,6 +241,7 @@ module ActiveMocker
     def schema_attributes
       @schema_attributes ||= self.class.send(:schema_attributes_template).dup
     end
+
   end
 
   module ModelClassMethods
@@ -237,6 +258,14 @@ module ActiveMocker
       schema_attributes_template
     end
 
+    def delegate_to_model_instance(method, *args)
+      model_class_instance.send(method, *args)
+    end
+
+    def delegate_to_model_class(method, *args)
+      model_class.send(method, *args)
+    end
+
     private
 
     def model_class_methods
@@ -249,6 +278,14 @@ module ActiveMocker
 
     def schema_attributes_template
       @schema_attributes_template ||= HashWithIndifferentAccess.new
+    end
+
+    def model_class
+      @model_class
+    end
+
+    def model_class_instance
+      @model_class_instance ||= model_class.new
     end
 
   end

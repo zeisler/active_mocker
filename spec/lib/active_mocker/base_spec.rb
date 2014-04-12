@@ -1,5 +1,6 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
+require 'singleton'
 require 'logger'
 require 'active_mocker/logger'
 require 'string_reader'
@@ -73,7 +74,7 @@ describe ActiveMocker::Base do
   describe '::column_names' do
 
     it 'returns an array of column names found from the schema.rb file' do
-      expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city", "800_number"])
+      expect(mock_class.column_names).to eq(["id", "account_id", "first_name", "last_name", "address", "city", "800_number"])
     end
 
   end
@@ -102,18 +103,6 @@ describe ActiveMocker::Base do
       result = mock_class.new(first_name: "Sam", last_name: 'Walton')
       expect(result.first_name).to eq 'Sam'
       expect(result.last_name).to eq 'Walton'
-
-    end
-
-    context 'set to false' do
-
-      it 'will fail' do
-        described_class.mass_assignment = false
-        person = described_class.mock("Person")
-        expect{
-          person.new(first_name: "Sam", last_name: 'Walton')
-        }.to raise_error ArgumentError
-      end
 
     end
 
@@ -374,7 +363,7 @@ describe ActiveMocker::Base do
       end
 
       it '::column_names' do
-        expect(mock_class.column_names).to eq(["account_id", "first_name", "last_name", "address", "city","800_number"])
+        expect(mock_class.column_names).to eq(["id", "account_id", "first_name", "last_name", "address", "city","800_number"])
       end
 
       it '#mock_of' do

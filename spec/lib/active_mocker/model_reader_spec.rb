@@ -1,5 +1,6 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
+require 'singleton'
 require 'logger'
 require 'active_mocker/logger'
 require 'string_reader'

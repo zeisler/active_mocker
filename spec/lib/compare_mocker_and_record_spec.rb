@@ -55,29 +55,9 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     let(:person_ar){Person.new(attributes)}
     let(:person_mock){PersonMock.new(attributes)}
 
-    # DO NOT depend on the fact that attributes to be the same as AR
-    # Work Around: seed all unused values with nil
-    # Implementation Fix: On init give all values nil
-
-    it 'the mock will exclude any attributes with nil and have a symbol and string version' do
-      expect(person_mock.attributes).to eq({:first_name=>"Dustin", :last_name=>"Zeisler", "first_name"=>"Dustin", "last_name"=>"Zeisler"})
+    it 'they are the same' do
+      expect(person_mock.attributes).to eq person_ar.attributes
     end
-
-    it 'can still ask for attribute that is nil on mock' do
-      expect(person_mock[:middle_name]).to eq(nil)
-    end
-
-    it 'ar will include values with nil' do
-      expect(person_ar.attributes).to eq({"id"=>nil, "company_id"=>nil, "first_name"=>"Dustin", "middle_name"=>nil, "last_name"=>"Zeisler", "address_1"=>nil, "address_2"=>nil, "city"=>nil, "state_id"=>nil, "zip_code_id"=>nil, "title"=>nil, "department"=>nil, "person_email"=>nil, "work_phone"=>nil, "cell_phone"=>nil, "home_phone"=>nil, "fax"=>nil, "user_id_assistant"=>nil, "birth_date"=>nil, "needs_review"=>nil, "created_at"=>nil, "updated_at"=>nil})
-    end
-
-    it 'compare access to attribute' do
-      expect(person_mock.first_name).to eq person_ar.first_name
-      expect(person_mock[:first_name]).to eq person_ar.first_name
-      expect(person_mock['first_name']).to eq person_ar.first_name
-      expect(person_ar[:first_name]).to eq person_mock.first_name
-    end
-
 
   end
 
@@ -89,12 +69,9 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     let(:person_ar){Person.new(create_attributes)}
     let(:person_mock){PersonMock.new(create_attributes)}
 
-    # DO NOT Depend on this or your code will break in production
-    # Work Around: To access associations call method
-    # Implementation Fix: remove association from fields and make getter and setter method
-
-    it 'The Mock will include associations in attributes' do
-      expect(person_mock.attributes).to eq({:first_name=>"Dustin", :last_name=>"Zeisler", zip_code: zip_code, "first_name"=>"Dustin", "last_name"=>"Zeisler"})
+    it 'the Mock when adding an association will not set the _id attribute, do it manually' do
+      expect(person_mock.attributes).to eq({"id"=>nil, "company_id"=>nil, "first_name"=>"Dustin", "middle_name"=>nil, "last_name"=>"Zeisler", "address_1"=>nil, "address_2"=>nil, "city"=>nil, "state_id"=>nil, "zip_code_id"=>nil, "title"=>nil, "department"=>nil, "person_email"=>nil, "work_phone"=>nil, "cell_phone"=>nil, "home_phone"=>nil, "fax"=>nil, "user_id_assistant"=>nil, "birth_date"=>nil, "needs_review"=>nil, "created_at"=>nil, "updated_at"=>nil})
+      expect(person_mock.zip_code).to eq zip_code
     end
 
     it 'Ar will not include associations in attributes' do
@@ -107,12 +84,8 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
     let(:column_names){["company_id", "first_name", "middle_name", "last_name", "address_1", "address_2", "city", "state_id", "zip_code_id", "title", "department", "person_email", "work_phone", "cell_phone", "home_phone", "fax", "user_id_assistant", "birth_date", "needs_review", "created_at", "updated_at"]}
 
-    it 'mock does not include id column' do
-      expect(PersonMock.column_names).to eq column_names
-    end
-
-    it 'AR does include id column' do
-      expect(Person.column_names).to eq column_names.unshift('id')
+    it 'they are the same' do
+      expect(PersonMock.column_names).to eq Person.column_names
     end
 
   end

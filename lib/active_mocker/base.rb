@@ -27,7 +27,7 @@ module ActiveMocker
     end
 
     def self.mock(model_name)
-      self.new(model_name).klass
+      self.send(:new, model_name).klass
     end
 
     def model_definition
@@ -47,11 +47,14 @@ module ActiveMocker
     end
 
     def active_hash_mock_class
+      fill_templates
       klass  = create_klass
-      fields = table_definition.column_names + model_definition.relationships
+      fields = table_definition.column_names
       klass.class_eval do
         klass.fields(*fields)
       end
+
+      add_relationships_methods
       add_column_names_method
       add_method_mock_of
       if model_methods
@@ -61,13 +64,14 @@ module ActiveMocker
     end
 
     def plain_mock_class
+      fill_templates
       add_method_mock_of
       if model_methods
         add_class_methods
         add_instance_methods
       end
       add_table_attributes     if schema_attributes
-      add_relationships        if model_relationships
+      add_relationships_methods        if model_relationships
       add_column_names_method  if schema_attributes
       create_initializer       if mass_assignment
     end
@@ -79,6 +83,12 @@ module ActiveMocker
           options.each {|method, value| write_attribute(method, value) }
         end
       eos
+    end
+
+    def fill_templates
+      klass = create_klass
+      klass.send(:association_names=, model_definition.relationships)
+      klass.send(:attribute_names=, table_definition.column_names)
     end
 
     def add_relationships
@@ -130,6 +140,27 @@ module ActiveMocker
         end
       end
     end
+
+    def add_relationships_methods
+      klass = create_klass
+      model_definition.relationships.each do |m|
+        klass.send(:schema_attributes_template)[m] = nil
+        begin
+          klass.class_eval <<-eos, __FILE__, __LINE__+1
+            def #{m}
+              read_attribute(#{m.inspect})
+            end
+
+            def #{m}=(value)
+              write_attribute(#{m.inspect}, value)
+            end
+          eos
+        rescue SyntaxError
+          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
+        end
+      end
+    end
+
 
     def add_instance_methods
       klass = create_klass
@@ -239,7 +270,7 @@ module ActiveMocker
     end
 
     def schema_attributes
-      @schema_attributes ||= self.class.send(:schema_attributes_template).dup
+      @schema_attributes ||= self.class.send(:attribute_template).dup
     end
 
   end
@@ -286,6 +317,36 @@ module ActiveMocker
 
     def model_class_instance
       @model_class_instance ||= model_class.new
+    end
+
+    def attribute_names
+      @attribute_names
+    end
+
+    def attribute_names=(attributes)
+      @attribute_names = attributes.map{|a| a.to_sym}
+    end
+
+    def attribute_template
+      return @attribute_template unless @attribute_template.nil?
+      @attribute_template = HashWithIndifferentAccess.new
+      attribute_names.each {|a| @attribute_template[a] = nil}
+      return @attribute_template
+    end
+
+    def association_names
+      @association_names
+    end
+
+    def association_names=(associations)
+      @association_names = associations.map{|a| a.to_sym}
+    end
+
+    def association_template
+      return @association_template unless @association_template.nil?
+      @association_template = HashWithIndifferentAccess.new
+      association_names.each {|a| @association_template[a] = nil}
+      return @association_template
     end
 
   end

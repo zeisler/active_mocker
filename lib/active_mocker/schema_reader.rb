@@ -12,6 +12,8 @@ module ActiveMocker
     def search(model_name)
       @model_name = model_name
       @table = search_schema_file
+      @table.fields.unshift Field.new('id', :integer, {})
+      @table
     end
 
     private

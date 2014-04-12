@@ -216,7 +216,7 @@ module ActiveMocker
 
     def const_class
       remove_const(mock_class_name) if class_exists? mock_class_name
-      klass = Object.const_set(mock_class_name ,Class.new(ActiveHash::Base)) if active_hash_as_base
+      klass = Object.const_set(mock_class_name ,Class.new(::ActiveHash::Base)) if active_hash_as_base
       klass.send(:include, ActiveHash::ARApi) if active_hash_as_base
       klass = Object.const_set(mock_class_name ,Class.new()) unless active_hash_as_base
       klass.extend ModelClassMethods

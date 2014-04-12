@@ -427,6 +427,25 @@ describe ActiveMocker::Base do
         expect(mock_class.find_by(first_name: 'dustin')).to eq person
       end
 
+      it '::find_or_create_by' do
+        person = mock_class.find_or_create_by(first_name: 'dustin')
+        expect(mock_class.find_by(first_name: 'dustin')).to eq person
+        person = mock_class.find_or_create_by(first_name: 'dustin')
+        expect(mock_class.count).to eq 1
+      end
+
+      it '::find_or_initialize_by' do
+        person = mock_class.find_or_initialize_by(first_name: 'dustin')
+        expect(person.persisted?).to eq false
+        mock_class.create(first_name: 'dustin')
+        person = mock_class.find_or_initialize_by(first_name: 'dustin')
+        expect(person.persisted?).to eq true
+      end
+
+      after(:each) do
+        mock_class.delete_all
+      end
+
     end
 
     describe 'false' do

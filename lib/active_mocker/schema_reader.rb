@@ -2,11 +2,12 @@ module ActiveMocker
 
   class SchemaReader
 
-    attr_reader :model_name, :schema_file, :file_reader, :table
+    attr_reader :model_name, :schema_file, :file_reader, :table, :clear_cache
 
     def initialize(options={})
       @file_reader = options[:file_reader] ||= FileReader
       @schema_file = options[:schema_file]
+      @clear_cache = options[:clear_cache]
     end
 
     def search(model_name)
@@ -27,6 +28,7 @@ module ActiveMocker
     end
 
     def search_schema_file
+      ActiveMocker::ActiveRecord::Schema.clear_cache if clear_cache
       ActiveMocker::ActiveRecord::Schema.search(table_name)
       @schema_result = eval_file
       not_found

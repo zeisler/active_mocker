@@ -5,21 +5,19 @@ module ActiveMocker
     @@_self = self
     def_delegators :@@_self,
                    :mass_assignment,
-                   :model_relationships,
                    :schema_attributes,
-                   :model_methods,
-                   :active_hash_as_base,
+                   :model_attributes,
                    :model_dir,
                    :schema_file,
                    :model_file_reader,
-                   :schema_file_reader
+                   :schema_file_reader,
+                   :clear_cache
 
     attr_reader :model_name, :klass
 
     def initialize(model_name)
       @model_name = model_name
-      plain_mock_class       unless active_hash_as_base
-      active_hash_mock_class if active_hash_as_base
+      active_hash_mock_class
     end
 
     def self.configure(&block)
@@ -40,10 +38,11 @@ module ActiveMocker
     end
 
     def table_definition
+      return @table_definition unless @table_definition.nil?
       table_name = model_name.tableize
-      table = SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader}).search(table_name)
+      table = SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader, clear_cache: clear_cache}).search(table_name)
       raise "#{table_name} table not found." if table.nil?
-      return table
+      @table_definition = table
     end
 
     def active_hash_mock_class
@@ -57,23 +56,10 @@ module ActiveMocker
       add_relationships_methods
       add_column_names_method
       add_method_mock_of
-      if model_methods
+      if model_attributes
         add_class_methods
         add_instance_methods
       end
-    end
-
-    def plain_mock_class
-      fill_templates
-      add_method_mock_of
-      if model_methods
-        add_class_methods
-        add_instance_methods
-      end
-      add_table_attributes     if schema_attributes
-      add_relationships_methods        if model_relationships
-      add_column_names_method  if schema_attributes
-      create_initializer       if mass_assignment
     end
 
     def create_initializer
@@ -120,39 +106,18 @@ module ActiveMocker
       end
     end
 
-    def add_table_attributes
-      klass = create_klass
-      table_definition.column_names.each do |m|
-
-        klass.send(:schema_attributes_template)[m] = nil
-        begin
-          klass.class_eval <<-eos, __FILE__, __LINE__+1
-            def #{m}
-              read_attribute(#{m.inspect})
-            end
-
-            def #{m}=(value)
-              write_attribute(#{m.inspect}, value)
-            end
-          eos
-        rescue SyntaxError
-          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
-        end
-      end
-    end
-
     def add_relationships_methods
       klass = create_klass
       model_definition.relationships.each do |m|
         klass.send(:schema_attributes_template)[m] = nil
         begin
           klass.class_eval <<-eos, __FILE__, __LINE__+1
-            def #{m}
-              read_attribute(#{m.inspect})
+             def #{m}
+              read_association(#{m.inspect})
             end
 
             def #{m}=(value)
-              write_attribute(#{m.inspect}, value)
+              write_association(#{m.inspect}, value)
             end
           eos
         rescue SyntaxError
@@ -216,11 +181,10 @@ module ActiveMocker
 
     def const_class
       remove_const(mock_class_name) if class_exists? mock_class_name
-      klass = Object.const_set(mock_class_name ,Class.new(::ActiveHash::Base)) if active_hash_as_base
-      klass.send(:include, ActiveHash::ARApi) if active_hash_as_base
-      klass = Object.const_set(mock_class_name ,Class.new()) unless active_hash_as_base
+      klass = Object.const_set(mock_class_name, Class.new(::ActiveHash::Base))
+      klass.send(:include, ActiveHash::ARApi)
+      klass.send(:prepend, ModelInstanceMethods) # is a private method for ruby 2.0.0
       klass.extend ModelClassMethods
-      klass.send(:include, ModelInstanceMethods) # is a private method for ruby 2.0.0
       klass
     end
 
@@ -247,15 +211,57 @@ module ActiveMocker
       model_instance_methods[method] = block
     end
 
-    def read_attribute(attr)
-      schema_attributes[attr]
+    def inspect
+      inspection =  self.class.column_names.map { |name|
+                         "#{name}: #{attribute_for_inspect(name)}"
+                     }.compact.join(", ")
+
+      "#<#{self.class} #{inspection}>"
     end
 
-    def write_attribute(attr, value)
-      schema_attributes[attr] = value
+    def attribute_for_inspect(attr_name)
+      value = self.attributes[attr_name]
+      if value.is_a?(String) && value.length > 50
+        "#{value[0, 50]}...".inspect
+      elsif value.is_a?(Date) || value.is_a?(Time)
+        %("#{value.to_s(:db)}")
+      elsif value.is_a?(Array) && value.size > 10
+        inspected = value.first(10).inspect
+        %(#{inspected[0...-1]}, ...])
+      else
+        value.inspect
+      end
+    end
+
+    def hash
+      attributes.hash
+    end
+
+     def ==(obj)
+      hash == obj.attributes.hash
     end
 
     private
+
+    def read_attribute(attr)
+      attributes[attr]
+    end
+
+    def write_attribute(attr, value)
+      attributes[attr] = value
+    end
+
+    def read_association(attr)
+      @associations[attr]
+    end
+
+    def write_association(attr, value)
+      @associations[attr] = value
+    end
+
+    def attribute_to_string
+      attributes.map {|k, v| "#{k.to_s}: #{v.inspect}"}.join(', ')
+    end
 
     def delegate_to_model_instance(method, *args)
       self.class.send(:delegate_to_model_instance, method, *args)

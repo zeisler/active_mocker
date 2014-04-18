@@ -28,11 +28,9 @@ describe ActiveMocker::Base do
       config.schema_file_reader = schema_file
       config.model_file_reader  = model_file
       # Additional Options
-      #config.active_hash_as_base = false #default
-      #config.schema_attributes   = true  #default
-      #config.model_relationships = true  #default
-      #config.model_methods       = true  #default
-      #config.mass_assignment     = true  #default
+      config.schema_attributes   = true  #default
+      config.model_attributes    = true  #default
+      config.clear_cache         = true  #default
       # Logging
       config.log_level = Logger::WARN       #default
     end
@@ -42,10 +40,6 @@ describe ActiveMocker::Base do
   let(:mock_class){
     ActiveMocker.mock('Person')
   }
-
-  after(:each) do
-    ActiveMocker::Base.reload_default
-  end
 
     let(:model_file){
       StringReader.new <<-eos
@@ -75,24 +69,6 @@ describe ActiveMocker::Base do
 
     it 'returns an array of column names found from the schema.rb file' do
       expect(mock_class.column_names).to eq(["id", "account_id", "first_name", "last_name", "address", "city", "800_number"])
-    end
-
-  end
-
-  describe '#read_attribute' do
-
-    it 'will access attributes' do
-      mock_class.new.read_attribute("800_number")
-    end
-
-  end
-
-  describe '#write_attribute' do
-
-    it 'will access attributes' do
-      person = mock_class.new
-      person.write_attribute("800_number", 100)
-      expect(person.read_attribute("800_number")).to eq 100
     end
 
   end
@@ -319,18 +295,7 @@ describe ActiveMocker::Base do
 
   end
 
-  context 'option active_hash_as_base' do
-
-    describe 'true' do
-
-      before(:each) do
-
-        ActiveMocker::Base.configure do |config|
-          config.active_hash_as_base = true
-        end
-
-      end
-      require 'active_hash'
+  context 'active_hash' do
 
       let(:model_file){
         StringReader.new <<-eos
@@ -374,20 +339,6 @@ describe ActiveMocker::Base do
         expect{mock_class.new.bar}.to raise_error '#bar is not Implemented for Class: PersonMock'
       end
 
-    end
-
-    describe 'option active_hash_ext' do
-
-      before(:each) do
-
-        ActiveMocker::Base.configure do |config|
-          config.active_hash_as_base = true
-        end
-
-      end
-
-      require 'active_hash'
-
       let(:model_file){
         StringReader.new <<-eos
         class Person < ActiveRecord::Base
@@ -404,9 +355,12 @@ describe ActiveMocker::Base do
 
         person = mock_class.create(first_name: 'Justin')
 
+        expect(PersonMock.first.first_name).to eq 'Justin'
         person.update(first_name: 'Dustin')
+        expect(PersonMock.first.first_name).to eq 'Dustin'
 
         expect(person.first_name).to eq 'Dustin'
+
 
       end
 
@@ -434,6 +388,14 @@ describe ActiveMocker::Base do
         expect(mock_class.count).to eq 1
       end
 
+      it '::find_or_create_by with update' do
+        mock_class.create(first_name: 'dustin')
+        person = mock_class.find_or_create_by(first_name: 'dustin')
+        person.update(last_name: 'Zeisler')
+        expect(mock_class.first.attributes).to eq person.attributes
+        expect(mock_class.count).to eq 1
+      end
+
       it '::find_or_initialize_by' do
         person = mock_class.find_or_initialize_by(first_name: 'dustin')
         expect(person.persisted?).to eq false
@@ -446,17 +408,6 @@ describe ActiveMocker::Base do
         mock_class.delete_all
       end
 
-    end
-
-    describe 'false' do
-      let(:base_options){{active_hash_as_base: false}}
-
-      it 'has object as supper class' do
-        expect(mock_class.superclass.name).to eq 'Object'
-
-      end
-
-    end
 
   end
 

@@ -51,17 +51,14 @@ Or install it yourself as:
     require 'active_mocker'
 
     ActiveMocker.configure do |config|
-    # Required Options
+      # Required Options
       config.schema_file = "#{APP_ROOT}/db/schema.rb"
       config.model_dir   = "#{APP_ROOT}/app/models"
-    # Additional Options
-      config.active_hash_as_base = false #default
+      # Additional Options
       config.schema_attributes   = true  #default
-      config.model_relationships = true  #default
-      config.model_methods       = true  #default
-      config.mass_assignment     = true  #default
-     # Logging
-      config.log_level = Logger::WARN    #default
+      config.model_attributes    = true  #default
+      # Logging
+      config.log_level = Logger::WARN       #default
     end
 
     ActiveMocker.mock('Person')
@@ -149,59 +146,28 @@ Or install it yourself as:
     end
       => NameError: undefined method `bar' for class `PersonMock'
 
-### Enable ActiveHash support
-ActiveHash is a simple base class that allows you to use a ruby hash as a readonly datasource for an ActiveRecord-like model.
-  [zilkey/active_hash](https://github.com/zilkey/active_hash)
+### ActiveRecord supported methods
+**class methods**
+  * new
+  * create
+  * column_names
+  * find
+  * find_by
+  * find_by!
+  * find_or_create_by
+  * find_or_initialize_by
+  * where - (only supports hash input)
+  * delete_all/destroy_all
+  * all
+  * count
+  * first/last
 
-
-    ActiveMocker.configure do |config|
-      config.active_hash_as_base = true
-    end
-
-    ActiveMocker.mock('Person').superclass
-      => ActiveHash::Base
-
-    dustin = PersonMock.create(first_name: 'Dustin')
-      => #<PersonMock @attributes={:first_name=>"Dustin" :id=>1}>
-
-    PersonMock.all
-      => [#<PersonMock: @attributes={:first_name=>"Dustin", :id=>1}>]
-
-     dustin.last_name = 'Zeisler'
-       => "Zeisler"
-
-     dustin.save
-       => true
-
-### Additional ActiveHash extensions for matching ActiveRecord
-
-
-#### #update method
-
-    person = PersonMock.create(first_name: 'Justin')
-    person.update(first_name: 'Dustin')
-
-    person.first_name
-        => 'Dustin'
-
-
-#### ::destroy_all
-
-    PersonMock.create
-    PersonMock.count
-        => 1
-
-    PersonMock.destroy_all
-    PersonMock.count
-        => 0
-
-
-#### ::find_by
-
-    person = PersonMock.create(first_name: 'Dustin')
-    PersonMock.find_by(first_name: 'Dustin') == person
-      => true
-
+**instance methods**
+  * attributes
+  * update
+  * save
+  * write_attribute - (private)
+  * read_attribute  - (private)
 
 ### Known Limitations
 

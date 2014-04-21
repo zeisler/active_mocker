@@ -7,6 +7,7 @@ module ActiveMocker
     def initialize(name, fields=[])
       @name   = name
       @fields = fields
+      fields.unshift Field.new('id', :integer, {})
     end
 
     def to_h

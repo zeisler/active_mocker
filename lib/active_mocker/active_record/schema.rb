@@ -18,23 +18,24 @@ module ActiveMocker
       end
 
       def self.add_to_cache(table)
-        @@tables_cache ||= []
-        @@tables_cache << table unless table.nil?
+        @tables_cache ||= []
+        @tables_cache << table unless table.nil?
       end
 
       def self.search_cache(table_name)
-        @@tables_cache ||= []
-        @@tables_cache.find do |h|
+        @tables_cache ||= []
+        @tables_cache.find do |h|
           h.name == table_name
         end
       end
 
       def self.clear_cache
-        @@tables_cache = []
+        @tables_cache = []
       end
 
       def self.search(table_name)
         @table_search = table_name
+        search_cache(table_name)
       end
 
     end

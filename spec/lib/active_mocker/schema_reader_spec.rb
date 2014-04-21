@@ -57,7 +57,7 @@ describe ActiveMocker::SchemaReader do
 
   context 'inject string_reader as file_reader' do
 
-    let(:subject){described_class.new({schema_file:nil, file_reader: example_schema})}
+    let(:subject){described_class.new({schema_file:nil, file_reader: example_schema, clear_cache: true})}
 
     let(:search){subject.search('people')}
 

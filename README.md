@@ -148,7 +148,8 @@ Or install it yourself as:
 
 ### ActiveRecord supported methods
 **class methods**
-  * new
+  
+* new
   * create
   * column_names
   * find
@@ -163,7 +164,8 @@ Or install it yourself as:
   * first/last
 
 **instance methods**
-  * attributes
+  
+* attributes
   * update
   * save
   * write_attribute - (private)

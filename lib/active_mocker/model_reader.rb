@@ -24,7 +24,7 @@ module ActiveMocker
       while failure
         begin
           m = Module.new
-          m.module_eval(read_file)
+          m.module_eval(read_file, file_path)
         rescue NameError => e
           raise e
           result = e.to_s.scan /::(\w*)$/ # gets the Constant name from error
@@ -39,7 +39,11 @@ module ActiveMocker
     end
 
     def read_file
-      file_reader.read("#{model_dir}/#{model_name}.rb")
+      file_reader.read(file_path)
+    end
+
+    def file_path
+      "#{model_dir}/#{model_name}.rb"
     end
 
     def class_methods

@@ -42,5 +42,29 @@ describe ActiveMocker::CollectionAssociation do
 
   end
 
+  describe 'new' do
+
+    it 'take optional item and adds to collection' do
+
+      subject = described_class.new(1)
+
+      expect(subject.first).to eq 1
+
+    end
+
+    it 'can take an array' do
+
+      subject = described_class.new([1])
+
+      expect(subject.first).to eq 1
+
+      subject = described_class.new([1,2])
+
+      expect(subject.last).to eq 2
+
+    end
+
+  end
+
 
 end

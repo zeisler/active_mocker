@@ -86,7 +86,19 @@ module ActiveMocker
       klass = create_klass
       model_definition.collections.each do |m|
         klass.send(:association_template)[m] = CollectionAssociation.new
-        create_association(m)
+        begin
+          klass.class_eval <<-eos, __FILE__, __LINE__+1
+             def #{m}
+              read_association(#{m.inspect})
+            end
+
+            def #{m}=(value)
+              write_association(#{m.inspect}, CollectionAssociation.new(value))
+            end
+          eos
+        rescue SyntaxError
+          Logger_.warn "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
+        end
       end
     end
 

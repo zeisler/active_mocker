@@ -6,14 +6,18 @@ module ActiveMocker
 
     attr_accessor :collection
 
-    def initialize
-      @collection = []
+    def initialize(collection=[])
+      @collection = *collection ||=[]
     end
 
     def each(&block)
       collection.each do |item|
         block.call(item)
       end
+    end
+
+    def last
+      collection.last
     end
 
     def <<(*records)

@@ -5,6 +5,7 @@ require 'logger'
 require 'active_mocker/logger'
 require 'string_reader'
 require 'active_mocker/public_methods'
+require 'active_mocker/collection_association'
 require 'active_mocker/table'
 require 'active_mocker/config'
 require 'active_mocker/reparameterize'
@@ -124,6 +125,7 @@ describe ActiveMocker::Base do
         StringReader.new <<-eos
         class Person < ActiveRecord::Base
           belongs_to :account
+          has_many :files
         end
         eos
       }
@@ -131,6 +133,16 @@ describe ActiveMocker::Base do
       it 'add instance methods from model relationships' do
         result = mock_class.new(account: 'Account')
         expect(result.account).to eq 'Account'
+      end
+
+      it 'add has_many relationship' do
+
+        expect(mock_class.new.files.class).to eq ActiveMocker::CollectionAssociation
+        expect(mock_class.new.files.count).to eq 0
+        mock_inst = mock_class.new
+        mock_inst.files << 1
+        expect(mock_inst.files.count).to eq 1
+
       end
 
     end
@@ -432,6 +444,26 @@ describe ActiveMocker::Base do
       }.to raise_error
 
     end
+
+  end
+
+  describe 'cannot redefine attributes method' do
+
+    let(:model_file){
+      StringReader.new <<-eos
+        class Person < ActiveRecord::Base
+          def attributes; end
+
+        end
+      eos
+    }
+
+    it 'still works' do
+
+      mock_class.new.attributes
+
+    end
+
 
   end
 

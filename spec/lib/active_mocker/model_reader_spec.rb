@@ -78,7 +78,7 @@ describe ActiveMocker::ModelReader do
 
     it '#has_and_belongs_to_many' do
 
-      expect(subject.relationships_types.has_and_belongs_to_many).to eq([[:disclosure]])
+      expect(subject.relationships_types.has_and_belongs_to_many).to eq([[:disclosures]])
 
     end
 
@@ -88,7 +88,27 @@ describe ActiveMocker::ModelReader do
 
     it 'returns an array of relations' do
 
-      expect(subject.relationships).to eq [:users, :account, :company, :disclosure]
+      expect(subject.relationships).to eq [:users, :account, :company, :disclosures]
+
+    end
+
+  end
+
+  describe '#collections' do
+
+    it 'returns an array of relations' do
+
+      expect(subject.collections).to eq [:disclosures, :users]
+
+    end
+
+  end
+
+  describe '#single_relationships' do
+
+    it 'returns an array of relations' do
+
+      expect(subject.single_relationships).to eq [:company, :account]
 
     end
 
@@ -124,6 +144,7 @@ describe ActiveMocker::ModelReader do
     end
 
   end
+
 
 end
 

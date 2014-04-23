@@ -46,55 +46,28 @@ module ActiveMocker
     end
 
     def active_hash_mock_class
-      fill_templates
-      klass  = create_klass
-      fields = table_definition.column_names
-      klass.class_eval do
-        klass.fields(*fields)
+      if schema_attributes
+        fill_templates
+        klass  = create_klass
+        fields = table_definition.column_names
+        klass.class_eval do
+          klass.fields(*fields)
+        end
+        add_column_names_method
       end
-
-      add_relationships_methods
-      add_column_names_method
       add_method_mock_of
       if model_attributes
         add_class_methods
         add_instance_methods
+        add_single_relationships
+        add_collections_relationships
       end
-    end
-
-    def create_initializer
-      klass = create_klass
-      klass.class_eval <<-'eos', __FILE__, __LINE__+1
-        def initialize(options={})
-          options.each {|method, value| write_attribute(method, value) }
-        end
-      eos
     end
 
     def fill_templates
       klass = create_klass
       klass.send(:association_names=, model_definition.relationships)
       klass.send(:attribute_names=, table_definition.column_names)
-    end
-
-    def add_relationships
-      klass = create_klass
-      model_definition.relationships.each do |m|
-        klass.send(:schema_attributes_template)[m] = nil
-        begin
-          klass.class_eval <<-eos, __FILE__, __LINE__+1
-            def #{m}
-              read_attribute(#{m.inspect})
-            end
-
-            def #{m}=(value)
-              write_attribute(#{m.inspect}, value)
-            end
-          eos
-        rescue SyntaxError
-          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
-        end
-      end
     end
 
     def add_method_mock_of
@@ -106,10 +79,30 @@ module ActiveMocker
       end
     end
 
-    def add_relationships_methods
+    def add_single_relationships
       klass = create_klass
-      model_definition.relationships.each do |m|
-        klass.send(:schema_attributes_template)[m] = nil
+      model_definition.single_relationships.each do |m|
+        klass.send(:association_template)[m] = nil
+        begin
+          klass.class_eval <<-eos, __FILE__, __LINE__+1
+             def #{m}
+              read_association(#{m.inspect})
+            end
+
+            def #{m}=(value)
+              write_association(#{m.inspect}, value)
+            end
+          eos
+        rescue SyntaxError
+          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
+        end
+      end
+    end
+
+    def add_collections_relationships
+      klass = create_klass
+      model_definition.collections.each do |m|
+        klass.send(:association_template)[m] = CollectionAssociation.new
         begin
           klass.class_eval <<-eos, __FILE__, __LINE__+1
              def #{m}
@@ -131,11 +124,11 @@ module ActiveMocker
       klass = create_klass
       model_definition.instance_methods_with_arguments.each do |method|
         m = method.keys.first
+        next if m == :attributes
         params      = Reparameterize.call(method.values.first)
         params_pass = Reparameterize.call(method.values.first, true)
 
         klass.send(:model_methods_template)[m] = eval_lambda(params, %Q[raise "##{m} is not Implemented for Class: #{klass.name}"])
-
         klass.class_eval <<-eos, __FILE__, __LINE__+1
           def #{m}(#{params})
             block =  model_instance_methods[#{m.inspect}].to_proc

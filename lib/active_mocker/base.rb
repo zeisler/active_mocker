@@ -29,8 +29,7 @@ module ActiveMocker
     end
 
     def model_definition
-      return @model_definition unless @model_definition.nil?
-      @model_definition = ModelReader.new({model_dir: model_dir, file_reader: model_file_reader}).parse(model_file_name)
+      @model_definition ||= ModelReader.new({model_dir: model_dir, file_reader: model_file_reader}).parse(model_file_name)
     end
 
     def model_file_name
@@ -38,16 +37,13 @@ module ActiveMocker
     end
 
     def table_definition
-      return @table_definition unless @table_definition.nil?
-      table_name = model_name.tableize
-      table = SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader, clear_cache: clear_cache}).search(table_name)
-      raise "#{table_name} table not found." if table.nil?
-      @table_definition = table
+      @table_definition ||= SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader, clear_cache: clear_cache}).search(model_name.tableize)
     end
 
     def active_hash_mock_class
+      fill_templates
+      add_method_mock_of
       if schema_attributes
-        fill_templates
         klass  = create_klass
         fields = table_definition.column_names
         klass.class_eval do
@@ -55,7 +51,6 @@ module ActiveMocker
         end
         add_column_names_method
       end
-      add_method_mock_of
       if model_attributes
         add_class_methods
         add_instance_methods
@@ -83,19 +78,7 @@ module ActiveMocker
       klass = create_klass
       model_definition.single_relationships.each do |m|
         klass.send(:association_template)[m] = nil
-        begin
-          klass.class_eval <<-eos, __FILE__, __LINE__+1
-             def #{m}
-              read_association(#{m.inspect})
-            end
-
-            def #{m}=(value)
-              write_association(#{m.inspect}, value)
-            end
-          eos
-        rescue SyntaxError
-          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
-        end
+        create_association(m)
       end
     end
 
@@ -103,6 +86,11 @@ module ActiveMocker
       klass = create_klass
       model_definition.collections.each do |m|
         klass.send(:association_template)[m] = CollectionAssociation.new
+        create_association(m)
+      end
+    end
+
+    def create_association(m)
         begin
           klass.class_eval <<-eos, __FILE__, __LINE__+1
              def #{m}
@@ -114,9 +102,8 @@ module ActiveMocker
             end
           eos
         rescue SyntaxError
-          Logger_.debug "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
+          Logger_.warn "ActiveMocker :: Can't create accessor methods for #{m}.\n #{caller}"
         end
-      end
     end
 
 
@@ -124,7 +111,10 @@ module ActiveMocker
       klass = create_klass
       model_definition.instance_methods_with_arguments.each do |method|
         m = method.keys.first
-        next if m == :attributes
+        if m == :attributes
+          Logger_.warn "ActiveMocker Depends on the #attributes method. It will not be redefined for the mock."
+          next
+        end
         params      = Reparameterize.call(method.values.first)
         params_pass = Reparameterize.call(method.values.first, true)
 

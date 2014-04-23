@@ -147,10 +147,9 @@ Or install it yourself as:
       => NameError: undefined method `bar' for class `PersonMock'
 
 ### ActiveRecord supported methods
-**class methods**
+**Class methods**
   
-* new
-  * create
+  * create/new
   * column_names
   * find
   * find_by
@@ -163,13 +162,21 @@ Or install it yourself as:
   * count
   * first/last
 
-**instance methods**
+**Instance methods**
   
 * attributes
   * update
   * save
   * write_attribute - (private)
   * read_attribute  - (private)
+
+  **Collection Associations**
+  
+
+* last/first
+* sum(attribute)
+* <<
+* Enumerable methods
 
 ### Known Limitations
 

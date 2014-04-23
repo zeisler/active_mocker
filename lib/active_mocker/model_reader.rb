@@ -70,6 +70,14 @@ module ActiveMocker
       relationships_types.to_h.values.flatten
     end
 
+    def collections
+      klass.collections.flatten.compact
+    end
+
+    def single_relationships
+      klass.single_relationships.flatten.compact
+    end
+
   end
 
 end

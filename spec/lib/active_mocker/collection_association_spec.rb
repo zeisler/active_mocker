@@ -66,5 +66,16 @@ describe ActiveMocker::CollectionAssociation do
 
   end
 
+  describe 'empty?' do
+
+    it 'works' do
+
+      expect(subject.empty?).to eq true
+
+    end
+
+
+  end
+
 
 end

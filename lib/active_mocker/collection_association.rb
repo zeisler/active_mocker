@@ -33,6 +33,10 @@ module ActiveMocker
       collection == other_ary
     end
 
+    def method_missing(meth, *args, &block)
+      collection.send(meth, *args, &block)
+    end
+
   end
 end
 

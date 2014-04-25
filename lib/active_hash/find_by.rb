@@ -15,6 +15,15 @@ module ActiveHash
         result
       end
 
+      def where(options)
+        return @records if options.nil?
+        (@records || []).select do |record|
+          options.all? do |col, match|
+            record.send(col) == match
+          end
+        end
+      end
+
     end
 
   end

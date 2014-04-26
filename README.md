@@ -164,19 +164,18 @@ Or install it yourself as:
 
 **Instance methods**
   
-* attributes
+  * attributes
   * update
   * save
   * write_attribute - (private)
   * read_attribute  - (private)
 
-  **Collection Associations**
-  
-
-* last/first
-* sum(attribute)
-* <<
-* Enumerable methods
+ **Collection Associations**
+ 
+  * last/first
+  * sum(attribute)
+  * <<
+  * Enumerable methods
 
 ### Known Limitations
 

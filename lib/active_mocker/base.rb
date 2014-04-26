@@ -85,7 +85,7 @@ module ActiveMocker
     def add_collections_relationships
       klass = create_klass
       model_definition.collections.each do |m|
-        klass.send(:association_template)[m] = CollectionAssociation.new
+        klass.send(:association_template)[m] = nil
         begin
           klass.class_eval <<-eos, __FILE__, __LINE__+1
              def #{m}

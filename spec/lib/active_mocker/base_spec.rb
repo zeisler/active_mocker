@@ -83,6 +83,10 @@ describe ActiveMocker::Base do
 
     end
 
+    it 'will raise error if not an attribute or association' do
+      expect{mock_class.new(baz: "Hello")}.to raise_error('Rejected params: {"baz"=>"Hello"} for PersonMock')
+    end
+
   end
 
   describe '#mock_class' do

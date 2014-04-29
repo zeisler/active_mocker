@@ -17,6 +17,9 @@ module ActiveHash
       private
 
       def filter_associations(attributes)
+        permitted_params = [*self.class.send(:attribute_names), *self.class.send(:association_names)]
+        rejected_params = attributes.reject{ |p| permitted_params.include? p.to_sym}
+        raise "Rejected params: #{rejected_params} for #{self.class.name}" if !rejected_params.empty?
         @attributes = attributes.select do |k, v|
           self.class.send(:attribute_names).include? k.to_sym
         end
@@ -25,6 +28,7 @@ module ActiveHash
           self.class.send(:association_names).include? k.to_sym
         end
         @associations = self.class.send(:association_template).merge(associations)
+
       end
 
     end

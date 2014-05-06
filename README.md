@@ -65,10 +65,10 @@ Or install it yourself as:
         => PersonMock
 
     PersonMock.column_names
-        => ["account_id", "first_name", "last_name", "address", "city"]
+        => ["id", "account_id", "first_name", "last_name", "address", "city"]
 
     person_mock = PersonMock.new(first_name: "Dustin", last_name: "Zeisler", account: ActiveMocker.mock('Account').new)
-        => #<PersonMock @first_name="Dustin", @last_name="Zeisler">
+        => "#<PersonMock id: nil, account_id: nil, first_name: \"Dustin\", last_name: \"Zeisler\", address: nil, city: nil>"
 
      person_mock.first_name
         => "Dustin"
@@ -89,18 +89,14 @@ Or install it yourself as:
 
      end
 
-     person_mock = PersonMock.new(first_name: "Dustin", last_name: "Zeisler", account: AccountMock.new)
-             => NoMethodError: undefined method `first_name=' for #<PersonMock:0x007f860abf6b10>
+     PersonMock.new(first_name: "Dustin", last_name: "Zeisler")
+             =>#<RuntimeError Rejected params: {"first_name"=>"Dustin", "last_name"=>"Zeisler"} for PersonMock>
 
 
 ### Mocking instance and class methods
 
-     person_mock.bar
-        => ArgumentError: wrong number of arguments (0 for 1..2)
-
      person_mock.bar('baz')
-        => RuntimeError: #bar is not Implemented for Class: PersonMock
-
+        => RuntimeError: ::bar is not Implemented for Class: PersonMock
 
      person_mock.mock_instance_method(:bar) do  |name, type=nil|
         "Now implemented with #{name} and #{type}"
@@ -109,7 +105,7 @@ Or install it yourself as:
      person_mock.new.bar('foo', 'type')
         => "Now implemented with foo and type"
 
-     person_mock.mock_class_method(:baz) do
+     person_mock.mock_class_method(:bar) do
        "Now implemented"
      end
 
@@ -144,12 +140,13 @@ Or install it yourself as:
     person_mock.mock_instance_method(:bar) do  |name, type=nil|
       "Now implemented with #{name} and #{type}"
     end
-      => NameError: undefined method `bar' for class `PersonMock'
+      => NoMethodError: undefined method `bar' for class `PersonMock'
 
 ### ActiveRecord supported methods
-**Class methods**
+**class methods**
   
-  * create/new
+* new
+  * create
   * column_names
   * find
   * find_by
@@ -162,20 +159,13 @@ Or install it yourself as:
   * count
   * first/last
 
-**Instance methods**
+**instance methods**
   
-  * attributes
+* attributes
   * update
   * save
   * write_attribute - (private)
   * read_attribute  - (private)
-
- **Collection Associations**
- 
-  * last/first
-  * sum(attribute)
-  * <<
-  * Enumerable methods
 
 ### Known Limitations
 

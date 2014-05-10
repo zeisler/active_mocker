@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~>2.14"
   # spec.add_development_dependency "i18n", "~>0.6"
   spec.add_development_dependency "sqlite3", "~>1.3"
+  spec.add_development_dependency "fuubar"
 
   if ENV['DEBUG'] == '1'
     spec.add_development_dependency "debase", "~>0.0"

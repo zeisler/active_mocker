@@ -9,7 +9,8 @@ module ActiveMocker
                   :model_attributes,
                   :schema_file_reader,
                   :model_file_reader,
-                  :clear_cache
+                  :clear_cache,
+                  :migration_dir
 
     def config
       @@first_load ||= reload_default
@@ -27,11 +28,13 @@ module ActiveMocker
       @clear_cache         = false
       @schema_file_reader  = nil
       @model_file_reader   = nil
+      @migration_dir       = nil
     end
 
     def check_required_settings
       raise 'schema_file must be specified' if schema_file.nil?
       raise 'model_dir must be specified'   if model_dir.nil?
+      raise 'migration_dir must be specified'   if migration_dir.nil?
     end
 
     def require_active_hash

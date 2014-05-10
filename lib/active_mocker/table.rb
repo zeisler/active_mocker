@@ -14,6 +14,8 @@ module ActiveMocker
       {name: name, fields: fields.to_h}
     end
 
+    alias_method :to_hash, :to_h
+
     def column_names
       fields.map { |f| f.name }
     end

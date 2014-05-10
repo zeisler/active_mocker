@@ -32,6 +32,7 @@ describe ActiveMocker::Base do
       config.schema_attributes   = true  #default
       config.model_attributes    = true  #default
       config.clear_cache         = true  #default
+      config.migration_dir       = '/Users/zeisler/dev/active_mocker/spec/lib/active_mocker/performance/migration'
       # Logging
       config.log_level = Logger::WARN       #default
     end

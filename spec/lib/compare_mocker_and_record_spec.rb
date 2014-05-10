@@ -11,8 +11,9 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       config.model_dir   = project_root + '/lib/active_record/app/models'
       config.schema_file_reader  = nil
       config.model_file_reader   = nil
-      config.active_hash_as_base = true
       config.log_level = Logger::WARN
+      config.clear_cache = true
+      config.migration_dir = '/Users/zeisler/dev/active_mocker/spec/lib/active_mocker/performance/migration'
     end
     ActiveMocker::Base.mock('Person')
   end

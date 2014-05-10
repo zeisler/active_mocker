@@ -15,11 +15,13 @@ module ActiveMocker
       {name: name, type: type, options: options}
     end
 
+    alias_method :to_hash, :to_h
+
     def create_option_methods
       options.each do |opt|
         key, value = opt.first
         self.instance_variable_set("@#{key}", value)
-        define_singleton_method(key) {instance_variable_get("@#{key}")}
+        self.class.send(:attr_accessor, key)
       end
     end
 

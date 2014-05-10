@@ -11,7 +11,8 @@ module ActiveMocker
                    :schema_file,
                    :model_file_reader,
                    :schema_file_reader,
-                   :clear_cache
+                   :clear_cache,
+                   :migration_dir
 
     attr_reader :model_name, :klass
 
@@ -37,7 +38,7 @@ module ActiveMocker
     end
 
     def table_definition
-      @table_definition ||= SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader, clear_cache: clear_cache}).search(model_name.tableize)
+      @table_definition ||= SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader, clear_cache: clear_cache, migration_dir: migration_dir}).search(model_name.tableize)
     end
 
     def active_hash_mock_class

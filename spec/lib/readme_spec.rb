@@ -18,6 +18,8 @@ describe 'ReadMe' do
       config.clear_cache         = true
       # Logging
       config.log_level = Logger::WARN       #default
+      config.migration_dir       = '/Users/zeisler/dev/active_mocker/spec/lib/active_mocker/performance/migration'
+
     end
   end
 

@@ -17,7 +17,7 @@ require 'active_mocker/active_record/schema'
 require 'active_mocker/base'
 require 'active_support/all'
 require 'active_hash/ar_api'
-
+require 'erb'
 describe ActiveMocker::Base do
 
   before(:each) do
@@ -60,7 +60,6 @@ describe ActiveMocker::Base do
               t.string   "last_name",         limit: 128
               t.string   "address",         limit: 200
               t.string   "city",              limit: 100
-              t.string   "800_number",              limit: 100
             end
 
           end
@@ -112,14 +111,6 @@ describe ActiveMocker::Base do
 
       it 'will not have private methods' do
         expect{mock_class.bar}.to raise_error(NoMethodError)
-      end
-
-    end
-
-    describe '#mock_of' do
-
-      it 'return the name of the class that is being mocked' do
-        expect(mock_class.new.mock_of).to eq 'Person'
       end
 
     end
@@ -340,16 +331,12 @@ describe ActiveMocker::Base do
       it 'can save to class and then find instance by attribute' do
 
         record = mock_class.create(first_name: "Sam", last_name: 'Walton')
-        expect(mock_class.find_by_first_name("Sam")).to eq record
+        expect(mock_class.find_by(first_name:"Sam")).to eq record
 
       end
 
       it '::column_names' do
         expect(mock_class.column_names).to eq(["id", "account_id", "first_name", "last_name", "address", "city","800_number"])
-      end
-
-      it '#mock_of' do
-        expect(mock_class.new.mock_of).to eq 'Person'
       end
 
       it 'instance methods from model' do

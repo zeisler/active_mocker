@@ -18,7 +18,8 @@ module ActiveMocker
 
     def initialize(model_name)
       @model_name = model_name
-      active_hash_mock_class
+      # active_hash_mock_class
+      create_template
     end
 
     def self.configure(&block)
@@ -39,6 +40,25 @@ module ActiveMocker
 
     def table_definition
       @table_definition ||= SchemaReader.new({schema_file: schema_file, file_reader: schema_file_reader, clear_cache: clear_cache, migration_dir: migration_dir}).search(model_name.tableize)
+    end
+
+    def create_template
+      fields = table_definition.column_names
+      mock_template = MockTemplate.new
+      mock_template.attributes = fields
+      mock_template.class_name = mock_class_name
+      mock_template.single_associations = model_definition.single_relationships
+      mock_template.collection_associations = model_definition.collections
+      mock_template.association_names = [*model_definition.single_relationships, *model_definition.collections]
+      mock_template.attribute_names = table_definition.column_names
+      mock_template.column_names = table_definition.column_names
+      klass_str = mock_template.render(File.open('lib/mock_template.erb').read)
+      File.open("#{model_name.tableize.singularize}_mock.rb", 'w').write(klass_str)
+      m = Module.new
+      m.module_eval(klass_str)
+      model = m.const_get m.constants.first
+      return @klass = Object.const_set(mock_class_name, Class.new(model)) unless class_exists? "#{model_name}Mock"
+      return @klass = "#{model_name}Mock".constantize if class_exists? "#{model_name}Mock"
     end
 
     def active_hash_mock_class
@@ -321,13 +341,13 @@ module ActiveMocker
       @model_class_instance ||= model_class.new
     end
 
-    def attribute_names
-      @attribute_names
-    end
-
-    def attribute_names=(attributes)
-      @attribute_names = attributes.map{|a| a.to_sym}
-    end
+    # def attribute_names
+    #   @attribute_names
+    # end
+    #
+    # def attribute_names=(attributes)
+    #   @attribute_names = attributes.map{|a| a.to_sym}
+    # end
 
     def attribute_template
       return @attribute_template unless @attribute_template.nil?
@@ -336,13 +356,13 @@ module ActiveMocker
       return @attribute_template
     end
 
-    def association_names
-      @association_names
-    end
-
-    def association_names=(associations)
-      @association_names = associations.map{|a| a.to_sym}
-    end
+    # def association_names
+    #   @association_names
+    # end
+    #
+    # def association_names=(associations)
+    #   @association_names = associations.map{|a| a.to_sym}
+    # end
 
     def association_template
       return @association_template unless @association_template.nil?
@@ -351,6 +371,14 @@ module ActiveMocker
       return @association_template
     end
 
+  end
+
+  class MockTemplate
+    attr_accessor :attributes, :single_associations, :collection_associations, :class_name, :association_names, :attribute_names, :column_names
+
+    def render(template)
+      ERB.new(template,nil,true).result(binding)
+    end
   end
 
 end

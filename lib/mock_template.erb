@@ -1,0 +1,47 @@
+class <%= class_name %> < ::ActiveHash::Base
+  include ActiveHash::ARApi
+  prepend ModelInstanceMethods
+  extend ModelClassMethods
+
+  def self.column_names
+    <%= column_names %>
+  end
+
+  def self.association_names
+    @association_names = <%= association_names.map{|a| a.to_sym} %>
+  end
+
+  def self.attribute_names
+    @attribute_names = <%= attribute_names.map{|a| a.to_sym} %>
+  end
+
+<% attributes.each do |meth| %>
+  def <%= meth %>
+    attributes['<%= meth %>']
+  end
+
+  def <%= meth %>=(val)
+    attributes['<%= meth %>'] = val
+  end
+<% end %>
+
+<% single_associations.each do |meth| %>
+  def <%= meth %>
+    associations['<%= meth %>']
+  end
+
+  def <%= meth %>=(val)
+    associations['<%= meth %>'] = val
+  end
+<% end %>
+
+<% collection_associations.each do |meth| %>
+  def <%= meth %>
+    associations['<%= meth %>']
+  end
+
+  def <%= meth %>=(val)
+    associations['<%= meth %>'] = CollectionAssociation.new(val)
+  end
+<% end %>
+end

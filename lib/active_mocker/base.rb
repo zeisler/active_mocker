@@ -43,22 +43,38 @@ module ActiveMocker
     end
 
     def create_template
+      # require_relative '../../person_mock'
+      start_time = Time.now
+      # require_relative '../../plan_mock'
+      # puts "require file: #{Time.now - start_time}"
       fields = table_definition.column_names
       mock_template = MockTemplate.new
+      # Schema Attributes
       mock_template.attributes = fields
       mock_template.class_name = mock_class_name
+      mock_template.attribute_names = table_definition.column_names
+      mock_template.column_names = table_definition.column_names
+
+      # Model associations
       mock_template.single_associations = model_definition.single_relationships
       mock_template.collection_associations = model_definition.collections
       mock_template.association_names = [*model_definition.single_relationships, *model_definition.collections]
-      mock_template.attribute_names = table_definition.column_names
-      mock_template.column_names = table_definition.column_names
+
+      # Model Methods
+      mock_template.instance_methods = instance_methods.methods
+      mock_template.mock_instance_methods = instance_methods.mock_instance_methods
+      mock_template.class_methods = class_methods.methods
+      mock_template.mock_class_methods = class_methods.mock_class_methods
+
       klass_str = mock_template.render(File.open('lib/mock_template.erb').read)
-      File.open("#{model_name.tableize.singularize}_mock.rb", 'w').write(klass_str)
+      File.open("#{File.expand_path File.dirname(__FILE__)}/#{model_name.tableize.singularize}_mock.rb", 'w').write(klass_str)
       m = Module.new
-      m.module_eval(klass_str)
+      m.module_eval(klass_str,"#{File.expand_path File.dirname(__FILE__)}/#{model_name.tableize.singularize}_mock.rb")
       model = m.const_get m.constants.first
-      return @klass = Object.const_set(mock_class_name, Class.new(model)) unless class_exists? "#{model_name}Mock"
-      return @klass = "#{model_name}Mock".constantize if class_exists? "#{model_name}Mock"
+      puts "creating file: #{Time.now - start_time}"
+      return @klass = Object.const_set(mock_class_name, Class.new(model)) unless class_exists? mock_class_name
+
+      return @klass = mock_class_name.constantize if class_exists? mock_class_name
     end
 
     def active_hash_mock_class
@@ -161,6 +177,37 @@ module ActiveMocker
       end
     end
 
+    def instance_methods
+      mock_instance_methods = {}
+      instance_methods = Methods.new
+      instance_methods.methods = model_definition.instance_methods_with_arguments.map do |method|
+        m = method.keys.first
+        if m == :attributes
+          Logger_.warn "ActiveMocker Depends on the #attributes method. It will not be redefined for the mock."
+          next
+        end
+        params      = Reparameterize.call(method.values.first)
+        params_pass = Reparameterize.call(method.values.first, true)
+
+        instance_method = Method.new
+        instance_method.method = m
+        instance_method.params = params
+        instance_method.params_pass = params_pass
+        mock_instance_methods[m] = [params, %Q[raise "#{}#{m} is not Implemented for Class: #{mock_class_name}"]]
+        instance_method
+      end
+      instance_methods.mock_instance_methods = mock_instance_methods
+      instance_methods
+    end
+
+    class Method
+      attr_accessor :method, :params, :params_pass
+    end
+
+    class Methods
+      attr_accessor :methods, :mock_class_methods, :mock_instance_methods
+    end
+
     def add_class_methods
       klass = create_klass
       model_definition.class_methods_with_arguments.each do |method|
@@ -175,6 +222,25 @@ module ActiveMocker
           end
         eos
       end
+    end
+
+    def class_methods
+      mock_class_methods = {}
+      class_methods = Methods.new
+      class_methods.methods = model_definition.class_methods_with_arguments.map do |method|
+        m = method.keys.first
+        params      = Reparameterize.call(method.values.first)
+        params_pass = Reparameterize.call(method.values.first, true)
+
+        class_method = Method.new
+        class_method.method = m
+        class_method.params = params
+        class_method.params_pass = params_pass
+        mock_class_methods[m] = [params, %Q[raise "#{}#{m} is not Implemented for Class: #{mock_class_name}"]]
+        class_method
+      end
+      class_methods.mock_class_methods = mock_class_methods
+      class_methods
     end
 
     def eval_lambda(arguments, block)
@@ -341,13 +407,13 @@ module ActiveMocker
       @model_class_instance ||= model_class.new
     end
 
-    # def attribute_names
-    #   @attribute_names
-    # end
-    #
-    # def attribute_names=(attributes)
-    #   @attribute_names = attributes.map{|a| a.to_sym}
-    # end
+    def attribute_names
+      @attribute_names
+    end
+
+    def attribute_names=(attributes)
+      @attribute_names = attributes.map{|a| a.to_sym}
+    end
 
     def attribute_template
       return @attribute_template unless @attribute_template.nil?
@@ -356,13 +422,13 @@ module ActiveMocker
       return @attribute_template
     end
 
-    # def association_names
-    #   @association_names
-    # end
-    #
-    # def association_names=(associations)
-    #   @association_names = associations.map{|a| a.to_sym}
-    # end
+    def association_names
+      @association_names
+    end
+
+    def association_names=(associations)
+      @association_names = associations.map{|a| a.to_sym}
+    end
 
     def association_template
       return @association_template unless @association_template.nil?
@@ -374,7 +440,17 @@ module ActiveMocker
   end
 
   class MockTemplate
-    attr_accessor :attributes, :single_associations, :collection_associations, :class_name, :association_names, :attribute_names, :column_names
+    attr_accessor :attributes,
+                  :single_associations,
+                  :collection_associations,
+                  :class_name,
+                  :association_names,
+                  :attribute_names,
+                  :column_names,
+                  :instance_methods,
+                  :class_methods,
+                  :mock_instance_methods,
+                  :mock_class_methods
 
     def render(template)
       ERB.new(template,nil,true).result(binding)

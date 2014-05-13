@@ -9,8 +9,7 @@ module ActiveMocker
         search_result unless search_result.nil?
         schema = parse
         schema.instance_eval(&block)
-        add_to_cache schema.tables.first
-        schema.tables.first
+        schema
       end
 
       def self.parse
@@ -47,11 +46,10 @@ module ActiveMocker
       def initialize(table_search)
         @table_search = table_search
         @tables = []
-
       end
 
       def create_table(name, options={}, &block)
-        tables << ActiveMocker::Table.new(name, CreateTable.new.instance_eval(&block)) if name == table_search
+        tables << ActiveMocker::Table.new(name, CreateTable.new.instance_eval(&block))
       end
 
       def method_missing(meth, *args)

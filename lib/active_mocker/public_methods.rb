@@ -6,6 +6,7 @@ module ActiveMocker
 
   def self.configure(&block)
     Base.configure(&block)
+    Generate.configure(&block)
   end
 
 end

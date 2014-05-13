@@ -10,7 +10,7 @@ module ActiveHash
       def initialize(attributes = {})
         filter_associations(HashWithIndifferentAccess.new(attributes))
         @attributes.dup.merge(@associations.dup).each do |key, value|
-          send "#{key}=", value
+          send "#{key}=", value #maybe could just check if responds_to method? How AR works?
         end
       end
 

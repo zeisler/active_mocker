@@ -1,5 +1,6 @@
 require 'rspec'
-require_relative 'user_mock'
+$:.unshift File.expand_path('../', __FILE__)
+load 'spec/mocks/user_mock.rb'
 
 describe UserMock do
 

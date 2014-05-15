@@ -3,7 +3,7 @@ $:.unshift File.expand_path('../../../active_mocker', __FILE__)
 require 'active_mocker'
 require 'string_reader'
 
-describe 'ReadMe' do
+describe 'ReadMe', pending: true do
 
   before(:each) do
     ActiveMocker.configure do |config|

@@ -8,7 +8,7 @@ require 'active_mocker/active_record/schema'
 require 'active_mocker/schema_reader'
 require 'active_support/all'
 
-describe ActiveMocker::SchemaReader do
+describe ActiveMocker::SchemaReader, pending: true do
 
   let(:schema_file){ File.join(File.expand_path('../../', __FILE__), 'performance/large_schema.rb') }
 

@@ -21,6 +21,15 @@ class Generate
     config(&block)
   end
 
+  def self.mock(model_name)
+    load_mock(model_name)
+  end
+
+  def self.load_mock(model_name)
+    load File.join(mock_dir, "#{model_name.tableize.singularize}_mock.rb")
+    "#{model_name}Mock".constantize
+  end
+
   def model_definition(table)
     return @model_definition if @model_definition_table == table
     @model_definition_table = table
@@ -62,11 +71,15 @@ class Generate
       mock_template.class_methods         = class_methods(table.name).methods
       mock_template.model_class_methods    = class_methods(table.name).model_class_methods
 
-      klass_str = mock_template.render(File.open('lib/mock_template.erb').read)
+      klass_str = mock_template.render( File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read)
+      FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
     end
 
   end
+
+
+
 
   def mock_class_name(table_name)
     "#{table_to_class_name(table_name)}Mock"

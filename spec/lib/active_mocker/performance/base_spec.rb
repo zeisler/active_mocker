@@ -1,5 +1,6 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
+require 'forwardable'
 require 'singleton'
 require 'logger'
 require 'active_mocker/logger'
@@ -14,13 +15,12 @@ require 'active_mocker/field'
 require 'active_mocker/active_record'
 require 'active_mocker/model_reader'
 require 'active_mocker/schema_reader'
+require 'active_mocker/generate'
 require 'active_mocker/active_record/schema'
-require 'active_mocker/base'
 require 'active_support/all'
 require 'active_hash/ar_api'
 require 'erb'
-require 'active_mocker/person_mock'
-describe ActiveMocker::Base do
+describe ActiveMocker, pending: true do
 
   before(:each) do
     ActiveMocker.configure do |config|
@@ -41,8 +41,7 @@ describe ActiveMocker::Base do
   end
 
   let(:mock_class){
-    # ActiveMocker.mock('Person')
-    PersonMock
+    ActiveMocker.mock('Person')
   }
 
     let(:model_file){

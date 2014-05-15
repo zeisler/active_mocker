@@ -3,7 +3,7 @@ project_root = File.expand_path('../../../', __FILE__)
 require "#{project_root}/lib/active_record/ar"
 require "#{project_root}/lib/active_mocker"
 
-describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
+describe 'Comparing ActiveMocker Api to ActiveRecord Api', pending: true do
 
   before(:each) do
     ActiveMocker::Base.configure do |config|

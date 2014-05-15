@@ -2,6 +2,7 @@ require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
 require 'singleton'
 require 'logger'
+require 'forwardable'
 require 'active_mocker/logger'
 require 'string_reader'
 require 'active_mocker/public_methods'
@@ -15,7 +16,6 @@ require 'active_mocker/active_record'
 require 'active_mocker/model_reader'
 require 'active_mocker/schema_reader'
 require 'active_mocker/active_record/schema'
-require 'active_mocker/base'
 require 'active_support/all'
 require 'active_hash/ar_api'
 require 'active_mocker/generate'
@@ -24,12 +24,12 @@ require 'erb'
 describe ActiveMocker::Generate do
 
   before(:each) do
-    spec_root = File.expand_path('../../../', __FILE__)
-    ActiveMocker.configure do |config|
+    spec_root = File.expand_path('../../../../', __FILE__)
+    ActiveMocker.config do |config|
       # Required Options
       config.schema_file = File.join(spec_root, 'sample_app_rails_4/db/schema.rb')
       config.model_dir   = File.join(spec_root, 'sample_app_rails_4/app/models')
-      config.mock_dir    = File.join(spec_root, 'mocks')
+      config.mock_dir    = File.join(spec_root, '/mocks')
       # Logging
       config.log_level = Logger::WARN       #default
     end

@@ -59,13 +59,13 @@ describe ActiveMocker::SchemaReader do
 
     let(:subject){described_class.new({schema_file:nil, file_reader: example_schema, clear_cache: true})}
 
-    let(:search){subject.search('people')}
+    let!(:search){subject.search(nil)}
 
     it 'let not read a file but return a string instead to be evaluated' do
-      people = subject.search('people')
-      expect(people.name).to eq 'people'
-      expect(people.fields[2].to_h).to eq({:name=>"first_name", :type=>:string, :options=>[{:limit=>128}]})
-      expect(subject.search('zip_codes').name).to eq 'zip_codes'
+      tables = subject.tables
+      expect(tables.first.name).to eq 'people'
+      expect(tables.last.name).to eq 'zip_codes'
+      expect(tables.last.fields.count).to eq 8
     end
 
   end
@@ -78,18 +78,19 @@ describe ActiveMocker::SchemaReader do
     describe '#search' do
 
       it 'takes a table name and will return its attributes' do
-        described_class.new({schema_file: schema_file}).search("people")
+        described_class.new({schema_file: schema_file}).search(nil)
       end
 
     end
 
-    let(:people_search){subject.search("people")}
+    let(:tables){subject.search("people")}
 
     describe '#column_names' do
 
       it 'returns an array of columns from the schema.rb' do
-        expect(people_search.name).to eq 'people'
-        expect(people_search.column_names).to eq ["id", "company_id", "first_name", "middle_name", "last_name", "address_1", "address_2", "city", "state_id", "zip_code_id", "title", "department", "person_email", "work_phone", "cell_phone", "home_phone", "fax", "user_id_assistant", "birth_date", "needs_review", "created_at", "updated_at"]
+        tables
+        expect(subject.tables.first.name).to eq 'people'
+        expect(subject.tables.first.column_names).to eq ["id", "company_id", "first_name", "middle_name", "last_name", "address_1", "address_2", "city", "state_id", "zip_code_id", "title", "department", "person_email", "work_phone", "cell_phone", "home_phone", "fax", "user_id_assistant", "birth_date", "needs_review", "created_at", "updated_at"]
       end
 
     end
@@ -97,26 +98,10 @@ describe ActiveMocker::SchemaReader do
     describe '#fields' do
 
       it 'returns all fields from schema' do
-        expect(people_search.fields[1].to_h).to eq({:name=>"company_id", :type=>:integer, :options=>[]})
+        tables
+        expect(subject.tables.first.fields[1].to_h).to eq({:name=>"company_id", :type=>:integer, :options=>[]})
       end
 
-    end
-
-    describe '#name' do
-
-      it 'returns the name of the table' do
-        expect(people_search.name).to eq("people")
-      end
-
-
-    end
-
-    it 'returns an exception if table not found in schema.rb' do
-      expect{
-        described_class.new(
-            {schema_file: schema_file}
-        ).search("disclosures")
-      }.to raise_error 'disclosures table not found.'
     end
 
   end

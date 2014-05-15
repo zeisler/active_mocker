@@ -37,7 +37,7 @@ module ActiveMocker
 
     def eval_file
       m = Module.new
-      @tables = m.module_eval(read_file, schema_file).tables
+      @tables = m.module_eval(read_file).tables
     end
 
     def read_file

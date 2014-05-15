@@ -1,5 +1,5 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "#{model_name}Mock") if false && ActiveMocker.class_exists?("#{model_name}Mock")
+Object.send(:remove_const, "<%= class_name %>") if ActiveMocker.class_exists?("<%= class_name %>")
 
 class <%= class_name %> < ::ActiveHash::Base
   include ActiveMocker::ActiveHash::ARApi
@@ -10,14 +10,13 @@ class <%= class_name %> < ::ActiveHash::Base
     <%= attribute_names %>
   end
 
-  def self.association_names
-    @association_names = <%= association_names.map{|a| a.to_sym} %>
-  end
-
   def self.attribute_names
     @attribute_names = <%= attribute_names.map{|a| a.to_sym} %>
   end
 
+  ##################################
+  #   Attributes getter/setters    #
+  ##################################
 <% attributes.each do |meth| %>
   def <%= meth %>
     attributes['<%= meth %>']
@@ -27,7 +26,13 @@ class <%= class_name %> < ::ActiveHash::Base
     attributes['<%= meth %>'] = val
   end
 <% end %>
+  ##################################
+  #   Association getter/setters   #
+  ##################################
 
+  def self.association_names
+    @association_names = <%= association_names.map { |a| a.to_sym } %>
+  end
 <% single_associations.each do |meth| %>
   def <%= meth %>
     associations['<%= meth %>']
@@ -37,7 +42,6 @@ class <%= class_name %> < ::ActiveHash::Base
     associations['<%= meth %>'] = val
   end
 <% end %>
-
 <% collection_associations.each do |meth| %>
   def <%= meth %>
     associations['<%= meth %>']
@@ -47,20 +51,21 @@ class <%= class_name %> < ::ActiveHash::Base
     associations['<%= meth %>'] = ActiveMocker::CollectionAssociation.new(val)
   end
 <% end %>
+  ##################################
+  #  Model Methods getter/setters  #
+  ##################################
 
   def self.model_instance_methods
     return @model_instance_methods if @model_instance_methods
     @model_instance_methods = {}<% model_instance_methods.each do |key, value| %>
-      @model_instance_methods[:<%= key %>] = :not_implemented
-    <% end %>
+    @model_instance_methods[:<%= key %>] = :not_implemented<% end %>
     @model_instance_methods
   end
 
   def self.model_class_methods
     return @model_class_methods if @model_class_methods
     @model_class_methods = {}<% model_class_methods.each do |key, value| %>
-    @model_class_methods[:<%= key %>] = :not_implemented
-  <% end %>
+    @model_class_methods[:<%= key %>] = :not_implemented<% end %>
     @model_class_methods
   end
 
@@ -71,7 +76,6 @@ class <%= class_name %> < ::ActiveHash::Base
     instance_exec(*[<%= method.params_pass %>], &block)
   end
 <% end %>
-
 <% class_methods.each do |method| %>
   def self.<%= method.method %>(<%= method.params %>)
     block =  model_class_methods[<%= method.method.inspect %>]

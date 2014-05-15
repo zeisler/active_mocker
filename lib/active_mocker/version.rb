@@ -1,3 +1,3 @@
 module ActiveMocker
-  VERSION = "1.2.pre.9"
+  VERSION = "1.2.pre.10"
 end

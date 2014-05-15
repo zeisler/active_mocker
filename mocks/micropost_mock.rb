@@ -1,5 +1,5 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "#{model_name}Mock") if false && ActiveMocker.class_exists?("#{model_name}Mock")
+Object.send(:remove_const, "MicropostMock") if ActiveMocker.class_exists?("MicropostMock")
 
 class MicropostMock < ::ActiveHash::Base
   include ActiveMocker::ActiveHash::ARApi
@@ -10,14 +10,13 @@ class MicropostMock < ::ActiveHash::Base
     ["id", "content", "user_id", "created_at", "updated_at"]
   end
 
-  def self.association_names
-    @association_names = [:user]
-  end
-
   def self.attribute_names
     @attribute_names = [:id, :content, :user_id, :created_at, :updated_at]
   end
 
+  ##################################
+  #   Attributes getter/setters    #
+  ##################################
 
   def id
     attributes['id']
@@ -59,7 +58,13 @@ class MicropostMock < ::ActiveHash::Base
     attributes['updated_at'] = val
   end
 
+  ##################################
+  #   Association getter/setters   #
+  ##################################
 
+  def self.association_names
+    @association_names = [:user]
+  end
 
   def user
     associations['user']
@@ -70,7 +75,9 @@ class MicropostMock < ::ActiveHash::Base
   end
 
 
-
+  ##################################
+  #  Model Methods getter/setters  #
+  ##################################
 
   def self.model_instance_methods
     return @model_instance_methods if @model_instance_methods
@@ -82,10 +89,8 @@ class MicropostMock < ::ActiveHash::Base
     return @model_class_methods if @model_class_methods
     @model_class_methods = {}
     @model_class_methods[:from_users_followed_by] = :not_implemented
-  
     @model_class_methods
   end
-
 
 
 

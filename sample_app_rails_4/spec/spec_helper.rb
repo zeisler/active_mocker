@@ -23,7 +23,6 @@ require 'rubygems'
     # config.mock_with :rr
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-    config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
     # If you're not using ActiveRecord, or you'd prefer not to run each of your
     # examples within a transaction, remove the following line or assign false
@@ -41,7 +40,6 @@ require 'rubygems'
     #     --seed 1234
     config.order = "random"
     # Include the Capybara DSL so that specs in spec/requests still work.
-    config.include Capybara::DSL
     # Disable the old-style object.should syntax.
     config.expect_with :rspec do |c|
       c.syntax = :expect

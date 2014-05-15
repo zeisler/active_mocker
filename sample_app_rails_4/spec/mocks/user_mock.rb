@@ -1,6 +1,5 @@
 require 'active_mocker/mock_requires'
-
-Object.send(:remove_const, 'UserMock') if ActiveMocker.class_exists? 'UserMock'
+Object.send(:remove_const, "UserMock") if ActiveMocker.class_exists?("UserMock")
 
 class UserMock < ::ActiveHash::Base
   include ActiveMocker::ActiveHash::ARApi
@@ -11,14 +10,13 @@ class UserMock < ::ActiveHash::Base
     ["id", "name", "email", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
   end
 
-  def self.association_names
-    @association_names = [:microposts, :relationships, :followed_users, :reverse_relationships, :followers]
-  end
-
   def self.attribute_names
     @attribute_names = [:id, :name, :email, :created_at, :updated_at, :password_digest, :remember_token, :admin]
   end
 
+  ##################################
+  #   Attributes getter/setters    #
+  ##################################
 
   def id
     attributes['id']
@@ -84,8 +82,13 @@ class UserMock < ::ActiveHash::Base
     attributes['admin'] = val
   end
 
+  ##################################
+  #   Association getter/setters   #
+  ##################################
 
-
+  def self.association_names
+    @association_names = [:microposts, :relationships, :followed_users, :reverse_relationships, :followers]
+  end
 
 
   def microposts
@@ -128,18 +131,17 @@ class UserMock < ::ActiveHash::Base
     associations['followers'] = ActiveMocker::CollectionAssociation.new(val)
   end
 
+  ##################################
+  #  Model Methods getter/setters  #
+  ##################################
 
   def self.model_instance_methods
     return @model_instance_methods if @model_instance_methods
     @model_instance_methods = {}
-      @model_instance_methods[:feed] = :not_implemented
-    
-      @model_instance_methods[:following?] = :not_implemented
-    
-      @model_instance_methods[:follow!] = :not_implemented
-    
-      @model_instance_methods[:unfollow!] = :not_implemented
-    
+    @model_instance_methods[:feed] = :not_implemented
+    @model_instance_methods[:following?] = :not_implemented
+    @model_instance_methods[:follow!] = :not_implemented
+    @model_instance_methods[:unfollow!] = :not_implemented
     @model_instance_methods
   end
 
@@ -147,9 +149,7 @@ class UserMock < ::ActiveHash::Base
     return @model_class_methods if @model_class_methods
     @model_class_methods = {}
     @model_class_methods[:new_remember_token] = :not_implemented
-  
     @model_class_methods[:digest] = :not_implemented
-  
     @model_class_methods
   end
 
@@ -177,7 +177,6 @@ class UserMock < ::ActiveHash::Base
     self.class.is_implemented(block, "#unfollow!")
     instance_exec(*[other_user], &block)
   end
-
 
 
   def self.new_remember_token()

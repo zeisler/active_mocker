@@ -1,6 +1,5 @@
 require 'active_mocker/mock_requires'
-
-Object.send(:remove_const, 'RelationshipMock') if class_exists? 'RelationshipMock'
+Object.send(:remove_const, "RelationshipMock") if ActiveMocker.class_exists?("RelationshipMock")
 
 class RelationshipMock < ::ActiveHash::Base
   include ActiveMocker::ActiveHash::ARApi
@@ -11,14 +10,13 @@ class RelationshipMock < ::ActiveHash::Base
     ["id", "follower_id", "followed_id", "created_at", "updated_at"]
   end
 
-  def self.association_names
-    @association_names = [:follower, :followed]
-  end
-
   def self.attribute_names
     @attribute_names = [:id, :follower_id, :followed_id, :created_at, :updated_at]
   end
 
+  ##################################
+  #   Attributes getter/setters    #
+  ##################################
 
   def id
     attributes['id']
@@ -60,7 +58,13 @@ class RelationshipMock < ::ActiveHash::Base
     attributes['updated_at'] = val
   end
 
+  ##################################
+  #   Association getter/setters   #
+  ##################################
 
+  def self.association_names
+    @association_names = [:follower, :followed]
+  end
 
   def follower
     associations['follower']
@@ -79,7 +83,9 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
 
-
+  ##################################
+  #  Model Methods getter/setters  #
+  ##################################
 
   def self.model_instance_methods
     return @model_instance_methods if @model_instance_methods
@@ -92,7 +98,6 @@ class RelationshipMock < ::ActiveHash::Base
     @model_class_methods = {}
     @model_class_methods
   end
-
 
 
 

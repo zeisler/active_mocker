@@ -23,7 +23,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api', pending: true do
     Person.destroy_all
   end
 
-  let(:attributes){{first_name: 'Dustin', last_name: 'Zeisler'}}
+  let(:attributes){{name: 'Dustin Zeisler', last_name: 'dustin@example.com'}}
 
   describe '::superclass' do
 

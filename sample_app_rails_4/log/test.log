@@ -6725,3 +6725,560 @@ Binary data inserted for `string` type on column `remember_token`
   [1m[35mUser Exists (0.0ms)[0m  SELECT  1 AS one FROM "users"  WHERE LOWER("users"."email") = LOWER('foo@bar+baz.com') LIMIT 1
   [1m[36mUser Exists (0.0ms)[0m  [1mSELECT  1 AS one FROM "users"  WHERE LOWER("users"."email") = LOWER('foo@bar..com') LIMIT 1[0m
   [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:15:02.900723"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:15:02.900723"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (1.0ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.4ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:15:08.620139"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:15:08.620139"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.2ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.7ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (1.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:15:08.648948"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:15:08.648948"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.0ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.3ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.3ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:15:08.660714"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:15:08.660714"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.0ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.2ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.3ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", "2014-05-15 22:15:08.677576"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:15:08.677576"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"  WHERE "users"."first_name" = 'Dustin' AND "users"."last_name" = 'Zeisler'[0m
+SQLite3::SQLException: no such column: users.first_name: SELECT "users".* FROM "users"  WHERE "users"."first_name" = 'Dustin' AND "users"."last_name" = 'Zeisler'
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.0ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.3ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.3ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:17:04.937527"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:17:04.937527"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."name" = 'Dustin Zeisler' AND "users"."email" = 'dustin@example.com' LIMIT 1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC[0m  [["user_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?  [["follower_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?[0m  [["followed_id", 31]]
+  [1m[35mSQL (0.9ms)[0m  DELETE FROM "users" WHERE "users"."id" = ?  [["id", 31]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (1.6ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:17:20.846105"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:17:20.846105"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.7ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.4ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:17:44.689137"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:17:44.689137"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.2ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.7ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (1.7ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:18:02.255952"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:18:02.255952"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (1.0ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (1.7ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", "2014-05-15 22:18:08.142025"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:18:08.142025"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users"  WHERE "users"."first_name" = 'Dustin' AND "users"."last_name" = 'Zeisler'[0m
+SQLite3::SQLException: no such column: users.first_name: SELECT "users".* FROM "users"  WHERE "users"."first_name" = 'Dustin' AND "users"."last_name" = 'Zeisler'
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.9ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (1.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.5ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:18:54.044229"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:18:54.044229"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.8ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (1.7ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:18:54.076360"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:18:54.076360"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT  "users".* FROM "users"  WHERE "users"."name" = 'Dustin Zeisler' AND "users"."email" = 'dustin@example.com' LIMIT 1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.0ms)[0m  [1mSELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC[0m  [["user_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?  [["follower_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?[0m  [["followed_id", 31]]
+  [1m[35mSQL (0.4ms)[0m  DELETE FROM "users" WHERE "users"."id" = ?  [["id", 31]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.4ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", "2014-05-15 22:18:54.084278"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:18:54.084278"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.0ms)[0m  [1mSELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC[0m  [["user_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?  [["follower_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?[0m  [["followed_id", 31]]
+  [1m[35mSQL (0.2ms)[0m  DELETE FROM "users" WHERE "users"."id" = ?  [["id", 31]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.3ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:18:54.095582"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:18:54.095582"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"  WHERE "users"."name" = 'Dustin Zeisler' AND "users"."email" = 'dustin@example.com'
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.0ms)[0m  [1mSELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC[0m  [["user_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?  [["follower_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?[0m  [["followed_id", 31]]
+  [1m[35mSQL (0.2ms)[0m  DELETE FROM "users" WHERE "users"."id" = ?  [["id", 31]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.4ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.0ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mMicropost Load (0.0ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.1ms)[0m  [1mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", "2014-05-15 22:23:16.837088"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:23:16.837088"]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.1ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (2.3ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.5ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36mMicropost Load (0.0ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", "2014-05-15 22:23:16.855140"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:23:16.855140"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"  WHERE "users"."name" = 'Dustin Zeisler' AND "users"."email" = 'dustin@example.com'[0m
+  [1m[35mUser Load (0.0ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.0ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.1ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.3ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.4ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.5ms)[0m  SELECT "users".* FROM "users"
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mUser Load (0.1ms)[0m  SELECT "users".* FROM "users"
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", "2014-05-15 22:23:16.870454"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:23:16.870454"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT  "users".* FROM "users"  WHERE "users"."name" = 'Dustin Zeisler' AND "users"."email" = 'dustin@example.com' LIMIT 1[0m
+  [1m[35mUser Load (0.0ms)[0m  SELECT "users".* FROM "users"
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.0ms)[0m  SELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC  [["user_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?[0m  [["follower_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?  [["followed_id", 31]]
+  [1m[36mSQL (0.2ms)[0m  [1mDELETE FROM "users" WHERE "users"."id" = ?[0m  [["id", 31]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.1ms)[0m  [1mSELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC[0m
+  [1m[35m (0.4ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("created_at", "email", "name", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", "2014-05-15 22:23:16.876524"], ["email", "dustin@example.com"], ["name", "Dustin Zeisler"], ["updated_at", "2014-05-15 22:23:16.876524"]]
+  [1m[35m (0.0ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mUser Load (0.1ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMicropost Load (0.0ms)[0m  [1mSELECT "microposts".* FROM "microposts"  WHERE "microposts"."user_id" = ?  ORDER BY created_at DESC[0m  [["user_id", 31]]
+  [1m[35mRelationship Load (0.0ms)[0m  SELECT "relationships".* FROM "relationships"  WHERE "relationships"."follower_id" = ?  [["follower_id", 31]]
+  [1m[36mRelationship Load (0.0ms)[0m  [1mSELECT "relationships".* FROM "relationships"  WHERE "relationships"."followed_id" = ?[0m  [["followed_id", 31]]
+  [1m[35mSQL (0.3ms)[0m  DELETE FROM "users" WHERE "users"."id" = ?  [["id", 31]]
+  [1m[36m (0.0ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mMicropost Load (0.1ms)[0m  SELECT "microposts".* FROM "microposts"   ORDER BY created_at DESC
+  [1m[36m (0.3ms)[0m  [1mrollback transaction[0m

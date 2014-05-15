@@ -54,6 +54,7 @@ class Generate
 
   def create_template
     tables.each do |table|
+      begin
       mock_template = MockTemplate.new
       # Schema Attributes
       mock_template.class_name      = mock_class_name(table.name)
@@ -74,6 +75,10 @@ class Generate
       klass_str = mock_template.render( File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read)
       FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
+      rescue
+        puts "failed to load #{table_to_model_file(table)} model"
+        next
+      end
     end
 
   end

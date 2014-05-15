@@ -69,6 +69,10 @@ class <%= class_name %> < ::ActiveHash::Base
     @model_class_methods
   end
 
+  def self.clear_mock
+    @model_class_methods, @model_instance_methods = nil, nil
+    delete_all
+  end
 <% instance_methods.each do |method| %>
   def <%= method.method %>(<%= method.params %>)
     block =  model_instance_methods[<%= method.method.inspect %>]

@@ -3,6 +3,10 @@
 
 Create static mocks from active record models without loading rails or running a database.
 
+Example from a real app
+Finished in 0.54599 seconds
+190 examples, 0 failures
+
 ## Installation
 
 Add this line to your application's Gemfile:

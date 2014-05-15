@@ -9,4 +9,5 @@ end
 
 group :test do
   gem 'active_mocker', :path => "../../active_mocker"
+  gem 'fuubar'
 end

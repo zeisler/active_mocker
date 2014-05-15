@@ -99,6 +99,10 @@ class RelationshipMock < ::ActiveHash::Base
     @model_class_methods
   end
 
+  def self.clear_mock
+    @model_class_methods, @model_instance_methods = nil, nil
+    delete_all
+  end
 
 
 

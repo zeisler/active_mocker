@@ -153,6 +153,10 @@ class UserMock < ::ActiveHash::Base
     @model_class_methods
   end
 
+  def self.clear_mock
+    @model_class_methods, @model_instance_methods = nil, nil
+    delete_all
+  end
 
   def feed()
     block =  model_instance_methods[:feed]

@@ -1,8 +1,6 @@
-require 'active_mocker/mock_instance_methods'
-require 'active_mocker/mock_class_methods'
-require 'active_mocker/collection_association'
-require 'active_hash'
-require 'active_hash/ar_api'
+require 'active_mocker/mock_requires'
+
+Object.send(:remove_const, '<%= class_name %>') if class_exists? '<%= class_name %>'
 
 class <%= class_name %> < ::ActiveHash::Base
   include ActiveMocker::ActiveHash::ARApi

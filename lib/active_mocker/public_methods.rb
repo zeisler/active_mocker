@@ -1,7 +1,7 @@
 module ActiveMocker
 
-  def self.mock(model_name)
-    Generate.mock(model_name)
+  def self.mock(model_name, force_reload: false)
+    Generate.mock(model_name, force_reload: force_reload)
   end
 
   def self.configure(&block)

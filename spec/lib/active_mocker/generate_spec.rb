@@ -21,7 +21,7 @@ require 'active_hash/ar_api'
 require 'active_mocker/generate'
 require 'erb'
 
-describe ActiveMocker::Generate, pending: true do
+describe ActiveMocker::Generate do
 
   before(:each) do
     spec_root = File.expand_path('../../../../', __FILE__)

@@ -21,11 +21,11 @@ class Generate
     config(&block)
   end
 
-  def self.mock(model_name)
-    load_mock(model_name)
+  def self.mock(model_name, force_reload: false)
+    load_mock(model_name, force_reload: force_reload)
   end
 
-  def self.load_mock(model_name)
+  def self.load_mock(model_name, force_reload: false)
     load File.join(mock_dir, "#{model_name.tableize.singularize}_mock.rb")
     "#{model_name}Mock".constantize
   end
@@ -76,7 +76,7 @@ class Generate
       FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
       rescue
-        puts "failed to load #{table_to_model_file(table.name)} model"
+        Logger_.debug "failed to load #{table_to_model_file(table.name)} model"
         next
       end
     end

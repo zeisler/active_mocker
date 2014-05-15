@@ -1,5 +1,5 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "#{model_name}Mock") if false && ActiveMocker::Generate.class_exists?("#{model_name}Mock")
+Object.send(:remove_const, "#{model_name}Mock") if false && ActiveMocker.class_exists?("#{model_name}Mock")
 
 class MicropostMock < ::ActiveHash::Base
   include ActiveMocker::ActiveHash::ARApi

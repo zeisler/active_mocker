@@ -1,6 +1,6 @@
 require 'active_mocker/mock_requires'
 
-Object.send(:remove_const, 'UserMock') if class_exists? 'UserMock'
+Object.send(:remove_const, 'UserMock') if ActiveMocker.class_exists? 'UserMock'
 
 class UserMock < ::ActiveHash::Base
   include ActiveMocker::ActiveHash::ARApi

@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ActiveMocker::VERSION
   spec.authors       = ["Dustin Zeisler"]
   spec.email         = ["dustin@zive.me"]
-  spec.summary       = %q{Create mocks from active record models without loading rails or running a database}
-  spec.description   = %q{Create mocks from active record models without loading rails or running a database. The Mock's methods have the same arguments as the AR model and if they change you get a error in your test.}
+  spec.summary       = %q{Create static mocks from active record models without loading rails or running a database.}
+  spec.description   = %q{Create static mocks from active record models without loading rails or running a database. The Mock's methods have the same arguments as the AR model and if they change you get a error in your test.}
   spec.homepage      = "https://github.com/zeisler/active_mocker"
   spec.license       = "MIT"
 

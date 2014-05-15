@@ -1,7 +1,7 @@
-require 'spec_helper'
 $:.unshift File.expand_path('../', __FILE__)
-load 'spec/mocks/user_mock.rb'
-load 'spec/mocks/micropost_mock.rb'
+require 'spec_helper'
+load 'mocks/user_mock.rb'
+load 'mocks/micropost_mock.rb'
 
 describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 

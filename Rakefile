@@ -16,4 +16,5 @@ task :specs do
     end
   end
   raise "Tests Failed" unless system 'rspec'
+  raise "Tests Failed" unless system 'rspec sample_app_rails_4/spec'
 end

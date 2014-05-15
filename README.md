@@ -1,7 +1,7 @@
 # ActiveMocker
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.png?branch=master)](https://travis-ci.org/zeisler/active_mocker)
 
-Create mocks from active record models without loading rails or running a database.
+Create static mocks from active record models without loading rails or running a database.
 
 ## Installation
 
@@ -19,6 +19,7 @@ Or install it yourself as:
 
 ## Usage
 
+Needs updating, for now see the rails sample application
 
     #db/schema.rb
 

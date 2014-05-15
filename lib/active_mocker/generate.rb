@@ -76,7 +76,7 @@ class Generate
       FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
       rescue
-        puts "failed to load #{table_to_model_file(table)} model"
+        puts "failed to load #{table_to_model_file(table.name)} model"
         next
       end
     end

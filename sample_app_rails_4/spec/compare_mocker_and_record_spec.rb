@@ -58,12 +58,12 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     let(:user_mock){UserMock.new(create_attributes)}
 
     it 'the Mock when adding an association will not set the _id attribute, do it manually' do
-      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => nil})
+      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => nil})
       expect(user_mock.microposts).to eq [micropost]
     end
 
     it 'Ar will not include associations in attributes' do
-      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => nil})
+      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => nil})
       expect(user_ar.microposts).to eq [micropost]
     end
 
@@ -109,6 +109,35 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     it 'Mock will not take sql string needs to be mocked' do
       UserMock.create(attributes_with_admin)
       expect{UserMock.where("name = 'Dustin Zeisler'")}.to raise_error
+    end
+
+  end
+
+  describe 'type coercion' do
+
+    it 'will coerce string to integer' do
+      expect(Micropost.new(user_id: '1').user_id).to eq 1
+      expect(MicropostMock.new(user_id: '1').user_id).to eq 1
+    end
+
+    it 'will coerce string to bool' do
+      expect(User.new(admin: 'true').admin).to eq true
+      expect(UserMock.new(admin: 'true').admin).to eq true
+    end
+
+    it 'will coerce string to decimal' do
+      expect(User.new(credits: '12345').credits).to eq 12345.0
+      expect(UserMock.new(credits: '12345').credits).to eq 12345.0
+    end
+
+    it 'will coerce string to datetime' do
+      expect(User.new(created_at: '1/1/1990').created_at).to eq 'Mon, 01 Jan 1990 00:00:00 UTC +00:00'
+      expect(UserMock.new(created_at: '1/1/1990').created_at).to eq 'Mon, 01 Jan 1990 00:00:00 UTC +00:00'
+    end
+
+    it 'will coerce integer to string' do
+      expect(User.create(name: 1).reload.name).to eq '1'
+      expect(UserMock.new(name: 1).name).to eq '1'
     end
 
   end

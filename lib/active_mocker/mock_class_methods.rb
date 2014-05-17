@@ -73,6 +73,16 @@ module MockClassMethods
     return @association_template
   end
 
+  def set_type(field_name, type)
+    types[field_name] = Virtus::Attribute.build(type)
+  end
+
+  def coerce(field, new_val)
+    type = self.class.types[field]
+    return attributes[field] = type.coerce(new_val) unless type.nil?
+    return new_value
+  end
+
   public
   def is_implemented(val, method)
     raise "#{method} is not Implemented for Class: #{name}" if val == :not_implemented

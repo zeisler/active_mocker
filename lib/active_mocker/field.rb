@@ -2,7 +2,7 @@ module ActiveMocker
 
   class Field
 
-    attr_reader :name, :type, :options
+    attr_accessor :name, :type, :options
 
     def initialize(name, type, options)
       @name    = name

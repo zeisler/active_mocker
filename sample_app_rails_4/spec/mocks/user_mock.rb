@@ -7,11 +7,11 @@ class UserMock < ::ActiveHash::Base
   extend  ActiveMocker::MockClassMethods
 
   def self.column_names
-    ["id", "name", "email", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
+    ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
   end
 
   def self.attribute_names
-    @attribute_names = [:id, :name, :email, :created_at, :updated_at, :password_digest, :remember_token, :admin]
+    @attribute_names = [:id, :name, :email, :credits, :created_at, :updated_at, :password_digest, :remember_token, :admin]
   end
 
   ##################################
@@ -23,7 +23,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def id=(val)
-    attributes['id'] = val
+    @types ||= {}
+    @types[:id] = Virtus::Attribute.build(Fixnum) unless @types[:id]
+    attributes['id'] = @types[:id].coerce(val)
   end
 
   def name
@@ -31,7 +33,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def name=(val)
-    attributes['name'] = val
+    @types ||= {}
+    @types[:name] = Virtus::Attribute.build(String) unless @types[:name]
+    attributes['name'] = @types[:name].coerce(val)
   end
 
   def email
@@ -39,7 +43,19 @@ class UserMock < ::ActiveHash::Base
   end
 
   def email=(val)
-    attributes['email'] = val
+    @types ||= {}
+    @types[:email] = Virtus::Attribute.build(String) unless @types[:email]
+    attributes['email'] = @types[:email].coerce(val)
+  end
+
+  def credits
+    attributes['credits']
+  end
+
+  def credits=(val)
+    @types ||= {}
+    @types[:credits] = Virtus::Attribute.build(BigDecimal) unless @types[:credits]
+    attributes['credits'] = @types[:credits].coerce(val)
   end
 
   def created_at
@@ -47,7 +63,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def created_at=(val)
-    attributes['created_at'] = val
+    @types ||= {}
+    @types[:created_at] = Virtus::Attribute.build(DateTime) unless @types[:created_at]
+    attributes['created_at'] = @types[:created_at].coerce(val)
   end
 
   def updated_at
@@ -55,7 +73,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def updated_at=(val)
-    attributes['updated_at'] = val
+    @types ||= {}
+    @types[:updated_at] = Virtus::Attribute.build(DateTime) unless @types[:updated_at]
+    attributes['updated_at'] = @types[:updated_at].coerce(val)
   end
 
   def password_digest
@@ -63,7 +83,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def password_digest=(val)
-    attributes['password_digest'] = val
+    @types ||= {}
+    @types[:password_digest] = Virtus::Attribute.build(String) unless @types[:password_digest]
+    attributes['password_digest'] = @types[:password_digest].coerce(val)
   end
 
   def remember_token
@@ -71,7 +93,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def remember_token=(val)
-    attributes['remember_token'] = val
+    @types ||= {}
+    @types[:remember_token] = Virtus::Attribute.build(String) unless @types[:remember_token]
+    attributes['remember_token'] = @types[:remember_token].coerce(val)
   end
 
   def admin
@@ -79,7 +103,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def admin=(val)
-    attributes['admin'] = val
+    @types ||= {}
+    @types[:admin] = Virtus::Attribute.build(Virtus::Attribute::Boolean) unless @types[:admin]
+    attributes['admin'] = @types[:admin].coerce(val)
   end
 
   ##################################

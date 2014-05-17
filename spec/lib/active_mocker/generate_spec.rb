@@ -24,12 +24,12 @@ require 'erb'
 describe ActiveMocker::Generate do
 
   before(:each) do
-    spec_root = File.expand_path('../../../../', __FILE__)
+    app_root = File.expand_path('../../../../', __FILE__)
     ActiveMocker.config do |config|
       # Required Options
-      config.schema_file = File.join(spec_root, 'sample_app_rails_4/db/schema.rb')
-      config.model_dir   = File.join(spec_root, 'sample_app_rails_4/app/models')
-      config.mock_dir    = File.join(spec_root, '/mocks')
+      config.schema_file = File.join(app_root, 'sample_app_rails_4/db/schema.rb')
+      config.model_dir   = File.join(app_root, 'sample_app_rails_4/app/models')
+      config.mock_dir    = File.join(app_root, 'sample_app_rails_4/spec/mocks')
       # Logging
       config.log_level = Logger::WARN       #default
     end

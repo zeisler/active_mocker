@@ -18,12 +18,14 @@ class <%= class_name %> < ::ActiveHash::Base
   #   Attributes getter/setters    #
   ##################################
 <% attributes.each do |meth| %>
-  def <%= meth %>
-    attributes['<%= meth %>']
+  def <%= meth.name %>
+    attributes['<%= meth.name %>']
   end
 
-  def <%= meth %>=(val)
-    attributes['<%= meth %>'] = val
+  def <%= meth.name %>=(val)
+    @types ||= {}
+    @types[:<%= meth.name %>] = Virtus::Attribute.build(<%= meth.type %>) unless @types[:<%= meth.name %>]
+    attributes['<%= meth.name %>'] = @types[:<%= meth.name %>].coerce(val)
   end
 <% end %>
   ##################################

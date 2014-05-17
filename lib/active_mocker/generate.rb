@@ -59,7 +59,7 @@ class Generate
       # Schema Attributes
       mock_template.class_name      = mock_class_name(table.name)
       mock_template.attribute_names = table.column_names
-      mock_template.attributes      = table.column_names
+      mock_template.attributes      = field_type_to_class(table.fields)
 
       # Model associations
       mock_template.single_associations     = model_definition(table.name).single_relationships
@@ -67,15 +67,18 @@ class Generate
       mock_template.association_names       = [*model_definition(table.name).single_relationships, *model_definition(table.name).collections]
 
       # Model Methods
-      mock_template.instance_methods      = instance_methods(table.name).methods
+      mock_template.instance_methods       = instance_methods(table.name).methods
       mock_template.model_instance_methods = instance_methods(table.name).model_instance_methods
-      mock_template.class_methods         = class_methods(table.name).methods
+      mock_template.class_methods          = class_methods(table.name).methods
       mock_template.model_class_methods    = class_methods(table.name).model_class_methods
 
       klass_str = mock_template.render( File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read)
       FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
-      rescue
+      Logger_.info "saving mock #{table_to_model_file(table.name)} to #{mock_dir}"
+
+      rescue StandardError => e
+        Logger_.debug e
         Logger_.debug "failed to load #{table_to_model_file(table.name)} model"
         next
       end
@@ -83,7 +86,30 @@ class Generate
 
   end
 
+  def field_type_to_class(fields)
+    fields.map do |field|
+      field.type = case field.type
+         when :integer then
+           Fixnum
+         when :float then
+           Float
+         when :decimal then
+           BigDecimal
+         when :timestamp, :time then
+           Time
+         when :datetime then
+           DateTime
+         when :date then
+           Date
+         when :text, :string, :binary then
+           String
+         when :boolean then
+           Virtus::Attribute::Boolean
+       end
+      field
+    end
 
+  end
 
 
   def mock_class_name(table_name)

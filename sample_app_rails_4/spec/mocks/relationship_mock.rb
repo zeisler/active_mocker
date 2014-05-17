@@ -23,7 +23,9 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def id=(val)
-    attributes['id'] = val
+    @types ||= {}
+    @types[:id] = Virtus::Attribute.build(Fixnum) unless @types[:id]
+    attributes['id'] = @types[:id].coerce(val)
   end
 
   def follower_id
@@ -31,7 +33,9 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def follower_id=(val)
-    attributes['follower_id'] = val
+    @types ||= {}
+    @types[:follower_id] = Virtus::Attribute.build(Fixnum) unless @types[:follower_id]
+    attributes['follower_id'] = @types[:follower_id].coerce(val)
   end
 
   def followed_id
@@ -39,7 +43,9 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def followed_id=(val)
-    attributes['followed_id'] = val
+    @types ||= {}
+    @types[:followed_id] = Virtus::Attribute.build(Fixnum) unless @types[:followed_id]
+    attributes['followed_id'] = @types[:followed_id].coerce(val)
   end
 
   def created_at
@@ -47,7 +53,9 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def created_at=(val)
-    attributes['created_at'] = val
+    @types ||= {}
+    @types[:created_at] = Virtus::Attribute.build(DateTime) unless @types[:created_at]
+    attributes['created_at'] = @types[:created_at].coerce(val)
   end
 
   def updated_at
@@ -55,7 +63,9 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def updated_at=(val)
-    attributes['updated_at'] = val
+    @types ||= {}
+    @types[:updated_at] = Virtus::Attribute.build(DateTime) unless @types[:updated_at]
+    attributes['updated_at'] = @types[:updated_at].coerce(val)
   end
 
   ##################################

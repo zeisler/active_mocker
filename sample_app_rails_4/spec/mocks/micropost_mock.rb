@@ -23,7 +23,9 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def id=(val)
-    attributes['id'] = val
+    @types ||= {}
+    @types[:id] = Virtus::Attribute.build(Fixnum) unless @types[:id]
+    attributes['id'] = @types[:id].coerce(val)
   end
 
   def content
@@ -31,7 +33,9 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def content=(val)
-    attributes['content'] = val
+    @types ||= {}
+    @types[:content] = Virtus::Attribute.build(String) unless @types[:content]
+    attributes['content'] = @types[:content].coerce(val)
   end
 
   def user_id
@@ -39,7 +43,9 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def user_id=(val)
-    attributes['user_id'] = val
+    @types ||= {}
+    @types[:user_id] = Virtus::Attribute.build(Fixnum) unless @types[:user_id]
+    attributes['user_id'] = @types[:user_id].coerce(val)
   end
 
   def created_at
@@ -47,7 +53,9 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def created_at=(val)
-    attributes['created_at'] = val
+    @types ||= {}
+    @types[:created_at] = Virtus::Attribute.build(DateTime) unless @types[:created_at]
+    attributes['created_at'] = @types[:created_at].coerce(val)
   end
 
   def updated_at
@@ -55,7 +63,9 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def updated_at=(val)
-    attributes['updated_at'] = val
+    @types ||= {}
+    @types[:updated_at] = Virtus::Attribute.build(DateTime) unless @types[:updated_at]
+    attributes['updated_at'] = @types[:updated_at].coerce(val)
   end
 
   ##################################

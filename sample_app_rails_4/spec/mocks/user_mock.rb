@@ -37,7 +37,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def email
-    @attributes['email'] || ""
+    @attributes['email'].nil? ?  "" : @attributes['email']
   end
 
   def email=(val)
@@ -82,16 +82,16 @@ class UserMock < ::ActiveHash::Base
   end
 
   def remember_token
-    @attributes['remember_token']
+    @attributes['remember_token'].nil? ?  true : @attributes['remember_token']
   end
 
   def remember_token=(val)
-    type = (types[:remember_token] ||= Virtus::Attribute.build(String))
+    type = (types[:remember_token] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))
     @attributes['remember_token'] = type.coerce(val)
   end
 
   def admin
-    @attributes['admin'] || false
+    @attributes['admin'].nil? ?  false : @attributes['admin']
   end
 
   def admin=(val)

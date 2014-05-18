@@ -20,7 +20,7 @@ class <%= class_name %> < ::ActiveHash::Base
 <% attributes.each do |meth| %>
   def <%= meth.name %>
   <% unless meth.options[:default].nil? -%>
-  @attributes['<%= meth.name %>'] || <%= meth.default.class == String ? meth.default.inspect : meth.default %>
+  @attributes['<%= meth.name %>'].nil? ?  <%= meth.default.class == String ? meth.default.inspect : meth.default %> : @attributes['<%= meth.name %>']
   <% else -%>
   @attributes['<%= meth.name %>']
   <% end -%>

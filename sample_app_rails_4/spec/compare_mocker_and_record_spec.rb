@@ -44,11 +44,11 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     let(:user_mock){UserMock.new(attributes)}
 
     it 'mock' do
-      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
+      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false})
     end
 
     it 'AR' do
-      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
+      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false})
     end
 
   end
@@ -62,12 +62,12 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     let(:user_mock){UserMock.new(create_attributes)}
 
     it 'the Mock when adding an association will not set the _id attribute, do it manually' do
-      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
+      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false})
       expect(user_mock.microposts).to eq [micropost]
     end
 
     it 'Ar will not include associations in attributes' do
-      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
+      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false})
       expect(user_ar.microposts).to eq [micropost]
     end
 
@@ -179,6 +179,43 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       expect(user_mock.microposts.sum(:user_id)).to eq 3
 
     end
+
+  end
+
+  describe 'default values' do
+
+    context 'if nil values are defaulted' do
+
+      it 'ar' do
+        user = User.new
+        expect(user.admin).to eq false
+        expect(user.remember_token).to eq true
+      end
+
+      it 'mock' do
+        user = UserMock.new
+        expect(user.admin).to eq false
+        expect(user.remember_token).to eq true
+      end
+
+    end
+
+    context 'values can be passed' do
+
+      it 'ar' do
+        user = User.new(admin: true, remember_token: false)
+        expect(user.admin).to eq true
+        expect(user.remember_token).to eq false
+      end
+
+      it 'mock' do
+        user = UserMock.new(admin: true, remember_token: false)
+        expect(user.admin).to eq true
+        expect(user.remember_token).to eq false
+      end
+
+    end
+
 
   end
 

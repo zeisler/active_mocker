@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20130315230445) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
-    t.string   "remember_token"
+    t.boolean   "remember_token", default: true
     t.boolean  "admin",           default: false
   end
 

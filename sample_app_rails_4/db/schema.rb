@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20130315230445) do
 
   create_table "users", force: true do |t|
     t.string   "name"
-    t.string   "email"
+    t.string   "email",    default: ""
     t.decimal  "credits"
     t.datetime "created_at"
     t.datetime "updated_at"

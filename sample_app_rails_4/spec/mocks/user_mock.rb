@@ -37,7 +37,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def email
-    @attributes['email']
+    @attributes['email'] || ""
   end
 
   def email=(val)

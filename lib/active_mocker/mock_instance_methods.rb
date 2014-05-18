@@ -43,11 +43,11 @@ module MockInstanceMethods
   private
 
   def read_attribute(attr)
-    attributes[attr]
+    @attributes[attr]
   end
 
   def write_attribute(attr, value)
-    attributes[attr] = value
+    @attributes[attr] = value
   end
 
   def read_association(attr)

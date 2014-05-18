@@ -72,6 +72,22 @@ describe ActiveMocker::CollectionAssociation do
 
     end
 
+  end
+
+  describe 'each' do
+
+    it 'works' do
+      expect(described_class.new([1,2]).each{|a| a + a}).to eq [1, 2]
+
+    end
+
+  end
+
+  describe 'map' do
+
+    it 'works' do
+      expect(described_class.new([1, 2]).map { |a| a + a }).to eq [2, 4]
+    end
 
   end
 

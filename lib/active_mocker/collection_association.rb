@@ -2,6 +2,8 @@ module ActiveMocker
 
   class CollectionAssociation
 
+    include Enumerable
+
     def initialize(collection=[])
       @association = [*collection]
     end
@@ -20,6 +22,12 @@ module ActiveMocker
 
     def ==(other_ary)
       association == other_ary
+    end
+
+    def each(&block)
+      association.each do |item|
+        block.call(item)
+      end
     end
 
     def to_a

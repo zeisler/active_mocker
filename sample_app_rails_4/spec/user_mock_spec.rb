@@ -1,10 +1,16 @@
 require 'rspec'
-$:.unshift File.expand_path('../', __FILE__)
-load 'mocks/user_mock.rb'
+$:.unshift File.expand_path('../../', __FILE__)
+APP_ROOT =  File.expand_path('../../', __FILE__)
+
+require 'config/initializers/active_mocker.rb'
+load 'spec/mocks/user_mock.rb'
 
 describe UserMock do
 
-  before(:each){ UserMock.clear_mock }
+  before(:each){
+    ActiveMocker::Generate.new
+    UserMock.clear_mock
+  }
 
   describe '::column_names' do
 
@@ -36,13 +42,14 @@ describe UserMock do
     end
 
     it 'add has_many relationship' do
-
       expect(UserMock.new.microposts.class).to eq ActiveMocker::CollectionAssociation
       expect(UserMock.new.microposts.count).to eq 0
       mock_inst = UserMock.new
       mock_inst.microposts << 1
       expect(mock_inst.microposts.count).to eq 1
-
+      mock_inst.microposts << 1
+      expect(mock_inst.microposts.count).to eq 2
+      expect(mock_inst.microposts.to_a).to eq [1, 1]
     end
 
   end

@@ -19,13 +19,16 @@ class <%= class_name %> < ::ActiveHash::Base
   ##################################
 <% attributes.each do |meth| %>
   def <%= meth.name %>
-    attributes['<%= meth.name %>']
-  end
+  <% unless meth.options[:default].nil? -%>
+  @attributes['<%= meth.name %>'] || <%= meth.default %>
+  <% else -%>
+  @attributes['<%= meth.name %>']
+  <% end -%>
+end
 
   def <%= meth.name %>=(val)
-    @types ||= {}
-    @types[:<%= meth.name %>] = Virtus::Attribute.build(<%= meth.type %>) unless @types[:<%= meth.name %>]
-    attributes['<%= meth.name %>'] = @types[:<%= meth.name %>].coerce(val)
+    type = (types[:<%= meth.name %>] ||= Virtus::Attribute.build(<%= meth.type %>))
+    @attributes['<%= meth.name %>'] = type.coerce(val)
   end
 <% end %>
   ##################################
@@ -43,32 +46,27 @@ class <%= class_name %> < ::ActiveHash::Base
   def <%= meth %>=(val)
     associations['<%= meth %>'] = val
   end
-<% end %>
+<% end -%>
 <% collection_associations.each do |meth| %>
   def <%= meth %>
-    associations['<%= meth %>']
+    associations['<%= meth %>'] ||= ActiveMocker::CollectionAssociation.new
   end
 
   def <%= meth %>=(val)
     associations['<%= meth %>'] = ActiveMocker::CollectionAssociation.new(val)
   end
-<% end %>
+<% end -%>
+
   ##################################
   #  Model Methods getter/setters  #
   ##################################
 
   def self.model_instance_methods
-    return @model_instance_methods if @model_instance_methods
-    @model_instance_methods = {}<% model_instance_methods.each do |key, value| %>
-    @model_instance_methods[:<%= key %>] = :not_implemented<% end %>
-    @model_instance_methods
+    @model_instance_methods ||= <%= model_instance_methods %>
   end
 
   def self.model_class_methods
-    return @model_class_methods if @model_class_methods
-    @model_class_methods = {}<% model_class_methods.each do |key, value| %>
-    @model_class_methods[:<%= key %>] = :not_implemented<% end %>
-    @model_class_methods
+    @model_class_methods ||= <%= model_class_methods %>
   end
 
   def self.clear_mock
@@ -77,17 +75,17 @@ class <%= class_name %> < ::ActiveHash::Base
   end
 <% instance_methods.each do |method| %>
   def <%= method.method %>(<%= method.params %>)
-    block =  model_instance_methods[<%= method.method.inspect %>]
-    self.class.is_implemented(block, "#<%= method.method %>")
+    block =  model_instance_methods['<%= method.method %>']
+    self.class.is_implemented(block, '#<%= method.method %>')
     instance_exec(*[<%= method.params_pass %>], &block)
   end
-<% end %>
+<% end -%>
 <% class_methods.each do |method| %>
   def self.<%= method.method %>(<%= method.params %>)
-    block =  model_class_methods[<%= method.method.inspect %>]
-    is_implemented(block, "::<%= method.method %>")
+    block =  model_class_methods['<%= method.method %>']
+    is_implemented(block, '::<%= method.method %>')
     instance_exec(*[<%= method.params_pass %>], &block)
   end
-<% end %>
+<% end -%>
 
 end

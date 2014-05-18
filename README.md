@@ -1,11 +1,12 @@
 # ActiveMocker
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.png?branch=master)](https://travis-ci.org/zeisler/active_mocker)
 
-Create static mocks from active record models without loading rails or running a database.
+Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parse the schema definition and the definded methods on a model then saves a ruby file that can be included with a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
 
 Example from a real app
-Finished in 0.54599 seconds
-190 examples, 0 failures
+
+		Finished in 0.54599 seconds
+		190 examples, 0 failures
 
 ## Installation
 
@@ -21,11 +22,37 @@ Or install it yourself as:
 
     $ gem install active_mocker
 
+
+### Setup
+  config/initializers/active_mocker.rb
+
+    ActiveMocker::Generate.configure do |config|
+      # Required Options
+      config.schema_file = File.join(Rails.root, 'db/schema.rb')
+      config.model_dir   = File.join(Rails.root, 'app/models')
+      config.mock_dir    = File.join(Rails.root, 'spec/mocks')
+      # Logging
+      config.logger      = Rails.logger
+    end
+
+Here is an example of a rake task to regenerate mocks after every schema modifiation. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.
+
+  lib/tasks/active_mocker.rake
+
+    task rebuild_mocks: :environment do
+      puts 'rebuilding mocks'
+      ActiveMocker.create_mocks
+    end
+
+    ['db:schema:load', 'db:migrate', 'db:reset'].each do |task|
+      Rake::Task[task].enhance do
+        Rake::Task['rebuild_mocks'].invoke
+      end
+    end
+
 ## Usage
 
-Needs updating, for now see the rails sample application
-
-    #db/schema.rb
+ db/schema.rb
 
     ActiveRecord::Schema.define(version: 20140327205359) do
 
@@ -52,22 +79,11 @@ Needs updating, for now see the rails sample application
       end
 
     end
+    
 
-    require 'active_mocker'
+ spec/models/person_spec.rb
 
-    ActiveMocker.configure do |config|
-      # Required Options
-      config.schema_file = "#{APP_ROOT}/db/schema.rb"
-      config.model_dir   = "#{APP_ROOT}/app/models"
-      # Additional Options
-      config.schema_attributes   = true  #default
-      config.model_attributes    = true  #default
-      # Logging
-      config.log_level = Logger::WARN       #default
-    end
-
-    ActiveMocker.mock('Person')
-        => PersonMock
+    load 'spec/mocks/person_mock.rb'
 
     PersonMock.column_names
         => ["id", "account_id", "first_name", "last_name", "address", "city"]
@@ -80,7 +96,7 @@ Needs updating, for now see the rails sample application
 
 ### When schema.rb changes, the mock fails
 
-     #db/schema.rb
+ db/schema.rb
 
      ActiveRecord::Schema.define(version: 20140327205359) do
 
@@ -116,7 +132,7 @@ Needs updating, for now see the rails sample application
 
 ### When the model changes, the mock fails
 
-    #app/models/person.rb
+ app/models/person.rb
 
     class Person < ActiveRecord::Base
       belongs_to :account
@@ -169,13 +185,33 @@ Needs updating, for now see the rails sample application
 * attributes
   * update
   * save
-  * write_attribute - (private)
+  * write_attribute - (private, can be used within an included module)
   * read_attribute  - (private)
+
+  **has_many associations**
+  
+ * empty?
+ * length/size/count
+ * uniq
+ * replace
+ * first/last
+ * concat
+ * include
+ * push
+ * clear
+ * take
+
+  **Schema/Migration Option Support**
+ 
+ * All schema types are supported and on initalization coerced by Virtus. If coercsion fails the passed value will be retained.
+ * Default value 
 
 ### Known Limitations
 
-* **::mock** model names and table names must follow the default ActiveRecord naming pattern.
-* Included/extended module methods will not be included on the mock.
+* Model names and table names must follow the default ActiveRecord naming pattern.
+* Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup. 
+* Deleting one record at a time is not support, this is a limitation of ActiveHash.
+* Queries will not call other mocks classes, for example when using `where` all attributes must reside inside of each record.
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

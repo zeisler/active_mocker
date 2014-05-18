@@ -43,8 +43,12 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     let(:user_ar){User.new(attributes)}
     let(:user_mock){UserMock.new(attributes)}
 
-    it 'they are the same' do
-      expect(user_mock.attributes).to eq user_ar.attributes
+    it 'mock' do
+      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
+    end
+
+    it 'AR' do
+      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
     end
 
   end
@@ -58,12 +62,12 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     let(:user_mock){UserMock.new(create_attributes)}
 
     it 'the Mock when adding an association will not set the _id attribute, do it manually' do
-      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => nil})
+      expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
       expect(user_mock.microposts).to eq [micropost]
     end
 
     it 'Ar will not include associations in attributes' do
-      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => nil})
+      expect(user_ar.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => nil, "admin" => false})
       expect(user_ar.microposts).to eq [micropost]
     end
 
@@ -138,6 +142,42 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     it 'will coerce integer to string' do
       expect(User.create(name: 1).reload.name).to eq '1'
       expect(UserMock.new(name: 1).name).to eq '1'
+    end
+
+  end
+
+  describe 'CollectionAssociation' do
+
+    let(:support_array_methods) { [:<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?] }
+
+    it 'supported array methods' do
+      mp1 = Micropost.create!(content: 'text')
+      mp2 = Micropost.create!(content: 'text')
+      user = User.create(microposts: [mp1, mp2])
+
+      mpm1 = MicropostMock.create
+      mpm2 = MicropostMock.create
+      user_mock = UserMock.create(microposts: [mpm1, mpm2])
+
+      expect(user.microposts.methods).to include *support_array_methods
+      expect(user_mock.microposts.methods).to include *support_array_methods
+      expect(user.microposts.take(1).count).to eq(1)
+      expect(user_mock.microposts.take(1).count).to eq(1)
+
+    end
+
+    it '#sum' do
+      mp1 = Micropost.create!(content: 'text')
+      mp2 = Micropost.create!(content: 'text')
+      user = User.create(microposts: [mp1, mp2])
+      expect(user.microposts.sum(:user_id)).to eq 2
+
+      mpm1 = MicropostMock.create(user_id: 1)
+      mpm2 = MicropostMock.create(user_id: 2)
+      user_mock = UserMock.create(microposts: [mpm1, mpm2])
+
+      expect(user_mock.microposts.sum(:user_id)).to eq 3
+
     end
 
   end

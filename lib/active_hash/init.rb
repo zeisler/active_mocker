@@ -5,9 +5,10 @@ module ActiveHash
 
     module Init
 
-      attr_reader :associations
+      attr_reader :associations, :types
 
       def initialize(attributes = {})
+        @types = {}
         filter_associations(HashWithIndifferentAccess.new(attributes))
         @attributes.dup.merge(@associations.dup).each do |key, value|
           send "#{key}=", value #maybe could just check if responds_to method? How AR works?

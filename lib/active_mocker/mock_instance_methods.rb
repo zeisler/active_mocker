@@ -1,6 +1,11 @@
 module ActiveMocker
 module MockInstanceMethods
 
+  def attributes
+    self.class.attribute_names.each{|a| @attributes[a.to_s] = send(a) }
+    @attributes
+  end
+
   def mock_instance_method(method, &block)
     model_instance_methods[method] = block
   end

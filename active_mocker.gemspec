@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ActiveMocker::VERSION
   spec.authors       = ["Dustin Zeisler"]
   spec.email         = ["dustin@zive.me"]
-  spec.summary       = %q{Create static mocks from active record models without loading rails or running a database.}
-  spec.description   = %q{Create static mocks from active record models without loading rails or running a database. The Mock's methods have the same arguments as the AR model and if they change you get a error in your test.}
+  spec.summary       = %q{Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database.}
+  spec.description   = %q{Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parse the schema definition and the definded methods on a model then saves a ruby file that can be included with a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.}
   spec.homepage      = "https://github.com/zeisler/active_mocker"
   spec.license       = "MIT"
 

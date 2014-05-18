@@ -9,8 +9,13 @@ require 'active_mocker/logger'
 require 'active_mocker/active_record'
 require 'active_mocker/model_reader'
 require 'active_mocker/reparameterize'
+require_relative '../../unit_logger'
 
 describe ActiveMocker::ModelReader do
+
+  before(:all) do
+    ActiveMocker::Logger.set(UnitLogger)
+  end
 
   let(:subject){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}).parse('model') }
 

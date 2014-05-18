@@ -1,9 +1,8 @@
-require 'rubygems'
+ENV["RAILS_ENV"] ||= 'test'
 
-  ENV["RAILS_ENV"] ||= 'test'
-  require File.expand_path("../../config/environment", __FILE__)
-  require 'rspec/rails'
-  require 'rspec/autorun'
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'
+require 'rspec/autorun'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
@@ -11,9 +10,9 @@ require 'rubygems'
 
   # Checks for pending migrations before tests are run.
   # If you are not using ActiveRecord, you can remove this line.
-  ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
+ActiveRecord::Migration.maintain_test_schema!
 
-  RSpec.configure do |config|
+RSpec.configure do |config|
     # ## Mock Framework
     #
     # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

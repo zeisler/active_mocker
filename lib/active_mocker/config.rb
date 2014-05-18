@@ -11,7 +11,9 @@ module ActiveMocker
                   :model_file_reader,
                   :clear_cache,
                   :migration_dir,
-                  :mock_dir
+                  :mock_dir,
+                  :logger,
+                  :log_level
 
     def config
       @@first_load ||= reload_default
@@ -20,7 +22,6 @@ module ActiveMocker
     end
 
     def reload_default
-      @log_level           = Logger::WARN
       @schema_file         = nil
       @model_dir           = nil
       @schema_attributes   = true
@@ -30,6 +31,7 @@ module ActiveMocker
       @model_file_reader   = nil
       @migration_dir       = nil
       @mock_dir            = nil
+      @logger              = ::Logger.new(STDOUT)
     end
 
     def check_required_settings
@@ -38,8 +40,9 @@ module ActiveMocker
       raise 'mock_dir must be specified'    if mock_dir.nil?
     end
 
-    def log_level=(level)
-      Logger_.level = level
+    def logger=(logger)
+      @logger = logger
+      Logger.set(logger)
     end
 
   end

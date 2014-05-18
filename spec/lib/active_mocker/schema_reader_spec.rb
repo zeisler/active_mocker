@@ -99,7 +99,7 @@ describe ActiveMocker::SchemaReader do
 
       it 'returns all fields from schema' do
         tables
-        expect(subject.tables.first.fields[1].to_h).to eq({:name=>"company_id", :type=>:integer, :options=>[]})
+        expect(subject.tables.first.fields[1].to_h).to eq({:name=>"company_id", :type=>:integer, :options=>{}})
       end
 
     end

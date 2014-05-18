@@ -19,53 +19,48 @@ class MicropostMock < ::ActiveHash::Base
   ##################################
 
   def id
-    attributes['id']
+    @attributes['id']
   end
 
   def id=(val)
-    @types ||= {}
-    @types[:id] = Virtus::Attribute.build(Fixnum) unless @types[:id]
-    attributes['id'] = @types[:id].coerce(val)
+    type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
+    @attributes['id'] = type.coerce(val)
   end
 
   def content
-    attributes['content']
+    @attributes['content']
   end
 
   def content=(val)
-    @types ||= {}
-    @types[:content] = Virtus::Attribute.build(String) unless @types[:content]
-    attributes['content'] = @types[:content].coerce(val)
+    type = (types[:content] ||= Virtus::Attribute.build(String))
+    @attributes['content'] = type.coerce(val)
   end
 
   def user_id
-    attributes['user_id']
+    @attributes['user_id']
   end
 
   def user_id=(val)
-    @types ||= {}
-    @types[:user_id] = Virtus::Attribute.build(Fixnum) unless @types[:user_id]
-    attributes['user_id'] = @types[:user_id].coerce(val)
+    type = (types[:user_id] ||= Virtus::Attribute.build(Fixnum))
+    @attributes['user_id'] = type.coerce(val)
   end
 
   def created_at
-    attributes['created_at']
+    @attributes['created_at']
   end
 
   def created_at=(val)
-    @types ||= {}
-    @types[:created_at] = Virtus::Attribute.build(DateTime) unless @types[:created_at]
-    attributes['created_at'] = @types[:created_at].coerce(val)
+    type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
+    @attributes['created_at'] = type.coerce(val)
   end
 
   def updated_at
-    attributes['updated_at']
+    @attributes['updated_at']
   end
 
   def updated_at=(val)
-    @types ||= {}
-    @types[:updated_at] = Virtus::Attribute.build(DateTime) unless @types[:updated_at]
-    attributes['updated_at'] = @types[:updated_at].coerce(val)
+    type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
+    @attributes['updated_at'] = type.coerce(val)
   end
 
   ##################################
@@ -84,22 +79,16 @@ class MicropostMock < ::ActiveHash::Base
     associations['user'] = val
   end
 
-
   ##################################
   #  Model Methods getter/setters  #
   ##################################
 
   def self.model_instance_methods
-    return @model_instance_methods if @model_instance_methods
-    @model_instance_methods = {}
-    @model_instance_methods
+    @model_instance_methods ||= {}
   end
 
   def self.model_class_methods
-    return @model_class_methods if @model_class_methods
-    @model_class_methods = {}
-    @model_class_methods[:from_users_followed_by] = :not_implemented
-    @model_class_methods
+    @model_class_methods ||= {"from_users_followed_by"=>:not_implemented}
   end
 
   def self.clear_mock
@@ -107,12 +96,10 @@ class MicropostMock < ::ActiveHash::Base
     delete_all
   end
 
-
   def self.from_users_followed_by(user)
-    block =  model_class_methods[:from_users_followed_by]
-    is_implemented(block, "::from_users_followed_by")
+    block =  model_class_methods['from_users_followed_by']
+    is_implemented(block, '::from_users_followed_by')
     instance_exec(*[user], &block)
   end
-
 
 end

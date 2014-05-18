@@ -20,6 +20,7 @@ require 'active_support/all'
 require 'active_hash/ar_api'
 require 'active_mocker/generate'
 require 'erb'
+require_relative '../../unit_logger'
 
 describe ActiveMocker::Generate do
 
@@ -30,8 +31,8 @@ describe ActiveMocker::Generate do
       config.schema_file = File.join(app_root, 'sample_app_rails_4/db/schema.rb')
       config.model_dir   = File.join(app_root, 'sample_app_rails_4/app/models')
       config.mock_dir    = File.join(app_root, 'sample_app_rails_4/spec/mocks')
-      # Logging
-      config.log_level = Logger::WARN       #default
+      config.logger = UnitLogger
+
     end
 
   end

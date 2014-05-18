@@ -6,8 +6,8 @@ module ActiveMocker
       begin
         super _module
       rescue => e
-        Logger_.debug e
-        Logger_.debug "ActiveMocker :: Can't include module #{_module} from class #{self.name}.\n #{caller}"
+        Logger.debug e
+        Logger.debug "ActiveMocker :: Can't include module #{_module} from class #{self.name}.\n #{caller}"
 
       end
     end
@@ -16,7 +16,7 @@ module ActiveMocker
       begin
         super _module
       rescue
-        Logger_.debug "ActiveMocker :: Can't extend module #{_module} from class #{self.name}..\n #{caller}"
+        Logger.debug "ActiveMocker :: Can't extend module #{_module} from class #{self.name}..\n #{caller}"
       end
     end
 

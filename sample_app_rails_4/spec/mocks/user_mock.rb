@@ -19,93 +19,84 @@ class UserMock < ::ActiveHash::Base
   ##################################
 
   def id
-    attributes['id']
+    @attributes['id']
   end
 
   def id=(val)
-    @types ||= {}
-    @types[:id] = Virtus::Attribute.build(Fixnum) unless @types[:id]
-    attributes['id'] = @types[:id].coerce(val)
+    type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
+    @attributes['id'] = type.coerce(val)
   end
 
   def name
-    attributes['name']
+    @attributes['name']
   end
 
   def name=(val)
-    @types ||= {}
-    @types[:name] = Virtus::Attribute.build(String) unless @types[:name]
-    attributes['name'] = @types[:name].coerce(val)
+    type = (types[:name] ||= Virtus::Attribute.build(String))
+    @attributes['name'] = type.coerce(val)
   end
 
   def email
-    attributes['email']
+    @attributes['email']
   end
 
   def email=(val)
-    @types ||= {}
-    @types[:email] = Virtus::Attribute.build(String) unless @types[:email]
-    attributes['email'] = @types[:email].coerce(val)
+    type = (types[:email] ||= Virtus::Attribute.build(String))
+    @attributes['email'] = type.coerce(val)
   end
 
   def credits
-    attributes['credits']
+    @attributes['credits']
   end
 
   def credits=(val)
-    @types ||= {}
-    @types[:credits] = Virtus::Attribute.build(BigDecimal) unless @types[:credits]
-    attributes['credits'] = @types[:credits].coerce(val)
+    type = (types[:credits] ||= Virtus::Attribute.build(BigDecimal))
+    @attributes['credits'] = type.coerce(val)
   end
 
   def created_at
-    attributes['created_at']
+    @attributes['created_at']
   end
 
   def created_at=(val)
-    @types ||= {}
-    @types[:created_at] = Virtus::Attribute.build(DateTime) unless @types[:created_at]
-    attributes['created_at'] = @types[:created_at].coerce(val)
+    type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
+    @attributes['created_at'] = type.coerce(val)
   end
 
   def updated_at
-    attributes['updated_at']
+    @attributes['updated_at']
   end
 
   def updated_at=(val)
-    @types ||= {}
-    @types[:updated_at] = Virtus::Attribute.build(DateTime) unless @types[:updated_at]
-    attributes['updated_at'] = @types[:updated_at].coerce(val)
+    type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
+    @attributes['updated_at'] = type.coerce(val)
   end
 
   def password_digest
-    attributes['password_digest']
+    @attributes['password_digest']
   end
 
   def password_digest=(val)
-    @types ||= {}
-    @types[:password_digest] = Virtus::Attribute.build(String) unless @types[:password_digest]
-    attributes['password_digest'] = @types[:password_digest].coerce(val)
+    type = (types[:password_digest] ||= Virtus::Attribute.build(String))
+    @attributes['password_digest'] = type.coerce(val)
   end
 
   def remember_token
-    attributes['remember_token']
+    @attributes['remember_token']
   end
 
   def remember_token=(val)
-    @types ||= {}
-    @types[:remember_token] = Virtus::Attribute.build(String) unless @types[:remember_token]
-    attributes['remember_token'] = @types[:remember_token].coerce(val)
+    type = (types[:remember_token] ||= Virtus::Attribute.build(String))
+    @attributes['remember_token'] = type.coerce(val)
   end
 
   def admin
-    attributes['admin']
+    @attributes['admin'] || false
   end
 
   def admin=(val)
-    @types ||= {}
-    @types[:admin] = Virtus::Attribute.build(Virtus::Attribute::Boolean) unless @types[:admin]
-    attributes['admin'] = @types[:admin].coerce(val)
+    type = (types[:admin] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))
+    @attributes['admin'] = type.coerce(val)
   end
 
   ##################################
@@ -116,9 +107,8 @@ class UserMock < ::ActiveHash::Base
     @association_names = [:microposts, :relationships, :followed_users, :reverse_relationships, :followers]
   end
 
-
   def microposts
-    associations['microposts']
+    associations['microposts'] ||= ActiveMocker::CollectionAssociation.new
   end
 
   def microposts=(val)
@@ -126,7 +116,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def relationships
-    associations['relationships']
+    associations['relationships'] ||= ActiveMocker::CollectionAssociation.new
   end
 
   def relationships=(val)
@@ -134,7 +124,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followed_users
-    associations['followed_users']
+    associations['followed_users'] ||= ActiveMocker::CollectionAssociation.new
   end
 
   def followed_users=(val)
@@ -142,7 +132,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def reverse_relationships
-    associations['reverse_relationships']
+    associations['reverse_relationships'] ||= ActiveMocker::CollectionAssociation.new
   end
 
   def reverse_relationships=(val)
@@ -150,7 +140,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followers
-    associations['followers']
+    associations['followers'] ||= ActiveMocker::CollectionAssociation.new
   end
 
   def followers=(val)
@@ -162,21 +152,11 @@ class UserMock < ::ActiveHash::Base
   ##################################
 
   def self.model_instance_methods
-    return @model_instance_methods if @model_instance_methods
-    @model_instance_methods = {}
-    @model_instance_methods[:feed] = :not_implemented
-    @model_instance_methods[:following?] = :not_implemented
-    @model_instance_methods[:follow!] = :not_implemented
-    @model_instance_methods[:unfollow!] = :not_implemented
-    @model_instance_methods
+    @model_instance_methods ||= {"feed"=>:not_implemented, "following?"=>:not_implemented, "follow!"=>:not_implemented, "unfollow!"=>:not_implemented}
   end
 
   def self.model_class_methods
-    return @model_class_methods if @model_class_methods
-    @model_class_methods = {}
-    @model_class_methods[:new_remember_token] = :not_implemented
-    @model_class_methods[:digest] = :not_implemented
-    @model_class_methods
+    @model_class_methods ||= {"new_remember_token"=>:not_implemented, "digest"=>:not_implemented}
   end
 
   def self.clear_mock
@@ -185,41 +165,39 @@ class UserMock < ::ActiveHash::Base
   end
 
   def feed()
-    block =  model_instance_methods[:feed]
-    self.class.is_implemented(block, "#feed")
+    block =  model_instance_methods['feed']
+    self.class.is_implemented(block, '#feed')
     instance_exec(*[], &block)
   end
 
   def following?(other_user)
-    block =  model_instance_methods[:following?]
-    self.class.is_implemented(block, "#following?")
+    block =  model_instance_methods['following?']
+    self.class.is_implemented(block, '#following?')
     instance_exec(*[other_user], &block)
   end
 
   def follow!(other_user)
-    block =  model_instance_methods[:follow!]
-    self.class.is_implemented(block, "#follow!")
+    block =  model_instance_methods['follow!']
+    self.class.is_implemented(block, '#follow!')
     instance_exec(*[other_user], &block)
   end
 
   def unfollow!(other_user)
-    block =  model_instance_methods[:unfollow!]
-    self.class.is_implemented(block, "#unfollow!")
+    block =  model_instance_methods['unfollow!']
+    self.class.is_implemented(block, '#unfollow!')
     instance_exec(*[other_user], &block)
   end
 
-
   def self.new_remember_token()
-    block =  model_class_methods[:new_remember_token]
-    is_implemented(block, "::new_remember_token")
+    block =  model_class_methods['new_remember_token']
+    is_implemented(block, '::new_remember_token')
     instance_exec(*[], &block)
   end
 
   def self.digest(token)
-    block =  model_class_methods[:digest]
-    is_implemented(block, "::digest")
+    block =  model_class_methods['digest']
+    is_implemented(block, '::digest')
     instance_exec(*[token], &block)
   end
-
 
 end

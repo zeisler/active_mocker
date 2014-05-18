@@ -2,11 +2,11 @@ module ActiveMocker
 module MockClassMethods
 
   def mock_instance_method(method, &block)
-    model_instance_methods[method] = block
+    model_instance_methods[method.to_s] = block
   end
 
   def mock_class_method(method, &block)
-    model_class_methods[method] = block
+    model_class_methods[method.to_s] = block
   end
 
   def column_names

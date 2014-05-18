@@ -11,7 +11,8 @@ class Generate
                  :schema_file,
                  :model_file_reader,
                  :schema_file_reader,
-                 :mock_dir
+                 :mock_dir,
+                 :logger
 
   def initialize
     create_template
@@ -22,10 +23,10 @@ class Generate
   end
 
   def self.mock(model_name, force_reload: false)
-    load_mock(model_name, force_reload: force_reload)
+    load_mock(model_name)
   end
 
-  def self.load_mock(model_name, force_reload: false)
+  def self.load_mock(model_name)
     load File.join(mock_dir, "#{model_name.tableize.singularize}_mock.rb")
     "#{model_name}Mock".constantize
   end
@@ -53,6 +54,7 @@ class Generate
   end
 
   def create_template
+    mocks_created = 0
     tables.each do |table|
       begin
       mock_template = MockTemplate.new
@@ -75,15 +77,18 @@ class Generate
       klass_str = mock_template.render( File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read)
       FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
-      Logger_.info "saving mock #{table_to_model_file(table.name)} to #{mock_dir}"
+      logger.info "saving mock #{table_to_model_file(table.name)} to #{mock_dir}"
 
-      rescue StandardError => e
-        Logger_.debug e
-        Logger_.debug "failed to load #{table_to_model_file(table.name)} model"
+      rescue Exception => exception
+        logger.debug $!.backtrace
+        logger.debug exception
+        logger.info "failed to load #{table_to_model_file(table.name)} model"
         next
       end
-    end
+      mocks_created += 1
 
+    end
+    logger.info "Generated #{mocks_created} of #{tables.count} mocks"
   end
 
   def field_type_to_class(fields)
@@ -111,7 +116,6 @@ class Generate
 
   end
 
-
   def mock_class_name(table_name)
     "#{table_to_class_name(table_name)}Mock"
   end
@@ -120,9 +124,9 @@ class Generate
     model_instance_methods = []
     instance_methods = Methods.new
     instance_methods.methods = model_definition(table_name).instance_methods_with_arguments.map do |method|
-      m = method.keys.first
+      m = method.keys.first.to_s
       if m == :attributes
-        Logger_.warn "ActiveMocker Depends on the #attributes method. It will not be redefined for the model."
+        logger.warn "ActiveMocker Depends on the #attributes method. It will not be redefined for the model."
         next
       end
       params      = Reparameterize.call(method.values.first)
@@ -136,7 +140,8 @@ class Generate
       model_instance_methods << m
       instance_method
     end
-    instance_methods.model_instance_methods = model_instance_methods
+    instance_methods.model_instance_methods = {}
+    model_instance_methods.each{|meth| instance_methods.model_instance_methods[meth] = :not_implemented }
     instance_methods
   end
 
@@ -144,7 +149,7 @@ class Generate
     model_class_methods = []
     class_methods = Methods.new
     class_methods.methods = model_definition(table_name).class_methods_with_arguments.map do |method|
-      m = method.keys.first
+      m = method.keys.first.to_s
       params      = Reparameterize.call(method.values.first)
       params_pass = Reparameterize.call(method.values.first, true)
 
@@ -155,7 +160,8 @@ class Generate
       model_class_methods << m
       class_method
     end
-    class_methods.model_class_methods = model_class_methods
+    class_methods.model_class_methods = {}
+    model_class_methods.each { |meth| class_methods.model_class_methods[meth] = :not_implemented }
     class_methods
   end
 
@@ -181,7 +187,7 @@ class Generate
                   :model_class_methods
 
     def render(template)
-      ERB.new(template,nil,true).result(binding)
+      ERB.new(template, nil, '-').result(binding)
     end
   end
 

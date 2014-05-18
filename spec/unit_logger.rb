@@ -8,6 +8,8 @@ class UnitLogger
 
   def self.unit
     return @logger unless @logger.nil?
+    FileUtils::mkdir_p 'log' unless File.directory? 'log'
+    File.open('log/test.log', 'w').close unless File.exist? 'log/test.log'
     @logger = Logger.new('log/test.log')
     @logger.formatter = proc do |severity, datetime, progname, msg|
       msg

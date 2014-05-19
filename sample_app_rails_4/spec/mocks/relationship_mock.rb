@@ -6,6 +6,13 @@ class RelationshipMock < ::ActiveHash::Base
   include ActiveMocker::MockInstanceMethods
   extend  ActiveMocker::MockClassMethods
 
+  def initialize(attributes = {})
+    @attributes = HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
+    @associations = HashWithIndifferentAccess.new({:follower=>nil, :followed=>nil})
+    super(attributes)
+  end
+
+
   def self.column_names
     ["id", "follower_id", "followed_id", "created_at", "updated_at"]
   end
@@ -19,8 +26,8 @@ class RelationshipMock < ::ActiveHash::Base
   ##################################
 
   def id
-    @attributes['id']
-  end
+  @attributes['id']
+end
 
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
@@ -28,8 +35,8 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def follower_id
-    @attributes['follower_id']
-  end
+  @attributes['follower_id']
+end
 
   def follower_id=(val)
     type = (types[:follower_id] ||= Virtus::Attribute.build(Fixnum))
@@ -37,8 +44,8 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def followed_id
-    @attributes['followed_id']
-  end
+  @attributes['followed_id']
+end
 
   def followed_id=(val)
     type = (types[:followed_id] ||= Virtus::Attribute.build(Fixnum))
@@ -46,8 +53,8 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def created_at
-    @attributes['created_at']
-  end
+  @attributes['created_at']
+end
 
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
@@ -55,8 +62,8 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def updated_at
-    @attributes['updated_at']
-  end
+  @attributes['updated_at']
+end
 
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))

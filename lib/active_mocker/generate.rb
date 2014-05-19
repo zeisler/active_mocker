@@ -56,17 +56,19 @@ class Generate
   def create_template
     mocks_created = 0
     tables.each do |table|
-      begin
+      # begin
       mock_template = MockTemplate.new
       # Schema Attributes
       mock_template.class_name      = mock_class_name(table.name)
       mock_template.attribute_names = table.column_names
       mock_template.attributes      = field_type_to_class(table.fields)
+      mock_template.default_attributes =default_attr_values(table.fields)
 
       # Model associations
       mock_template.single_associations     = model_definition(table.name).single_relationships
       mock_template.collection_associations = model_definition(table.name).collections
       mock_template.association_names       = [*model_definition(table.name).single_relationships, *model_definition(table.name).collections]
+      mock_template.associations            = associations(mock_template.association_names)
 
       # Model Methods
       mock_template.instance_methods       = instance_methods(table.name).methods
@@ -79,12 +81,12 @@ class Generate
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
       logger.info "saving mock #{table_to_model_file(table.name)} to #{mock_dir}"
 
-      rescue Exception => exception
-        logger.debug $!.backtrace
-        logger.debug exception
-        logger.info "failed to load #{table_to_model_file(table.name)} model"
-        next
-      end
+      # rescue Exception => exception
+      #   logger.debug $!.backtrace
+      #   logger.debug exception
+      #   logger.info "failed to load #{table_to_model_file(table.name)} model"
+        # next
+      # end
       mocks_created += 1
 
     end
@@ -109,7 +111,7 @@ class Generate
          when :text, :string, :binary then
            String
          when :boolean then
-           Virtus::Attribute::Boolean
+           ::Virtus::Attribute::Boolean
        end
       field
     end
@@ -118,6 +120,27 @@ class Generate
 
   def mock_class_name(table_name)
     "#{table_to_class_name(table_name)}Mock"
+  end
+
+  def associations(names)
+    hash = {}
+    names.each do |name|
+      hash[name] = nil
+    end
+    hash
+  end
+
+  def default_attr_values(fields)
+    attributes = {}
+    fields.each do |f|
+      if f.options[:default].nil?
+        attributes[f.name] = nil
+      else
+        value = f.default.class == String ? f.default : f.default
+        attributes[f.name] = value
+      end
+    end
+    attributes
   end
 
   def instance_methods(table_name)
@@ -184,7 +207,9 @@ class Generate
                   :instance_methods,
                   :class_methods,
                   :model_instance_methods,
-                  :model_class_methods
+                  :model_class_methods,
+                  :default_attributes,
+                  :associations
 
     def render(template)
       ERB.new(template, nil, '-').result(binding)

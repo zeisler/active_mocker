@@ -12,6 +12,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     Micropost.destroy_all
   end
 
+
   let(:attributes) { {name: 'Dustin Zeisler', email: 'dustin@example.com'} }
   let(:attributes_with_admin) { {name: 'Dustin Zeisler', email: 'dustin@example.com', admin: true} }
 
@@ -215,7 +216,6 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
     end
-
 
   end
 

@@ -6,6 +6,13 @@ class MicropostMock < ::ActiveHash::Base
   include ActiveMocker::MockInstanceMethods
   extend  ActiveMocker::MockClassMethods
 
+  def initialize(attributes = {})
+    @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
+    @associations = HashWithIndifferentAccess.new({:user=>nil})
+    super(attributes)
+  end
+
+
   def self.column_names
     ["id", "content", "user_id", "created_at", "updated_at"]
   end
@@ -19,8 +26,8 @@ class MicropostMock < ::ActiveHash::Base
   ##################################
 
   def id
-    @attributes['id']
-  end
+  @attributes['id']
+end
 
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
@@ -28,8 +35,8 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def content
-    @attributes['content']
-  end
+  @attributes['content']
+end
 
   def content=(val)
     type = (types[:content] ||= Virtus::Attribute.build(String))
@@ -37,8 +44,8 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def user_id
-    @attributes['user_id']
-  end
+  @attributes['user_id']
+end
 
   def user_id=(val)
     type = (types[:user_id] ||= Virtus::Attribute.build(Fixnum))
@@ -46,8 +53,8 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def created_at
-    @attributes['created_at']
-  end
+  @attributes['created_at']
+end
 
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
@@ -55,8 +62,8 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def updated_at
-    @attributes['updated_at']
-  end
+  @attributes['updated_at']
+end
 
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))

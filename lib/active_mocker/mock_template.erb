@@ -6,6 +6,13 @@ class <%= class_name %> < ::ActiveHash::Base
   include ActiveMocker::MockInstanceMethods
   extend  ActiveMocker::MockClassMethods
 
+  def initialize(attributes = {})
+    @attributes = HashWithIndifferentAccess.new(<%= default_attributes %>)
+    @associations = HashWithIndifferentAccess.new(<%= associations %>)
+    super(attributes)
+  end
+
+
   def self.column_names
     <%= attribute_names %>
   end
@@ -19,11 +26,7 @@ class <%= class_name %> < ::ActiveHash::Base
   ##################################
 <% attributes.each do |meth| %>
   def <%= meth.name %>
-  <% unless meth.options[:default].nil? -%>
-  @attributes['<%= meth.name %>'].nil? ?  <%= meth.default.class == String ? meth.default.inspect : meth.default %> : @attributes['<%= meth.name %>']
-  <% else -%>
   @attributes['<%= meth.name %>']
-  <% end -%>
 end
 
   def <%= meth.name %>=(val)

@@ -20,6 +20,7 @@ require 'active_support/all'
 require 'active_hash/ar_api'
 require 'active_mocker/generate'
 require 'erb'
+require 'virtus'
 require_relative '../../unit_logger'
 
 describe ActiveMocker::Generate do

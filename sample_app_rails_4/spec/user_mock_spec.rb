@@ -29,7 +29,7 @@ describe UserMock do
     end
 
     it 'will raise error if not an attribute or association' do
-      expect{UserMock.new(baz: "Hello")}.to raise_error('Rejected params: {"baz"=>"Hello"} for UserMock')
+      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMocker::RejectedParams, '{:baz=>"Hello"} for UserMock')
     end
 
   end

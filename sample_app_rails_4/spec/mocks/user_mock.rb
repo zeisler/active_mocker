@@ -27,7 +27,7 @@ class UserMock < ::ActiveHash::Base
 
   def id
   @attributes['id']
-end
+  end
 
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
@@ -36,7 +36,7 @@ end
 
   def name
   @attributes['name']
-end
+  end
 
   def name=(val)
     type = (types[:name] ||= Virtus::Attribute.build(String))
@@ -45,7 +45,7 @@ end
 
   def email
   @attributes['email']
-end
+  end
 
   def email=(val)
     type = (types[:email] ||= Virtus::Attribute.build(String))
@@ -54,7 +54,7 @@ end
 
   def credits
   @attributes['credits']
-end
+  end
 
   def credits=(val)
     type = (types[:credits] ||= Virtus::Attribute.build(BigDecimal))
@@ -63,7 +63,7 @@ end
 
   def created_at
   @attributes['created_at']
-end
+  end
 
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
@@ -72,7 +72,7 @@ end
 
   def updated_at
   @attributes['updated_at']
-end
+  end
 
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
@@ -81,7 +81,7 @@ end
 
   def password_digest
   @attributes['password_digest']
-end
+  end
 
   def password_digest=(val)
     type = (types[:password_digest] ||= Virtus::Attribute.build(String))
@@ -90,7 +90,7 @@ end
 
   def remember_token
   @attributes['remember_token']
-end
+  end
 
   def remember_token=(val)
     type = (types[:remember_token] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))
@@ -99,7 +99,7 @@ end
 
   def admin
   @attributes['admin']
-end
+  end
 
   def admin=(val)
     type = (types[:admin] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))

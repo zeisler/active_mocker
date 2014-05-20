@@ -27,7 +27,7 @@ class <%= class_name %> < ::ActiveHash::Base
 <% attributes.each do |meth| %>
   def <%= meth.name %>
   @attributes['<%= meth.name %>']
-end
+  end
 
   def <%= meth.name %>=(val)
     type = (types[:<%= meth.name %>] ||= Virtus::Attribute.build(<%= meth.type %>))

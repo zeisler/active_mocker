@@ -27,7 +27,7 @@ class MicropostMock < ::ActiveHash::Base
 
   def id
   @attributes['id']
-end
+  end
 
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
@@ -36,7 +36,7 @@ end
 
   def content
   @attributes['content']
-end
+  end
 
   def content=(val)
     type = (types[:content] ||= Virtus::Attribute.build(String))
@@ -45,7 +45,7 @@ end
 
   def user_id
   @attributes['user_id']
-end
+  end
 
   def user_id=(val)
     type = (types[:user_id] ||= Virtus::Attribute.build(Fixnum))
@@ -54,7 +54,7 @@ end
 
   def created_at
   @attributes['created_at']
-end
+  end
 
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
@@ -63,7 +63,7 @@ end
 
   def updated_at
   @attributes['updated_at']
-end
+  end
 
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))

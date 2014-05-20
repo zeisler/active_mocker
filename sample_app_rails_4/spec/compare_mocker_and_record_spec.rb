@@ -5,12 +5,21 @@ load 'mocks/micropost_mock.rb'
 
 describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
+  before(:each) do
+    User.destroy_all
+    UserMock.destroy_all
+    MicropostMock.destroy_all
+    Micropost.destroy_all
+  end
+
   after(:each) do
     UserMock.destroy_all
     User.destroy_all
     MicropostMock.destroy_all
     Micropost.destroy_all
   end
+
+ USER_CLASSES = [User, UserMock]
 
 
   let(:attributes) { {name: 'Dustin Zeisler', email: 'dustin@example.com'} }
@@ -185,36 +194,184 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   describe 'default values' do
 
-    context 'if nil values are defaulted' do
+      context 'default value of empty string' do
 
-      it 'ar' do
-        user = User.new
-        expect(user.admin).to eq false
-        expect(user.remember_token).to eq true
+        it "User" do
+          user = User.new
+          expect(user.email).to eq ""
+        end
+
+        it "UserMock" do
+          user = UserMock.new
+          expect(user.email).to eq ""
+        end
+
       end
 
-      it 'mock' do
-        user = UserMock.new
-        expect(user.admin).to eq false
-        expect(user.remember_token).to eq true
+      context 'default value of false' do
+
+        it "User" do
+          user = User.new
+          expect(user.admin).to eq false
+          expect(user.remember_token).to eq true
+        end
+
+        it "UserMock" do
+          user = UserMock.new
+          expect(user.admin).to eq false
+          expect(user.remember_token).to eq true
+        end
+
+      end
+
+      context 'values can be passed' do
+
+        it "User" do
+          user = User.new(admin: true, remember_token: false)
+          expect(user.admin).to eq true
+          expect(user.remember_token).to eq false
+        end
+
+        it "UserMock" do
+          user = UserMock.new(admin: true, remember_token: false)
+          expect(user.admin).to eq true
+          expect(user.remember_token).to eq false
+        end
+
+      end
+
+
+  end
+
+  describe 'delete' do
+
+    context 'delete a single record when only one exists' do
+
+      it "User" do
+        user = User.create
+        user.delete
+        expect(User.count).to eq 0
+      end
+
+      it "UserMock" do
+        user = UserMock.create
+        user.delete
+        expect(UserMock.count).to eq 0
       end
 
     end
 
-    context 'values can be passed' do
+    context 'deletes the last record when more than one exists' do
 
-      it 'ar' do
-        user = User.new(admin: true, remember_token: false)
-        expect(user.admin).to eq true
-        expect(user.remember_token).to eq false
+      it "User" do
+        User.create(email: '1')
+        User.create(email: '2')
+        user = User.create(email: '3')
+        user.delete
+        expect(User.count).to eq 2
+        User.create(email: '3')
+        expect(User.count).to eq 3
+
       end
 
-      it 'mock' do
-        user = UserMock.new(admin: true, remember_token: false)
-        expect(user.admin).to eq true
-        expect(user.remember_token).to eq false
+      it "UserMock" do
+        UserMock.create(email: '1')
+        UserMock.create(email: '2')
+        user = UserMock.create(email: '3')
+        user.delete
+        expect(UserMock.count).to eq 2
+        UserMock.create(email: '3')
+        expect(UserMock.count).to eq 3
+
       end
 
+    end
+
+    context 'deletes the middle record when more than one exists' do
+
+      it "User" do
+        User.create(email: '0')
+        user2 =User.create(email: '1')
+        user1 = User.create(email: '2')
+        User.create(email: '3')
+        user1.delete
+        user2.delete
+        expect(User.count).to eq 2
+        User.create(email: '2')
+        User.create(email: '4')
+        expect(User.count).to eq 4
+      end
+
+      it "UserMock" do
+        UserMock.create(email: '0')
+        user2 =UserMock.create(email: '1')
+        user1 = UserMock.create(email: '2')
+        UserMock.create(email: '3')
+        user1.delete
+        user2.delete
+        expect(UserMock.count).to eq 2
+        UserMock.create(email: '2')
+        UserMock.create(email: '4')
+        expect(UserMock.count).to eq 4
+      end
+
+    end
+
+  end
+
+  describe '::destroy(id)' do
+
+    context 'delete a single record when only one exists' do
+
+      it "User" do
+        user = User.create
+        User.destroy(user.id)
+        expect(User.count).to eq 0
+      end
+
+      it "UserMock" do
+        user = UserMock.create
+        UserMock.destroy(user.id)
+        expect(UserMock.count).to eq 0
+      end
+
+    end
+
+  end
+
+  describe '::delete_all(conditions = nil)' do
+
+    it "User" do
+      user = User.create
+      expect(User.delete_all(id: user.id)).to eq 1
+      expect(User.count).to eq 0
+    end
+
+    it "UserMock" do
+      user = UserMock.create
+      expect(UserMock.delete_all(id: user.id)).to eq 1
+      expect(UserMock.count).to eq 0
+    end
+
+  end
+
+  describe '::where(conditions = nil).delete_all', pending: true do
+    it "User" do
+    pending{ 'new feature implement ActiveMocker::Relation array' }
+      user2 = User.create(email: '1')
+      user1 = User.create(email: '2')
+      expect(User.where(id: user1.id).delete_all).to eq 1
+      expect(User.where(id: user1.id).class).to eq User::ActiveRecord_Relation
+      expect(User.count).to eq 1
+    end
+
+    it "UserMock" do
+      pending { 'new feature implement ActiveMocker::Relation array' }
+      user2 = UserMock.create(email: '1')
+      user1 = UserMock.create(email: '2')
+      expect(UserMock.where(id: user1.id).class.name).to eq 'ActiveMocker::Relation'
+      expect(UserMock.where(id: user1.id).delete_all).to eq 1
+      expect(UserMock.count).to eq 1
     end
 
   end

@@ -27,7 +27,7 @@ class RelationshipMock < ::ActiveHash::Base
 
   def id
   @attributes['id']
-end
+  end
 
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
@@ -36,7 +36,7 @@ end
 
   def follower_id
   @attributes['follower_id']
-end
+  end
 
   def follower_id=(val)
     type = (types[:follower_id] ||= Virtus::Attribute.build(Fixnum))
@@ -45,7 +45,7 @@ end
 
   def followed_id
   @attributes['followed_id']
-end
+  end
 
   def followed_id=(val)
     type = (types[:followed_id] ||= Virtus::Attribute.build(Fixnum))
@@ -54,7 +54,7 @@ end
 
   def created_at
   @attributes['created_at']
-end
+  end
 
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
@@ -63,7 +63,7 @@ end
 
   def updated_at
   @attributes['updated_at']
-end
+  end
 
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))

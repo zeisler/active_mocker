@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dustin Zeisler"]
   spec.email         = ["dustin@zive.me"]
   spec.summary       = %q{Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database.}
-  spec.description   = %q{Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parse the schema definition and the definded methods on a model then saves a ruby file that can be included with a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.}
+  spec.description   = %q{Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parse the schema definition and the defined methods on a model then saves a ruby file that can be included with a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.}
   spec.homepage      = "https://github.com/zeisler/active_mocker"
   spec.license       = "MIT"
 

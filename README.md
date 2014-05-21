@@ -166,27 +166,28 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 ### ActiveRecord supported methods
 **class methods**
   
-* new
-  * create
+  * new
+  * create/create!
   * column_names
   * find
-  * find_by
-  * find_by!
+  * find_by/find_by!
   * find_or_create_by
   * find_or_initialize_by
-  * where - (only supports hash input)
+  * where(conditions_hash)
   * delete_all/destroy_all
+  * delete_all(conditions_hash)
+  * destroy(id)/delete(id)
   * all
   * count
   * first/last
+  
 
 **instance methods**
   
-* attributes
+  * attributes
   * update
-  * save
-  * write_attribute - (private, can be used within an included module)
-  * read_attribute  - (private)
+  * save/save!
+  * write_attribute/read_attribute - (private, can be used within an included module)
 
 **has_many associations**
   
@@ -210,7 +211,6 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
 * Model names and table names must follow the default ActiveRecord naming pattern.
 * Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup. 
-* Deleting one record at a time is not support, this is a limitation of ActiveHash.
 * Queries will not call other mocks classes, for example when using `where` all attributes must reside inside of each record.
 
 ## Inspiration

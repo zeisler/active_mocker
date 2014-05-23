@@ -18,7 +18,7 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def self.attribute_names
-    @attribute_names = [:id, :follower_id, :followed_id, :created_at, :updated_at]
+    @attribute_names = ["id", "follower_id", "followed_id", "created_at", "updated_at"]
   end
 
   ##################################

@@ -1,6 +1,7 @@
 require_relative 'update'
 require_relative 'find_by'
 require_relative 'init'
+require_relative '../active_mocker/collection/queries'
 module ActiveMocker
   module ActiveHash
 
@@ -22,6 +23,15 @@ module ActiveMocker
 
       module ClassMethods
         include ::ActiveHash::ARApi::FindBy
+        include ActiveMocker::Collection::Queries
+
+        def all(options={})
+          if options.has_key?(:conditions)
+            where(options[:conditions])
+          else
+            ActiveMocker::Collection::Base.new(@records || [])
+          end
+        end
 
         def find_or_create_by(attributes)
           find_by(attributes) || create(attributes)

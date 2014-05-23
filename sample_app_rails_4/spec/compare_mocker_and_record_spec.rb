@@ -63,6 +63,24 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
+  describe '::all' do
+
+    def klass_all(klass)
+      array = [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+      expect(klass.all).to eq array
+    end
+
+    it 'User' do
+      klass_all(User)
+    end
+
+    it 'UserMock' do
+      klass_all(UserMock)
+    end
+
+
+  end
+
   describe 'associations' do
 
     let(:micropost){ Micropost.create(content: 'post')}
@@ -87,6 +105,14 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
     it 'they are the same' do
       expect(UserMock.column_names).to eq User.column_names
+    end
+
+  end
+
+  describe 'attribute_names' do
+
+    it 'they are the same' do
+      expect(UserMock.attribute_names).to eq User.attribute_names
     end
 
   end
@@ -127,6 +153,24 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
+  describe '::update_all', pending: true do
+
+    def klass_update_all(klass)
+      [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+      klass.update_all(name: 'John')
+      expect(klass.all.map{|a| a.name}).to eq(['John', 'John', 'John'])
+    end
+
+    it 'User' do
+      klass_update_all(User)
+    end
+
+    it 'UserMock' do
+      klass_update_all(UserMock)
+    end
+
+  end
+
   describe 'type coercion' do
 
     it 'will coerce string to integer' do
@@ -158,37 +202,236 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   describe 'CollectionAssociation' do
 
-    let(:support_array_methods) { [:<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?] }
+    let(:support_array_methods) { [:<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, :includes] }
 
-    it 'supported array methods' do
-      mp1 = Micropost.create!(content: 'text')
-      mp2 = Micropost.create!(content: 'text')
-      user = User.create(microposts: [mp1, mp2])
+    context 'supported array methods' do
 
-      mpm1 = MicropostMock.create
-      mpm2 = MicropostMock.create
-      user_mock = UserMock.create(microposts: [mpm1, mpm2])
+      def supported_array_methods(user_class, micropost, collection_klass)
+        mp1 = micropost.create!(content: 'text')
+        mp2 = micropost.create!(content: 'text')
+        user = user_class.create(microposts: [mp1, mp2])
+        expect(user.microposts.take(1).count).to eq(1)
+        expect(user.microposts.class).to eq(collection_klass)
+        expect(user.microposts.methods).to include *support_array_methods
+      end
 
-      expect(user.microposts.methods).to include *support_array_methods
-      expect(user_mock.microposts.methods).to include *support_array_methods
-      expect(user.microposts.take(1).count).to eq(1)
-      expect(user_mock.microposts.take(1).count).to eq(1)
+      it 'User' do
+        supported_array_methods(User, Micropost, Micropost::ActiveRecord_Associations_CollectionProxy)
+      end
+
+      it 'UserMock' do
+        supported_array_methods(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+      end
+
+
+    end
+
+    describe '#sum' do
+
+      def collection_association_sum(user_class, micropost)
+        mpm1 = micropost.create!(up_votes: 5)
+        mpm2 = micropost.create!(up_votes: 5)
+        user_mock = user_class.create!(microposts: [mpm1, mpm2])
+        expect(user_mock.microposts.sum(:up_votes)).to eq 10
+      end
+
+      it 'User' do
+        collection_association_sum(User, Micropost)
+      end
+
+      it 'UserMock' do
+        collection_association_sum(UserMock, MicropostMock)
+      end
+
 
     end
 
-    it '#sum' do
-      mp1 = Micropost.create!(content: 'text')
-      mp2 = Micropost.create!(content: 'text')
-      user = User.create(microposts: [mp1, mp2])
-      expect(user.microposts.sum(:user_id)).to eq 2
 
-      mpm1 = MicropostMock.create(user_id: 1)
-      mpm2 = MicropostMock.create(user_id: 2)
-      user_mock = UserMock.create(microposts: [mpm1, mpm2])
 
-      expect(user_mock.microposts.sum(:user_id)).to eq 3
+    context 'can delete unsaved object from collection', pending:true do
+
+      def delete_object(klasses)
+        mp1 = klasses.first.create!(content: 'text')
+        mp2 = klasses.first.create!(content: 'text')
+        user = klasses.last.new(microposts: [mp1, mp2])
+        user.microposts.delete(mp1)
+        expect(user.microposts).to eq [mp2]
+      end
+
+      it 'UserMock' do
+        delete_object([MicropostMock, UserMock])
+      end
+
+      it 'User' do
+        delete_object([Micropost, User])
+      end
 
     end
+
+  end
+
+  describe 'Collections', pending: true do
+
+    context 'delete_all' do
+
+      context 'deletes all records from result' do
+
+        def collections_delete_all(klass)
+          [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+          klass.where(name: 'fred').delete_all
+          expect(klass.count).to eq 1
+        end
+
+        it 'User' do
+          collections_delete_all(User)
+        end
+
+        it 'UserMock' do
+          collections_delete_all(UserMock)
+        end
+
+      end
+
+      context 'deletes all records association' do
+
+        def association_collections_delete_all(user_class, micropost)
+          user = user_class.create!(email: '1', name: 'fred', microposts: [micropost.create, micropost.create])
+          user.microposts.delete_all
+          expect(user_class.count).to eq 1
+        end
+
+        it 'User' do
+          association_collections_delete_all(User, Micropost)
+        end
+
+        it 'UserMock' do
+          association_collections_delete_all(UserMock, MicropostMock)
+        end
+
+      end
+
+    end
+
+    context 'where' do
+
+      context 'all.where' do
+
+        def collections_all_where(klass)
+          records = [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+          expect(klass.all.where(name: 'fred')).to eq([records[0], records[1]])
+        end
+
+        it 'User' do
+          collections_all_where(User)
+        end
+
+        it 'UserMock' do
+          collections_all_where(UserMock)
+        end
+
+      end
+
+      context 'where.where' do
+
+        def collections_where_where(klass)
+          records = [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+          expect(klass.where(email: '1').where(name: 'fred')).to eq([records[0]])
+        end
+
+        it 'User' do
+          collections_where_where(User)
+        end
+
+        it 'UserMock' do
+          collections_where_where(UserMock)
+        end
+
+      end
+
+    end
+
+    context 'order' do
+
+      context 'where.order' do
+
+        def collections_where_order(klass)
+          records = [klass.create!(email: '2', name: 'fred'), klass.create!(email: '1', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+          expect(klass.where(name: 'fred').order(:email)).to eq([records[1], records[0]])
+        end
+
+        it 'User' do
+          collections_where_order(User)
+        end
+
+        it 'UserMock' do
+          collections_where_order(UserMock)
+        end
+
+      end
+
+      context 'where.order.reverse_order' do
+
+        def collections_where_order_reverse_order(klass)
+          records = [klass.create!(email: '2', name: 'fred'), klass.create!(email: '1', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+          expect(klass.where(name: 'fred').order(:email).reverse_order).to eq([records[0], records[1]])
+        end
+
+        it 'User' do
+          collections_where_order_reverse_order(User)
+        end
+
+        it 'UserMock' do
+          collections_where_order_reverse_order(UserMock)
+        end
+
+      end
+
+    end
+
+    context 'update_all' do
+
+      context 'where.update_all' do
+
+        def collection_where_update_all(klass)
+          [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+          klass.where(name: 'fred' ).update_all(name: 'John')
+          expect(klass.all.map { |a| a.name }).to eq(['John', 'John', 'Sam'])
+        end
+
+        it 'User' do
+          collection_where_update_all(User)
+        end
+
+        it 'UserMock' do
+          collection_where_update_all(UserMock)
+        end
+
+      end
+
+      context 'all.update_all' do
+
+        def collection_all_update_all(klass)
+          [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+          klass.all.update_all(name: 'John')
+          expect(klass.all.map { |a| a.name }).to eq(['John', 'John', 'John'])
+        end
+
+        it 'User' do
+          collection_all_update_all(User)
+        end
+
+        it 'UserMock' do
+          collection_all_update_all(UserMock)
+        end
+
+      end
+
+    end
+
+    #User.all.average("orders_count")
+    #User.all.minimum("age")
+    #User.all.maximum("age")
+
 
   end
 
@@ -239,7 +482,6 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         end
 
       end
-
 
   end
 
@@ -351,27 +593,6 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       user = UserMock.create
       expect(UserMock.delete_all(id: user.id)).to eq 1
       expect(UserMock.count).to eq 0
-    end
-
-  end
-
-  describe '::where(conditions = nil).delete_all', pending: true do
-    it "User" do
-    pending{ 'new feature implement ActiveMocker::Relation array' }
-      user2 = User.create(email: '1')
-      user1 = User.create(email: '2')
-      expect(User.where(id: user1.id).delete_all).to eq 1
-      expect(User.where(id: user1.id).class).to eq User::ActiveRecord_Relation
-      expect(User.count).to eq 1
-    end
-
-    it "UserMock" do
-      pending { 'new feature implement ActiveMocker::Relation array' }
-      user2 = UserMock.create(email: '1')
-      user1 = UserMock.create(email: '2')
-      expect(UserMock.where(id: user1.id).class.name).to eq 'ActiveMocker::Relation'
-      expect(UserMock.where(id: user1.id).delete_all).to eq 1
-      expect(UserMock.count).to eq 1
     end
 
   end

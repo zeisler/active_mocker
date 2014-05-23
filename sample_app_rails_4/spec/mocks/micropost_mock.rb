@@ -7,18 +7,18 @@ class MicropostMock < ::ActiveHash::Base
   extend  ActiveMocker::MockClassMethods
 
   def initialize(attributes = {})
-    @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
+    @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
     @associations = HashWithIndifferentAccess.new({:user=>nil})
     super(attributes)
   end
 
 
   def self.column_names
-    ["id", "content", "user_id", "created_at", "updated_at"]
+    ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
   end
 
   def self.attribute_names
-    @attribute_names = [:id, :content, :user_id, :created_at, :updated_at]
+    @attribute_names = ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
   end
 
   ##################################
@@ -50,6 +50,15 @@ class MicropostMock < ::ActiveHash::Base
   def user_id=(val)
     type = (types[:user_id] ||= Virtus::Attribute.build(Fixnum))
     @attributes['user_id'] = type.coerce(val)
+  end
+
+  def up_votes
+  @attributes['up_votes']
+  end
+
+  def up_votes=(val)
+    type = (types[:up_votes] ||= Virtus::Attribute.build(Fixnum))
+    @attributes['up_votes'] = type.coerce(val)
   end
 
   def created_at

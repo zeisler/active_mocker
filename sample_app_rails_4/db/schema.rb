@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20130315230445) do
   create_table "microposts", force: true do |t|
     t.string   "content"
     t.integer  "user_id"
+    t.integer  "up_votes"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

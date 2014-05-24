@@ -7,6 +7,10 @@ module Collection
       all.map(&:delete)
     end
 
+    def destroy_all
+      delete_all
+    end
+
     def all(options={})
       if options.has_key?(:conditions)
         where(options[:conditions])

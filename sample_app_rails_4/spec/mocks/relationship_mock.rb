@@ -26,7 +26,7 @@ class RelationshipMock < ::ActiveHash::Base
   ##################################
 
   def id
-  @attributes['id']
+    @attributes['id']
   end
 
   def id=(val)
@@ -35,7 +35,7 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def follower_id
-  @attributes['follower_id']
+    @attributes['follower_id']
   end
 
   def follower_id=(val)
@@ -44,7 +44,7 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def followed_id
-  @attributes['followed_id']
+    @attributes['followed_id']
   end
 
   def followed_id=(val)
@@ -53,7 +53,7 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def created_at
-  @attributes['created_at']
+    @attributes['created_at']
   end
 
   def created_at=(val)
@@ -62,7 +62,7 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def updated_at
-  @attributes['updated_at']
+    @attributes['updated_at']
   end
 
   def updated_at=(val)

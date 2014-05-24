@@ -26,7 +26,7 @@ class UserMock < ::ActiveHash::Base
   ##################################
 
   def id
-  @attributes['id']
+    @attributes['id']
   end
 
   def id=(val)
@@ -35,7 +35,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def name
-  @attributes['name']
+    @attributes['name']
   end
 
   def name=(val)
@@ -44,7 +44,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def email
-  @attributes['email']
+    @attributes['email']
   end
 
   def email=(val)
@@ -53,7 +53,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def credits
-  @attributes['credits']
+    @attributes['credits']
   end
 
   def credits=(val)
@@ -62,7 +62,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def created_at
-  @attributes['created_at']
+    @attributes['created_at']
   end
 
   def created_at=(val)
@@ -71,7 +71,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def updated_at
-  @attributes['updated_at']
+    @attributes['updated_at']
   end
 
   def updated_at=(val)
@@ -80,7 +80,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def password_digest
-  @attributes['password_digest']
+    @attributes['password_digest']
   end
 
   def password_digest=(val)
@@ -89,7 +89,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def remember_token
-  @attributes['remember_token']
+    @attributes['remember_token']
   end
 
   def remember_token=(val)
@@ -98,7 +98,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def admin
-  @attributes['admin']
+    @attributes['admin']
   end
 
   def admin=(val)
@@ -115,7 +115,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def microposts
-    associations['microposts'] ||= ActiveMocker::CollectionAssociation.new
+    associations['microposts'] ||= ActiveMocker::Collection::Association.new
   end
 
   def microposts=(val)
@@ -123,7 +123,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def relationships
-    associations['relationships'] ||= ActiveMocker::CollectionAssociation.new
+    associations['relationships'] ||= ActiveMocker::Collection::Association.new
   end
 
   def relationships=(val)
@@ -131,7 +131,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followed_users
-    associations['followed_users'] ||= ActiveMocker::CollectionAssociation.new
+    associations['followed_users'] ||= ActiveMocker::Collection::Association.new
   end
 
   def followed_users=(val)
@@ -139,7 +139,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def reverse_relationships
-    associations['reverse_relationships'] ||= ActiveMocker::CollectionAssociation.new
+    associations['reverse_relationships'] ||= ActiveMocker::Collection::Association.new
   end
 
   def reverse_relationships=(val)
@@ -147,7 +147,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followers
-    associations['followers'] ||= ActiveMocker::CollectionAssociation.new
+    associations['followers'] ||= ActiveMocker::Collection::Association.new
   end
 
   def followers=(val)

@@ -26,7 +26,7 @@ class <%= class_name %> < ::ActiveHash::Base
   ##################################
 <% attributes.each do |meth| %>
   def <%= meth.name %>
-  @attributes['<%= meth.name %>']
+    @attributes['<%= meth.name %>']
   end
 
   def <%= meth.name %>=(val)
@@ -52,7 +52,7 @@ class <%= class_name %> < ::ActiveHash::Base
 <% end -%>
 <% collection_associations.each do |meth| %>
   def <%= meth %>
-    associations['<%= meth %>'] ||= ActiveMocker::CollectionAssociation.new
+    associations['<%= meth %>'] ||= ActiveMocker::Collection::Association.new
   end
 
   def <%= meth %>=(val)

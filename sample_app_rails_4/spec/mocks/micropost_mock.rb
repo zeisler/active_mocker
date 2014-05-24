@@ -26,7 +26,7 @@ class MicropostMock < ::ActiveHash::Base
   ##################################
 
   def id
-  @attributes['id']
+    @attributes['id']
   end
 
   def id=(val)
@@ -35,7 +35,7 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def content
-  @attributes['content']
+    @attributes['content']
   end
 
   def content=(val)
@@ -44,7 +44,7 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def user_id
-  @attributes['user_id']
+    @attributes['user_id']
   end
 
   def user_id=(val)
@@ -53,7 +53,7 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def up_votes
-  @attributes['up_votes']
+    @attributes['up_votes']
   end
 
   def up_votes=(val)
@@ -62,7 +62,7 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def created_at
-  @attributes['created_at']
+    @attributes['created_at']
   end
 
   def created_at=(val)
@@ -71,7 +71,7 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def updated_at
-  @attributes['updated_at']
+    @attributes['updated_at']
   end
 
   def updated_at=(val)

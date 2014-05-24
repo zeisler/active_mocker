@@ -247,6 +247,57 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       expect{UserMock.where("name = 'Dustin Zeisler'")}.to raise_error
     end
 
+    context 'will return all if no options passed' do
+
+      def where_no_options(klass, where_klass)
+        records = [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+        expect(klass.where.class).to eq(where_klass)
+      end
+
+      it 'User' do
+        where_no_options(User, ActiveRecord::QueryMethods::WhereNotChain)
+      end
+
+      it 'UserMock' do
+        where_no_options(UserMock, ActiveMocker::Collection::Queries::WhereChain)
+      end
+
+    end
+
+    context 'multiple wheres' do
+
+      def where_where(klass)
+        records = [klass.create!(email: '1', name: 'fred', admin: true), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+        expect(klass.where(name: 'fred').where(admin: true)).to eq([records[0]])
+      end
+
+      it 'User' do
+        where_where(User)
+      end
+
+      it 'UserMock' do
+        where_where(UserMock)
+      end
+
+    end
+
+  end
+
+  describe '::where.not' do
+
+    def where_not(klass)
+      records = [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
+      expect(klass.where.not(name: 'fred')).to eq([records[2]])
+    end
+
+    it 'User' do
+      where_not(User)
+    end
+
+    it 'UserMock' do
+      where_not(UserMock)
+    end
+
   end
 
   describe '::update_all' do
@@ -420,23 +471,6 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
         it 'UserMock' do
           collections_all_where(UserMock)
-        end
-
-      end
-
-      context 'where.where' do
-
-        def collections_where_where(klass)
-          records = [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
-          expect(klass.where(email: '1').where(name: 'fred')).to eq([records[0]])
-        end
-
-        it 'User' do
-          collections_where_where(User)
-        end
-
-        it 'UserMock' do
-          collections_where_where(UserMock)
         end
 
       end
@@ -685,6 +719,22 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
-  # limit(5).offset(30)
+  describe  '::limit' do
+
+    def klass_limit(klass)
+      records = [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'Dan'), klass.create!(email: '3', name: 'Sam')]
+      expect(klass.limit(2)).to eq [records[0], records[1]]
+      expect(klass.limit(2).where(name: 'fred')).to eq [records[0]]
+    end
+
+    it 'User' do
+      klass_limit(User)
+    end
+
+    it 'UserMock' do
+      klass_limit(UserMock)
+    end
+
+  end
 
 end

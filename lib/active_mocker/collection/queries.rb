@@ -15,8 +15,22 @@ module Collection
       end
     end
 
-    def where(options)
-      return all if options.nil?
+    class WhereNotChain
+
+      def initialize(collection)
+        @collection = collection
+      end
+
+      def not(options={})
+        @collection.reject do |record|
+          options.all? { |col, match| record[col] == match }
+        end
+      end
+
+    end
+
+    def where(options=nil)
+      return WhereNotChain.new(all) if options.nil?
       all.select do |record|
         options.all? { |col, match| record[col] == match }
       end
@@ -24,6 +38,10 @@ module Collection
 
     def update_all(options)
       all.each{ |i| i.update(options)}
+    end
+
+    def limit(num)
+      Relation.new(all.take(num))
     end
 
     def sum(key)

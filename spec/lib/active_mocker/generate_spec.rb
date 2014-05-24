@@ -1,50 +1,40 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
-require 'singleton'
-require 'logger'
-require 'forwardable'
-require 'active_mocker/logger'
-require 'string_reader'
-require 'active_mocker/public_methods'
-require 'file_reader'
-require 'active_mocker/table'
-require 'active_mocker/config'
-require 'active_mocker/reparameterize'
-require 'active_mocker/field'
-require 'active_mocker/active_record'
-require 'active_mocker/model_reader'
-require 'active_mocker/schema_reader'
-require 'active_mocker/active_record/schema'
-require 'active_support/all'
-require 'active_hash/ar_api'
-require 'active_mocker/generate'
-require 'erb'
-require 'virtus'
+require 'active_mocker'
 require_relative '../../unit_logger'
 
 describe ActiveMocker::Generate do
 
+  let(:app_root){ File.expand_path('../../../../', __FILE__)}
+  let(:mock_dir){ File.join(app_root, 'sample_app_rails_4/spec/mocks')}
+
   before(:each) do
-    app_root = File.expand_path('../../../../', __FILE__)
     ActiveMocker.config do |config|
-      # Required Options
       config.schema_file = File.join(app_root, 'sample_app_rails_4/db/schema.rb')
       config.model_dir   = File.join(app_root, 'sample_app_rails_4/app/models')
-      config.mock_dir    = File.join(app_root, 'sample_app_rails_4/spec/mocks')
-      config.logger = UnitLogger
-
+      config.mock_dir    = mock_dir
+      config.logger      = UnitLogger
     end
+
+    FileUtils.rm_rf mock_dir
 
   end
 
+  subject{described_class.new}
+
   describe 'new' do
 
-    it 'generates all mocks' do
+    before(:each) do
+      subject
+    end
 
-      described_class.new
-
+    it 'generates all mocks files' do
+      expect(File.exist? File.join(mock_dir, 'user_mock.rb')        ).to eq true
+      expect(File.exist? File.join(mock_dir, 'micropost_mock.rb')   ).to eq true
+      expect(File.exist? File.join(mock_dir, 'relationship_mock.rb')).to eq true
     end
 
   end
 
 end
+

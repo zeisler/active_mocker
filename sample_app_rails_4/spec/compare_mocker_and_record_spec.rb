@@ -19,8 +19,6 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     Micropost.destroy_all
   end
 
- USER_CLASSES = [User, UserMock]
-
 
   let(:attributes) { {name: 'Dustin Zeisler', email: 'dustin@example.com'} }
   let(:attributes_with_admin) { {name: 'Dustin Zeisler', email: 'dustin@example.com', admin: true} }
@@ -245,6 +243,25 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     it 'Mock will not take sql string needs to be mocked' do
       UserMock.create(attributes_with_admin)
       expect{UserMock.where("name = 'Dustin Zeisler'")}.to raise_error
+    end
+
+    context 'by association not only attribute'do
+
+      def where_by_association(user_class, micropost_class)
+        user = user_class.create!(email: '1')
+        micropost = micropost_class.create(user: user)
+        expect(micropost_class.where(user: user)).to eq [micropost]
+      end
+
+      it 'User' do
+        where_by_association(User, Micropost)
+      end
+
+      it 'UserMock' do
+        where_by_association(UserMock, MicropostMock)
+      end
+
+
     end
 
     context 'will return all if no options passed' do
@@ -736,5 +753,8 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     end
 
   end
+
+  #::find_by!
+  #collection.create
 
 end

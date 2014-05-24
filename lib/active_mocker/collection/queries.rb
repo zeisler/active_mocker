@@ -27,7 +27,7 @@ module Collection
 
       def not(options={})
         @collection.reject do |record|
-          options.all? { |col, match| record[col] == match }
+          options.all? { |col, match| record.send(col) == match }
         end
       end
 

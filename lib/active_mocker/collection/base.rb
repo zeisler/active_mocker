@@ -2,57 +2,64 @@ module ActiveMocker
 
   module Collection
 
+
     class Base
 
       include Enumerable
 
       def initialize(collection=[])
-        @association = [*collection]
+        @collection = [*collection]
       end
 
       def <<(*records)
-        association.concat(records.flatten)
+        collection.concat(records.flatten)
       end
 
-      delegate :<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, to: :association
+      delegate :<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, :delete, to: :collection
       alias distinct uniq
 
-      def delete(obj)
-        association.delete(obj)
-      end
+      # def delete(obj)
+      #   collection.delete(obj)
+      # end
 
       def order(key)
-        self.sort_by{ |item| item.send(key) }
+        self.class.new(collection.sort_by{ |item| item.send(key) })
+      end
+
+      def reverse_order
+        self.class.new(collection.reverse)
       end
 
       def select(&block)
-        self.class.new(association.select(&block))
-      end
-
-      def sum(attribute=nil)
-        values = association.map { |obj| obj.send(attribute) }
-        values.inject { |sum, n| sum + n }
-      end
-
-      def ==(other_ary)
-        association == other_ary
+        self.class.new(collection.select(&block))
       end
 
       def each(&block)
-        association.each do |item|
+        self.class.new(collection.each do |item|
           block.call(item)
-        end
+        end)
       end
 
       def to_a
-        @association
+        @collection
+      end
+
+      def ==(val)
+        return false if val.nil?
+        collection.hash == val.hash
       end
 
       private
-      attr_accessor :association
+
+      def collection
+        @collection
+      end
 
     end
 
   end
+
+
+
 
 end

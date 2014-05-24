@@ -22,6 +22,35 @@ module Collection
       end
     end
 
+    def update_all(options)
+      all.each{ |i| i.update(options)}
+    end
+
+    def sum(key)
+      values = values_by_key(key)
+      values.inject { |sum, n| sum + n }
+    end
+
+    def average(key)
+      values = values_by_key(key)
+      total = values.inject { |sum, n| sum + n }
+      BigDecimal.new(total) / BigDecimal.new(values.count)
+    end
+
+    def minimum(key)
+      values_by_key(key).min_by{|i| i }
+    end
+
+    def maximum(key)
+      values_by_key(key).max_by { |i| i }
+    end
+
+    private
+
+    def values_by_key(key)
+      all.map { |obj| obj.send(key) }
+    end
+
   end
 
 end

@@ -15,7 +15,7 @@ module ActiveMocker
         collection.concat(records.flatten)
       end
 
-      delegate :<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, :delete, to: :collection
+      delegate :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, :delete, to: :collection
       alias distinct uniq
 
       # def delete(obj)

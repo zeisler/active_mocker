@@ -1,21 +1,20 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
 require 'active_support/all'
-require 'active_mocker/collection_association'
+require 'active_mocker/collection/base'
+require 'active_mocker/collection/queries'
+require 'active_mocker/collection/relation'
 require 'ostruct'
 
-describe ActiveMocker::CollectionAssociation do
+describe ActiveMocker::Collection::Relation do
 
   subject{described_class.new}
 
   describe '#sum' do
 
-
     it 'sum values by attribute name' do
-
       subject << [OpenStruct.new(value: 1), OpenStruct.new(value: 1)]
       expect(subject.sum(:value)).to eq 2
-
     end
 
   end

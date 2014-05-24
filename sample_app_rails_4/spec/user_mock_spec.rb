@@ -42,7 +42,6 @@ describe UserMock do
     end
 
     it 'add has_many relationship' do
-      expect(UserMock.new.microposts.class).to eq ActiveMocker::CollectionAssociation
       expect(UserMock.new.microposts.count).to eq 0
       mock_inst = UserMock.new
       mock_inst.microposts << 1

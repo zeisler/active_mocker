@@ -6,8 +6,9 @@ module ActiveHash
 
       attr_reader :associations, :types
 
-      def initialize(attributes = {})
+      def initialize(attributes = {}, &block)
         @types = {}
+        yield self if block_given?
         attributes.each do |key, value|
           begin
             send "#{key}=", value
@@ -17,6 +18,9 @@ module ActiveHash
         end
 
       end
+
+
+
     end
   end
 

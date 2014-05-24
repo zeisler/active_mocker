@@ -6,10 +6,10 @@ class <%= class_name %> < ::ActiveHash::Base
   include ActiveMocker::MockInstanceMethods
   extend  ActiveMocker::MockClassMethods
 
-  def initialize(attributes = {})
+  def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new(<%= default_attributes %>)
     @associations = HashWithIndifferentAccess.new(<%= associations %>)
-    super(attributes)
+    super(attributes, &block)
   end
 
 

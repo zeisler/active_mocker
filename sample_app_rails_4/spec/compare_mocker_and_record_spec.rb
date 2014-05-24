@@ -46,6 +46,52 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       UserMock.create(create_attributes)
     end
 
+    context 'new with block' do
+
+      def create_with_block(klass)
+        user = klass.new do |u|
+          u.name = "David"
+          u.admin = true
+        end
+
+        expect(user.name).to eq 'David'
+        expect(user.admin).to eq true
+
+      end
+
+      it 'User' do
+        create_with_block(User)
+      end
+
+      it 'UserMock' do
+        create_with_block(UserMock)
+      end
+
+    end
+
+    context 'create with block' do
+
+      def create_with_block(klass)
+        user = klass.create do |u|
+          u.name = "David"
+          u.admin = true
+        end
+
+        expect(user.name).to eq 'David'
+        expect(user.admin).to eq true
+
+      end
+
+      it 'User' do
+        create_with_block(User)
+      end
+
+      it 'UserMock' do
+        create_with_block(UserMock)
+      end
+
+    end
+
   end
 
   describe '#attributes' do
@@ -78,6 +124,56 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       klass_all(UserMock)
     end
 
+  end
+
+  describe '::average' do
+
+    def klass_method_average(klass)
+      [klass.create!(credits: 12, email: '1'), klass.create!(credits: 2, email: '2'), klass.create!(credits: 8, email: '3'), klass.create!(credits: 4, email: '4')]
+      expect(klass.average(:credits).to_s).to eq "6.5"
+    end
+
+    it 'User' do
+      klass_method_average(User)
+    end
+
+    it 'UserMock' do
+      klass_method_average(UserMock)
+    end
+
+  end
+
+  describe '::minimum' do
+
+    def klass_method_minimum(klass)
+      [klass.create!(credits: 12, email: '1'), klass.create!(credits: 2, email: '2'), klass.create!(credits: 8, email: '3'), klass.create!(credits: 4, email: '4')]
+      expect(klass.minimum(:credits).to_s).to eq "2.0"
+    end
+
+    it 'User' do
+      klass_method_minimum(User)
+    end
+
+    it 'UserMock' do
+      klass_method_minimum(UserMock)
+    end
+
+  end
+
+  describe '::maximum' do
+
+    def klass_method_maximum(klass)
+      [klass.create!(credits: 12, email: '1'), klass.create!(credits: 2, email: '2'), klass.create!(credits: 8, email: '3'), klass.create!(credits: 4, email: '4')]
+      expect(klass.maximum(:credits).to_s).to eq "12.0"
+    end
+
+    it 'User' do
+      klass_method_maximum(User)
+    end
+
+    it 'UserMock' do
+      klass_method_maximum(UserMock)
+    end
 
   end
 
@@ -134,16 +230,16 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   describe '::where' do
 
-    let(:ar_record){User.create(attributes)}
-    let(:mock_record){UserMock.create(attributes)}
-    let(:mock_record_2){UserMock.create(attributes_with_admin)}
+    let!(:ar_record){User.create(attributes)}
+    let!(:mock_record){UserMock.create(attributes)}
+    let!(:mock_record_2){UserMock.create(attributes_with_admin)}
 
     it 'AR' do
       expect([ar_record]).to eq User.where(attributes)
     end
 
     it 'Mock' do
-      expect([mock_record]).to eq UserMock.where(attributes)
+      expect(UserMock.where(attributes)).to eq [mock_record, mock_record_2]
     end
 
     it 'Mock will not take sql string needs to be mocked' do
@@ -153,7 +249,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
-  describe '::update_all', pending: true do
+  describe '::update_all' do
 
     def klass_update_all(klass)
       [klass.create!(email: '1', name: 'fred'), klass.create!(email: '2', name: 'fred'), klass.create!(email: '3', name: 'Sam')]
@@ -202,7 +298,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   describe 'CollectionAssociation' do
 
-    let(:support_array_methods) { [:<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, :includes] }
+    let(:support_array_methods) { [:<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?] }
 
     context 'supported array methods' do
 
@@ -243,12 +339,9 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         collection_association_sum(UserMock, MicropostMock)
       end
 
-
     end
 
-
-
-    context 'can delete unsaved object from collection', pending:true do
+    context 'can delete unsaved object from collection' do
 
       def delete_object(klasses)
         mp1 = klasses.first.create!(content: 'text')
@@ -270,7 +363,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
-  describe 'Collections', pending: true do
+  describe 'Collections'do
 
     context 'delete_all' do
 
@@ -427,11 +520,6 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
     end
-
-    #User.all.average("orders_count")
-    #User.all.minimum("age")
-    #User.all.maximum("age")
-
 
   end
 
@@ -596,5 +684,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     end
 
   end
+
+  # limit(5).offset(30)
 
 end

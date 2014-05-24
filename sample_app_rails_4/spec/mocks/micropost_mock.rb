@@ -6,10 +6,10 @@ class MicropostMock < ::ActiveHash::Base
   include ActiveMocker::MockInstanceMethods
   extend  ActiveMocker::MockClassMethods
 
-  def initialize(attributes = {})
+  def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
     @associations = HashWithIndifferentAccess.new({:user=>nil})
-    super(attributes)
+    super(attributes, &block)
   end
 
 

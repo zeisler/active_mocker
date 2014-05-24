@@ -2,6 +2,8 @@ require_relative 'update'
 require_relative 'find_by'
 require_relative 'init'
 require_relative '../active_mocker/collection/queries'
+require_relative '../active_mocker/collection/base'
+require_relative '../active_mocker/collection/relation'
 module ActiveMocker
   module ActiveHash
 
@@ -25,11 +27,19 @@ module ActiveMocker
         include ::ActiveHash::ARApi::FindBy
         include ActiveMocker::Collection::Queries
 
+        def create(attributes = {}, &block)
+          record = new(attributes)
+          record = new(attributes, &block) if block_given?
+          record.save
+          mark_dirty
+          record
+        end
+
         def all(options={})
           if options.has_key?(:conditions)
             where(options[:conditions])
           else
-            ActiveMocker::Collection::Base.new(@records || [])
+            ActiveMocker::Collection::Relation.new(@records || [])
           end
         end
 

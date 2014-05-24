@@ -32,7 +32,7 @@ module Collection
     def where(options=nil)
       return WhereNotChain.new(all) if options.nil?
       all.select do |record|
-        options.all? { |col, match| record[col] == match }
+        options.all? { |col, match| record.send(col) == match }
       end
     end
 

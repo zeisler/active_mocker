@@ -255,11 +255,11 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'User' do
-        where_no_options(User, ActiveRecord::QueryMethods::WhereNotChain)
+        where_no_options(User, ActiveRecord::QueryMethods::WhereChain)
       end
 
       it 'UserMock' do
-        where_no_options(UserMock, ActiveMocker::Collection::Queries::WhereChain)
+        where_no_options(UserMock, ActiveMocker::Collection::Queries::WhereNotChain)
       end
 
     end

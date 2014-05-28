@@ -1,5 +1,3 @@
-require_relative 'update'
-require_relative 'find_by'
 require_relative 'init'
 require_relative '../active_mocker/collection/queries'
 require_relative '../active_mocker/collection/base'
@@ -9,7 +7,6 @@ module ActiveMocker
 
     module ARApi
 
-      include ::ActiveHash::ARApi::Update
       include ::ActiveHash::ARApi::Init
 
       def delete
@@ -19,12 +16,18 @@ module ActiveMocker
         records.delete_at(index)
       end
 
+      def update(options={})
+        options.each do |method, value|
+          send("#{method}=", value)
+        end
+
+      end
+
       def self.included(base)
         base.extend(ClassMethods)
       end
 
       module ClassMethods
-        include ::ActiveHash::ARApi::FindBy
         include ActiveMocker::Collection::Queries
 
         def create(attributes = {}, &block)
@@ -33,14 +36,6 @@ module ActiveMocker
           record.save
           mark_dirty
           record
-        end
-
-        def all(options={})
-          if options.has_key?(:conditions)
-            where(options[:conditions])
-          else
-            ActiveMocker::Collection::Relation.new(@records || [])
-          end
         end
 
         def find_or_create_by(attributes)
@@ -53,6 +48,10 @@ module ActiveMocker
 
         def delete(id)
           find(id).delete
+        end
+
+        def to_a
+          @records
         end
 
         alias_method :destroy, :delete

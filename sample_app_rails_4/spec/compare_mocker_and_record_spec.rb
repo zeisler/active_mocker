@@ -387,6 +387,45 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         supported_array_methods(UserMock, MicropostMock, ActiveMocker::Collection::Association)
       end
 
+    end
+
+    describe '#find' do
+
+      context 'single id passed' do
+
+        def collection_find(user_class, micropost, collection_klass)
+          microposts = [micropost.create, micropost.create]
+          user = user_class.create!(email: '1', name: 'fred', microposts: microposts)
+          expect(user.microposts.find(microposts.first.id)).to eq microposts.first
+        end
+
+        it 'User' do
+          collection_find(User, Micropost, Micropost::ActiveRecord_Associations_CollectionProxy)
+        end
+
+        it 'UserMock' do
+          collection_find(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+        end
+
+      end
+
+      context 'multiple ids passed' do
+
+        def collection_finds(user_class, micropost, collection_klass)
+          microposts = [micropost.create(id: 1), micropost.create(id: 2)]
+          user = user_class.create!(email: '1', name: 'fred', microposts: microposts)
+          expect(user.microposts.find([microposts.first.id, microposts.last.id])).to include *microposts.first, microposts.last
+        end
+
+        it 'User' do
+          collection_finds(User, Micropost, Micropost::ActiveRecord_Associations_CollectionProxy)
+        end
+
+        it 'UserMock' do
+          collection_finds(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+        end
+
+      end
 
     end
 
@@ -754,7 +793,41 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
-  #::find_by!
-  #collection.create
+  describe '::find_by!' do
+
+    context 'will raise exception if not found' do
+
+      def find_by_exception(user_class, error)
+        expect{user_class.find_by!(name: 'Matz')}.to raise_error(error)
+      end
+
+      it 'User' do
+        find_by_exception(User, ActiveRecord::RecordNotFound)
+      end
+
+      it 'UserMock' do
+        find_by_exception(UserMock, ActiveMocker::RecordNotFound)
+      end
+
+    end
+
+    context 'will find one record by conditions' do
+
+      def find_by_one_result(user_class)
+        user = user_class.create!(email: '1', name: 'fred')
+        expect(user_class.find_by!(name: 'fred') ).to eq user
+      end
+
+      it 'User' do
+        find_by_one_result(User)
+      end
+
+      it 'UserMock' do
+        find_by_one_result(UserMock)
+      end
+
+    end
+
+  end
 
 end

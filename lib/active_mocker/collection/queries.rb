@@ -1,5 +1,11 @@
 module ActiveMocker
+
+  class RecordNotFound < Exception
+
+  end
 module Collection
+
+
 
   module Queries
 
@@ -15,7 +21,7 @@ module Collection
       if options.has_key?(:conditions)
         where(options[:conditions])
       else
-        ActiveMocker::Collection::Base.new( to_a || [] )
+        Relation.new( to_a || [] )
       end
     end
 
@@ -40,8 +46,27 @@ module Collection
       end
     end
 
+    def find(ids)
+      ids_array = [*ids]
+      results = ids_array.map do |id|
+        where(id: id).first
+      end
+      return Relation.new(results) if ids.class == Array
+      return results.first
+    end
+
     def update_all(options)
       all.each{ |i| i.update(options)}
+    end
+
+    def find_by(options = {})
+      send(:where, options).first
+    end
+
+    def find_by!(options={})
+      result = find_by(options)
+      raise RecordNotFound if result.blank?
+      result
     end
 
     def limit(num)

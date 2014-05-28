@@ -33,7 +33,9 @@ module MockInstanceMethods
   end
 
   def ==(obj)
-    hash == obj.attributes.hash
+    return false if obj.nil?
+    return hash == obj.attributes.hash if obj.respond_to?(:attributes)
+    hash == obj.hash if obj.respond_to?(:hash)
   end
 
   private

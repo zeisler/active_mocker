@@ -31,7 +31,7 @@ module ActiveMocker
         include ActiveMocker::Collection::Queries
 
         def create(attributes = {}, &block)
-          record = new(attributes)
+          record = new(attributes) unless block_given?
           record = new(attributes, &block) if block_given?
           record.save
           mark_dirty

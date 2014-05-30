@@ -1,13 +1,38 @@
 module ActiveMocker
 
-  class RecordNotFound < Exception
+class RecordNotFound < Exception; end
 
-  end
 module Collection
 
-
-
   module Queries
+
+    class Find
+
+      def initialize(record)
+        @record = record
+      end
+
+      def is_of(options={})
+        options.all? do |col, match|
+          next match.any? { |m| @record.send(col) == m } if match.class == Array
+          @record.send(col) == match
+        end
+      end
+
+    end
+
+    class WhereNotChain
+
+      def initialize(collection)
+        @collection = collection
+      end
+
+      def not(options={})
+        @collection.reject do |record|
+          Find.new(record).is_of(options)
+        end
+      end
+    end
 
     def delete_all
       all.map(&:delete)
@@ -25,24 +50,10 @@ module Collection
       end
     end
 
-    class WhereNotChain
-
-      def initialize(collection)
-        @collection = collection
-      end
-
-      def not(options={})
-        @collection.reject do |record|
-          options.all? { |col, match| record.send(col) == match }
-        end
-      end
-
-    end
-
     def where(options=nil)
       return WhereNotChain.new(all) if options.nil?
       all.select do |record|
-        options.all? { |col, match| record.send(col) == match }
+        Find.new(record).is_of(options)
       end
     end
 
@@ -52,7 +63,7 @@ module Collection
         where(id: id).first
       end
       return Relation.new(results) if ids.class == Array
-      return results.first
+      results.first
     end
 
     def update_all(options)

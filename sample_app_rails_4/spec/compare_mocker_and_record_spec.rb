@@ -261,6 +261,22 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         where_by_association(UserMock, MicropostMock)
       end
 
+    end
+
+    context 'passing array as value' do
+
+      def array_as_value(user_class)
+        users = [user_class.create!(email: '1', name: 'Alice'), user_class.create!(email: '2', name: 'Bob')]
+        expect(user_class.where({name: ["Alice", "Bob"]})).to eq(users)
+      end
+
+      it 'User' do
+        array_as_value(User)
+      end
+
+      it 'UserMock' do
+        array_as_value(UserMock)
+      end
 
     end
 
@@ -829,5 +845,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     end
 
   end
+
+
 
 end

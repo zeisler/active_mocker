@@ -193,7 +193,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
   * write_attribute/read_attribute - (private, can be used within an included module)
   * delete
 
-**has_many associations**
+**has_many associations/Collections**
 
   * empty?
   * length/size/count

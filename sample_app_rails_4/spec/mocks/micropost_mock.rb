@@ -93,6 +93,7 @@ class MicropostMock < ::ActiveHash::Base
 
   def user=(val)
     associations['user'] = val
+    self.user_id = val.id if respond_to?(:user_id) && val.persisted?
   end
 
   ##################################

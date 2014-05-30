@@ -48,6 +48,7 @@ class <%= class_name %> < ::ActiveHash::Base
 
   def <%= meth %>=(val)
     associations['<%= meth %>'] = val
+    self.<%= meth %>_id = val.id if respond_to?(:<%= meth %>_id) && val.persisted?
   end
 <% end -%>
 <% collection_associations.each do |meth| %>

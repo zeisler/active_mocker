@@ -174,12 +174,15 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
   * find_or_create_by
   * find_or_initialize_by
   * where(conditions_hash)
+  * where(condition).not
   * delete_all/destroy_all
   * delete_all(conditions_hash)
   * destroy(id)/delete(id)
+  * update_all
   * all
   * count
   * first/last
+  * limit
   
 
 **instance methods**
@@ -188,6 +191,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
   * update
   * save/save!
   * write_attribute/read_attribute - (private, can be used within an included module)
+  * delete
 
 **has_many associations**
   
@@ -201,6 +205,20 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
   * push
   * clear
   * take
+  * average(key)
+  * minimum(key)
+  * maximum(key)
+  * sum(key)
+  * find
+  * find_by/find_by!
+  * where
+  * where(condition).not
+  * update_all
+  * delete_all
+  * order(key)
+  * reverse_order
+  * limit
+
 
   **Schema/Migration Option Support**
  

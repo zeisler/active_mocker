@@ -69,11 +69,11 @@ module MockInstanceMethods
   end
 
   def model_instance_methods
-    @model_instance_methods ||= self.class.send(:model_instance_methods).dup
+    @model_instance_methods ||= self.class.send(:model_instance_methods)
   end
 
   def model_class_methods
-    @model_class_methods ||= self.class.send(:model_class_methods).dup
+    @model_class_methods ||= self.class.send(:model_class_methods)
   end
 
   def schema_attributes

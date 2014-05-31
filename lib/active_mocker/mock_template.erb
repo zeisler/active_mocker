@@ -49,7 +49,7 @@ class <%= class_name %> < ::ActiveHash::Base
 
   def <%= meth.name %>=(val)
     associations['<%= meth.name %>'] = val
-    write_attribute('<%= meth.foreign_key %>', val.id) if val.persisted?
+    write_attribute('<%= meth.foreign_key %>', val.id) if val.respond_to?(:persisted?) && val.persisted?
   end
 <% end -%>
 # has_one

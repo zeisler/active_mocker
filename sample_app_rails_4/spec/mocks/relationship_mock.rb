@@ -82,7 +82,7 @@ class RelationshipMock < ::ActiveHash::Base
 
   def follower=(val)
     associations['follower'] = val
-    write_attribute('follower_id', val.id) if val.persisted?
+    write_attribute('follower_id', val.id) if val.respond_to?(:persisted?) && val.persisted?
   end
 
   def followed
@@ -91,7 +91,7 @@ class RelationshipMock < ::ActiveHash::Base
 
   def followed=(val)
     associations['followed'] = val
-    write_attribute('followed_id', val.id) if val.persisted?
+    write_attribute('followed_id', val.id) if val.respond_to?(:persisted?) && val.persisted?
   end
 # has_one
 # has_many

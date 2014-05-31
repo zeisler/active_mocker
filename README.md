@@ -165,16 +165,17 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
 ### ActiveRecord supported methods
 **class methods**
-  
+
   * new
   * create/create!
-  * column_names
+  * column_names/attribute_names
   * find
   * find_by/find_by!
   * find_or_create_by
   * find_or_initialize_by
   * where(conditions_hash)
-  * where(condition).not
+  * where(key: array_of_values)
+  * where.not(conditions_hash)
   * delete_all/destroy_all
   * delete_all(conditions_hash)
   * destroy(id)/delete(id)
@@ -183,7 +184,6 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
   * count
   * first/last
   * limit
-  
 
 **instance methods**
   
@@ -193,8 +193,8 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
   * write_attribute/read_attribute - (private, can be used within an included module)
   * delete
 
-**has_many associations**
-  
+**has_many associations/Collections**
+
   * empty?
   * length/size/count
   * uniq
@@ -205,31 +205,31 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
   * push
   * clear
   * take
-  * average(key)
-  * minimum(key)
-  * maximum(key)
-  * sum(key)
+  * average(:field_name)
+  * minimum(:field_name)
+  * maximum(:field_name)
+  * sum(:field_name)
   * find
   * find_by/find_by!
-  * where
-  * where(condition).not
+  * where(conditions_hash)
+  * where(key: array_of_values)
+  * where.not(conditions_hash)
   * update_all
   * delete_all
-  * order(key)
+  * order(:field_name)
   * reverse_order
   * limit
 
-
-  **Schema/Migration Option Support**
- 
- * All schema types are supported and on initalization coerced by Virtus. If coercsion fails the passed value will be retained.
- * Default value 
+### Schema/Migration Option Support
+* All schema types are supported and on initalization coerced by Virtus. If coercsion fails the passed value will be retained.
+* Default value
 
 ### Known Limitations
-
 * Model names and table names must follow the default ActiveRecord naming pattern.
 * Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup. 
 * Queries will not call other mocks classes, for example when using `where` all attributes must reside inside of each record.
+* Creation of association like `User.create_friend` or `User.build_friend` are not supported. If you need this functionality use rspec's stub any instance.
+* Validation are not present in mocks.
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

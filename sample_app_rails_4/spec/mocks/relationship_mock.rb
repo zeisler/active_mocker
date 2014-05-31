@@ -8,7 +8,6 @@ class RelationshipMock < ::ActiveHash::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
-    @associations = HashWithIndifferentAccess.new({:follower=>nil, :followed=>nil})
     super(attributes, &block)
   end
 
@@ -32,7 +31,7 @@ class RelationshipMock < ::ActiveHash::Base
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
     @attributes['id'] = type.coerce(val)
-  end
+          end
 
   def follower_id
     @attributes['follower_id']
@@ -41,7 +40,8 @@ class RelationshipMock < ::ActiveHash::Base
   def follower_id=(val)
     type = (types[:follower_id] ||= Virtus::Attribute.build(Fixnum))
     @attributes['follower_id'] = type.coerce(val)
-  end
+                associations['follower'] = UserMock.find(val) if defined? UserMock
+      end
 
   def followed_id
     @attributes['followed_id']
@@ -50,7 +50,8 @@ class RelationshipMock < ::ActiveHash::Base
   def followed_id=(val)
     type = (types[:followed_id] ||= Virtus::Attribute.build(Fixnum))
     @attributes['followed_id'] = type.coerce(val)
-  end
+                associations['followed'] = UserMock.find(val) if defined? UserMock
+      end
 
   def created_at
     @attributes['created_at']
@@ -59,7 +60,7 @@ class RelationshipMock < ::ActiveHash::Base
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
     @attributes['created_at'] = type.coerce(val)
-  end
+          end
 
   def updated_at
     @attributes['updated_at']
@@ -68,15 +69,12 @@ class RelationshipMock < ::ActiveHash::Base
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
     @attributes['updated_at'] = type.coerce(val)
-  end
+          end
 
   ##################################
-  #   Association getter/setters   #
+  #         Associations           #
   ##################################
-
-  def self.association_names
-    @association_names = [:follower, :followed]
-  end
+# belongs_to
 
   def follower
     associations['follower']
@@ -84,7 +82,7 @@ class RelationshipMock < ::ActiveHash::Base
 
   def follower=(val)
     associations['follower'] = val
-    self.follower_id = val.id if respond_to?(:follower_id) && val.persisted?
+    write_attribute('follower_id', val.id) if val.persisted?
   end
 
   def followed
@@ -93,8 +91,11 @@ class RelationshipMock < ::ActiveHash::Base
 
   def followed=(val)
     associations['followed'] = val
-    self.followed_id = val.id if respond_to?(:followed_id) && val.persisted?
+    write_attribute('followed_id', val.id) if val.persisted?
   end
+# has_one
+# has_many
+# has_and_belongs_to_many
 
   ##################################
   #  Model Methods getter/setters  #
@@ -109,7 +110,7 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
   def self.clear_mock
-    @model_class_methods, @model_instance_methods = nil, nil
+    @foreign_keys,@model_class_methods, @model_instance_methods = nil, nil, nil
     delete_all
   end
 

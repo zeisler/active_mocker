@@ -1,4 +1,4 @@
-require 'active_support/core_ext/hash/indifferent_access'
+
 module ActiveHash
   module ARApi
 
@@ -8,6 +8,7 @@ module ActiveHash
 
       def initialize(attributes = {}, &block)
         @types = {}
+        @associations = {}
         yield self if block_given?
         attributes.each do |key, value|
           begin

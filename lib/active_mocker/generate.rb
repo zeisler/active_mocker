@@ -56,19 +56,28 @@ class Generate
   def create_template
     mocks_created = 0
     tables.each do |table|
-      begin
+      # begin
       mock_template = MockTemplate.new
       # Schema Attributes
       mock_template.class_name      = mock_class_name(table.name)
       mock_template.attribute_names = table.column_names
       mock_template.attributes      = field_type_to_class(table.fields)
-      mock_template.default_attributes =default_attr_values(table.fields)
+      mock_template.default_attributes = default_attr_values(table.fields)
 
       # Model associations
-      mock_template.single_associations     = model_definition(table.name).single_relationships
-      mock_template.collection_associations = model_definition(table.name).collections
-      mock_template.association_names       = [*model_definition(table.name).single_relationships, *model_definition(table.name).collections]
-      mock_template.associations            = associations(mock_template.association_names)
+      # mock_template.single_associations     = model_definition(table.name).single_relationships
+      # mock_template.collection_associations = model_definition(table.name).collections
+      # association_names_array = [*model_definition(table.name).single_relationships.map(&:name), *model_definition(table.name).collections.map(&:name)]
+      # mock_template.association_names  = {}
+      # association_names_array.map do |a|
+      #   next if a.nil?
+      #   mock_template.association_names[a] = nil
+      # end
+      # raise 'error blank element' if model_definition(table.name).belongs_to.first.name.nil?
+      mock_template.belongs_to = model_definition(table.name).belongs_to
+      mock_template.has_one = model_definition(table.name).has_one
+      mock_template.has_many = model_definition(table.name).has_many
+      mock_template.has_and_belongs_to_many = model_definition(table.name).has_and_belongs_to_many
 
       # Model Methods
       mock_template.instance_methods       = instance_methods(table.name).methods
@@ -81,12 +90,12 @@ class Generate
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
       logger.info "saving mock #{table_to_model_file(table.name)} to #{mock_dir}"
 
-      rescue Exception => exception
-        logger.debug $!.backtrace
-        logger.debug exception
-        logger.info "failed to load #{table_to_model_file(table.name)} model"
-        next
-      end
+      # rescue Exception => exception
+      #   logger.debug $!.backtrace
+      #   logger.debug exception
+      #   logger.info "failed to load #{table_to_model_file(table.name)} model"
+      #   next
+      # end
       mocks_created += 1
 
     end
@@ -209,7 +218,15 @@ class Generate
                   :model_instance_methods,
                   :model_class_methods,
                   :default_attributes,
-                  :associations
+                  :associations,
+
+                  :belongs_to,
+                  :has_one,
+                  :has_many,
+                  :has_and_belongs_to_many
+
+
+
 
     def render(template)
       ERB.new(template, nil, '-').result(binding)

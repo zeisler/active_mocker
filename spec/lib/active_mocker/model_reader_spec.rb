@@ -1,5 +1,6 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
+require 'active_support/core_ext/hash/indifferent_access'
 require 'singleton'
 require 'logger'
 require 'active_mocker/logger'
@@ -17,7 +18,9 @@ describe ActiveMocker::ModelReader do
     ActiveMocker::Logger.set(UnitLogger)
   end
 
-  let(:subject){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}).parse('model') }
+  let(:model_reader){ described_class.new({model_dir: File.expand_path('../../', __FILE__)}).parse('model') }
+
+  let(:subject){ model_reader}
 
   describe '#parse' do
 
@@ -61,63 +64,111 @@ describe ActiveMocker::ModelReader do
 
   end
 
-  describe '#relationships_types' do
+  describe '#belongs_to' do
 
-    it '#belongs_to' do
+    let(:subject){model_reader.belongs_to}
 
-      expect(subject.relationships_types.belongs_to).to eq([[:company]])
-
+    it 'name of association' do
+      expect(subject.first.name).to eq(:company)
     end
 
-    it '#has_many' do
-
-      expect(subject.relationships_types.has_many).to eq([[:users]])
-
+    it 'class_name override' do
+      expect(subject.first.class_name).to eq('PlanServiceCategory')
     end
 
-    it '#has_one' do
-
-      expect(subject.relationships_types.has_one).to eq([[:account]])
-
+    it 'infer class_name' do
+      expect(subject.last.class_name).to eq('Person')
     end
 
-    it '#has_and_belongs_to_many' do
-
-      expect(subject.relationships_types.has_and_belongs_to_many).to eq([[:disclosures]])
-
+    it 'infer foreign key' do
+      expect(subject.last.foreign_key).to eq('person_id')
     end
 
-  end
+    it 'foreign key override' do
+      expect(subject.first.foreign_key).to eq('category_id')
+    end
 
-  describe '#relationships' do
-
-    it 'returns an array of relations' do
-
-      expect(subject.relationships).to eq [:users, :account, :company, :disclosures]
-
+    it 'through' do
+      expect(subject.last.through).to eq('customer')
     end
 
   end
 
-  describe '#collections' do
+  describe '#has_one' do
 
-    it 'returns an array of relations' do
+    let(:subject) { model_reader.has_one }
 
-      expect(subject.collections).to eq [:disclosures, :users]
-
+    it 'name of association' do
+      expect(subject.first.name).to eq(:account)
     end
 
   end
 
-  describe '#single_relationships' do
+  describe '#has_many' do
 
-    it 'returns an array of relations' do
+    let(:subject) { model_reader.has_many }
 
-      expect(subject.single_relationships).to eq [:company, :account]
-
+    it 'name of association' do
+      expect(subject.first.name).to eq(:users)
     end
 
   end
+
+  describe '#has_and_belongs_to_many' do
+
+    let(:subject) { model_reader.has_and_belongs_to_many }
+
+    it 'name of association' do
+      expect(subject.first.name).to eq(:disclosures)
+    end
+
+  end
+
+# TODO JoinTable
+#     class Assembly < ActiveRecord::Base
+#       has_and_belongs_to_many :parts
+#     end
+#
+#     class Part < ActiveRecord::Base
+#       has_and_belongs_to_many :assemblies
+#     end
+#     These need to be backed up by a migration to create the assemblies_parts table.This table should be created without a primary key:
+
+#     class CreateAssembliesPartsJoinTable < ActiveRecord::Migration
+#       def change
+#         create_table :assemblies_parts, id: false do |t|
+#           t.integer :assembly_id
+#           t.integer :part_id
+#         end
+#       end
+#     end
+
+#   TODO Polymorphic Associations
+#   A slightly more advanced twist on associations is the polymorphic association.With polymorphic associations, a model can belong to more than one other model, on a single association.For example, you might have a picture model that belongs to either an employee model or a product model.Here 's how this could be declared:
+#
+#     class Picture < ActiveRecord::Base
+#       belongs_to :imageable, polymorphic: true
+#     end
+#
+#     class Employee < ActiveRecord::Base
+#       has_many :pictures, as: :imageable
+#     end
+#
+#     class Product < ActiveRecord::Base
+#       has_many :pictures, as: :imageable
+#     end
+
+#     class CreatePictures < ActiveRecord::Migration
+#       def change
+#         create_table :pictures do |t|
+#           t.string :name
+#           t.integer :imageable_id
+#           t.string :imageable_type
+#           t.timestamps
+#         end
+#       end
+#     end
+
 
 
   context 'inject string_reader as file_reader' do
@@ -143,7 +194,7 @@ describe ActiveMocker::ModelReader do
     let(:search){subject.parse('person')}
 
     it 'let not read a file but return a string instead to be evaluated' do
-      expect(search.relationships_types.belongs_to).to eq  [[:zip_code]]
+      expect(search.relationships_types.belongs_to.first.name).to eq :zip_code
       expect(subject.instance_methods).to eq([:full_name])
       expect(subject.instance_methods_with_arguments).to eq([{:full_name=>[[:req, :first_name], [:req, :last_name]]}])
     end

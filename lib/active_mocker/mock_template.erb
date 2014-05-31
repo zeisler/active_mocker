@@ -8,7 +8,6 @@ class <%= class_name %> < ::ActiveHash::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new(<%= default_attributes %>)
-    @associations = HashWithIndifferentAccess.new(<%= associations %>)
     super(attributes, &block)
   end
 
@@ -32,32 +31,55 @@ class <%= class_name %> < ::ActiveHash::Base
   def <%= meth.name %>=(val)
     type = (types[:<%= meth.name %>] ||= Virtus::Attribute.build(<%= meth.type %>))
     @attributes['<%= meth.name %>'] = type.coerce(val)
+    <% association = belongs_to.select{|r| r.foreign_key == meth.name}.first  -%>
+    <% if association -%>
+    <% klass = "#{association.class_name}Mock" -%>
+    associations['<%= association.name %>'] = <%= klass %>.find(val) if defined? <%= klass %>
+    <% end -%>
   end
 <% end %>
   ##################################
-  #   Association getter/setters   #
+  #         Associations           #
   ##################################
-
-  def self.association_names
-    @association_names = <%= association_names.map { |a| a.to_sym } %>
-  end
-<% single_associations.each do |meth| %>
-  def <%= meth %>
-    associations['<%= meth %>']
+# belongs_to
+<% belongs_to.each do |meth| %>
+  def <%= meth.name %>
+    associations['<%= meth.name %>']
   end
 
-  def <%= meth %>=(val)
-    associations['<%= meth %>'] = val
-    self.<%= meth %>_id = val.id if respond_to?(:<%= meth %>_id) && val.persisted?
+  def <%= meth.name %>=(val)
+    associations['<%= meth.name %>'] = val
+    write_attribute('<%= meth.foreign_key %>', val.id) if val.persisted?
   end
 <% end -%>
-<% collection_associations.each do |meth| %>
-  def <%= meth %>
-    associations['<%= meth %>'] ||= ActiveMocker::Collection::Association.new
+# has_one
+<% has_one.each do |meth| %>
+  def <%= meth.name %>
+    associations['<%= meth.name %>']
   end
 
-  def <%= meth %>=(val)
-    associations['<%= meth %>'] = ActiveMocker::Collection::Association.new(val)
+  def <%= meth.name %>=(val)
+    associations['<%= meth.name %>'] = val
+  end
+<% end -%>
+# has_many
+<% has_many.each do |meth| %>
+  def <%= meth.name %>
+    associations['<%= meth.name %>'] ||= ActiveMocker::Collection::Association.new
+  end
+
+  def <%= meth.name %>=(val)
+    associations['<%= meth.name %>'] = ActiveMocker::Collection::Association.new(val)
+  end
+<% end -%>
+# has_and_belongs_to_many
+<% has_and_belongs_to_many.each do |meth| %>
+  def <%= meth.name %>
+    associations['<%= meth.name %>'] ||= ActiveMocker::Collection::Association.new
+  end
+
+  def <%= meth.name %>=(val)
+    associations['<%= meth.name %>'] = val
   end
 <% end -%>
 
@@ -74,7 +96,7 @@ class <%= class_name %> < ::ActiveHash::Base
   end
 
   def self.clear_mock
-    @model_class_methods, @model_instance_methods = nil, nil
+    @foreign_keys,@model_class_methods, @model_instance_methods = nil, nil, nil
     delete_all
   end
 <% instance_methods.each do |method| %>

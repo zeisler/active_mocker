@@ -4,7 +4,8 @@ class Model < ActiveRecord::Base
 
   include ModelCore::PlanService::Dah
 
-  belongs_to :company, class_name: 'PlanServiceCategory'
+  belongs_to :company, class_name: 'PlanServiceCategory', foreign_key: 'category_id'
+  belongs_to :person, through: 'customer'
   has_many :users
   has_one :account
   has_and_belongs_to_many :disclosures

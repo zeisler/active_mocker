@@ -82,6 +82,22 @@ module ActiveMocker
       klass.single_relationships.flatten.compact
     end
 
+    def belongs_to
+      klass.relationships.belongs_to
+    end
+
+    def has_one
+      klass.relationships.has_one
+    end
+
+    def has_and_belongs_to_many
+      klass.relationships.has_and_belongs_to_many
+    end
+
+    def has_many
+      klass.relationships.has_many
+    end
+
   end
 
 end

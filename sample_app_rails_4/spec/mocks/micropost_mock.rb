@@ -8,7 +8,6 @@ class MicropostMock < ::ActiveHash::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
-    @associations = HashWithIndifferentAccess.new({:user=>nil})
     super(attributes, &block)
   end
 
@@ -32,7 +31,7 @@ class MicropostMock < ::ActiveHash::Base
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
     @attributes['id'] = type.coerce(val)
-  end
+          end
 
   def content
     @attributes['content']
@@ -41,7 +40,7 @@ class MicropostMock < ::ActiveHash::Base
   def content=(val)
     type = (types[:content] ||= Virtus::Attribute.build(String))
     @attributes['content'] = type.coerce(val)
-  end
+          end
 
   def user_id
     @attributes['user_id']
@@ -50,7 +49,8 @@ class MicropostMock < ::ActiveHash::Base
   def user_id=(val)
     type = (types[:user_id] ||= Virtus::Attribute.build(Fixnum))
     @attributes['user_id'] = type.coerce(val)
-  end
+                associations['user'] = UserMock.find(val) if defined? UserMock
+      end
 
   def up_votes
     @attributes['up_votes']
@@ -59,7 +59,7 @@ class MicropostMock < ::ActiveHash::Base
   def up_votes=(val)
     type = (types[:up_votes] ||= Virtus::Attribute.build(Fixnum))
     @attributes['up_votes'] = type.coerce(val)
-  end
+          end
 
   def created_at
     @attributes['created_at']
@@ -68,7 +68,7 @@ class MicropostMock < ::ActiveHash::Base
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
     @attributes['created_at'] = type.coerce(val)
-  end
+          end
 
   def updated_at
     @attributes['updated_at']
@@ -77,15 +77,12 @@ class MicropostMock < ::ActiveHash::Base
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
     @attributes['updated_at'] = type.coerce(val)
-  end
+          end
 
   ##################################
-  #   Association getter/setters   #
+  #         Associations           #
   ##################################
-
-  def self.association_names
-    @association_names = [:user]
-  end
+# belongs_to
 
   def user
     associations['user']
@@ -93,8 +90,11 @@ class MicropostMock < ::ActiveHash::Base
 
   def user=(val)
     associations['user'] = val
-    self.user_id = val.id if respond_to?(:user_id) && val.persisted?
+    write_attribute('user_id', val.id) if val.persisted?
   end
+# has_one
+# has_many
+# has_and_belongs_to_many
 
   ##################################
   #  Model Methods getter/setters  #
@@ -109,7 +109,7 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def self.clear_mock
-    @model_class_methods, @model_instance_methods = nil, nil
+    @foreign_keys,@model_class_methods, @model_instance_methods = nil, nil, nil
     delete_all
   end
 

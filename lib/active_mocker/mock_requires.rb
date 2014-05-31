@@ -1,3 +1,4 @@
+require 'active_support/core_ext/hash/indifferent_access'
 require 'active_mocker/collection/queries'
 require 'active_mocker/collection/base'
 require 'active_mocker/collection/association'

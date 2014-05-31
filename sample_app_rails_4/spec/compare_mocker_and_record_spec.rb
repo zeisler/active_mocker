@@ -866,6 +866,24 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
     end
 
+    describe 'when setting association by id it will set the object on the parent' do
+
+      def object_set_by_id(post_class, user_class)
+        user = user_class.create
+        post = post_class.create(user_id: user.id)
+        expect(post.user).to eq user
+      end
+
+      it 'User' do
+        object_set_by_id(Micropost, User)
+      end
+
+      it 'UserMock' do
+        object_set_by_id(MicropostMock, UserMock)
+      end
+
+    end
+
     describe 'when setting association by object it will not set id if object is not persisted' do
 
       def id_set_by_object(post_class, user_class)

@@ -8,7 +8,6 @@ class UserMock < ::ActiveHash::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "email"=>"", "credits"=>nil, "created_at"=>nil, "updated_at"=>nil, "password_digest"=>nil, "remember_token"=>true, "admin"=>false})
-    @associations = HashWithIndifferentAccess.new({:microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil})
     super(attributes, &block)
   end
 
@@ -32,7 +31,7 @@ class UserMock < ::ActiveHash::Base
   def id=(val)
     type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
     @attributes['id'] = type.coerce(val)
-  end
+          end
 
   def name
     @attributes['name']
@@ -41,7 +40,7 @@ class UserMock < ::ActiveHash::Base
   def name=(val)
     type = (types[:name] ||= Virtus::Attribute.build(String))
     @attributes['name'] = type.coerce(val)
-  end
+          end
 
   def email
     @attributes['email']
@@ -50,7 +49,7 @@ class UserMock < ::ActiveHash::Base
   def email=(val)
     type = (types[:email] ||= Virtus::Attribute.build(String))
     @attributes['email'] = type.coerce(val)
-  end
+          end
 
   def credits
     @attributes['credits']
@@ -59,7 +58,7 @@ class UserMock < ::ActiveHash::Base
   def credits=(val)
     type = (types[:credits] ||= Virtus::Attribute.build(BigDecimal))
     @attributes['credits'] = type.coerce(val)
-  end
+          end
 
   def created_at
     @attributes['created_at']
@@ -68,7 +67,7 @@ class UserMock < ::ActiveHash::Base
   def created_at=(val)
     type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
     @attributes['created_at'] = type.coerce(val)
-  end
+          end
 
   def updated_at
     @attributes['updated_at']
@@ -77,7 +76,7 @@ class UserMock < ::ActiveHash::Base
   def updated_at=(val)
     type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
     @attributes['updated_at'] = type.coerce(val)
-  end
+          end
 
   def password_digest
     @attributes['password_digest']
@@ -86,7 +85,7 @@ class UserMock < ::ActiveHash::Base
   def password_digest=(val)
     type = (types[:password_digest] ||= Virtus::Attribute.build(String))
     @attributes['password_digest'] = type.coerce(val)
-  end
+          end
 
   def remember_token
     @attributes['remember_token']
@@ -95,7 +94,7 @@ class UserMock < ::ActiveHash::Base
   def remember_token=(val)
     type = (types[:remember_token] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))
     @attributes['remember_token'] = type.coerce(val)
-  end
+          end
 
   def admin
     @attributes['admin']
@@ -104,15 +103,14 @@ class UserMock < ::ActiveHash::Base
   def admin=(val)
     type = (types[:admin] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))
     @attributes['admin'] = type.coerce(val)
-  end
+          end
 
   ##################################
-  #   Association getter/setters   #
+  #         Associations           #
   ##################################
-
-  def self.association_names
-    @association_names = [:microposts, :relationships, :followed_users, :reverse_relationships, :followers]
-  end
+# belongs_to
+# has_one
+# has_many
 
   def microposts
     associations['microposts'] ||= ActiveMocker::Collection::Association.new
@@ -153,6 +151,7 @@ class UserMock < ::ActiveHash::Base
   def followers=(val)
     associations['followers'] = ActiveMocker::Collection::Association.new(val)
   end
+# has_and_belongs_to_many
 
   ##################################
   #  Model Methods getter/setters  #
@@ -167,7 +166,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def self.clear_mock
-    @model_class_methods, @model_instance_methods = nil, nil
+    @foreign_keys,@model_class_methods, @model_instance_methods = nil, nil, nil
     delete_all
   end
 

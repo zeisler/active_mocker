@@ -56,7 +56,7 @@ class Generate
   def create_template
     mocks_created = 0
     tables.each do |table|
-      # begin
+      begin
       mock_template = MockTemplate.new
       # Schema Attributes
       mock_template.class_name      = mock_class_name(table.name)
@@ -90,12 +90,12 @@ class Generate
       File.open(File.join(mock_dir,"#{table.name.singularize}_mock.rb"), 'w').write(klass_str)
       logger.info "saving mock #{table_to_model_file(table.name)} to #{mock_dir}"
 
-      # rescue Exception => exception
-      #   logger.debug $!.backtrace
-      #   logger.debug exception
-      #   logger.info "failed to load #{table_to_model_file(table.name)} model"
-      #   next
-      # end
+      rescue Exception => exception
+        logger.debug $!.backtrace
+        logger.debug exception
+        logger.info "failed to load #{table_to_model_file(table.name)} model"
+        next
+      end
       mocks_created += 1
 
     end

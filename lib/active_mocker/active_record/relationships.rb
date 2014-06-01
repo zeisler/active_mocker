@@ -50,11 +50,23 @@ module Relationships
   end
 
   class HasMany < Relationship
+
+    attr_reader :klass_name
+
+    def initialize(name, klass_name, options={})
+      @klass_name = klass_name
+      super(name, options)
+    end
+
+    def foreign_key
+      options[:foreign_key] || klass_name.to_s.foreign_key
+    end
+
   end
 
   def has_many(*args)
     @has_many ||= []
-    @has_many.push HasMany.new(args.shift, args)
+    @has_many.push HasMany.new(args.shift, self.name, args)
   end
 
   class HasOne < Relationship

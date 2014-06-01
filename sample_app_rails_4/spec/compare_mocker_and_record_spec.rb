@@ -400,7 +400,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        supported_array_methods(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+        supported_array_methods(UserMock, MicropostMock, ActiveMocker::Collection::HasMany)
       end
 
     end
@@ -902,6 +902,27 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
     end
 
+  end
+
+  describe 'has_many association' do
+
+    describe 'when passing in collection all item in collection will set its foreign key to the parent' do
+
+      def id_set_to_children(user_class, post_class)
+        posts = [post_class.create, post_class.create, post_class.create]
+        user = user_class.create(microposts: posts)
+        expect(posts.map(&:user_id)).to eq [user.id, user.id, user.id]
+      end
+
+      it 'User' do
+        id_set_to_children(User, Micropost)
+      end
+
+      it 'UserMock' do
+        id_set_to_children(UserMock, MicropostMock)
+      end
+
+    end
 
   end
 

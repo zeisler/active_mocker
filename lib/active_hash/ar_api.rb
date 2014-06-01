@@ -16,7 +16,8 @@ module ActiveMocker
         records.delete_at(index)
       end
 
-      def update(options={})
+      def update(options={}, &block)
+        yield self if block_given?
         options.each do |method, value|
           send("#{method}=", value)
         end
@@ -31,9 +32,10 @@ module ActiveMocker
         include ActiveMocker::Collection::Queries
 
         def create(attributes = {}, &block)
-          record = new(attributes) unless block_given?
-          record = new(attributes, &block) if block_given?
+          record = new({})
           record.save
+          record.update(attributes) unless block_given?
+          record.update(attributes, &block) if block_given?
           mark_dirty
           record
         end

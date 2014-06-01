@@ -22,7 +22,9 @@ module ActiveMocker
         options.each do |key, value|
           begin
             send "#{key}=", value
-          rescue NoMethodError
+          rescue NoMethodError => e
+            # puts e
+            # puts $!.backtrace
             raise ActiveMocker::RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
           end
         end
@@ -75,8 +77,6 @@ module ActiveMocker
       end
 
     end
-
-
 
   end
 

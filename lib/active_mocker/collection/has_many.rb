@@ -6,9 +6,9 @@ module Collection
 
     include Queries
 
-    def initialize(foreign_key, id,  collection)
+    def initialize(collection, foreign_key=nil, id=nil)
       super(collection)
-      update_all("#{foreign_key}" => id) if collection.first.respond_to?(:update)
+      update_all("#{foreign_key}" => id) if !id.nil? && collection.first.respond_to?(:update)
     end
 
   end

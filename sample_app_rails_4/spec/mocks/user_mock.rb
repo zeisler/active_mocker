@@ -117,7 +117,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def microposts=(val)
-    associations['microposts'] = ActiveMocker::Collection::HasMany.new('user_id', @attributes['id'], val)
+    associations['microposts'] = ActiveMocker::Collection::HasMany.new(val, 'user_id', @attributes['id'])
   end
 
   def relationships
@@ -125,7 +125,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def relationships=(val)
-    associations['relationships'] = ActiveMocker::Collection::HasMany.new('follower_id', @attributes['id'], val)
+    associations['relationships'] = ActiveMocker::Collection::HasMany.new(val, 'follower_id', @attributes['id'])
   end
 
   def followed_users
@@ -133,7 +133,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followed_users=(val)
-    associations['followed_users'] = ActiveMocker::Collection::HasMany.new('user_id', @attributes['id'], val)
+    associations['followed_users'] = ActiveMocker::Collection::HasMany.new(val, 'user_id', @attributes['id'])
   end
 
   def reverse_relationships
@@ -141,7 +141,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def reverse_relationships=(val)
-    associations['reverse_relationships'] = ActiveMocker::Collection::HasMany.new('followed_id', @attributes['id'], val)
+    associations['reverse_relationships'] = ActiveMocker::Collection::HasMany.new(val, 'followed_id', @attributes['id'])
   end
 
   def followers
@@ -149,7 +149,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followers=(val)
-    associations['followers'] = ActiveMocker::Collection::HasMany.new('user_id', @attributes['id'], val)
+    associations['followers'] = ActiveMocker::Collection::HasMany.new(val, 'user_id', @attributes['id'])
   end
 # has_and_belongs_to_many
 

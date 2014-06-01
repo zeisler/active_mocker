@@ -69,7 +69,7 @@ class <%= class_name %> < ::ActiveHash::Base
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = ActiveMocker::Collection::HasMany.new('<%= meth.foreign_key %>', @attributes['id'], val)
+    associations['<%= meth.name %>'] = ActiveMocker::Collection::HasMany.new(val, '<%= meth.foreign_key %>', @attributes['id'])
   end
 <% end -%>
 # has_and_belongs_to_many

@@ -911,6 +911,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       def id_set_to_children(user_class, post_class)
         posts = [post_class.create, post_class.create, post_class.create]
         user = user_class.create(microposts: posts)
+        expect(user.microposts.map(&:user_id)).to eq posts.map(&:user_id)
         expect(posts.map(&:user_id)).to eq [user.id, user.id, user.id]
       end
 

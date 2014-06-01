@@ -40,6 +40,8 @@ module ActiveMocker
           record
         end
 
+        alias_method :create!, :create
+
         def find_or_create_by(attributes)
           find_by(attributes) || create(attributes)
         end

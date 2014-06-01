@@ -18,8 +18,13 @@ module ActiveMocker
 
       def update(options={}, &block)
         yield self if block_given?
-        options.each do |method, value|
-          send("#{method}=", value)
+
+        options.each do |key, value|
+          begin
+            send "#{key}=", value
+          rescue NoMethodError
+            raise ActiveMocker::RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
+          end
         end
 
       end
@@ -32,7 +37,7 @@ module ActiveMocker
         include ActiveMocker::Collection::Queries
 
         def create(attributes = {}, &block)
-          record = new({})
+          record = new({id: attributes.symbolize_keys[:id] })
           record.save
           record.update(attributes) unless block_given?
           record.update(attributes, &block) if block_given?

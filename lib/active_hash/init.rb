@@ -10,14 +10,7 @@ module ActiveHash
         @types = {}
         @associations = {}
         yield self if block_given?
-        attributes.each do |key, value|
-          begin
-            send "#{key}=", value
-          rescue NoMethodError
-            raise ActiveMocker::RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
-          end
-        end
-
+        update(attributes)
       end
 
 

@@ -79,7 +79,7 @@ class <%= class_name %> < ::ActiveHash::Base
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = val
+    associations['<%= meth.name %>'] = ActiveMocker::Collection::Association.new(val)
   end
 <% end -%>
 

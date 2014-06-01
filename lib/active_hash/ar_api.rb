@@ -23,8 +23,8 @@ module ActiveMocker
           begin
             send "#{key}=", value
           rescue NoMethodError => e
-            # puts e
-            # puts $!.backtrace
+            puts e
+            puts $!.backtrace
             raise ActiveMocker::RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
           end
         end

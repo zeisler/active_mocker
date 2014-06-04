@@ -212,3 +212,5 @@ class UserMock < ::ActiveHash::Base
   end
 
 end
+
+ActiveMocker::LoadedMocks.add(UserMock)

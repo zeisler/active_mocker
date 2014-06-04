@@ -123,3 +123,5 @@ class MicropostMock < ::ActiveHash::Base
   end
 
 end
+
+ActiveMocker::LoadedMocks.add(MicropostMock)

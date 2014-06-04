@@ -1,11 +1,11 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
+    load 'spec/mocks/user_mock.rb'
 APP_ROOT =  File.expand_path('../../', __FILE__)
-
 require 'config/initializers/active_mocker.rb'
-load 'spec/mocks/user_mock.rb'
 
-describe UserMock do
+
+describe 'UserMock' do
 
   before(:each){
     ActiveMocker::Generate.new
@@ -168,6 +168,7 @@ describe UserMock do
       person = UserMock.find_or_initialize_by(name: 'dustin')
       expect(person.persisted?).to eq true
     end
+
 
     after(:each) do
       UserMock.delete_all

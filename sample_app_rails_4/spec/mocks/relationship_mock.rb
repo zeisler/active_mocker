@@ -116,3 +116,5 @@ class RelationshipMock < ::ActiveHash::Base
   end
 
 end
+
+ActiveMocker::LoadedMocks.add(RelationshipMock)

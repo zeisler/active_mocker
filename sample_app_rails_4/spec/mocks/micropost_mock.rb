@@ -119,7 +119,7 @@ class MicropostMock < ::ActiveHash::Base
   end
 
   def self.reload
-    load __File__
+    load __FILE__
   end
 
 end

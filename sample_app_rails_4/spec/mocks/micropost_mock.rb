@@ -118,4 +118,8 @@ class MicropostMock < ::ActiveHash::Base
     instance_exec(*[user], &block)
   end
 
+  def self.reload
+    load __File__
+  end
+
 end

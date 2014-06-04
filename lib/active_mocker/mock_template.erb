@@ -91,4 +91,8 @@ class <%= class_name %> < ::ActiveHash::Base
   end
 <% end -%>
 
+  def self.reload
+    load __File__
+  end
+
 end

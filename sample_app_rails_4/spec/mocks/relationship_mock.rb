@@ -111,4 +111,8 @@ class RelationshipMock < ::ActiveHash::Base
     delete_all
   end
 
+  def self.reload
+    load __File__
+  end
+
 end

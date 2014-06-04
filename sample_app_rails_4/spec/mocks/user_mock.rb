@@ -207,4 +207,8 @@ class UserMock < ::ActiveHash::Base
     instance_exec(*[token], &block)
   end
 
+  def self.reload
+    load __File__
+  end
+
 end

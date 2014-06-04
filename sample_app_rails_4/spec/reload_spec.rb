@@ -1,13 +1,12 @@
 require 'rspec'
 
-
 RSpec.configure do |config|
   config.after(:all) do
-    ActiveMocker::LoadedMocks.all.each{|n, m| m.reload}
+    ActiveMocker::LoadedMocks.clear_all
   end
 
   config.before(:all) do
-    ActiveMocker::LoadedMocks.reload_all
+    ActiveMocker::LoadedMocks.clear_all
   end
 end
 
@@ -16,26 +15,31 @@ APP_ROOT = File.expand_path('../../', __FILE__)
 require 'config/initializers/active_mocker.rb'
 load 'mocks/user_mock.rb'
 
-describe 'Mock::reload should change state of mock'do
+describe 'Should change state of mock'do
 
     before(:each) do
-      class UserMock
-        def self.new_method
-        end
+      UserMock.create
+
+      UserMock.mock_class_method(:digest) do |token|
+        token
       end
     end
 
-    it 'will reload the Mock file' do
-      expect(UserMock.respond_to?(:new_method)).to eq true
-      UserMock.create
+    it 'should change record count and digest should be implemented' do
+      expect(UserMock.count).to eq 1
+      expect(UserMock.digest('token')).to eq 'token'
     end
 
 end
 
-describe 'Mock::reload should have fresh mock' do
+describe 'should have fresh mock' do
 
-  it 'will reload the Mock file' do
-    expect(UserMock.respond_to?(:new_method)).to be_false
+  it 'should have record count of zero' do
+    expect(UserMock.count).to eq 0
+  end
+
+  it 'should raise error when calling digest' do
+    expect{UserMock.digest(nil)}.to raise_error(RuntimeError, '::digest is not Implemented for Class: UserMock')
   end
 
 end

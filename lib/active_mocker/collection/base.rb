@@ -23,21 +23,25 @@ module ActiveMocker
       # end
 
       def order(key)
-        self.class.new(collection.sort_by{ |item| item.send(key) })
+        self.collection = collection.sort_by{ |item| item.send(key) }
+        self
       end
 
       def reverse_order
-        self.class.new(collection.reverse)
+        self.collection = collection.reverse
+        self
       end
 
       def select(&block)
-        self.class.new(collection.select(&block))
+        self.collection = collection.select(&block)
+        self
       end
 
       def each(&block)
-        self.class.new(collection.each do |item|
+        self.collection = collection.each do |item|
           block.call(item)
-        end)
+        end
+        self
       end
 
       def to_a
@@ -49,11 +53,13 @@ module ActiveMocker
         collection.hash == val.hash
       end
 
-      private
+      protected
 
       def collection
         @collection
       end
+
+      attr_writer :collection
 
     end
 

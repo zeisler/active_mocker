@@ -113,7 +113,9 @@ class UserMock < ::ActiveHash::Base
 # has_many
 
   def microposts
-    associations['microposts'] ||= ActiveMocker::Collection::Association.new
+    associations['microposts'] ||= ActiveMocker::Collection::HasMany.new([],'user_id',
+                                                                                @attributes['id'],
+                                                                                MicropostMock)
   end
 
   def microposts=(val)
@@ -121,7 +123,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def relationships
-    associations['relationships'] ||= ActiveMocker::Collection::Association.new
+    associations['relationships'] ||= ActiveMocker::Collection::HasMany.new([],'follower_id',
+                                                                                @attributes['id'],
+                                                                                RelationshipMock)
   end
 
   def relationships=(val)
@@ -129,7 +133,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followed_users
-    associations['followed_users'] ||= ActiveMocker::Collection::Association.new
+    associations['followed_users'] ||= ActiveMocker::Collection::HasMany.new([],'user_id',
+                                                                                @attributes['id'],
+                                                                                FollowedUserMock)
   end
 
   def followed_users=(val)
@@ -137,7 +143,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def reverse_relationships
-    associations['reverse_relationships'] ||= ActiveMocker::Collection::Association.new
+    associations['reverse_relationships'] ||= ActiveMocker::Collection::HasMany.new([],'followed_id',
+                                                                                @attributes['id'],
+                                                                                RelationshipMock)
   end
 
   def reverse_relationships=(val)
@@ -145,7 +153,9 @@ class UserMock < ::ActiveHash::Base
   end
 
   def followers
-    associations['followers'] ||= ActiveMocker::Collection::Association.new
+    associations['followers'] ||= ActiveMocker::Collection::HasMany.new([],'user_id',
+                                                                                @attributes['id'],
+                                                                                FollowerMock)
   end
 
   def followers=(val)

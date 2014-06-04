@@ -927,4 +927,48 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
+  describe 'can build new object from collection' do
+
+    def new_record_on_collection(user_class, post_class)
+      user = user_class.create
+      new_post = user.microposts.build
+      expect(new_post.class).to eq(post_class)
+      expect(new_post.attributes).to eq({"id" => nil, "content" => nil, "user_id" => 1, "up_votes" => nil, "created_at" => nil, "updated_at" => nil})
+      expect(user.microposts.count).to eq 0
+      new_post.save
+      expect(user.microposts.count).to eq(1)
+      expect(user.microposts.first).to eq(new_post)
+    end
+
+    it 'User' do
+      new_record_on_collection(User, Micropost)
+    end
+
+    it 'UserMock' do
+      new_record_on_collection(UserMock, MicropostMock)
+    end
+
+  end
+
+  describe 'can create new object from collection' do
+
+    def create_record_on_collection(user_class, post_class)
+      user = user_class.create
+      new_post = user.microposts.create
+      expect(new_post.class).to eq(post_class)
+      expect(new_post.user_id).to eq(1)
+      expect(user.microposts.count).to eq 1
+      expect(user.microposts.first).to eq(new_post)
+    end
+
+    it 'User' do
+      create_record_on_collection(User, Micropost)
+    end
+
+    it 'UserMock' do
+      create_record_on_collection(UserMock, MicropostMock)
+    end
+
+  end
+
 end

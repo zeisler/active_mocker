@@ -41,11 +41,15 @@ module Relationships
     end
 
     def class_name
-      options[:class_name] || name.to_s.camelize
+      options[:class_name] || name.to_s.camelize.singularize
     end
 
     def foreign_key
       options[:foreign_key] || name.to_s.foreign_key
+    end
+
+    def join_table
+      options[:join_table]
     end
   end
 

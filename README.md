@@ -12,15 +12,17 @@ Example from a real app
 
 ------------------------------------------
 
-* [Installation][]
-* [Setup][]
-* [Dependencies][]
-* [Usage][]
-* [Mocking Methods][]
-* [ActiveRecord supported methods][]
-* [Known Limitations][]
-* [Inspiration][]
-* [Contributing][]
+* [Installation][#installation]
+* [Setup][#setup]
+* [Dependencies][#dependencies]
+* [Usage][#usage]
+* [Mocking Methods][#mocking-methods]
+* [ActiveRecord supported methods][#activeRecord-supported-methods]
+* [Known Limitations][#known-limitations]
+* [Inspiration][#inspiration]
+* [Contributing][#Contributing]
+
+
 ------------------------------------------
 
 

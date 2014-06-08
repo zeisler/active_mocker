@@ -4,10 +4,10 @@ module ActiveMocker
 
     attr_reader :name, :fields
 
-    def initialize(name, fields=[])
+    def initialize(name, id=true, fields=[])
       @name   = name
       @fields = fields
-      fields.unshift Field.new('id', :integer, {})
+      fields.unshift Field.new('id', :integer, [{primary_key: true}]) if id.nil?
     end
 
     def to_h

@@ -98,6 +98,20 @@ module ActiveMocker
       klass.relationships.has_many
     end
 
+    def table_name
+      klass.table_name
+    end
+
+    def primary_key
+      klass.primary_key
+    end
+
+    def constants
+      const = {}
+      klass.constants.each {|c| const[c] = klass.const_get(c)}
+      const
+    end
+
   end
 
 end

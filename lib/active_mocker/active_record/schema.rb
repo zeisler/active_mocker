@@ -49,7 +49,7 @@ module ActiveMocker
       end
 
       def create_table(name, options={}, &block)
-        tables << ActiveMocker::Table.new(name, CreateTable.new.instance_eval(&block))
+        tables << ActiveMocker::Table.new(name, options[:id], CreateTable.new.instance_eval(&block))
       end
 
       def method_missing(meth, *args)

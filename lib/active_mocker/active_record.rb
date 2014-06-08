@@ -14,6 +14,24 @@ module ActiveMocker
       extend UnknownModule
       extend ConstMissing
 
+      def self.table_name=(table_name)
+        @table_name = table_name
+      end
+
+      def self.table_name
+        @table_name ||= nil
+        @table_name
+      end
+
+      def self.primary_key=(primary_key)
+        @primary_key = primary_key
+      end
+
+      def self.primary_key
+        @primary_key ||= nil
+        @primary_key
+      end
+
       def self.const_missing(name)
         # Logger_.debug "ActiveMocker :: Can't can't find Constant #{name} from class #{}."
       end

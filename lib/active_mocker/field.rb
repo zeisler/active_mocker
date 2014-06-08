@@ -7,9 +7,13 @@ module ActiveMocker
     def initialize(name, type, options)
       @name    = name
       @type    = type
-      @options = {}
-      options.each{|hash| @options[hash.keys.first] = hash.values.first}
+      @primary_key
+      @options = options.first || {}
       create_option_methods
+    end
+
+    def primary_key
+      @primary_key
     end
 
     def to_h

@@ -112,7 +112,8 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
     #person_spec.rb
 
-    load 'spec/mocks/person_mock.rb'
+    require 'spec/mocks/person_mock.rb'
+    require 'spec/mocks/account_mock.rb'
 
     PersonMock.column_names
         => ["id", "account_id", "first_name", "last_name", "address", "city"]
@@ -120,7 +121,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
     person_mock = PersonMock.new( first_name:  "Dustin", 
     							  last_name:   "Zeisler", 
     							  account:      AccountMock.new )
-        => "#<PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler\, address: nil, city: nil>"
+        => "#<PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler, address: nil, city: nil>"
 
      person_mock.first_name
         => "Dustin"

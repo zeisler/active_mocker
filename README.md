@@ -1,5 +1,6 @@
 # ActiveMocker
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.png?branch=master)](https://travis-ci.org/zeisler/active_mocker)
+[![Code Climate](https://codeclimate.com/github/zeisler/active_mocker.png)](https://codeclimate.com/github/zeisler/active_mocker)
 
 Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parse the schema definition and the defined methods on a model then saves a ruby file that can be included with a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
 
@@ -7,6 +8,21 @@ Example from a real app
 
 		Finished in 0.54599 seconds
 		190 examples, 0 failures
+
+
+------------------------------------------
+
+* [Installation][]
+* [Setup][]
+* [Dependencies][]
+* [Usage][]
+* [Mocking Methods][]
+* [ActiveRecord supported methods][]
+* [Known Limitations][]
+* [Inspiration][]
+* [Contributing][]
+------------------------------------------
+
 
 ## Installation
 
@@ -22,8 +38,13 @@ Or install it yourself as:
 
     $ gem install active_mocker
 
+## Dependencies
+Tested with Rails 4.1 may work with older versions but not supported.
 
-### Setup
+
+## Setup
+
+### Configure the Mock Generator
   config/initializers/active_mocker.rb
 
     ActiveMocker::Generate.configure do |config|
@@ -34,6 +55,8 @@ Or install it yourself as:
       # Logging
       config.logger      = Rails.logger
     end
+
+### Create a Rake Task to Auto Regenerate Mocks
 
 Here is an example of a rake task to regenerate mocks after every schema modifiation. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.
 
@@ -52,7 +75,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
 ## Usage
 
- db/schema.rb
+    #db/schema.rb
 
     ActiveRecord::Schema.define(version: 20140327205359) do
 
@@ -65,6 +88,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
       end
 
     end
+--------------
 
     #app/models/person.rb
 
@@ -79,9 +103,10 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
       end
 
     end
-    
+ 
+-----------------   
 
- spec/models/person_spec.rb
+    #person_spec.rb
 
     load 'spec/mocks/person_mock.rb'
 
@@ -110,29 +135,38 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
      end
 
+--------------
+
+    #person_spec.rb
+
      PersonMock.new(first_name: "Dustin", last_name: "Zeisler")
              =>#<RuntimeError Rejected params: {"first_name"=>"Dustin", "last_name"=>"Zeisler"} for PersonMock>
 
+## Mocking Methods
 
-### Mocking instance and class methods
 
-     person_mock.bar('baz')
+### Class Methods
+
+     PersonMock.bar('baz')
         => RuntimeError: ::bar is not Implemented for Class: PersonMock
 
-     person_mock.mock_instance_method(:bar) do  |name, type=nil|
+     PersonMock.mock_instance_method(:bar) do  |name, type=nil|
         "Now implemented with #{name} and #{type}"
      end
+     
 
-     person_mock.new.bar('foo', 'type')
+### Instance Methods
+
+      PersonMock.new.bar('foo', 'type')
         => "Now implemented with foo and type"
 
      person_mock.mock_class_method(:bar) do
-       "Now implemented"
+        "Now implemented"
      end
 
 ### When the model changes, the mock fails
 
- app/models/person.rb
+    #app/models/person.rb
 
     class Person < ActiveRecord::Base
       belongs_to :account
@@ -142,12 +176,17 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
       end
 
     end
+   
+--------------
+
+     #person_spec.rb
 
     person_mock.new.bar('foo', 'type')
       => ArgumentError: wrong number of arguments (2 for 1)
 
+----------------
 
-    app/models/person.rb
+    #app/models/person.rb
 
     class Person < ActiveRecord::Base
       belongs_to :account
@@ -157,6 +196,10 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
       end
 
     end
+    
+--------------
+
+     #person_spec.rb
 
     person_mock.mock_instance_method(:bar) do  |name, type=nil|
       "Now implemented with #{name} and #{type}"
@@ -237,6 +280,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 Thanks to Jeff Olfert for being my original inspiration for this project.
 
 ## Contributing
+Your contribution are welcome!
 
 1. Fork it ( http://github.com/zeisler/active_mocker/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)

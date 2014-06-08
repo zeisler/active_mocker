@@ -17,6 +17,7 @@ Example from a real app
 * [Dependencies](#dependencies)
 * [Usage](#usage)
 * [Mocking Methods](#mocking-methods)
+* [Clearing Mocks](#clearing-mocks)
 * [ActiveRecord supported methods](#activerecord-supported-methods)
 * [Known Limitations](#known-limitations)
 * [Inspiration](#inspiration)
@@ -41,7 +42,8 @@ Or install it yourself as:
     $ gem install active_mocker
 
 ## Dependencies
-Tested with Rails 4.1 may work with older versions but not supported.
+* Tested with Rails 4.1 may work with older versions but not supported.
+* Requires Ruby MRI =< 2.0.
 
 
 ## Setup
@@ -115,14 +117,16 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
     PersonMock.column_names
         => ["id", "account_id", "first_name", "last_name", "address", "city"]
 
-    person_mock = PersonMock.new(first_name: "Dustin", last_name: "Zeisler", account: ActiveMocker.mock('Account').new)
-        => "#<PersonMock id: nil, account_id: nil, first_name: \"Dustin\", last_name: \"Zeisler\", address: nil, city: nil>"
+    person_mock = PersonMock.new( first_name:  "Dustin", 
+    							  last_name:   "Zeisler", 
+    							  account:      AccountMock.new )
+        => "#<PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler\, address: nil, city: nil>"
 
      person_mock.first_name
         => "Dustin"
 
 ### When schema.rb changes, the mock fails
-
+(Requires a regeneration of the mocks files.)
  db/schema.rb
 
      ActiveRecord::Schema.define(version: 20140327205359) do
@@ -167,6 +171,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
      end
 
 ### When the model changes, the mock fails
+(Requires a regeneration of the mocks files.)
 
     #app/models/person.rb
 
@@ -181,7 +186,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
    
 --------------
 
-     #person_spec.rb
+    #person_spec.rb
 
     person_mock.new.bar('foo', 'type')
       => ArgumentError: wrong number of arguments (2 for 1)
@@ -207,6 +212,21 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
       "Now implemented with #{name} and #{type}"
     end
       => NoMethodError: undefined method `bar' for class `PersonMock'
+
+### Clearing Mocks
+
+#### Deletes All Records and Clears Mocked Methods
+    PersonMock.clear_mock     
+    
+#### Clears all Loaded Mocks - (Use in after(:all) to keep state from leaking to other tests.)
+    ActiveMocker::LoadedMocks.clear_all
+
+#### Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)    ActiveMocker::LoadedMocks.delete_all
+    
+#### List All Loaded Mocks
+    ActiveMocker::LoadedMocks.all
+    		=> { 'PersonMock' => PersonMock } 
+
 
 ### ActiveRecord supported methods
 **class methods**

@@ -226,10 +226,12 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
-* Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup. 
+* Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup.
 * Queries will not call other mocks classes, for example when using `where` all attributes must reside inside of each record.
 * Creation of association like `User.create_friend` or `User.build_friend` are not supported. If you need this functionality use rspec's stub any instance.
 * Validation are not present in mocks.
+* CONSTANTS are not present in the mocks. This feature is planed for a future release. 
+* Associating objects together will not associate their ids nor will associating ids associate the objects together. This feature is planed for a future release.  
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

@@ -216,15 +216,20 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
 ### Clearing Mocks
 
-#### Deletes All Records and Clears Mocked Methods
+Deletes All Records and Clears Mocked Methods
+    
     PersonMock.clear_mock     
     
-#### Clears all Loaded Mocks - (Use in after(:all) to keep state from leaking to other tests.)
+Clears all Loaded Mocks - (Use in after(:all) to keep state from leaking to other tests.)
+    
     ActiveMocker::LoadedMocks.clear_all
 
-#### Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)    ActiveMocker::LoadedMocks.delete_all
+Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)
     
-#### List All Loaded Mocks
+    ActiveMocker::LoadedMocks.delete_all
+    
+List All Loaded Mocks
+    
     ActiveMocker::LoadedMocks.all
     		=> { 'PersonMock' => PersonMock } 
 

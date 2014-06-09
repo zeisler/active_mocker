@@ -27,7 +27,7 @@ module ActiveMocker
 
     def self.undefine_all
       mocks.each do |n, m|
-        Object.send(:remove_const, n) if Object.const_defined?(:n)
+        Object.send(:remove_const, n) if Object.const_defined?(n)
       end
     end
   end

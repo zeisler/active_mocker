@@ -121,4 +121,3 @@ module ActiveMocker
   end
 
 end
-

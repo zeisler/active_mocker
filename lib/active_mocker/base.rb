@@ -231,6 +231,10 @@ class Base
     end
   end
 
+  def to_hash
+    attributes
+  end
+
   def delete
     self.class.send(:record_index).delete("#{self.id}")
     records = self.class.instance_variable_get(:@records)

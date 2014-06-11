@@ -2,8 +2,6 @@ require 'active_mocker/mock_requires'
 Object.send(:remove_const, "UserMock") if ActiveMocker.class_exists?("UserMock")
 
 class UserMock < ActiveMocker::Base
-  include ActiveMocker::MockInstanceMethods
-  extend  ActiveMocker::MockClassMethods
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "email"=>"", "credits"=>nil, "created_at"=>nil, "updated_at"=>nil, "password_digest"=>nil, "remember_token"=>true, "admin"=>false})

@@ -2,8 +2,6 @@ require 'active_mocker/mock_requires'
 Object.send(:remove_const, "MicropostMock") if ActiveMocker.class_exists?("MicropostMock")
 
 class MicropostMock < ActiveMocker::Base
-  include ActiveMocker::MockInstanceMethods
-  extend  ActiveMocker::MockClassMethods
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})

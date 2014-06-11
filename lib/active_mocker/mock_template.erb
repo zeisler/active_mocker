@@ -2,8 +2,6 @@ require 'active_mocker/mock_requires'
 Object.send(:remove_const, "<%= class_name %>") if ActiveMocker.class_exists?("<%= class_name %>")
 
 class <%= class_name %> < ActiveMocker::Base
-  include ActiveMocker::MockInstanceMethods
-  extend  ActiveMocker::MockClassMethods
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new(<%= default_attributes %>)

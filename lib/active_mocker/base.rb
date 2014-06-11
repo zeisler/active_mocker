@@ -169,6 +169,48 @@ class Base
 
     private :reset_all_records
 
+    def mock_instance_method(method, &block)
+      model_instance_methods[method.to_s] = block
+    end
+
+    def mock_class_method(method, &block)
+      model_class_methods[method.to_s] = block
+    end
+
+    private
+
+    def model_class_methods
+      @model_class_methods ||= HashWithIndifferentAccess.new
+    end
+
+    def model_methods_template
+      @model_methods_template ||= HashWithIndifferentAccess.new
+    end
+
+    def schema_attributes_template
+      @schema_attributes_template ||= HashWithIndifferentAccess.new
+    end
+
+    def model_class_instance
+      @model_class_instance ||= model_class.new
+    end
+
+    def set_type(field_name, type)
+      types[field_name] = Virtus::Attribute.build(type)
+    end
+
+    def coerce(field, new_val)
+      type = self.class.types[field]
+      return attributes[field] = type.coerce(new_val) unless type.nil?
+      return new_value
+    end
+
+    public
+
+    def is_implemented(val, method)
+      raise "#{method} is not Implemented for Class: #{name}" if val == :not_implemented
+    end
+
   end
 
   extend ActiveMocker::Queries
@@ -236,16 +278,6 @@ class Base
     false
   end
 
-  def eql?(other)
-    other.instance_of?(self.class) and not id.nil? and (id == other.id)
-  end
-
-  alias == eql?
-
-  def hash
-    id.hash
-  end
-
   def errors
     obj = Object.new
 
@@ -275,6 +307,76 @@ class Base
 
   def marked_for_destruction?
     false
+  end
+
+  protected
+
+  def read_attribute(attr)
+    @attributes[attr]
+  end
+
+  def write_attribute(attr, value)
+    @attributes[attr] = value
+  end
+
+  def read_association(attr)
+    @associations[attr]
+  end
+
+  def write_association(attr, value)
+    @associations[attr] = value
+  end
+
+  public
+
+  def mock_instance_method(method, &block)
+    model_instance_methods[method] = block
+  end
+
+  def model_instance_methods
+    @model_instance_methods ||= self.class.send(:model_instance_methods)
+  end
+
+  def model_class_methods
+    @model_class_methods ||= self.class.send(:model_class_methods)
+  end
+
+  def inspect
+    inspection = self.class.column_names.map { |name|
+      "#{name}: #{attribute_for_inspect(name)}"
+    }.compact.join(", ")
+
+    "#<#{self.class} #{inspection}>"
+  end
+
+  def hash
+    attributes.hash
+  end
+
+  def ==(obj)
+    return false if obj.nil?
+    return hash == obj.attributes.hash if obj.respond_to?(:attributes)
+    hash == obj.hash if obj.respond_to?(:hash)
+  end
+
+  private
+
+  def attribute_to_string
+    attributes.map { |k, v| "#{k.to_s}: #{v.inspect}" }.join(', ')
+  end
+
+  def attribute_for_inspect(attr_name)
+    value = self.attributes[attr_name]
+    if value.is_a?(String) && value.length > 50
+      "#{value[0, 50]}...".inspect
+    elsif value.is_a?(Date) || value.is_a?(Time)
+      %("#{value.to_s(:db)}")
+    elsif value.is_a?(Array) && value.size > 10
+      inspected = value.first(10).inspect
+      %(#{inspected[0...-1]}, ...])
+    else
+      value.inspect
+    end
   end
 
 end

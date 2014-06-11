@@ -8,6 +8,10 @@ describe ActiveMocker::Logger do
 
     let(:logger){double()}
 
+    around do
+      described_class.class_variable_set(:@@logger, nil)
+    end
+
     it 'set the logger to be used by the mock class' do
       described_class.set(logger)
       expect(described_class.class_variable_get(:@@logger)).to eq(logger)

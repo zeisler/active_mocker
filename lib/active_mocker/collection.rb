@@ -17,7 +17,7 @@ module ActiveMocker
     alias distinct uniq
 
     def select(&block)
-      self.class.new(collection.select(&block))
+      collection.select(&block)
     end
 
     def each(&block)
@@ -27,9 +27,9 @@ module ActiveMocker
     end
 
     def map(&block)
-      self.class.new(collection.map do |item|
+      collection.map do |item|
         block.call(item)
-      end)
+      end
     end
 
     def to_a

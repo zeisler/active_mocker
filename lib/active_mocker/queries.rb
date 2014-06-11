@@ -53,9 +53,9 @@ module ActiveMocker
 
     def where(options=nil)
       return WhereNotChain.new(all) if options.nil?
-      all.select do |record|
+      Queries.included_klass.new(all.select do |record|
         Find.new(record).is_of(options)
-      end
+      end)
     end
 
     def find(ids)

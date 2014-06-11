@@ -113,7 +113,7 @@ describe ActiveMocker::Queries do
     end
 
     it 'return an instance of the class' do
-      expect(Queriable.new([1, 2]).map { |a| a + a }).to be_a_kind_of Queriable
+      expect(Queriable.new([1, 2]).map { |a| a + a }).to be_a_kind_of Array
     end
 
   end

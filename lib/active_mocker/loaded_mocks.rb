@@ -30,6 +30,14 @@ module ActiveMocker
         Object.send(:remove_const, n) if Object.const_defined?(n)
       end
     end
+
+    def self.class_name_to_mock
+      hash = {}
+      mocks.each do |mock_name, constant|
+        hash[constant.mocked_class] = constant
+      end
+      hash
+    end
   end
 
 end

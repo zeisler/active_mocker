@@ -13,6 +13,14 @@ describe 'UserMock' do
     UserMock.clear_mock
   }
 
+  describe '::mocked_class' do
+
+    it 'returns the name of the class being mocked' do
+      expect(UserMock.mocked_class).to eq 'User'
+    end
+
+  end
+
   describe '::column_names' do
 
     it 'returns an array of column names found from the schema.rb file' do

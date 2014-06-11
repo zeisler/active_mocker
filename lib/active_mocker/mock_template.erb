@@ -11,6 +11,9 @@ class <%= class_name %> < ActiveMocker::Base
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    '<%= class_name.sub('Mock', '') %>'
+  end
 
   def self.column_names
     <%= attribute_names %>

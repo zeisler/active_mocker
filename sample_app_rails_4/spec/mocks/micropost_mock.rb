@@ -11,6 +11,9 @@ class MicropostMock < ActiveMocker::Base
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    'Micropost'
+  end
 
   def self.column_names
     ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]

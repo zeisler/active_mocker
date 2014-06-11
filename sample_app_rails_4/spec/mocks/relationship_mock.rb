@@ -11,6 +11,9 @@ class RelationshipMock < ActiveMocker::Base
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    'Relationship'
+  end
 
   def self.column_names
     ["id", "follower_id", "followed_id", "created_at", "updated_at"]

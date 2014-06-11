@@ -11,6 +11,9 @@ class UserMock < ActiveMocker::Base
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    'User'
+  end
 
   def self.column_names
     ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]

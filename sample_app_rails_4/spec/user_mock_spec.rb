@@ -107,10 +107,10 @@ describe 'UserMock' do
 
   end
 
-  context 'active_hash' do
+  context 'active_mock' do
 
-    it 'uses active_hash::base as superclass' do
-      expect(UserMock.superclass.name).to eq 'ActiveHash::Base'
+    it 'uses active_mock::base as superclass' do
+      expect(UserMock.superclass.name).to eq 'ActiveMocker::Base'
     end
 
     it 'can save to class and then find instance by attribute' do

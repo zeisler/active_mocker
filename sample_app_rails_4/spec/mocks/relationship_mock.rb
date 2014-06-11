@@ -1,8 +1,7 @@
 require 'active_mocker/mock_requires'
 Object.send(:remove_const, "RelationshipMock") if ActiveMocker.class_exists?("RelationshipMock")
 
-class RelationshipMock < ::ActiveHash::Base
-  include ActiveMocker::ActiveHash::ARApi
+class RelationshipMock < ActiveMocker::Base
   include ActiveMocker::MockInstanceMethods
   extend  ActiveMocker::MockClassMethods
 

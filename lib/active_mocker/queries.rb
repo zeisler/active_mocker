@@ -1,7 +1,5 @@
 module ActiveMocker
 
-class RecordNotFound < Exception; end
-
   module Queries
 
     def self.included(klass)
@@ -9,7 +7,7 @@ class RecordNotFound < Exception; end
     end
 
     def self.included_klass
-      return Relation if @included.name =~ /ActiveHash/
+      return Relation if @included.name == 'ActiveMocker::Base'
       @included
     end
 

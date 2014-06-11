@@ -26,7 +26,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
   describe '::superclass' do
 
     it 'mock has super of active hash' do
-      expect(UserMock.superclass.name).to eq "ActiveHash::Base"
+      expect(UserMock.superclass.name).to eq "ActiveMocker::Base"
     end
 
     it 'ar has super of ar' do
@@ -840,6 +840,31 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
       it 'UserMock' do
         find_by_one_result(UserMock)
+      end
+
+    end
+
+  end
+
+  describe '::transaction' do
+
+    context 'will run code in block' do
+
+      def transaction(user_class)
+        user_class.transaction do
+          user_class.create(email: '1')
+          user_class.create(email: '2')
+        end
+
+        expect(user_class.count).to eq 2
+      end
+
+      it 'User' do
+        transaction(User)
+      end
+
+      it 'UserMock' do
+        transaction(UserMock)
       end
 
     end

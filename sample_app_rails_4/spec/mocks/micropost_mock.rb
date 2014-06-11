@@ -1,8 +1,7 @@
 require 'active_mocker/mock_requires'
 Object.send(:remove_const, "MicropostMock") if ActiveMocker.class_exists?("MicropostMock")
 
-class MicropostMock < ::ActiveHash::Base
-  include ActiveMocker::ActiveHash::ARApi
+class MicropostMock < ActiveMocker::Base
   include ActiveMocker::MockInstanceMethods
   extend  ActiveMocker::MockClassMethods
 

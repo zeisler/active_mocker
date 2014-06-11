@@ -292,7 +292,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        where_no_options(UserMock, ActiveMocker::Collection::Queries::WhereNotChain)
+        where_no_options(UserMock, ActiveMocker::Queries::WhereNotChain)
       end
 
     end
@@ -400,7 +400,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        supported_array_methods(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+        supported_array_methods(UserMock, MicropostMock, ActiveMocker::Association)
       end
 
     end
@@ -420,7 +420,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         end
 
         it 'UserMock' do
-          collection_find(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+          collection_find(UserMock, MicropostMock, ActiveMocker::Association)
         end
 
       end
@@ -438,7 +438,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         end
 
         it 'UserMock' do
-          collection_finds(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+          collection_finds(UserMock, MicropostMock, ActiveMocker::Association)
         end
 
       end
@@ -845,7 +845,5 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
     end
 
   end
-
-
 
 end

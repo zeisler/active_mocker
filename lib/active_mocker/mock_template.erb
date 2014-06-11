@@ -52,11 +52,11 @@ class <%= class_name %> < ::ActiveHash::Base
 <% end -%>
 <% collection_associations.each do |meth| %>
   def <%= meth %>
-    associations['<%= meth %>'] ||= ActiveMocker::Collection::Association.new
+    associations['<%= meth %>'] ||= ActiveMocker::Association.new
   end
 
   def <%= meth %>=(val)
-    associations['<%= meth %>'] = ActiveMocker::Collection::Association.new(val)
+    associations['<%= meth %>'] = ActiveMocker::Association.new(val)
   end
 <% end -%>
 

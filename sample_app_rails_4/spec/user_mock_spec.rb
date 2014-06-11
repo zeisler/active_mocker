@@ -1,9 +1,10 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
-    load 'spec/mocks/user_mock.rb'
-APP_ROOT =  File.expand_path('../../', __FILE__)
+require 'active_support'
+require 'spec/mocks/user_mock.rb'
+APP_ROOT =  File.expand_path('../../', __FILE__) unless defined? APP_ROOT
 require 'config/initializers/active_mocker.rb'
-
+require 'forwardable'
 
 describe 'UserMock' do
 

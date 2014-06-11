@@ -1,11 +1,8 @@
 module ActiveMocker
 
-module Collection
-
-  class Relation < Base
+  class Relation < Collection
     include Queries
 
   end
 
-end
 end

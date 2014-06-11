@@ -1,7 +1,7 @@
 require_relative 'init'
-require_relative '../active_mocker/collection/queries'
-require_relative '../active_mocker/collection/base'
-require_relative '../active_mocker/collection/relation'
+require_relative '../active_mocker/queries'
+require_relative '../active_mocker/collection'
+require_relative '../active_mocker/relation'
 module ActiveMocker
   module ActiveHash
 
@@ -28,7 +28,7 @@ module ActiveMocker
       end
 
       module ClassMethods
-        include ActiveMocker::Collection::Queries
+        include ActiveMocker::Queries
 
         def create(attributes = {}, &block)
           record = new(attributes) unless block_given?

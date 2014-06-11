@@ -1,16 +1,17 @@
 require 'active_mocker/mock_requires'
 Object.send(:remove_const, "<%= class_name %>") if ActiveMocker.class_exists?("<%= class_name %>")
 
-class <%= class_name %> < ::ActiveHash::Base
-  include ActiveMocker::ActiveHash::ARApi
-  include ActiveMocker::MockInstanceMethods
-  extend  ActiveMocker::MockClassMethods
+class <%= class_name %> < ActiveMocker::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new(<%= default_attributes %>)
+    @associations = HashWithIndifferentAccess.new(<%= associations %>)
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    '<%= class_name.sub('Mock', '') %>'
+  end
 
   def self.column_names
     <%= attribute_names %>
@@ -65,23 +66,28 @@ class <%= class_name %> < ::ActiveHash::Base
 # has_many
 <% has_many.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>'] ||= ActiveMocker::Collection::HasMany.new([],'<%= meth.foreign_key %>',
+    associations['<%= meth.name %>'] ||= ActiveMocker::HasMany.new([],'<%= meth.foreign_key %>',
                                                                                 @attributes['id'],
                                                                                 <%= meth.class_name + 'Mock' %>)
+<% collection_associations.each do |meth| %>
+  def <%= meth %>
+    associations['<%= meth %>'] ||= ActiveMocker::Association.new
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = ActiveMocker::Collection::HasMany.new(val, '<%= meth.foreign_key %>', @attributes['id'])
+    associations['<%= meth.name %>'] = ActiveMocker::HasMany.new(val, '<%= meth.foreign_key %>', @attributes['id'])
+  def <%= meth %>=(val)
+    associations['<%= meth %>'] = ActiveMocker::Association.new(val)
   end
 <% end -%>
 # has_and_belongs_to_many
 <% has_and_belongs_to_many.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>'] ||= ActiveMocker::Collection::Association.new
+    associations['<%= meth.name %>'] ||= ActiveMocker::Association.new
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = ActiveMocker::Collection::Association.new(val)
+    associations['<%= meth.name %>'] = ActiveMocker::Association.new(val)
   end
 <% end -%>
 
@@ -116,4 +122,10 @@ class <%= class_name %> < ::ActiveHash::Base
   end
 <% end -%>
 
+  def self.reload
+    load __FILE__
+  end
+
 end
+
+ActiveMocker::LoadedMocks.add(<%= class_name %>)

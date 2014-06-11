@@ -1,16 +1,25 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
-APP_ROOT =  File.expand_path('../../', __FILE__)
-
+require 'active_support'
+require 'spec/mocks/user_mock.rb'
+APP_ROOT =  File.expand_path('../../', __FILE__) unless defined? APP_ROOT
 require 'config/initializers/active_mocker.rb'
-load 'spec/mocks/user_mock.rb'
+require 'forwardable'
 
-describe UserMock do
+describe 'UserMock' do
 
   before(:each){
     ActiveMocker::Generate.new
     UserMock.clear_mock
   }
+
+  describe '::mocked_class' do
+
+    it 'returns the name of the class being mocked' do
+      expect(UserMock.mocked_class).to eq 'User'
+    end
+
+  end
 
   describe '::column_names' do
 
@@ -106,10 +115,10 @@ describe UserMock do
 
   end
 
-  context 'active_hash' do
+  context 'active_mock' do
 
-    it 'uses active_hash::base as superclass' do
-      expect(UserMock.superclass.name).to eq 'ActiveHash::Base'
+    it 'uses active_mock::base as superclass' do
+      expect(UserMock.superclass.name).to eq 'ActiveMocker::Base'
     end
 
     it 'can save to class and then find instance by attribute' do
@@ -168,6 +177,7 @@ describe UserMock do
       person = UserMock.find_or_initialize_by(name: 'dustin')
       expect(person.persisted?).to eq true
     end
+
 
     after(:each) do
       UserMock.delete_all

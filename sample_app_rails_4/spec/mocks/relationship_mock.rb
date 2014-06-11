@@ -1,16 +1,16 @@
 require 'active_mocker/mock_requires'
 Object.send(:remove_const, "RelationshipMock") if ActiveMocker.class_exists?("RelationshipMock")
 
-class RelationshipMock < ::ActiveHash::Base
-  include ActiveMocker::ActiveHash::ARApi
-  include ActiveMocker::MockInstanceMethods
-  extend  ActiveMocker::MockClassMethods
+class RelationshipMock < ActiveMocker::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    'Relationship'
+  end
 
   def self.column_names
     ["id", "follower_id", "followed_id", "created_at", "updated_at"]
@@ -114,4 +114,10 @@ class RelationshipMock < ::ActiveHash::Base
     delete_all
   end
 
+  def self.reload
+    load __FILE__
+  end
+
 end
+
+ActiveMocker::LoadedMocks.add(RelationshipMock)

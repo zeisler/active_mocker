@@ -1,10 +1,15 @@
 module ActiveMocker
 
-class RecordNotFound < Exception; end
-
-module Collection
-
   module Queries
+
+    def self.included(klass)
+      @included = klass
+    end
+
+    def self.included_klass
+      return Relation if @included.name == 'ActiveMocker::Base'
+      @included
+    end
 
     class Find
 
@@ -28,9 +33,9 @@ module Collection
       end
 
       def not(options={})
-        @collection.reject do |record|
+        Queries.included_klass.new(@collection.reject do |record|
           Find.new(record).is_of(options)
-        end
+        end)
       end
     end
 
@@ -42,19 +47,15 @@ module Collection
       delete_all
     end
 
-    def all(options={})
-      if options.has_key?(:conditions)
-        where(options[:conditions])
-      else
-        Relation.new( to_a || [] )
-      end
+    def all
+      Queries.included_klass.new( to_a || [] )
     end
 
     def where(options=nil)
       return WhereNotChain.new(all) if options.nil?
-      all.select do |record|
+      Queries.included_klass.new(all.select do |record|
         Find.new(record).is_of(options)
-      end
+      end)
     end
 
     def find(ids)
@@ -62,7 +63,7 @@ module Collection
       results = ids_array.map do |id|
         where(id: id).first
       end
-      return Relation.new(results) if ids.class == Array
+      return Queries.included_klass.new(results) if ids.class == Array
       results.first
     end
 
@@ -81,7 +82,7 @@ module Collection
     end
 
     def limit(num)
-      Relation.new(all.take(num))
+      Queries.included_klass.new(all.take(num))
     end
 
     def sum(key)
@@ -103,6 +104,14 @@ module Collection
       values_by_key(key).max_by { |i| i }
     end
 
+    def order(key)
+      Queries.included_klass.new(all.sort_by { |item| item.send(key) })
+    end
+
+    def reverse_order
+      Queries.included_klass.new(to_a.reverse)
+    end
+
     private
 
     def values_by_key(key)
@@ -112,5 +121,3 @@ module Collection
   end
 
 end
-end
-

@@ -1,16 +1,16 @@
 require 'active_mocker/mock_requires'
 Object.send(:remove_const, "MicropostMock") if ActiveMocker.class_exists?("MicropostMock")
 
-class MicropostMock < ::ActiveHash::Base
-  include ActiveMocker::ActiveHash::ARApi
-  include ActiveMocker::MockInstanceMethods
-  extend  ActiveMocker::MockClassMethods
+class MicropostMock < ActiveMocker::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    'Micropost'
+  end
 
   def self.column_names
     ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
@@ -119,4 +119,10 @@ class MicropostMock < ::ActiveHash::Base
     instance_exec(*[user], &block)
   end
 
+  def self.reload
+    load __FILE__
+  end
+
 end
+
+ActiveMocker::LoadedMocks.add(MicropostMock)

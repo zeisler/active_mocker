@@ -6,6 +6,8 @@ module ActiveMocker
     end
 
     def self.method_missing(meth, *args, &block)
+      @@logger ||= nil
+      return nil if @@logger.nil?
       return @@logger.send(meth, *args, &block)
     end
   end

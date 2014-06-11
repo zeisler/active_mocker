@@ -10,7 +10,7 @@ begin
   require 'active_model/naming'
 rescue LoadError
 end
-
+require 'active_mocker/logger'
 require 'active_mocker/queries'
 require 'active_mocker/collection'
 require 'active_mocker/association'

@@ -67,6 +67,9 @@ module ActiveMocker
                              precision:     attr.try(:precision),
                              scale:         attr.try(:scale),
                              default_value: attr.try(:scale))
+                             precision:     attr.precision,
+                             scale:         attr.scale,
+                             default_value: attr.default)
           if primary_attribute == attr
             attribute.primary_key = true
           end

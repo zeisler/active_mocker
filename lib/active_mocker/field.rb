@@ -9,7 +9,6 @@ module ActiveMocker
       @type    = type
       @primary_key
       @options = options.first || {}
-      create_option_methods
     end
 
     def primary_key
@@ -22,11 +21,16 @@ module ActiveMocker
 
     alias_method :to_hash, :to_h
 
-    def create_option_methods
-      options.each do |key, value|
-        self.instance_variable_set("@#{key}", value)
-        self.class.send(:attr_accessor, key)
-      end
+    def default
+      options[:default]
+    end
+
+    def precision
+      options[:precision]
+    end
+
+    def scale
+      options[:scale]
     end
 
   end

@@ -16,7 +16,9 @@ module ActiveMocker
       @foreign_id     = foreign_id
 
       super(collection)
-      update_all("#{foreign_key}" => foreign_id) if !foreign_id.nil? && collection.first.respond_to?(:update)
+      if !foreign_id.nil? && collection.first.respond_to?(foreign_key)
+        update_all("#{foreign_key}" => foreign_id)
+      end
     end
 
     private

@@ -95,7 +95,9 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
   describe '#attributes' do
 
     let(:user_ar){User.new(attributes)}
-    let(:user_mock){UserMock.new(attributes)}
+    let(:user_mock){
+      UserMock.new(attributes)
+    }
 
     it 'mock' do
       expect(user_mock.attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false})
@@ -292,7 +294,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        where_no_options(UserMock, ActiveMocker::Collection::Queries::WhereNotChain)
+        where_no_options(UserMock, ActiveMocker::Queries::WhereNotChain)
       end
 
     end
@@ -400,7 +402,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        supported_array_methods(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+        supported_array_methods(UserMock, MicropostMock, ActiveMocker::HasMany)
       end
 
     end
@@ -420,7 +422,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         end
 
         it 'UserMock' do
-          collection_find(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+          collection_find(UserMock, MicropostMock, ActiveMocker::Association)
         end
 
       end
@@ -438,7 +440,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         end
 
         it 'UserMock' do
-          collection_finds(UserMock, MicropostMock, ActiveMocker::Collection::Association)
+          collection_finds(UserMock, MicropostMock, ActiveMocker::Association)
         end
 
       end

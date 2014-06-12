@@ -12,7 +12,8 @@ module ActiveMocker
     def parse(model_name)
       @model_name = model_name
       klass
-      self
+      return self unless @klass == false
+      return false
     end
 
     def klass
@@ -20,22 +21,17 @@ module ActiveMocker
     end
 
     def eval_file
-      failure = true
-      while failure
+      failure = false
         begin
           m = Module.new
           m.module_eval(read_file, file_path)
-        rescue NameError => e
-          raise e
-          result = e.to_s.scan /::(\w*)$/ # gets the Constant name from error
-          const_name = result.flatten.first
-          Logger_.debug "ActiveMocker :: Can't can't find Constant #{const_name} from class #{model_name}..\n #{caller}"
-          next
+        rescue Exception => e
+          Logger.error "ActiveMocker :: Error loading Model: #{model_name} \n \t\t\t\t\t\t\t\t`#{e}` \n"
+          Logger.error "\t\t\t\t\t\t\t\t #{file_path}\n"
+          failure = true
         end
-        failure = false
-        model = m.const_get m.constants.first
-      end
-      model
+      return m.const_get m.constants.first unless failure
+      return false
     end
 
     def read_file

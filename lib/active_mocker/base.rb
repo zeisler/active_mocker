@@ -17,6 +17,10 @@ end
 
 class Base
 
+  def self.inherited(subclass)
+    ActiveMocker::LoadedMocks.add(subclass)
+  end
+
   if Object.const_defined?(:ActiveModel)
     extend ActiveModel::Naming
     include ActiveModel::Conversion

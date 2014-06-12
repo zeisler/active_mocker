@@ -1,4 +1,5 @@
 require 'active_mocker/mock_requires'
+Object.send(:remove_const, "Micropost") if Object.const_defined?("Micropost")
 
 class MicropostMock < ActiveMocker::Base
 

@@ -79,6 +79,10 @@ module ActiveMocker
       puts "#{self.class.name}: #{JSON.pretty_unparse(obj)}\n"
     end
 
+    def constants
+      @constants || []
+    end
+
     def has_many
       relation_find(:has_many)
     end

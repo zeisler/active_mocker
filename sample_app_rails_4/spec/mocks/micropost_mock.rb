@@ -2,6 +2,8 @@ require 'active_mocker/mock_requires'
 
 class MicropostMock < ActiveMocker::Base
 
+  MAGIC_ID = 90
+
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
     @associations = HashWithIndifferentAccess.new({:user=>nil})

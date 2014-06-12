@@ -1,7 +1,9 @@
 require 'active_mocker/mock_requires'
 
 class <%= class_name + @mock_append_name %> < ActiveMocker::Base
-
+<% constants.each do |constant| %>
+  <%= constant.first %> = <%= constant.last %>
+<% end %>
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new(<%= attributes_with_defaults %>)
     @associations = HashWithIndifferentAccess.new(<%= associations %>)

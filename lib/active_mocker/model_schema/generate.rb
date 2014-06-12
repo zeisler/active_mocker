@@ -31,6 +31,7 @@ module ActiveMocker
         model_schemas = models.map do |model_name|
 
           model      = get_model(model_name)
+          next if model == false
           table      = get_table(model, model_name)
           attributes = build_attributes(table.fields, primary_key(table.fields, model))
 
@@ -42,20 +43,9 @@ module ActiveMocker
                           constants:     model.constants)
         end
 
-        collection = ModelSchemaCollection.new(model_schemas)
-        modelless_tables = tables.map do |table|
-
-          attributes = build_attributes(table.fields, primary_key(table.fields, nil))
-          ModelSchema.new(class_name: nil,
-                          table_name: table.name,
-                          attributes: attributes,
-                          methods: nil,
-                          relationships: nil,
-                          constants:nil)
-
-        end
-        ModelSchemaCollection.new(collection.collection)
+        ModelSchemaCollection.new(model_schemas.compact)
       end
+
 
 
       # noinspection RubyArgCount
@@ -64,9 +54,6 @@ module ActiveMocker
           attribute = ModelSchema::Attributes
                         .new(name:          attr.name,
                              type:          attr.type,
-                             precision:     attr.try(:precision),
-                             scale:         attr.try(:scale),
-                             default_value: attr.try(:scale))
                              precision:     attr.precision,
                              scale:         attr.scale,
                              default_value: attr.default)
@@ -77,6 +64,7 @@ module ActiveMocker
         end
       end
 
+      # noinspection RubyArgCount
       def build_methods(model)
         result = []
         {instance: model.instance_methods_with_arguments,
@@ -84,10 +72,8 @@ module ActiveMocker
           methods.map do |method|
             method_name = method.keys.first.to_s
             arguments = method.values.first
-            arguments = nil if arguments.empty?
-            result << ModelSchema::Methods.new(name: method_name,
-                                               arguments: arguments,
-                                               type:      type)
+
+            result.push(ModelSchema::Methods.new(name: method_name,arguments: arguments,type:type))
           end
         end
         result

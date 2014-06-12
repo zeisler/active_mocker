@@ -99,6 +99,60 @@ module ActiveMocker
       relationships.select { |r| r.type.to_sym == type }
     end
 
+    def instance_methods
+      method_find(:instance)
+    end
+
+    def class_methods
+      method_find(:class)
+    end
+
+    def method_find(type)
+      return [] if methods.nil?
+      methods.select { |r| r.type.to_sym == type }
+    end
+
+    def attribute_names
+      attributes.map(&:name)
+    end
+
+    def attributes_with_defaults
+      hash = {}
+      attributes.each do |attr|
+        hash[attr.name] = attr.default_value
+      end
+      hash
+    end
+
+    def associations
+      hash = {}
+      relationships.each do |r|
+        hash[r.name] = nil
+      end
+      hash
+    end
+
+    def class_method_not_implemented
+      not_implemented(class_methods)
+    end
+
+    def instance_method_not_implemented
+      not_implemented(instance_methods)
+    end
+
+    def not_implemented(collection)
+      hash = {}
+      collection.each do |meth|
+        hash[meth.name] = :not_implemented
+      end
+      hash
+    end
+
+    def render(template, mock_append_name)
+      @mock_append_name = mock_append_name
+      ERB.new(template, nil, '-').result(binding)
+    end
+
     private :relation_find
 
     def primary_key
@@ -160,24 +214,28 @@ module ActiveMocker
                       type:
                     )
         @name      = name
-        @arguments = arguments
+        @arguments = Arguments.new(arguments)
         @type      = type
       end
 
       class Arguments
 
-        attr_reader :raw_parameters
+        attr_reader :arguments
 
-        def initialize(raw_parameters)
-          @raw_parameters = raw_parameters
+        def initialize(arguments)
+          @arguments = arguments
+        end
+
+        def to_hash
+          @arguments
         end
 
         def to_s
-          Reparameterize.call(raw_parameters)
+          Reparameterize.call(arguments)
         end
 
         def passable
-          Reparameterize.call(raw_parameters, param_list: true)
+          Reparameterize.call(arguments, param_list: true)
         end
 
       end

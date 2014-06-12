@@ -1,10 +1,10 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "MicropostMock") if ActiveMocker.class_exists?("MicropostMock")
 
 class MicropostMock < ActiveMocker::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
+    @associations = HashWithIndifferentAccess.new({:user=>nil})
     super(attributes, &block)
   end
 
@@ -113,7 +113,7 @@ class MicropostMock < ActiveMocker::Base
     delete_all
   end
 
-  def self.from_users_followed_by(user)
+  def self.from_users_followed_by(user=nil)
     block =  model_class_methods['from_users_followed_by']
     is_implemented(block, '::from_users_followed_by')
     instance_exec(*[user], &block)
@@ -124,5 +124,3 @@ class MicropostMock < ActiveMocker::Base
   end
 
 end
-
-ActiveMocker::LoadedMocks.add(MicropostMock)

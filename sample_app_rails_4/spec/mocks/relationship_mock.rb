@@ -1,10 +1,10 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "RelationshipMock") if ActiveMocker.class_exists?("RelationshipMock")
 
 class RelationshipMock < ActiveMocker::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
+    @associations = HashWithIndifferentAccess.new({:follower=>nil, :followed=>nil})
     super(attributes, &block)
   end
 
@@ -119,5 +119,3 @@ class RelationshipMock < ActiveMocker::Base
   end
 
 end
-
-ActiveMocker::LoadedMocks.add(RelationshipMock)

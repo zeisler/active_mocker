@@ -1,16 +1,15 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "<%= class_name %>") if ActiveMocker.class_exists?("<%= class_name %>")
 
-class <%= class_name %> < ActiveMocker::Base
+class <%= class_name + @mock_append_name %> < ActiveMocker::Base
 
   def initialize(attributes={}, &block)
-    @attributes = HashWithIndifferentAccess.new(<%= default_attributes %>)
+    @attributes = HashWithIndifferentAccess.new(<%= attributes_with_defaults %>)
     @associations = HashWithIndifferentAccess.new(<%= associations %>)
     super(attributes, &block)
   end
 
   def self.mocked_class
-    '<%= class_name.sub('Mock', '') %>'
+    '<%= class_name %>'
   end
 
   def self.column_names
@@ -30,7 +29,7 @@ class <%= class_name %> < ActiveMocker::Base
   end
 
   def <%= meth.name %>=(val)
-    type = (types[:<%= meth.name %>] ||= Virtus::Attribute.build(<%= meth.type %>))
+    type = (types[:<%= meth.name %>] ||= Virtus::Attribute.build(<%= meth.ruby_type %>))
     @attributes['<%= meth.name %>'] = type.coerce(val)
     <% association = belongs_to.select{|r| r.foreign_key == meth.name}.first  -%>
     <% if association -%>
@@ -66,18 +65,11 @@ class <%= class_name %> < ActiveMocker::Base
 # has_many
 <% has_many.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>'] ||= ActiveMocker::HasMany.new([],'<%= meth.foreign_key %>',
-                                                                                @attributes['id'],
-                                                                                <%= meth.class_name + 'Mock' %>)
-<% collection_associations.each do |meth| %>
-  def <%= meth %>
-    associations['<%= meth %>'] ||= ActiveMocker::Association.new
+    associations['<%= meth.name %>'] ||= ActiveMocker::HasMany.new([],'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = ActiveMocker::HasMany.new(val, '<%= meth.foreign_key %>', @attributes['id'])
-  def <%= meth %>=(val)
-    associations['<%= meth %>'] = ActiveMocker::Association.new(val)
+    associations['<%= meth.name %>'] ||= ActiveMocker::HasMany.new(val,'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
   end
 <% end -%>
 # has_and_belongs_to_many
@@ -96,11 +88,11 @@ class <%= class_name %> < ActiveMocker::Base
   ##################################
 
   def self.model_instance_methods
-    @model_instance_methods ||= <%= model_instance_methods %>
+    @model_instance_methods ||= <%= instance_method_not_implemented %>
   end
 
   def self.model_class_methods
-    @model_class_methods ||= <%= model_class_methods %>
+    @model_class_methods ||= <%= class_method_not_implemented %>
   end
 
   def self.clear_mock
@@ -108,17 +100,17 @@ class <%= class_name %> < ActiveMocker::Base
     delete_all
   end
 <% instance_methods.each do |method| %>
-  def <%= method.method %>(<%= method.params %>)
-    block =  model_instance_methods['<%= method.method %>']
-    self.class.is_implemented(block, '#<%= method.method %>')
-    instance_exec(*[<%= method.params_pass %>], &block)
+  def <%= method.name %>(<%= method.arguments %>)
+    block =  model_instance_methods['<%= method.name %>']
+    self.class.is_implemented(block, '#<%= method.name %>')
+    instance_exec(*[<%= method.arguments.passable %>], &block)
   end
 <% end -%>
 <% class_methods.each do |method| %>
-  def self.<%= method.method %>(<%= method.params %>)
-    block =  model_class_methods['<%= method.method %>']
-    is_implemented(block, '::<%= method.method %>')
-    instance_exec(*[<%= method.params_pass %>], &block)
+  def self.<%= method.name %>(<%= method.arguments %>)
+    block =  model_class_methods['<%= method.name %>']
+    is_implemented(block, '::<%= method.name %>')
+    instance_exec(*[<%= method.arguments.passable %>], &block)
   end
 <% end -%>
 
@@ -127,5 +119,3 @@ class <%= class_name %> < ActiveMocker::Base
   end
 
 end
-
-ActiveMocker::LoadedMocks.add(<%= class_name %>)

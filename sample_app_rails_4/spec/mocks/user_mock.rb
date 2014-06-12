@@ -1,16 +1,16 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "UserMock") if ActiveMocker.class_exists?("UserMock")
 
-class UserMock < ::ActiveHash::Base
-  include ActiveMocker::ActiveHash::ARApi
-  include ActiveMocker::MockInstanceMethods
-  extend  ActiveMocker::MockClassMethods
+class UserMock < ActiveMocker::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "email"=>"", "credits"=>nil, "created_at"=>nil, "updated_at"=>nil, "password_digest"=>nil, "remember_token"=>true, "admin"=>false})
+    @associations = HashWithIndifferentAccess.new({:microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil})
     super(attributes, &block)
   end
 
+  def self.mocked_class
+    'User'
+  end
 
   def self.column_names
     ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
@@ -92,7 +92,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def remember_token=(val)
-    type = (types[:remember_token] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))
+    type = (types[:remember_token] ||= Virtus::Attribute.build(Axiom::Types::Boolean))
     @attributes['remember_token'] = type.coerce(val)
           end
 
@@ -101,7 +101,7 @@ class UserMock < ::ActiveHash::Base
   end
 
   def admin=(val)
-    type = (types[:admin] ||= Virtus::Attribute.build(Virtus::Attribute::Boolean))
+    type = (types[:admin] ||= Virtus::Attribute.build(Axiom::Types::Boolean))
     @attributes['admin'] = type.coerce(val)
           end
 
@@ -113,53 +113,43 @@ class UserMock < ::ActiveHash::Base
 # has_many
 
   def microposts
-    associations['microposts'] ||= ActiveMocker::Collection::HasMany.new([],'user_id',
-                                                                                @attributes['id'],
-                                                                                MicropostMock)
+    associations['microposts'] ||= ActiveMocker::HasMany.new([],'user_id', @attributes['id'], 'MicropostMock')
   end
 
   def microposts=(val)
-    associations['microposts'] = ActiveMocker::Collection::HasMany.new(val, 'user_id', @attributes['id'])
+    associations['microposts'] ||= ActiveMocker::HasMany.new(val,'user_id', @attributes['id'], 'MicropostMock')
   end
 
   def relationships
-    associations['relationships'] ||= ActiveMocker::Collection::HasMany.new([],'follower_id',
-                                                                                @attributes['id'],
-                                                                                RelationshipMock)
+    associations['relationships'] ||= ActiveMocker::HasMany.new([],'follower_id', @attributes['id'], 'RelationshipMock')
   end
 
   def relationships=(val)
-    associations['relationships'] = ActiveMocker::Collection::HasMany.new(val, 'follower_id', @attributes['id'])
+    associations['relationships'] ||= ActiveMocker::HasMany.new(val,'follower_id', @attributes['id'], 'RelationshipMock')
   end
 
   def followed_users
-    associations['followed_users'] ||= ActiveMocker::Collection::HasMany.new([],'user_id',
-                                                                                @attributes['id'],
-                                                                                FollowedUserMock)
+    associations['followed_users'] ||= ActiveMocker::HasMany.new([],'user_id', @attributes['id'], 'FollowedUserMock')
   end
 
   def followed_users=(val)
-    associations['followed_users'] = ActiveMocker::Collection::HasMany.new(val, 'user_id', @attributes['id'])
+    associations['followed_users'] ||= ActiveMocker::HasMany.new(val,'user_id', @attributes['id'], 'FollowedUserMock')
   end
 
   def reverse_relationships
-    associations['reverse_relationships'] ||= ActiveMocker::Collection::HasMany.new([],'followed_id',
-                                                                                @attributes['id'],
-                                                                                RelationshipMock)
+    associations['reverse_relationships'] ||= ActiveMocker::HasMany.new([],'followed_id', @attributes['id'], 'RelationshipMock')
   end
 
   def reverse_relationships=(val)
-    associations['reverse_relationships'] = ActiveMocker::Collection::HasMany.new(val, 'followed_id', @attributes['id'])
+    associations['reverse_relationships'] ||= ActiveMocker::HasMany.new(val,'followed_id', @attributes['id'], 'RelationshipMock')
   end
 
   def followers
-    associations['followers'] ||= ActiveMocker::Collection::HasMany.new([],'user_id',
-                                                                                @attributes['id'],
-                                                                                FollowerMock)
+    associations['followers'] ||= ActiveMocker::HasMany.new([],'user_id', @attributes['id'], 'FollowerMock')
   end
 
   def followers=(val)
-    associations['followers'] = ActiveMocker::Collection::HasMany.new(val, 'user_id', @attributes['id'])
+    associations['followers'] ||= ActiveMocker::HasMany.new(val,'user_id', @attributes['id'], 'FollowerMock')
   end
 # has_and_belongs_to_many
 
@@ -214,6 +204,10 @@ class UserMock < ::ActiveHash::Base
     block =  model_class_methods['digest']
     is_implemented(block, '::digest')
     instance_exec(*[token], &block)
+  end
+
+  def self.reload
+    load __FILE__
   end
 
 end

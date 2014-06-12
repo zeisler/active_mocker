@@ -1,7 +1,4 @@
 module ActiveMocker
-
-  module Collection
-
     module Creators
 
       def create(attributes = {}, &block)
@@ -9,7 +6,6 @@ module ActiveMocker
         record.save
         record.update(attributes) unless block_given?
         record.update(attributes, &block) if block_given?
-        mark_dirty
         record
       end
 
@@ -24,8 +20,6 @@ module ActiveMocker
       end
 
     end
-
-  end
 
 end
 

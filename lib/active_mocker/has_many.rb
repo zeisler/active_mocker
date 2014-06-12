@@ -1,7 +1,5 @@
 module ActiveMocker
 
-module Collection
-
   class HasMany < Association
 
     include Queries
@@ -47,6 +45,5 @@ module Collection
 
   end
 
-end
 end
 

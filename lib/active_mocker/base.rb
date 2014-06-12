@@ -133,9 +133,10 @@ class Base
     end
 
     def create(attributes = {}, &block)
-      record = new(attributes) unless block_given?
-      record = new(attributes, &block) if block_given?
+      record = new
       record.save
+      record.update(attributes) unless block_given?
+      record.send(:update_block,attributes, &block) if block_given?
       record
     end
 
@@ -225,7 +226,17 @@ class Base
 
   def initialize(attributes = {}, &block)
     @types = {}
+    update_block(attributes, &block)
+  end
+
+  def update_block(attributes = {}, &block)
     yield self if block_given?
+    update(attributes)
+  end
+
+  private :update_block
+
+  def update(attributes={})
     attributes.each do |key, value|
       begin
         send "#{key}=", value
@@ -244,12 +255,6 @@ class Base
     records = self.class.instance_variable_get(:@records)
     index = records.index(self)
     records.delete_at(index)
-  end
-
-  def update(options={})
-    options.each do |method, value|
-      send("#{method}=", value)
-    end
   end
 
   def [](key)

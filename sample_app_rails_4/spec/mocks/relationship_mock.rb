@@ -1,5 +1,5 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "Relationship") if Object.const_defined?("Relationship")
+Object.send(:remove_const, "RelationshipMock") if Object.const_defined?("RelationshipMock")
 
 class RelationshipMock < ActiveMocker::Base
 

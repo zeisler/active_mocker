@@ -1,5 +1,5 @@
 require 'active_mocker/mock_requires'
-Object.send(:remove_const, "User") if Object.const_defined?("User")
+Object.send(:remove_const, "UserMock") if Object.const_defined?("UserMock")
 
 class UserMock < ActiveMocker::Base
 

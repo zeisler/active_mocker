@@ -1,7 +1,7 @@
-require 'active_mocker/mock_requires'
+require 'active_mocker/active_mock'
 Object.send(:remove_const, "UserMock") if Object.const_defined?("UserMock")
 
-class UserMock < ActiveMocker::Base
+class UserMock < ActiveMock::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "email"=>"", "credits"=>nil, "created_at"=>nil, "updated_at"=>nil, "password_digest"=>nil, "remember_token"=>true, "admin"=>false})
@@ -114,43 +114,43 @@ class UserMock < ActiveMocker::Base
 # has_many
 
   def microposts
-    associations['microposts'] ||= ActiveMocker::HasMany.new([],'user_id', @attributes['id'], 'MicropostMock')
+    associations['microposts'] ||= ActiveMock::HasMany.new([],'user_id', @attributes['id'], 'MicropostMock')
   end
 
   def microposts=(val)
-    associations['microposts'] ||= ActiveMocker::HasMany.new(val,'user_id', @attributes['id'], 'MicropostMock')
+    associations['microposts'] ||= ActiveMock::HasMany.new(val,'user_id', @attributes['id'], 'MicropostMock')
   end
 
   def relationships
-    associations['relationships'] ||= ActiveMocker::HasMany.new([],'follower_id', @attributes['id'], 'RelationshipMock')
+    associations['relationships'] ||= ActiveMock::HasMany.new([],'follower_id', @attributes['id'], 'RelationshipMock')
   end
 
   def relationships=(val)
-    associations['relationships'] ||= ActiveMocker::HasMany.new(val,'follower_id', @attributes['id'], 'RelationshipMock')
+    associations['relationships'] ||= ActiveMock::HasMany.new(val,'follower_id', @attributes['id'], 'RelationshipMock')
   end
 
   def followed_users
-    associations['followed_users'] ||= ActiveMocker::HasMany.new([],'user_id', @attributes['id'], 'FollowedUserMock')
+    associations['followed_users'] ||= ActiveMock::HasMany.new([],'user_id', @attributes['id'], 'FollowedUserMock')
   end
 
   def followed_users=(val)
-    associations['followed_users'] ||= ActiveMocker::HasMany.new(val,'user_id', @attributes['id'], 'FollowedUserMock')
+    associations['followed_users'] ||= ActiveMock::HasMany.new(val,'user_id', @attributes['id'], 'FollowedUserMock')
   end
 
   def reverse_relationships
-    associations['reverse_relationships'] ||= ActiveMocker::HasMany.new([],'followed_id', @attributes['id'], 'RelationshipMock')
+    associations['reverse_relationships'] ||= ActiveMock::HasMany.new([],'followed_id', @attributes['id'], 'RelationshipMock')
   end
 
   def reverse_relationships=(val)
-    associations['reverse_relationships'] ||= ActiveMocker::HasMany.new(val,'followed_id', @attributes['id'], 'RelationshipMock')
+    associations['reverse_relationships'] ||= ActiveMock::HasMany.new(val,'followed_id', @attributes['id'], 'RelationshipMock')
   end
 
   def followers
-    associations['followers'] ||= ActiveMocker::HasMany.new([],'user_id', @attributes['id'], 'FollowerMock')
+    associations['followers'] ||= ActiveMock::HasMany.new([],'user_id', @attributes['id'], 'FollowerMock')
   end
 
   def followers=(val)
-    associations['followers'] ||= ActiveMocker::HasMany.new(val,'user_id', @attributes['id'], 'FollowerMock')
+    associations['followers'] ||= ActiveMock::HasMany.new(val,'user_id', @attributes['id'], 'FollowerMock')
   end
 # has_and_belongs_to_many
 

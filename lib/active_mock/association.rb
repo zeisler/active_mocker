@@ -1,4 +1,4 @@
-module ActiveMocker
+module ActiveMock
   class Association < Collection
 
     include Queries

@@ -26,7 +26,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
   describe '::superclass' do
 
     it 'mock has super of active hash' do
-      expect(UserMock.superclass.name).to eq "ActiveMocker::Base"
+      expect(UserMock.superclass.name).to eq "ActiveMock::Base"
     end
 
     it 'ar has super of ar' do
@@ -294,7 +294,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        where_no_options(UserMock, ActiveMocker::Queries::WhereNotChain)
+        where_no_options(UserMock, ActiveMock::Queries::WhereNotChain)
       end
 
     end
@@ -402,7 +402,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        supported_array_methods(UserMock, MicropostMock, ActiveMocker::HasMany)
+        supported_array_methods(UserMock, MicropostMock, ActiveMock::HasMany)
       end
 
     end
@@ -422,7 +422,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         end
 
         it 'UserMock' do
-          collection_find(UserMock, MicropostMock, ActiveMocker::Association)
+          collection_find(UserMock, MicropostMock, ActiveMock::Association)
         end
 
       end
@@ -440,7 +440,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
         end
 
         it 'UserMock' do
-          collection_finds(UserMock, MicropostMock, ActiveMocker::Association)
+          collection_finds(UserMock, MicropostMock, ActiveMock::Association)
         end
 
       end
@@ -824,7 +824,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
       end
 
       it 'UserMock' do
-        find_by_exception(UserMock, ActiveMocker::RecordNotFound)
+        find_by_exception(UserMock, ActiveMock::RecordNotFound)
       end
 
     end

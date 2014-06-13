@@ -1,7 +1,7 @@
-require 'active_mocker/mock_requires'
+require 'active_mocker/active_mock'
 Object.send(:remove_const, "<%= class_name + @mock_append_name %>") if Object.const_defined?("<%= class_name + @mock_append_name %>")
 
-class <%= class_name + @mock_append_name %> < ActiveMocker::Base
+class <%= class_name + @mock_append_name %> < ActiveMock::Base
 <% constants.each do |constant| %>
   <%= constant.first %> = <%= constant.last %>
 <% end %>
@@ -68,21 +68,21 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Base
 # has_many
 <% has_many.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>'] ||= ActiveMocker::HasMany.new([],'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
+    associations['<%= meth.name %>'] ||= ActiveMock::HasMany.new([],'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] ||= ActiveMocker::HasMany.new(val,'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
+    associations['<%= meth.name %>'] ||= ActiveMock::HasMany.new(val,'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
   end
 <% end -%>
 # has_and_belongs_to_many
 <% has_and_belongs_to_many.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>'] ||= ActiveMocker::Association.new
+    associations['<%= meth.name %>'] ||= ActiveMock::Association.new
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = ActiveMocker::Association.new(val)
+    associations['<%= meth.name %>'] = ActiveMock::Association.new(val)
   end
 <% end -%>
 

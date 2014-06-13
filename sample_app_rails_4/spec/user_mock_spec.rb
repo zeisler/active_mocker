@@ -29,6 +29,7 @@ describe 'UserMock' do
 
   end
 
+
   describe '::column_names' do
 
     it 'returns an array of column names found from the schema.rb file' do
@@ -46,7 +47,7 @@ describe 'UserMock' do
     end
 
     it 'will raise error if not an attribute or association' do
-      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMocker::RejectedParams, '{:baz=>"Hello"} for UserMock')
+      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMock::RejectedParams, '{:baz=>"Hello"} for UserMock')
     end
 
   end
@@ -126,7 +127,7 @@ describe 'UserMock' do
   context 'active_mock' do
 
     it 'uses active_mock::base as superclass' do
-      expect(UserMock.superclass.name).to eq 'ActiveMocker::Base'
+      expect(UserMock.superclass.name).to eq 'ActiveMock::Base'
     end
 
     it 'can save to class and then find instance by attribute' do

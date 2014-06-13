@@ -1,7 +1,7 @@
-require 'active_mocker/mock_requires'
+require 'active_mocker/active_mock'
 Object.send(:remove_const, "MicropostMock") if Object.const_defined?("MicropostMock")
 
-class MicropostMock < ActiveMocker::Base
+class MicropostMock < ActiveMock::Base
 
   MAGIC_ID = 90
 

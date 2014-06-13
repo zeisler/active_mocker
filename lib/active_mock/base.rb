@@ -1,4 +1,4 @@
-module ActiveMocker
+module ActiveMock
 
 class RecordNotFound < StandardError
 end
@@ -218,7 +218,7 @@ class Base
 
   end
 
-  extend ActiveMocker::Queries
+  extend ActiveMock::Queries
 
   attr_reader :attributes
 
@@ -241,7 +241,7 @@ class Base
       begin
         send "#{key}=", value
       rescue NoMethodError
-        raise ActiveMocker::RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
+        raise ActiveMock::RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
       end
     end
   end

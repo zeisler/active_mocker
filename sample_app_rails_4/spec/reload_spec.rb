@@ -11,7 +11,7 @@ RSpec.configure do |config|
 end
 
 $:.unshift File.expand_path('../../', __FILE__)
-APP_ROOT = File.expand_path('../../', __FILE__)
+APP_ROOT = File.expand_path('../../', __FILE__) unless defined? APP_ROOT
 require 'config/initializers/active_mocker.rb'
 load 'mocks/user_mock.rb'
 

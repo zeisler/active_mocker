@@ -1,7 +1,7 @@
-require 'active_mocker/mock_requires'
+require 'active_mocker/active_mock'
 Object.send(:remove_const, "RelationshipMock") if Object.const_defined?("RelationshipMock")
 
-class RelationshipMock < ActiveMocker::Base
+class RelationshipMock < ActiveMock::Base
 
   def initialize(attributes={}, &block)
     @attributes = HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})

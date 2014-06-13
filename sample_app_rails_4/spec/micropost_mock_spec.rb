@@ -1,6 +1,6 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
-
+APP_ROOT = File.expand_path('../../', __FILE__) unless defined? APP_ROOT
 require 'config/initializers/active_mocker.rb'
 load 'spec/mocks/micropost_mock.rb'
 load 'spec/mocks/user_mock.rb'
@@ -12,7 +12,6 @@ describe MicropostMock do
     MicropostMock.clear_mock
     UserMock.clear_mock
   }
-
 
   describe 'user=' do
 
@@ -30,12 +29,19 @@ describe MicropostMock do
 
   end
 
+  describe '::MAGIC_ID' do
 
+    it 'has constant from model' do
+
+      expect(MicropostMock::MAGIC_ID).to eq 90
+
+    end
+
+  end
 
   after(:each) do
     MicropostMock.delete_all
     UserMock.delete_all
   end
-
 
 end

@@ -39,6 +39,29 @@ describe MicropostMock do
 
   end
 
+  describe 'Mocking methods' do
+
+    before do
+      MicropostMock.mock_instance_method(:display_name) do
+        'Method Mocked at class level'
+      end
+    end
+
+    it 'when no instance level mocks is set will default to class level' do
+      expect(MicropostMock.new.display_name).to eq 'Method Mocked at class level'
+
+    end
+
+    it 'instance mocking overrides class mocking' do
+      post = MicropostMock.new
+      post.mock_instance_method(:display_name) do
+        'Method Mocked at instance level'
+      end
+      expect(post.display_name).to eq 'Method Mocked at instance level'
+    end
+
+  end
+
   after(:each) do
     MicropostMock.delete_all
     UserMock.delete_all

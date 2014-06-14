@@ -74,9 +74,9 @@ module ActiveMocker
       @join_table_members = join_table_members unless join_table_members.nil?
 
       # UnitLogger.unit.info "#{caller_locations[1]}\n"
-      obj = ::JSON.parse(self.to_json)
+      # obj = ::JSON.parse(self.to_json)
       # UnitLogger.unit.info "#{self.class.name}: #{JSON.pretty_unparse(obj)}\n"
-      puts "#{self.class.name}: #{JSON.pretty_unparse(obj)}\n"
+      # puts "#{self.class.name}: #{JSON.pretty_unparse(obj)}\n"
     end
 
     def constants
@@ -84,23 +84,27 @@ module ActiveMocker
     end
 
     def has_many
-      relation_find(:has_many)
+      relation_find(:type, :has_many)
     end
 
     def has_one
-      relation_find(:has_one)
+      relation_find(:type, :has_one)
     end
 
     def belongs_to
-      relation_find(:belongs_to)
+      relation_find(:type, :belongs_to)
     end
 
     def has_and_belongs_to_many
-      relation_find(:has_and_belongs_to_many)
+      relation_find(:type, :has_and_belongs_to_many)
     end
 
-    def relation_find(type)
-      relationships.select { |r| r.type.to_sym == type }
+    def belongs_to_foreign_key(foreign_key)
+      belongs_to.select { |r| r.foreign_key.to_sym == foreign_key.to_sym }.first
+    end
+
+    def relation_find(key, value)
+      relationships.select { |r| r.send(key).to_sym == value }
     end
 
     def instance_methods
@@ -120,6 +124,18 @@ module ActiveMocker
       attributes.map(&:name)
     end
 
+    def types_hash
+      types = {}
+      attributes.each do |attr|
+        types[attr.name] = "build_type(#{attr.ruby_type})"
+      end
+
+      type_array = types.map do |name, type|
+        "#{name}: #{type}"
+      end
+      '{ ' + type_array.join(', ') + ' }'
+    end
+
     def attributes_with_defaults
       hash = {}
       attributes.each do |attr|
@@ -136,6 +152,10 @@ module ActiveMocker
       hash
     end
 
+    def mock_name(klass_name)
+      klass_name + "Mock"
+    end
+
     def class_method_not_implemented
       not_implemented(class_methods)
     end
@@ -147,7 +167,7 @@ module ActiveMocker
     def not_implemented(collection)
       hash = {}
       collection.each do |meth|
-        hash[meth.name] = :not_implemented
+        hash[meth.name.to_s] = :not_implemented
       end
       hash
     end

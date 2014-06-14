@@ -4,23 +4,46 @@ Object.send(:remove_const, "<%= class_name + @mock_append_name %>") if Object.co
 class <%= class_name + @mock_append_name %> < ActiveMock::Base
 <% constants.each do |constant| %>
   <%= constant.first %> = <%= constant.last %>
-<% end %>
-  def initialize(attributes={}, &block)
-    @attributes = HashWithIndifferentAccess.new(<%= attributes_with_defaults %>)
-    @associations = HashWithIndifferentAccess.new(<%= associations %>)
-    super(attributes, &block)
-  end
+<% end -%>
 
-  def self.mocked_class
-    '<%= class_name %>'
-  end
+  class << self
 
-  def self.column_names
-    <%= attribute_names %>
-  end
+    def attributes
+      @attributes ||= HashWithIndifferentAccess.new(<%= attributes_with_defaults %>)
+    end
 
-  def self.attribute_names
-    @attribute_names = <%= attribute_names %>
+    def types
+      @types ||= <%= types_hash %>
+    end
+
+    def associations
+      @associations ||= <%= associations %>
+    end
+
+    def model_instance_methods
+      @model_instance_methods ||= <%= instance_method_not_implemented %>
+    end
+
+    def model_class_methods
+      @model_class_methods ||= <%= class_method_not_implemented %>
+    end
+
+    def mocked_class
+      '<%= class_name %>'
+    end
+
+    def column_names
+      attribute_names
+    end
+
+    def attribute_names
+      @attribute_names ||= <%= attribute_names %>
+    end
+
+    def primary_key
+      <%= primary_key.name.inspect %>
+    end
+
   end
 
   ##################################
@@ -28,61 +51,92 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
   ##################################
 <% attributes.each do |meth| %>
   def <%= meth.name %>
-    @attributes['<%= meth.name %>']
+    read_attribute(:<%= meth.name %>)
   end
 
   def <%= meth.name %>=(val)
-    type = (types[:<%= meth.name %>] ||= Virtus::Attribute.build(<%= meth.ruby_type %>))
-    @attributes['<%= meth.name %>'] = type.coerce(val)
-    <% association = belongs_to.select{|r| r.foreign_key == meth.name}.first  -%>
-    <% if association -%>
-    <% klass = "#{association.class_name}Mock" -%>
-    associations['<%= association.name %>'] = <%= klass %>.find(val) if defined? <%= klass %>
-    <% end -%>
+    write_attribute(:<%= meth.name %>, val)
+<% association = belongs_to_foreign_key(meth.name)  -%>
+<% if association -%>
+    write_association(:<%= association.name %>, <%= mock_name(association.class_name) %>.find(<%= meth.name %>)) if defined? <%= mock_name(association.class_name) %>
+<% end -%>
   end
 <% end %>
   ##################################
   #         Associations           #
   ##################################
-# belongs_to
+
+<%= '# belongs_to' unless belongs_to.empty? -%>
 <% belongs_to.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>']
+    @associations[:<%= meth.name %>]
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = val
-    write_attribute('<%= meth.foreign_key %>', val.id) if val.respond_to?(:persisted?) && val.persisted?
+    @associations[:<%= meth.name %>] = val
+    write_attribute(:<%= meth.foreign_key %>, val.id) if val.respond_to?(:persisted?) && val.persisted?
+    val.<%= class_name.tableize %> << self if val.respond_to?(:<%= class_name.tableize %>)
   end
+
+  def build_<%= meth.name %>(attributes={}, &block)
+<% association = relation_find(:name, meth.name).first -%>
+<% if association -%>
+    write_association(:<%= meth.name %>, <%= mock_name(association.class_name) %>.new(attributes, &block))
 <% end -%>
-# has_one
+  end
+
+  def create_<%= meth.name %>(attributes={}, &block)
+<% association = relation_find(:name, meth.name).first -%>
+<% if association -%>
+    write_association(:<%= meth.name %>, <%= mock_name(association.class_name) %>.create(attributes, &block))
+<% end -%>
+  end
+  alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>
+<% end -%>
+<%= '# has_one' unless has_one.empty? -%>
 <% has_one.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>']
+    @associations['<%= meth.name %>']
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = val
+    @associations['<%= meth.name %>'] = val
   end
+
+  def build_<%= meth.name %>(attributes={}, &block)
+<% association = relation_find(:name, meth.name).first -%>
+<% if association -%>
+    write_association(:<%= meth.name %>, <%= mock_name(association.class_name) %>.new(attributes, &block)) if defined? <%= mock_name(association.class_name) %>
 <% end -%>
-# has_many
+  end
+
+  def create_<%= meth.name %>(attributes={}, &block)
+<% association = relation_find(:name, meth.name).first -%>
+<% if association -%>
+    write_association(:<%= meth.name %>,<%= mock_name(association.class_name) %>.create(attributes, &block)) if defined? <%= mock_name(association.class_name) %>
+<% end -%>
+  end
+  alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>
+<% end -%>
+
+<%= '# has_many' unless has_many.empty? -%>
 <% has_many.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>'] ||= ActiveMock::HasMany.new([],'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
+    @associations[:<%= meth.name %>] ||= ActiveMock::HasMany.new([],'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] ||= ActiveMock::HasMany.new(val,'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
+    @associations[:<%= meth.name %>] ||= ActiveMock::HasMany.new(val,'<%= meth.foreign_key %>', @attributes['id'], '<%= meth.class_name + @mock_append_name %>')
   end
 <% end -%>
-# has_and_belongs_to_many
+<%= '# has_and_belongs_to_many' unless has_and_belongs_to_many.empty? -%>
 <% has_and_belongs_to_many.each do |meth| %>
   def <%= meth.name %>
-    associations['<%= meth.name %>'] ||= ActiveMock::Association.new
+    @associations[:<%= meth.name %>] ||= ActiveMock::HasAndBelongsToMany.new
   end
 
   def <%= meth.name %>=(val)
-    associations['<%= meth.name %>'] = ActiveMock::Association.new(val)
+    @associations[:<%= meth.name %>] = ActiveMock::HasAndBelongsToMany.new(val)
   end
 <% end -%>
 
@@ -90,18 +144,6 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
   #  Model Methods getter/setters  #
   ##################################
 
-  def self.model_instance_methods
-    @model_instance_methods ||= <%= instance_method_not_implemented %>
-  end
-
-  def self.model_class_methods
-    @model_class_methods ||= <%= class_method_not_implemented %>
-  end
-
-  def self.clear_mock
-    @foreign_keys,@model_class_methods, @model_instance_methods = nil, nil, nil
-    delete_all
-  end
 <% instance_methods.each do |method| %>
   def <%= method.name %>(<%= method.arguments %>)
     block =  model_instance_methods['<%= method.name %>']
@@ -116,6 +158,8 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
     instance_exec(*[<%= method.arguments.passable %>], &block)
   end
 <% end -%>
+
+  private
 
   def self.reload
     load __FILE__

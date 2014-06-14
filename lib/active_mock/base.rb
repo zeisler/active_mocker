@@ -200,14 +200,8 @@ class Base
       @model_class_instance ||= model_class.new
     end
 
-    def set_type(field_name, type)
-      types[field_name] = Virtus::Attribute.build(type)
-    end
-
-    def coerce(field, new_val)
-      type = self.class.types[field]
-      return attributes[field] = type.coerce(new_val) unless type.nil?
-      return new_value
+    def build_type(type)
+      Virtus::Attribute.build(type)
     end
 
     public
@@ -216,16 +210,23 @@ class Base
       raise "#{method} is not Implemented for Class: #{name}" if val == :not_implemented
     end
 
+    def clear_mock
+      @model_class_methods, @model_instance_methods = nil, nil
+      delete_all
+    end
+
   end
 
   extend ActiveMock::Queries
 
-  attr_reader :attributes
-
-  attr_reader :associations, :types
+  attr_reader :associations, :types, :attributes
 
   def initialize(attributes = {}, &block)
-    @types = {}
+    @attributes   = self.class.attributes.dup
+    @types        = self.class.types.dup
+    @associations = self.class.associations.dup
+    @model_instance_methods = self.class.send(:model_instance_methods).dup
+    @model_class_methods    = self.class.send(:model_class_methods).dup
     update_block(attributes, &block)
   end
 
@@ -233,10 +234,13 @@ class Base
     yield self if block_given?
     update(attributes)
   end
-
   private :update_block
 
   def update(attributes={})
+    set_properties(attributes)
+  end
+
+  def set_properties(attributes={})
     attributes.each do |key, value|
       begin
         send "#{key}=", value
@@ -245,6 +249,8 @@ class Base
       end
     end
   end
+
+  private :set_properties
 
   def to_hash
     attributes
@@ -264,16 +270,6 @@ class Base
   def []=(key, val)
     attributes[key] = val
   end
-
-  def id
-    attributes[:id] ? attributes[:id] : nil
-  end
-
-  def id=(id)
-    attributes[:id] = id
-  end
-
-  alias quoted_id id
 
   def new_record?
     !self.class.all.include?(self)
@@ -329,7 +325,7 @@ class Base
   end
 
   def write_attribute(attr, value)
-    @attributes[attr] = value
+    @attributes[attr] = types[attr].coerce(value)
   end
 
   def read_association(attr)
@@ -343,15 +339,15 @@ class Base
   public
 
   def mock_instance_method(method, &block)
-    model_instance_methods[method] = block
+    @model_instance_methods[method.to_s] = block
   end
 
   def model_instance_methods
-    @model_instance_methods ||= self.class.send(:model_instance_methods)
+    self.class.send(:model_instance_methods).merge(@model_instance_methods)
   end
 
   def model_class_methods
-    @model_class_methods ||= self.class.send(:model_class_methods)
+    self.class.send(:model_class_methods).merge(@model_class_methods)
   end
 
   def inspect

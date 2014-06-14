@@ -3,22 +3,44 @@ Object.send(:remove_const, "RelationshipMock") if Object.const_defined?("Relatio
 
 class RelationshipMock < ActiveMock::Base
 
-  def initialize(attributes={}, &block)
-    @attributes = HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
-    @associations = HashWithIndifferentAccess.new({:follower=>nil, :followed=>nil})
-    super(attributes, &block)
-  end
+  class << self
 
-  def self.mocked_class
-    'Relationship'
-  end
+    def attributes
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
+    end
 
-  def self.column_names
-    ["id", "follower_id", "followed_id", "created_at", "updated_at"]
-  end
+    def types
+      @types ||= { id: build_type(Fixnum), follower_id: build_type(Fixnum), followed_id: build_type(Fixnum), created_at: build_type(DateTime), updated_at: build_type(DateTime) }
+    end
 
-  def self.attribute_names
-    @attribute_names = ["id", "follower_id", "followed_id", "created_at", "updated_at"]
+    def associations
+      @associations ||= {:follower=>nil, :followed=>nil}
+    end
+
+    def model_instance_methods
+      @model_instance_methods ||= {}
+    end
+
+    def model_class_methods
+      @model_class_methods ||= {}
+    end
+
+    def mocked_class
+      'Relationship'
+    end
+
+    def column_names
+      attribute_names
+    end
+
+    def attribute_names
+      @attribute_names ||= ["id", "follower_id", "followed_id", "created_at", "updated_at"]
+    end
+
+    def primary_key
+      "id"
+    end
+
   end
 
   ##################################
@@ -26,94 +48,97 @@ class RelationshipMock < ActiveMock::Base
   ##################################
 
   def id
-    @attributes['id']
+    read_attribute(:id)
   end
 
   def id=(val)
-    type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
-    @attributes['id'] = type.coerce(val)
-          end
+    write_attribute(:id, val)
+  end
 
   def follower_id
-    @attributes['follower_id']
+    read_attribute(:follower_id)
   end
 
   def follower_id=(val)
-    type = (types[:follower_id] ||= Virtus::Attribute.build(Fixnum))
-    @attributes['follower_id'] = type.coerce(val)
-                associations['follower'] = UserMock.find(val) if defined? UserMock
-      end
+    write_attribute(:follower_id, val)
+    write_association(:follower, UserMock.find(follower_id)) if defined? UserMock
+  end
 
   def followed_id
-    @attributes['followed_id']
+    read_attribute(:followed_id)
   end
 
   def followed_id=(val)
-    type = (types[:followed_id] ||= Virtus::Attribute.build(Fixnum))
-    @attributes['followed_id'] = type.coerce(val)
-                associations['followed'] = UserMock.find(val) if defined? UserMock
-      end
+    write_attribute(:followed_id, val)
+    write_association(:followed, UserMock.find(followed_id)) if defined? UserMock
+  end
 
   def created_at
-    @attributes['created_at']
+    read_attribute(:created_at)
   end
 
   def created_at=(val)
-    type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
-    @attributes['created_at'] = type.coerce(val)
-          end
+    write_attribute(:created_at, val)
+  end
 
   def updated_at
-    @attributes['updated_at']
+    read_attribute(:updated_at)
   end
 
   def updated_at=(val)
-    type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
-    @attributes['updated_at'] = type.coerce(val)
-          end
+    write_attribute(:updated_at, val)
+  end
 
   ##################################
   #         Associations           #
   ##################################
-# belongs_to
 
+# belongs_to
   def follower
-    associations['follower']
+    @associations[:follower]
   end
 
   def follower=(val)
-    associations['follower'] = val
-    write_attribute('follower_id', val.id) if val.respond_to?(:persisted?) && val.persisted?
+    @associations[:follower] = val
+    write_attribute(:follower_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
+    val.relationships << self if val.respond_to?(:relationships)
   end
 
+  def build_follower(attributes={}, &block)
+    write_association(:follower, UserMock.new(attributes, &block))
+  end
+
+  def create_follower(attributes={}, &block)
+    write_association(:follower, UserMock.create(attributes, &block))
+  end
+  alias_method :create_follower!, :create_follower
+
   def followed
-    associations['followed']
+    @associations[:followed]
   end
 
   def followed=(val)
-    associations['followed'] = val
-    write_attribute('followed_id', val.id) if val.respond_to?(:persisted?) && val.persisted?
+    @associations[:followed] = val
+    write_attribute(:followed_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
+    val.relationships << self if val.respond_to?(:relationships)
   end
-# has_one
-# has_many
-# has_and_belongs_to_many
+
+  def build_followed(attributes={}, &block)
+    write_association(:followed, UserMock.new(attributes, &block))
+  end
+
+  def create_followed(attributes={}, &block)
+    write_association(:followed, UserMock.create(attributes, &block))
+  end
+  alias_method :create_followed!, :create_followed
+
 
   ##################################
   #  Model Methods getter/setters  #
   ##################################
 
-  def self.model_instance_methods
-    @model_instance_methods ||= {}
-  end
 
-  def self.model_class_methods
-    @model_class_methods ||= {}
-  end
-
-  def self.clear_mock
-    @foreign_keys,@model_class_methods, @model_instance_methods = nil, nil, nil
-    delete_all
-  end
+  private
 
   def self.reload
     load __FILE__

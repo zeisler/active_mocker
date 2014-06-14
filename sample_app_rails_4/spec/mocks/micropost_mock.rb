@@ -5,22 +5,44 @@ class MicropostMock < ActiveMock::Base
 
   MAGIC_ID = 90
 
-  def initialize(attributes={}, &block)
-    @attributes = HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
-    @associations = HashWithIndifferentAccess.new({:user=>nil})
-    super(attributes, &block)
-  end
+  class << self
 
-  def self.mocked_class
-    'Micropost'
-  end
+    def attributes
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
+    end
 
-  def self.column_names
-    ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
-  end
+    def types
+      @types ||= { id: build_type(Fixnum), content: build_type(String), user_id: build_type(Fixnum), up_votes: build_type(Fixnum), created_at: build_type(DateTime), updated_at: build_type(DateTime) }
+    end
 
-  def self.attribute_names
-    @attribute_names = ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
+    def associations
+      @associations ||= {:user=>nil}
+    end
+
+    def model_instance_methods
+      @model_instance_methods ||= {"display_name"=>:not_implemented}
+    end
+
+    def model_class_methods
+      @model_class_methods ||= {"from_users_followed_by"=>:not_implemented}
+    end
+
+    def mocked_class
+      'Micropost'
+    end
+
+    def column_names
+      attribute_names
+    end
+
+    def attribute_names
+      @attribute_names ||= ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
+    end
+
+    def primary_key
+      "id"
+    end
+
   end
 
   ##################################
@@ -28,92 +50,88 @@ class MicropostMock < ActiveMock::Base
   ##################################
 
   def id
-    @attributes['id']
+    read_attribute(:id)
   end
 
   def id=(val)
-    type = (types[:id] ||= Virtus::Attribute.build(Fixnum))
-    @attributes['id'] = type.coerce(val)
-          end
+    write_attribute(:id, val)
+  end
 
   def content
-    @attributes['content']
+    read_attribute(:content)
   end
 
   def content=(val)
-    type = (types[:content] ||= Virtus::Attribute.build(String))
-    @attributes['content'] = type.coerce(val)
-          end
+    write_attribute(:content, val)
+  end
 
   def user_id
-    @attributes['user_id']
+    read_attribute(:user_id)
   end
 
   def user_id=(val)
-    type = (types[:user_id] ||= Virtus::Attribute.build(Fixnum))
-    @attributes['user_id'] = type.coerce(val)
-                associations['user'] = UserMock.find(val) if defined? UserMock
-      end
+    write_attribute(:user_id, val)
+    write_association(:user, UserMock.find(user_id)) if defined? UserMock
+  end
 
   def up_votes
-    @attributes['up_votes']
+    read_attribute(:up_votes)
   end
 
   def up_votes=(val)
-    type = (types[:up_votes] ||= Virtus::Attribute.build(Fixnum))
-    @attributes['up_votes'] = type.coerce(val)
-          end
+    write_attribute(:up_votes, val)
+  end
 
   def created_at
-    @attributes['created_at']
+    read_attribute(:created_at)
   end
 
   def created_at=(val)
-    type = (types[:created_at] ||= Virtus::Attribute.build(DateTime))
-    @attributes['created_at'] = type.coerce(val)
-          end
+    write_attribute(:created_at, val)
+  end
 
   def updated_at
-    @attributes['updated_at']
+    read_attribute(:updated_at)
   end
 
   def updated_at=(val)
-    type = (types[:updated_at] ||= Virtus::Attribute.build(DateTime))
-    @attributes['updated_at'] = type.coerce(val)
-          end
+    write_attribute(:updated_at, val)
+  end
 
   ##################################
   #         Associations           #
   ##################################
-# belongs_to
 
+# belongs_to
   def user
-    associations['user']
+    @associations[:user]
   end
 
   def user=(val)
-    associations['user'] = val
-    write_attribute('user_id', val.id) if val.respond_to?(:persisted?) && val.persisted?
+    @associations[:user] = val
+    write_attribute(:user_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
+    val.microposts << self if val.respond_to?(:microposts)
   end
-# has_one
-# has_many
-# has_and_belongs_to_many
+
+  def build_user(attributes={}, &block)
+    write_association(:user, UserMock.new(attributes, &block))
+  end
+
+  def create_user(attributes={}, &block)
+    write_association(:user, UserMock.create(attributes, &block))
+  end
+  alias_method :create_user!, :create_user
+
 
   ##################################
   #  Model Methods getter/setters  #
   ##################################
 
-  def self.model_instance_methods
-    @model_instance_methods ||= {}
-  end
 
-  def self.model_class_methods
-    @model_class_methods ||= {"from_users_followed_by"=>:not_implemented}
-  end
-
-  def self.clear_mock
-    @foreign_keys,@model_class_methods, @model_instance_methods = nil, nil, nil
-    delete_all
+  def display_name()
+    block =  model_instance_methods['display_name']
+    self.class.is_implemented(block, '#display_name')
+    instance_exec(*[], &block)
   end
 
   def self.from_users_followed_by(user=nil)
@@ -121,6 +139,8 @@ class MicropostMock < ActiveMock::Base
     is_implemented(block, '::from_users_followed_by')
     instance_exec(*[user], &block)
   end
+
+  private
 
   def self.reload
     load __FILE__

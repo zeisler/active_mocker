@@ -893,6 +893,24 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
     end
 
+    describe 'when setting association by object it will set the child association' do
+
+      def set_by_object(post_class, user_class)
+        user = user_class.create
+        post = post_class.create(user: user)
+        expect(user.microposts).to eq [post]
+      end
+
+      it 'User' do
+        set_by_object(Micropost, User)
+      end
+
+      it 'UserMock' do
+        set_by_object(MicropostMock, UserMock)
+      end
+
+    end
+
     describe 'when setting association by id it will set the object on the parent' do
 
       def object_set_by_id(post_class, user_class)
@@ -925,6 +943,25 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
       it 'UserMock' do
         id_set_by_object(MicropostMock, UserMock)
+      end
+
+    end
+
+    describe 'can build' do
+
+      def build_belong_to(post_class, user_class)
+        post = post_class.new
+        user = post.build_user
+        expect(user.class).to eq user_class
+        expect(post.user).to eq user
+      end
+
+      it 'User' do
+        build_belong_to(Micropost, User)
+      end
+
+      it 'UserMock' do
+        build_belong_to(MicropostMock, UserMock)
       end
 
     end

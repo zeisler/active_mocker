@@ -28,14 +28,15 @@ module ActiveMock
     def build(options={}, &block)
       new_record = relation_class.new({foreign_key => foreign_id}.merge!(options), &block)
 
-      def new_record.owned_by=(collection)
-        @collection = collection
+      def new_record.belongs_to(collection, foreign_key)
+        @belongs_to_collection ||={}
+        @belongs_to_collection[foreign_key] = collection
       end
 
-      new_record.owned_by = @collection
+      new_record.belongs_to(self, foreign_key)
 
       def new_record.save
-        @collection << self
+        @belongs_to_collection.each {|k ,v| v << self}
         super
       end
 

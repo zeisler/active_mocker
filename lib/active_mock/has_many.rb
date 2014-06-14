@@ -16,9 +16,6 @@ module ActiveMock
       @foreign_id     = foreign_id
 
       super(collection)
-      if !foreign_id.nil? && collection.first.respond_to?(foreign_key)
-        update_all("#{foreign_key}" => foreign_id)
-      end
     end
 
     private

@@ -893,7 +893,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
     end
 
-    describe 'when setting association by object it will set the child association' do
+    describe 'when setting association by object it will set the child association', pending:true do
 
       def set_by_object(post_class, user_class)
         user = user_class.create
@@ -970,7 +970,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   describe 'has_many association' do
 
-    describe 'when passing in collection all item in collection will set its foreign key to the parent' do
+    describe 'when passing in collection all item in collection will set its foreign key to the parent', pending: true do
 
       def id_set_to_children(user_class, post_class)
         posts = [post_class.create, post_class.create, post_class.create]

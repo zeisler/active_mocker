@@ -112,7 +112,6 @@ class MicropostMock < ActiveMock::Base
   def user=(val)
     @associations[:user] = val
     write_attribute(:user_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
-    val.microposts << self if val.respond_to?(:microposts) && !val.microposts.include?(self)
   end
 
   def build_user(attributes={}, &block)

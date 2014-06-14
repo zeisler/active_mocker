@@ -101,7 +101,6 @@ class RelationshipMock < ActiveMock::Base
   def follower=(val)
     @associations[:follower] = val
     write_attribute(:follower_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
-    val.relationships << self if val.respond_to?(:relationships) && !val.relationships.include?(self)
   end
 
   def build_follower(attributes={}, &block)
@@ -120,7 +119,6 @@ class RelationshipMock < ActiveMock::Base
   def followed=(val)
     @associations[:followed] = val
     write_attribute(:followed_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
-    val.relationships << self if val.respond_to?(:relationships) && !val.relationships.include?(self)
   end
 
   def build_followed(attributes={}, &block)

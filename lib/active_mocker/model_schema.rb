@@ -180,9 +180,15 @@ module ActiveMocker
     private :relation_find
 
     def primary_key
-      key = attributes.select { |attr| attr.primary_key }.first
-      return key if key
-      Attributes.new(name: 'id', primary_key: true, type: :integer)
+      key_attribute = attributes.select { |attr| attr.primary_key }.first
+      return key_attribute if key_attribute
+      default_primary_key
+    end
+
+    def default_primary_key
+      default_id = Attributes.new(name: 'id', primary_key: true, type: :integer)
+      attributes.unshift(default_id)
+      default_id
     end
 
     class Attributes

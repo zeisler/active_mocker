@@ -4,7 +4,7 @@ require 'json'
 require_relative '../../unit_logger'
 require 'active_mocker/model_schema'
 
-describe ActiveMocker::ModelSchema, pending: true do
+describe ActiveMocker::ModelSchema do
 
   subject{described_class.new(class_name: 'Model',
                               table_name: 'models'
@@ -17,6 +17,25 @@ describe ActiveMocker::ModelSchema, pending: true do
 
   it '#table_name' do
     expect(subject.table_name).to eq 'models'
+  end
+
+  describe '#primary_key' do
+
+    let(:a_primary_key_attribute){ ActiveMocker::ModelSchema::Attributes.new(name: 'key', primary_key: true, type: nil)}
+
+    it 'will return the first attribute that is a primary key' do
+      subject = described_class.new(attributes: [a_primary_key_attribute])
+      expect(subject.primary_key).to eq a_primary_key_attribute
+    end
+
+    let(:a_non_primary_key_attribute){ ActiveMocker::ModelSchema::Attributes.new(name: 'key', primary_key: false, type: nil)}
+
+    it 'will create a default primary_key of id if non is found' do
+      subject = described_class.new(attributes: [a_non_primary_key_attribute])
+      expect(subject.primary_key.name).to eq 'id'
+      expect(subject.attributes.count).to eq 2
+    end
+
   end
 
   describe '#attributes -> Array' do
@@ -100,10 +119,10 @@ describe ActiveMocker::ModelSchema, pending: true do
     subject { described_class.new(
             methods:
             [
-                ActiveMocker::ModelSchema::Methods.new(name:      'method_name',
-                                          arguments: 'argument_array',
-                                          type:      'class_method'
-                                          )
+              ActiveMocker::ModelSchema::Methods.new(name:      'method_name',
+                                                     arguments: 'argument_array',
+                                                     type:      'class_method'
+                                                    )
             ]
             ).methods.first
     }
@@ -113,7 +132,8 @@ describe ActiveMocker::ModelSchema, pending: true do
     end
 
     it 'arguments' do
-      expect(subject.arguments).to eq 'argument_array'
+      expect(subject.arguments.class).to eq ActiveMocker::ModelSchema::Methods::Arguments
+      expect(subject.arguments.arguments).to eq 'argument_array'
     end
 
     it 'type' do

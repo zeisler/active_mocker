@@ -3,7 +3,7 @@ Object.send(:remove_const, "<%= class_name + @mock_append_name %>") if Object.co
 
 class <%= class_name + @mock_append_name %> < ActiveMock::Base
 <% constants.each do |constant| %>
-  <%= constant.first %> = <%= constant.last %>
+  <%= constant.first %> = <%= constant.last.inspect %>
 <% end -%>
 
   class << self

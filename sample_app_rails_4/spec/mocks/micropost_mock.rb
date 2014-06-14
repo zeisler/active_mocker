@@ -3,7 +3,9 @@ Object.send(:remove_const, "MicropostMock") if Object.const_defined?("MicropostM
 
 class MicropostMock < ActiveMock::Base
 
-  MAGIC_ID = 90
+  MAGIC_ID_NUMBER = 90
+
+  MAGIC_ID_STRING = "F-1"
 
   class << self
 

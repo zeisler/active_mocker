@@ -29,11 +29,21 @@ describe MicropostMock do
 
   end
 
-  describe '::MAGIC_ID' do
+  describe '::MAGIC_ID_NUMBER' do
 
     it 'has constant from model' do
 
-      expect(MicropostMock::MAGIC_ID).to eq 90
+      expect(MicropostMock::MAGIC_ID_NUMBER).to eq 90
+
+    end
+
+  end
+
+  describe '::MAGIC_ID_STRING' do
+
+    it 'has constant from model' do
+
+      expect(MicropostMock::MAGIC_ID_STRING).to eq 'F-1'
 
     end
 

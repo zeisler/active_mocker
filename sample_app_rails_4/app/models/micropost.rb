@@ -3,6 +3,11 @@ class Micropost < ActiveRecord::Base
   default_scope -> { order('created_at DESC') }
   MAGIC_ID_NUMBER = 90
   MAGIC_ID_STRING = 'F-1'
+
+  module DoNotIncludeInMock
+
+  end
+  include DoNotIncludeInMock
   # self.primary_key = :lol
   # self.table_name = :posts
   # Returns microposts from the users being followed by the given user.

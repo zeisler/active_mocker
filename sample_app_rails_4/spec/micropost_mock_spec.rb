@@ -49,6 +49,16 @@ describe MicropostMock do
 
   end
 
+  describe '::constants' do
+
+    it 'has constant from model' do
+
+      expect(MicropostMock.constants).to eq [:MAGIC_ID_NUMBER, :MAGIC_ID_STRING, :ClassMethods]
+
+    end
+
+  end
+
   describe 'Mocking methods' do
 
     before do

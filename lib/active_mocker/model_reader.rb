@@ -105,6 +105,9 @@ module ActiveMocker
     def constants
       const = {}
       klass.constants.each {|c| const[c] = klass.const_get(c)}
+      const = const.reject do |c, v|
+        v.class == Module || v.class == Class
+      end
       const
     end
 

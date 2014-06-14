@@ -18,7 +18,7 @@ module ActiveMocker
     end
 
     def self.reload_all
-      mocks.each { |n, m| m.reload }
+      mocks.each { |n, m| m.send(:reload) }
     end
 
     def self.mocks
@@ -33,8 +33,8 @@ module ActiveMocker
 
     def self.class_name_to_mock
       hash = {}
-      mocks.each do |mock_name, constant|
-        hash[constant.mocked_class] = constant
+      mocks.each do |mock_name, mock_constant|
+        hash[mock_constant.mocked_class] = mock_constant
       end
       hash
     end

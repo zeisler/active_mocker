@@ -16,7 +16,7 @@ describe ActiveMocker::ModelSchema::Generate do
   # let(:schema_file){ '/Users/zeisler/dev/fbi/db/schema.rb' }
   let(:models_dir){ File.join(app_root, 'sample_app_rails_4/app/models') }
   # let(:models_dir){'/Users/zeisler/dev/fbi/app/models' }
-  let(:run){described_class.new(schema_file: schema_file, models_dir: models_dir, logger: UnitLogger.unit).run
+  let(:run){described_class.new(schema_file: schema_file, models_dir: models_dir, logger: UnitLogger.unit).run.sort_by{|m| m.class_name}
   }
 
   it 'test' do

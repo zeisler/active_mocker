@@ -75,7 +75,7 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
   def <%= meth.name %>=(val)
     @associations[:<%= meth.name %>] = val
     write_attribute(:<%= meth.foreign_key %>, val.id) if val.respond_to?(:persisted?) && val.persisted?
-    val.<%= class_name.tableize %> << self if val.respond_to?(:<%= class_name.tableize %>)
+    val.<%= class_name.tableize %> << self if val.respond_to?(:<%= class_name.tableize %>) && !val.<%= class_name.tableize %>.include?(self)
   end
 
   def build_<%= meth.name %>(attributes={}, &block)

@@ -191,10 +191,10 @@ module ActiveMocker
       attr_writer :primary_key
       def initialize(name:,
                      type:,
-                     precision:,
-                     scale:,
-                     default_value:,
-                     primary_key: nil
+                     precision:     nil,
+                     scale:         nil,
+                     default_value: nil,
+                     primary_key:   nil
       )
         @name          = name
         @type          = type

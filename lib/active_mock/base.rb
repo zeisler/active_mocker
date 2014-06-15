@@ -224,8 +224,17 @@ class Base
     end
 
     def model_instance_methods
-      self.class.send(:model_instance_methods).merge(@model_instance_methods)
+      class_level_mocks = self.class.send(:model_instance_methods)
+      merged_mocks      = class_level_mocks.merge(@model_instance_methods)
+      return class_level_mocks if all_not_implemented?(merged_mocks) && !all_not_implemented?(class_level_mocks)
+      merged_mocks
     end
+
+    def all_not_implemented?(hash)
+      hash.select { |k, v| v == :not_implemented }.count == hash.count
+    end
+    
+    private :all_not_implemented?
 
     def model_class_methods
       self.class.send(:model_class_methods).merge(@model_class_methods)

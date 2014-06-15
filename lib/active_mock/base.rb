@@ -21,46 +21,7 @@ class Base
     ActiveMocker::LoadedMocks.add(subclass)
   end
 
-  if Object.const_defined?(:ActiveModel)
-    extend ActiveModel::Naming
-    include ActiveModel::Conversion
-  else
-    def to_param
-      id.present? ? id.to_s : nil
-    end
-  end
-
   class << self
-
-    def cache_key
-      if Object.const_defined?(:ActiveModel)
-        model_name.cache_key
-      else
-        ActiveSupport::Inflector.tableize(self)
-      end
-    end
-
-    def primary_key
-      "id"
-    end
-
-    def field_names
-      @field_names ||= []
-    end
-
-    def the_meta_class
-      class << self
-        self
-      end
-    end
-
-    def compute_type(type_name)
-      self
-    end
-
-    def pluralize_table_names
-      true
-    end
 
     def exists?(record)
       if record.id.present?
@@ -127,11 +88,6 @@ class Base
 
     delegate :first, :last, :to => :all
 
-    # Needed for ActiveRecord polymorphic associations
-    def base_class
-      ActiveMocker::Base
-    end
-
     def create(attributes = {}, &block)
       record = new
       record.save
@@ -188,14 +144,6 @@ class Base
       @model_class_methods ||= HashWithIndifferentAccess.new
     end
 
-    def model_methods_template
-      @model_methods_template ||= HashWithIndifferentAccess.new
-    end
-
-    def schema_attributes_template
-      @schema_attributes_template ||= HashWithIndifferentAccess.new
-    end
-
     def model_class_instance
       @model_class_instance ||= model_class.new
     end
@@ -222,9 +170,9 @@ class Base
   attr_reader :associations, :types, :attributes
 
   def initialize(attributes = {}, &block)
-    @attributes   = self.class.attributes.dup
-    @types        = self.class.types.dup
-    @associations = self.class.associations.dup
+    @attributes             = self.class.attributes.dup
+    @types                  = self.class.types.dup
+    @associations           = self.class.associations.dup
     @model_instance_methods = self.class.send(:model_instance_methods).dup
     @model_class_methods    = self.class.send(:model_class_methods).dup
     update_block(attributes, &block)
@@ -354,7 +302,6 @@ class Base
     inspection = self.class.column_names.map { |name|
       "#{name}: #{attribute_for_inspect(name)}"
     }.compact.join(", ")
-
     "#<#{self.class} #{inspection}>"
   end
 

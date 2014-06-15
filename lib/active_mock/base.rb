@@ -91,8 +91,8 @@ class Base
     def create(attributes = {}, &block)
       record = new
       record.save
-      record.update(attributes) unless block_given?
-      record.send(:update_block,attributes, &block) if block_given?
+      record.send(:set_properties, attributes) unless block_given?
+      record.send(:set_properties_block ,attributes, &block) if block_given?
       record
     end
 
@@ -170,19 +170,25 @@ class Base
   attr_reader :associations, :types, :attributes
 
   def initialize(attributes = {}, &block)
-    @attributes             = self.class.attributes.dup
-    @types                  = self.class.types.dup
-    @associations           = self.class.associations.dup
-    @model_instance_methods = self.class.send(:model_instance_methods).dup
-    @model_class_methods    = self.class.send(:model_class_methods).dup
-    update_block(attributes, &block)
+    setup_instance_variables
+    set_properties_block(attributes, &block)
   end
 
-  def update_block(attributes = {}, &block)
-    yield self if block_given?
-    update(attributes)
+  def setup_instance_variables
+    @attributes = self.class.attributes.dup
+    @types = self.class.types.dup
+    @associations = self.class.associations.dup
+    @model_instance_methods = self.class.send(:model_instance_methods).dup
+    @model_class_methods = self.class.send(:model_class_methods).dup
   end
-  private :update_block
+
+  private :setup_instance_variables
+
+  def set_properties_block(attributes = {}, &block)
+    yield self if block_given?
+    set_properties(attributes)
+  end
+  private :set_properties_block
 
   def update(attributes={})
     set_properties(attributes)
@@ -207,8 +213,9 @@ class Base
   def delete
     self.class.send(:record_index).delete("#{self.id}")
     records = self.class.instance_variable_get(:@records)
-    index = records.index(self)
+    index   = records.index(self)
     records.delete_at(index)
+    true
   end
 
   def [](key)
@@ -300,7 +307,7 @@ class Base
 
   def inspect
     inspection = self.class.column_names.map { |name|
-      "#{name}: #{attribute_for_inspect(name)}"
+      "#{name}: #{ObjectInspect.new(attributes[name])}"
     }.compact.join(", ")
     "#<#{self.class} #{inspection}>"
   end
@@ -319,20 +326,6 @@ class Base
 
   def attribute_to_string
     attributes.map { |k, v| "#{k.to_s}: #{v.inspect}" }.join(', ')
-  end
-
-  def attribute_for_inspect(attr_name)
-    value = self.attributes[attr_name]
-    if value.is_a?(String) && value.length > 50
-      "#{value[0, 50]}...".inspect
-    elsif value.is_a?(Date) || value.is_a?(Time)
-      %("#{value.to_s(:db)}")
-    elsif value.is_a?(Array) && value.size > 10
-      inspected = value.first(10).inspect
-      %(#{inspected[0...-1]}, ...])
-    else
-      value.inspect
-    end
   end
 
 end

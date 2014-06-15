@@ -61,7 +61,10 @@ class RelationshipMock < ActiveMock::Base
 
   def follower_id=(val)
     write_attribute(:follower_id, val)
-    write_association(:follower, UserMock.find(follower_id)) if defined? UserMock
+    if defined? UserMock
+      association = UserMock.find(follower_id)
+      write_association(:follower,association) unless association.nil?
+    end
   end
 
   def followed_id
@@ -70,7 +73,10 @@ class RelationshipMock < ActiveMock::Base
 
   def followed_id=(val)
     write_attribute(:followed_id, val)
-    write_association(:followed, UserMock.find(followed_id)) if defined? UserMock
+    if defined? UserMock
+      association = UserMock.find(followed_id)
+      write_association(:followed,association) unless association.nil?
+    end
   end
 
   def created_at

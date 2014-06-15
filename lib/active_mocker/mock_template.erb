@@ -58,7 +58,10 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
     write_attribute(:<%= meth.name %>, val)
 <% association = belongs_to_foreign_key(meth.name)  -%>
 <% if association -%>
-    write_association(:<%= association.name %>, <%= mock_name(association.class_name) %>.find(<%= meth.name %>)) if defined? <%= mock_name(association.class_name) %>
+    if defined? <%= mock_name(association.class_name) %>
+      association = <%= mock_name(association.class_name) %>.find(<%= meth.name  %>)
+      write_association(:<%= association.name %>,association) unless association.nil?
+    end
 <% end -%>
   end
 <% end %>

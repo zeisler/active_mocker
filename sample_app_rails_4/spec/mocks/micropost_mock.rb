@@ -73,7 +73,10 @@ class MicropostMock < ActiveMock::Base
 
   def user_id=(val)
     write_attribute(:user_id, val)
-    write_association(:user, UserMock.find(user_id)) if defined? UserMock
+    if defined? UserMock
+      association = UserMock.find(user_id)
+      write_association(:user,association) unless association.nil?
+    end
   end
 
   def up_votes

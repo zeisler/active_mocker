@@ -19,6 +19,7 @@ class Base
 
   include DoNothingActiveRecordMethods
   extend ActiveMock::Queries
+  include ActiveMock::Creators
 
   def self.inherited(subclass)
     ActiveMocker::LoadedMocks.add(subclass)
@@ -45,24 +46,6 @@ class Base
     end
 
     delegate :first, :last, :to => :all
-
-    def create(attributes = {}, &block)
-      record = new
-      record.save
-      record.send(:set_properties, attributes) unless block_given?
-      record.send(:set_properties_block ,attributes, &block) if block_given?
-      record
-    end
-
-    alias_method :create!, :create
-
-    def find_or_create_by(attributes)
-      find_by(attributes) || create(attributes)
-    end
-
-    def find_or_initialize_by(attributes)
-      find_by(attributes) || new(attributes)
-    end
 
     def delete(id)
       find(id).delete

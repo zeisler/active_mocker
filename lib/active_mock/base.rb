@@ -17,6 +17,8 @@ end
 
 class Base
 
+  include DoNothingActiveRecordMethods
+
   def self.inherited(subclass)
     ActiveMocker::LoadedMocks.add(subclass)
   end
@@ -76,14 +78,6 @@ class Base
 
     def count
       all.length
-    end
-
-    def transaction
-      yield
-    rescue LocalJumpError => err
-      raise err
-    rescue StandardError => e
-        raise e
     end
 
     delegate :first, :last, :to => :all
@@ -230,30 +224,8 @@ class Base
     !self.class.all.include?(self)
   end
 
-  def destroyed?
-    false
-  end
-
   def persisted?
     self.class.all.map(&:id).include?(id)
-  end
-
-  def readonly?
-    false
-  end
-
-  def errors
-    obj = Object.new
-
-    def obj.[](key)
-      []
-    end
-
-    def obj.full_messages()
-      []
-    end
-
-    obj
   end
 
   def save(*args)
@@ -264,14 +236,6 @@ class Base
   end
 
   alias save! save
-
-  def valid?
-    true
-  end
-
-  def marked_for_destruction?
-    false
-  end
 
   protected
 
@@ -306,10 +270,7 @@ class Base
   end
 
   def inspect
-    inspection = self.class.column_names.map { |name|
-      "#{name}: #{ObjectInspect.new(attributes[name])}"
-    }.compact.join(", ")
-    "#<#{self.class} #{inspection}>"
+    ObjectInspect.new(self.class.name, attributes)
   end
 
   def hash
@@ -320,12 +281,6 @@ class Base
     return false if obj.nil?
     return hash == obj.attributes.hash if obj.respond_to?(:attributes)
     hash == obj.hash if obj.respond_to?(:hash)
-  end
-
-  private
-
-  def attribute_to_string
-    attributes.map { |k, v| "#{k.to_s}: #{v.inspect}" }.join(', ')
   end
 
 end

@@ -53,7 +53,7 @@ describe MicropostMock do
 
     it 'has constant from model' do
 
-      expect(MicropostMock.constants).to eq [:MAGIC_ID_NUMBER, :MAGIC_ID_STRING]
+      expect(MicropostMock.constants).to include(:MAGIC_ID_NUMBER, :MAGIC_ID_STRING)
 
     end
 

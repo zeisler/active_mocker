@@ -1,7 +1,9 @@
 class ObjectInspect
 
-  def initialize(object)
-    @string = object_for_inspect(object)
+  def initialize(class_name, attributes)
+    @class_name = class_name
+    @attributes = attributes
+    @string     = create_inspections
   end
 
   def to_s
@@ -13,6 +15,13 @@ class ObjectInspect
   end
 
   private
+
+  def create_inspections
+    inspection = @attributes.map do |name ,value|
+      "#{name}: #{object_for_inspect(value)}"
+    end
+    "#<#{@class_name} #{inspection.compact.join(", ")}>"
+  end
 
   def object_for_inspect(value)
     if value.is_a?(String) && value.length > 50
@@ -26,6 +35,5 @@ class ObjectInspect
       value.inspect
     end
   end
-
 
 end

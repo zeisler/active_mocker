@@ -60,7 +60,7 @@ class Records
 
   def validate_unique_id(record)
     if record_index.has_key?(record.id.to_s)
-      raise IdError.new("Duplicate ID found for record #{record.attributes.inspect}")
+      raise ActiveMock::IdError.new("Duplicate ID found for record #{record.attributes.inspect}")
     end
   end
 

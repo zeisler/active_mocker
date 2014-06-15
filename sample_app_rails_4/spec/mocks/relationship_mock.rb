@@ -61,10 +61,8 @@ class RelationshipMock < ActiveMock::Base
 
   def follower_id=(val)
     write_attribute(:follower_id, val)
-    if defined? UserMock
-      association = UserMock.find(follower_id)
-      write_association(:follower,association) unless association.nil?
-    end
+    association = classes('User').find(follower_id)
+    write_association(:follower,association) unless association.nil?
   end
 
   def followed_id
@@ -73,10 +71,8 @@ class RelationshipMock < ActiveMock::Base
 
   def followed_id=(val)
     write_attribute(:followed_id, val)
-    if defined? UserMock
-      association = UserMock.find(followed_id)
-      write_association(:followed,association) unless association.nil?
-    end
+    association = classes('User').find(followed_id)
+    write_association(:followed,association) unless association.nil?
   end
 
   def created_at
@@ -110,11 +106,11 @@ class RelationshipMock < ActiveMock::Base
   end
 
   def build_follower(attributes={}, &block)
-    write_association(:follower, UserMock.new(attributes, &block))
+    write_association(:follower, classes('User').new(attributes, &block))
   end
 
   def create_follower(attributes={}, &block)
-    write_association(:follower, UserMock.create(attributes, &block))
+    write_association(:follower, classes('User').create(attributes, &block))
   end
   alias_method :create_follower!, :create_follower
 
@@ -128,11 +124,11 @@ class RelationshipMock < ActiveMock::Base
   end
 
   def build_followed(attributes={}, &block)
-    write_association(:followed, UserMock.new(attributes, &block))
+    write_association(:followed, classes('User').new(attributes, &block))
   end
 
   def create_followed(attributes={}, &block)
-    write_association(:followed, UserMock.create(attributes, &block))
+    write_association(:followed, classes('User').create(attributes, &block))
   end
   alias_method :create_followed!, :create_followed
 

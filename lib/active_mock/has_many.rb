@@ -5,13 +5,13 @@ module ActiveMock
     include Queries
 
     def self.new(collection, foreign_key=nil, foreign_id=nil, relation_class=nil)
-      return Association.new(collection) if relation_class.nil? || !Object.const_defined?(relation_class)
+      return Association.new(collection) if relation_class.nil?
       super(collection, foreign_key, foreign_id, relation_class)
     end
 
 
     def initialize(collection, foreign_key=nil, foreign_id=nil, relation_class=nil)
-      @relation_class = relation_class.constantize
+      @relation_class = relation_class
       @foreign_key    = foreign_key
       @foreign_id     = foreign_id
 

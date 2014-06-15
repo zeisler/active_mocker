@@ -18,11 +18,12 @@ end
 class Base
 
   include DoNothingActiveRecordMethods
-  extend ActiveMock::Queries
-  extend ActiveMock::Creators
+  extend  ActiveMock::Queries
+  extend  ActiveMock::Creators
 
   def self.inherited(subclass)
-    ActiveMocker::LoadedMocks.add(subclass)
+    return ActiveMocker::LoadedMocks.add(subclass) if subclass.superclass == Base
+    ActiveMocker::LoadedMocks.add_subclass(subclass)
   end
 
   class << self
@@ -53,6 +54,12 @@ class Base
       Virtus::Attribute.build(type)
     end
 
+    def classes(klass)
+      ActiveMocker::LoadedMocks.find(klass)
+    end
+
+    private :classes
+
     public
 
     def clear_mock
@@ -62,6 +69,12 @@ class Base
 
   end
 
+  def classes(klass)
+    self.class.send(:classes, klass)
+  end
+
+  private :classes
+
   attr_reader :associations, :types, :attributes
 
   def initialize(attributes = {}, &block)
@@ -70,12 +83,12 @@ class Base
   end
 
   def setup_instance_variables
-    {'@model_instance_methods' => self.class.send(:model_instance_methods),
-        '@model_class_methods' => self.class.send(:model_class_methods),
-               '@associations' => self.class.associations,
-                 '@attributes' => self.class.attributes,
-                      '@types' => self.class.types}.each do |var, value|
-      instance_variable_set(var, value.dup)
+    {:@model_instance_methods => :model_instance_methods,
+     :@model_class_methods    => :model_class_methods,
+     :@associations           => :associations,
+     :@attributes             => :attributes,
+     :@types                  => :types}.each do |var, value|
+      instance_variable_set(var, self.class.send(value).dup)
     end
   end
 

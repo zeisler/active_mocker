@@ -7,12 +7,6 @@ load 'spec/mocks/user_mock.rb'
 
 describe MicropostMock do
 
-  before(:each){
-    ActiveMocker::Generate.new
-    MicropostMock.clear_mock
-    UserMock.clear_mock
-  }
-
   describe 'user=' do
 
     it 'setting user will assign its foreign key' do
@@ -82,9 +76,41 @@ describe MicropostMock do
 
   end
 
+  describe 'Sub classing' do
+
+    context 'using sub class' do
+
+      before do
+        class SubUserMock < UserMock
+        end
+      end
+
+      let(:given_a_sub_user_record) { SubUserMock.create }
+      let(:given_a_post) { MicropostMock.create(user_id: given_a_sub_user_record.id) }
+
+      it 'when setting #user_id it will set #user from sub class' do
+        expect(given_a_post.user).to eq given_a_sub_user_record
+        expect(given_a_post.user.class).to eq SubUserMock
+      end
+
+    end
+
+    context 'without a sub class' do
+
+      let(:given_a_sub_user_record) { UserMock.create }
+      let(:given_a_post) { MicropostMock.create(user_id: given_a_sub_user_record.id) }
+
+      it 'when setting #user_id it will set #user from sub class' do
+        expect(given_a_post.user).to eq given_a_sub_user_record
+        expect(given_a_post.user.class).to eq UserMock
+      end
+
+    end
+
+  end
+
   after(:each) do
-    MicropostMock.delete_all
-    UserMock.delete_all
+    ActiveMocker::LoadedMocks.clear_all
   end
 
 end

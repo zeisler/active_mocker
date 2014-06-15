@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.png?branch=master)](https://travis-ci.org/zeisler/active_mocker)
 [![Code Climate](https://codeclimate.com/github/zeisler/active_mocker.png)](https://codeclimate.com/github/zeisler/active_mocker)
 
-Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parse the schema definition and the defined methods on a model then saves a ruby file that can be included with a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
+Creates mocks from ActiveRecord models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
 
 Example from a real app
 
@@ -17,7 +17,7 @@ Example from a real app
 * [Dependencies](#dependencies)
 * [Usage](#usage)
 * [Mocking Methods](#mocking-methods)
-* [Clearing Mocks](#clearing-mocks)
+* [Managing Mocks](#managing-mocks)
 * [ActiveRecord supported methods](#activerecord-supported-methods)
 * [Known Limitations](#known-limitations)
 * [Inspiration](#inspiration)
@@ -128,7 +128,8 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
 
 ### When schema.rb changes, the mock fails
 (Requires a regeneration of the mocks files.)
- db/schema.rb
+ 
+	#db/schema.rb
 
      ActiveRecord::Schema.define(version: 20140327205359) do
 
@@ -157,7 +158,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
      PersonMock.bar('baz')
         => RuntimeError: ::bar is not Implemented for Class: PersonMock
 
-     PersonMock.mock_instance_method(:bar) do  |name, type=nil|
+     PersonMock.mock_class_method(:bar) do  |name, type=nil|
         "Now implemented with #{name} and #{type}"
      end
      
@@ -167,11 +168,16 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
       PersonMock.new.bar('foo', 'type')
         => "Now implemented with foo and type"
 
-     person_mock.mock_class_method(:bar) do
-        "Now implemented"
+      PersonMock.mock_instance_method(:bar) do
+         "Now implemented"
+      end
+
+	# override mock on an individual instance
+	PersonMock.new.mock_instance_method(:bar) do
+        "Now implemented!!!!"
      end
 
-### When the model changes, the mock fails
+#### When the model changes, the mock fails
 (Requires a regeneration of the mocks files.)
 
     #app/models/person.rb
@@ -214,7 +220,7 @@ Here is an example of a rake task to regenerate mocks after every schema modifia
     end
       => NoMethodError: undefined method `bar' for class `PersonMock'
 
-### Clearing Mocks
+### Managing Mocks
 
 Deletes All Records and Clears Mocked Methods
     
@@ -233,6 +239,32 @@ List All Loaded Mocks
     ActiveMocker::LoadedMocks.all
     		=> { 'PersonMock' => PersonMock } 
 
+Map The Mock Class to it's Model
+
+	ActiveMocker::LoadedMocks.class_name_to_mock
+		=> { 'Person' => PersonMock } 
+
+### Constants are Available -  (Modules and classes are excluded.)     
+
+	#app/models/person.rb
+
+	class User < ActiveRecord::Base
+	   CONSTANT_VALUE = 13
+	end
+
+-----------------------
+
+	#user_spec.rb
+
+	require 'spec/mocks/user_mock.rb'
+
+	UserMock::CONSTANT_VALUE
+		=> 13
+
+### Mocked Class
+	
+	UserMock.mocked_class
+		=> 'User'
 
 ### ActiveRecord supported methods
 **class methods**
@@ -261,8 +293,14 @@ List All Loaded Mocks
   * attributes
   * update
   * save/save!
-  * write_attribute/read_attribute - (private, can be used within an included module)
+  * write_attribute/read_attribute - (protected, can be used within modules)
   * delete
+
+**has_one/belongs_to**
+
+  * build_< association >
+  * create_< association >
+  * create_< association >!
 
 **has_many associations/Collections**
 
@@ -290,19 +328,20 @@ List All Loaded Mocks
   * order(:field_name)
   * reverse_order
   * limit
+  * < association >.create
+  * < association >.build
 
 ### Schema/Migration Option Support
-* All schema types are supported and on initalization coerced by Virtus. If coercsion fails the passed value will be retained.
+* All schema types are supported and on coerced by [Virtus](https://github.com/solnic/virtus). If coercion fails the passed value will be retained.
 * Default value
+* Scale and Precision not supported.
 
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
 * Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup.
-* Queries will not call other mocks classes, for example when using `where` all attributes must reside inside of each record.
-* Creation of association like `User.create_friend` or `User.build_friend` are not supported. If you need this functionality use rspec's stub any instance.
+* Whatever associations are setup in one mock object will not effect any other objects.
 * Validation are not present in mocks.
-* CONSTANTS are not present in the mocks. This feature is planed for a future release. 
-* Associating objects together will not associate their ids nor will associating ids associate the objects together. This feature is planed for a future release.  
+* Associating objects together will not associate their ids nor will associating ids associate the objects together. 
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

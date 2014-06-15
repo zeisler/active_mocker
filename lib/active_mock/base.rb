@@ -19,7 +19,7 @@ class Base
 
   include DoNothingActiveRecordMethods
   extend ActiveMock::Queries
-  include ActiveMock::Creators
+  extend ActiveMock::Creators
 
   def self.inherited(subclass)
     ActiveMocker::LoadedMocks.add(subclass)
@@ -33,26 +33,11 @@ class Base
 
     private :records
 
-    def exists?(record)
-      records.exists?(record)
-    end
-
-    def insert(record)
-      records.insert(record)
-    end
-
-    def count
-      all.length
-    end
-
+    delegate :count, :insert, :exists?, :to_a, :to => :records
     delegate :first, :last, :to => :all
 
     def delete(id)
       find(id).delete
-    end
-
-    def to_a
-      @records
     end
 
     alias_method :destroy, :delete
@@ -127,25 +112,24 @@ class Base
 
   alias save! save
 
+  def records
+    self.class.send(:records)
+  end
+
+  private :records
+
   def delete
-    self.class.send(:records).delete(self)
-    true
+    records.delete(self)
   end
 
-  def [](key)
-    attributes[key]
-  end
-
-  def []=(key, val)
-    attributes[key] = val
-  end
+  delegate :[], :[]=, to: :attributes
 
   def new_record?
-    !self.class.send(:records, self)
+    !records.new_record?(self)
   end
 
   def persisted?
-    self.class.all.map(&:id).include?(id)
+    records.persisted?(id)
   end
 
   def to_hash

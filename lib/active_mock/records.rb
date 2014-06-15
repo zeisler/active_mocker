@@ -27,6 +27,8 @@ class Records
     records.length
   end
 
+  alias_method :count, :length
+
   def record_index
     @record_index ||= {}
   end
@@ -70,6 +72,10 @@ class Records
 
   def new_record?(record)
     !records.include?(record)
+  end
+
+  def persisted?(id)
+    records.map(&:id).include?(id)
   end
 
 end

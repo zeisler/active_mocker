@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.png?branch=master)](https://travis-ci.org/zeisler/active_mocker)
 [![Code Climate](https://codeclimate.com/github/zeisler/active_mocker.png)](https://codeclimate.com/github/zeisler/active_mocker)
 
-Creates mocks from ActiveRecord models. Allows your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
+ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
 
 Example from a real app
 
@@ -332,7 +332,7 @@ Map The Mock Class to it's Model
   * < association >.build
 
 ### Schema/Migration Option Support
-* All schema types are supported and on coerced by [Virtus](https://github.com/solnic/virtus). If coercion fails the passed value will be retained.
+* All schema types are supported and coerced by [Virtus](https://github.com/solnic/virtus). If coercion fails the passed value will be retained.
 * Default value
 * Scale and Precision not supported.
 
@@ -341,7 +341,6 @@ Map The Mock Class to it's Model
 * Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup.
 * Whatever associations are setup in one mock object will not effect any other objects.
 * Validation are not present in mocks.
-* Associating objects together will not associate their ids nor will associating ids associate the objects together. 
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

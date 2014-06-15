@@ -26,51 +26,19 @@ class Base
 
   class << self
 
+    def records
+      @records ||= Records.new
+    end
+
+    private :records
+
     def exists?(record)
-      if record.id.present?
-        record_index[record.id.to_s].present?
-      end
+      records.exists?(record)
     end
 
     def insert(record)
-      @records ||= []
-      record.attributes[:id] ||= next_id
-      validate_unique_id(record)
-      add_to_record_index({record.id.to_s => @records.length})
-      @records << record
+      records.insert(record)
     end
-
-    private :insert
-
-    def next_id
-      NextId.new(all).next
-    end
-
-    def record_index
-      @record_index ||= {}
-    end
-
-    private :record_index
-
-    def reset_record_index
-      record_index.clear
-    end
-
-    private :reset_record_index
-
-    def add_to_record_index(entry)
-      record_index.merge!(entry)
-    end
-
-    private :add_to_record_index
-
-    def validate_unique_id(record)
-      if record_index.has_key?(record.id.to_s)
-        raise IdError.new("Duplicate ID found for record #{record.attributes.inspect}")
-      end
-    end
-
-    private :validate_unique_id
 
     def count
       all.length
@@ -114,8 +82,7 @@ class Base
     alias_method :destroy_all, :delete_all
 
     def reset_all_records
-      reset_record_index
-      @records = []
+      records.reset_all_records
     end
 
     private :reset_all_records
@@ -196,15 +163,17 @@ class Base
 
   private :set_properties
 
-  def to_hash
-    attributes
+  def save(*args)
+    unless self.class.exists?(self)
+      self.class.send(:insert, self)
+    end
+    true
   end
 
+  alias save! save
+
   def delete
-    self.class.send(:record_index).delete("#{self.id}")
-    records = self.class.instance_variable_get(:@records)
-    index   = records.index(self)
-    records.delete_at(index)
+    self.class.send(:records).delete(self)
     true
   end
 
@@ -224,14 +193,9 @@ class Base
     self.class.all.map(&:id).include?(id)
   end
 
-  def save(*args)
-    unless self.class.exists?(self)
-      self.class.send(:insert, self)
-    end
-    true
+  def to_hash
+    attributes
   end
-
-  alias save! save
 
   protected
 

@@ -1,3 +1,4 @@
+module ActiveMock
 class Records
 
   attr_reader :records
@@ -78,4 +79,5 @@ class Records
     records.map(&:id).include?(id)
   end
 
+end
 end

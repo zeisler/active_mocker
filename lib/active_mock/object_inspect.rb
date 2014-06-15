@@ -1,3 +1,4 @@
+module ActiveMock
 class ObjectInspect
 
   def initialize(class_name, attributes)
@@ -36,4 +37,5 @@ class ObjectInspect
     end
   end
 
+end
 end

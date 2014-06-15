@@ -18,6 +18,7 @@ end
 class Base
 
   include DoNothingActiveRecordMethods
+  extend ActiveMock::Queries
 
   def self.inherited(subclass)
     ActiveMocker::LoadedMocks.add(subclass)
@@ -42,12 +43,7 @@ class Base
     private :insert
 
     def next_id
-      max_record = all.max { |a, b| a.id <=> b.id }
-      if max_record.nil?
-        1
-      elsif max_record.id.is_a?(Numeric)
-        max_record.id.succ
-      end
+      NextId.new(all).next
     end
 
     def record_index
@@ -159,8 +155,6 @@ class Base
 
   end
 
-  extend ActiveMock::Queries
-
   attr_reader :associations, :types, :attributes
 
   def initialize(attributes = {}, &block)
@@ -169,11 +163,13 @@ class Base
   end
 
   def setup_instance_variables
-    @attributes = self.class.attributes.dup
-    @types = self.class.types.dup
-    @associations = self.class.associations.dup
-    @model_instance_methods = self.class.send(:model_instance_methods).dup
-    @model_class_methods = self.class.send(:model_class_methods).dup
+    {'@model_instance_methods' => self.class.send(:model_instance_methods),
+        '@model_class_methods' => self.class.send(:model_class_methods),
+               '@associations' => self.class.associations,
+                 '@attributes' => self.class.attributes,
+                      '@types' => self.class.types}.each do |var, value|
+      instance_variable_set(var, value.dup)
+    end
   end
 
   private :setup_instance_variables

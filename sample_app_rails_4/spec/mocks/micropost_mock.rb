@@ -73,7 +73,7 @@ class MicropostMock < ActiveMock::Base
 
   def user_id=(val)
     write_attribute(:user_id, val)
-    association = classes('User').find(user_id)
+    association = classes('User').try(:find, user_id)
     write_association(:user,association) unless association.nil?
   end
 
@@ -116,11 +116,13 @@ class MicropostMock < ActiveMock::Base
   end
 
   def build_user(attributes={}, &block)
-    write_association(:user, classes('User').new(attributes, &block))
+    association = classes('User').try(:new, attributes, &block)
+    write_association(:user, association) unless association.nil?
   end
 
   def create_user(attributes={}, &block)
-    write_association(:user, classes('User').create(attributes, &block))
+    association = classes('User').try(:create,attributes, &block)
+    write_association(:user, nil) unless association.nil?
   end
   alias_method :create_user!, :create_user
 

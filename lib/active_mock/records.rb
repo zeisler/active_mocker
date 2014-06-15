@@ -13,6 +13,12 @@ class Records
     records << record
   end
 
+  def delete(record)
+    record_index.delete("#{record.id}")
+    index = records.index(record)
+    records.delete_at(index)
+  end
+
   def <<(record)
     records << record
   end
@@ -35,12 +41,6 @@ class Records
 
   def clear
     records.clear
-  end
-
-  def delete(record)
-    record_index.delete("#{record.id}")
-    index = records.index(record)
-    records.delete_at(index)
   end
 
   def to_a
@@ -66,6 +66,10 @@ class Records
     if record.id.present?
       record_index[record.id.to_s].present?
     end
+  end
+
+  def new_record?(record)
+    !records.include?(record)
   end
 
 end

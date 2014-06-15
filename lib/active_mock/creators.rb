@@ -2,10 +2,10 @@ module ActiveMock
     module Creators
 
       def create(attributes = {}, &block)
-        record = new({id: attributes.symbolize_keys[:id]})
+        record = new
         record.save
-        record.update(attributes) unless block_given?
-        record.update(attributes, &block) if block_given?
+        record.send(:set_properties, attributes) unless block_given?
+        record.send(:set_properties_block, attributes, &block) if block_given?
         record
       end
 

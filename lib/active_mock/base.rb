@@ -75,45 +75,17 @@ class Base
     alias_method :destroy, :delete
 
     def delete_all(options=nil)
-      return reset_all_records if options.nil?
+      return records.reset_all_records if options.nil?
       where(options).map { |r| r.delete }.count
     end
 
     alias_method :destroy_all, :delete_all
-
-    def reset_all_records
-      records.reset_all_records
-    end
-
-    private :reset_all_records
-
-    def mock_instance_method(method, &block)
-      model_instance_methods[method.to_s] = block
-    end
-
-    def mock_class_method(method, &block)
-      model_class_methods[method.to_s] = block
-    end
-
-    private
-
-    def model_class_methods
-      @model_class_methods ||= HashWithIndifferentAccess.new
-    end
-
-    def model_class_instance
-      @model_class_instance ||= model_class.new
-    end
 
     def build_type(type)
       Virtus::Attribute.build(type)
     end
 
     public
-
-    def is_implemented(val, method)
-      raise "#{method} is not Implemented for Class: #{name}" if val == :not_implemented
-    end
 
     def clear_mock
       @model_class_methods, @model_instance_methods = nil, nil
@@ -186,7 +158,7 @@ class Base
   end
 
   def new_record?
-    !self.class.all.include?(self)
+    !self.class.send(:records, self)
   end
 
   def persisted?
@@ -195,38 +167,6 @@ class Base
 
   def to_hash
     attributes
-  end
-
-  protected
-
-  def read_attribute(attr)
-    @attributes[attr]
-  end
-
-  def write_attribute(attr, value)
-    @attributes[attr] = types[attr].coerce(value)
-  end
-
-  def read_association(attr)
-    @associations[attr]
-  end
-
-  def write_association(attr, value)
-    @associations[attr] = value
-  end
-
-  public
-
-  def mock_instance_method(method, &block)
-    @model_instance_methods[method.to_s] = block
-  end
-
-  def model_instance_methods
-    self.class.send(:model_instance_methods).merge(@model_instance_methods)
-  end
-
-  def model_class_methods
-    self.class.send(:model_class_methods).merge(@model_class_methods)
   end
 
   def inspect
@@ -242,6 +182,80 @@ class Base
     return hash == obj.attributes.hash if obj.respond_to?(:attributes)
     hash == obj.hash if obj.respond_to?(:hash)
   end
+
+  module PropertiesGetterAndSetter
+
+    def read_attribute(attr)
+      @attributes[attr]
+    end
+
+    def write_attribute(attr, value)
+      @attributes[attr] = types[attr].coerce(value)
+    end
+
+    def read_association(attr)
+      @associations[attr]
+    end
+
+    def write_association(attr, value)
+      @associations[attr] = value
+    end
+
+    protected :read_attribute, :write_attribute, :read_association, :write_association
+
+  end
+
+  include PropertiesGetterAndSetter
+
+  module MockAbilities
+
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
+
+    module ClassMethods
+      def mock_instance_method(method, &block)
+        model_instance_methods[method.to_s] = block
+      end
+
+      def mock_class_method(method, &block)
+        model_class_methods[method.to_s] = block
+      end
+
+      def model_class_methods
+        @model_class_methods ||= HashWithIndifferentAccess.new
+      end
+
+      def model_instance_methods
+        @model_instance_methods ||= HashWithIndifferentAccess.new
+      end
+
+      private :model_class_methods, :model_instance_methods
+
+
+      def is_implemented(val, method)
+        raise "#{method} is not Implemented for Class: #{name}" if val == :not_implemented
+      end
+
+    end
+
+    def mock_instance_method(method, &block)
+      @model_instance_methods[method.to_s] = block
+    end
+
+    def model_instance_methods
+      self.class.send(:model_instance_methods).merge(@model_instance_methods)
+    end
+
+    def model_class_methods
+      self.class.send(:model_class_methods).merge(@model_class_methods)
+    end
+
+    private :model_class_methods, :model_instance_methods
+
+  end
+
+  include MockAbilities
 
 end
 end

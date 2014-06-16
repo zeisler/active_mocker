@@ -90,7 +90,7 @@ describe 'UserMock' do
 
     end
 
-    it 'can reference another mock' do
+    it 'can not reference another method within the mock' do
 
       UserMock.mock_instance_method(:following?) do  |person|
         true
@@ -100,7 +100,7 @@ describe 'UserMock' do
         following?(person)
       end
 
-      expect(UserMock.new.follow!("name")).to eq true
+      expect{UserMock.new.follow!("name") }.to raise_error
       expect(UserMock.new.following?(1)).to eq true
     end
 

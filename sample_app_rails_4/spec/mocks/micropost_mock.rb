@@ -135,13 +135,13 @@ class MicropostMock < ActiveMock::Base
   def display_name()
     block =  model_instance_methods['display_name']
     self.class.is_implemented(block, '#display_name')
-    instance_exec(*[], &block)
+    block.call(*[])
   end
 
   def self.from_users_followed_by(user=nil)
     block =  model_class_methods['from_users_followed_by']
     is_implemented(block, '::from_users_followed_by')
-    instance_exec(*[user], &block)
+    block.call(*[user])
   end
 
   private

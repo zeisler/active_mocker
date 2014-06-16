@@ -173,37 +173,37 @@ class UserMock < ActiveMock::Base
   def feed()
     block =  model_instance_methods['feed']
     self.class.is_implemented(block, '#feed')
-    instance_exec(*[], &block)
+    block.call(*[])
   end
 
   def following?(other_user)
     block =  model_instance_methods['following?']
     self.class.is_implemented(block, '#following?')
-    instance_exec(*[other_user], &block)
+    block.call(*[other_user])
   end
 
   def follow!(other_user)
     block =  model_instance_methods['follow!']
     self.class.is_implemented(block, '#follow!')
-    instance_exec(*[other_user], &block)
+    block.call(*[other_user])
   end
 
   def unfollow!(other_user)
     block =  model_instance_methods['unfollow!']
     self.class.is_implemented(block, '#unfollow!')
-    instance_exec(*[other_user], &block)
+    block.call(*[other_user])
   end
 
   def self.new_remember_token()
     block =  model_class_methods['new_remember_token']
     is_implemented(block, '::new_remember_token')
-    instance_exec(*[], &block)
+    block.call(*[])
   end
 
   def self.digest(token)
     block =  model_class_methods['digest']
     is_implemented(block, '::digest')
-    instance_exec(*[token], &block)
+    block.call(*[token])
   end
 
   private

@@ -150,14 +150,14 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
   def <%= method.name %>(<%= method.arguments %>)
     block =  model_instance_methods['<%= method.name %>']
     self.class.is_implemented(block, '#<%= method.name %>')
-    instance_exec(*[<%= method.arguments.passable %>], &block)
+    block.call(*[<%= method.arguments.passable %>])
   end
 <% end -%>
 <% class_methods.each do |method| %>
   def self.<%= method.name %>(<%= method.arguments %>)
     block =  model_class_methods['<%= method.name %>']
     is_implemented(block, '::<%= method.name %>')
-    instance_exec(*[<%= method.arguments.passable %>], &block)
+    block.call(*[<%= method.arguments.passable %>])
   end
 <% end -%>
 

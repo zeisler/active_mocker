@@ -22,7 +22,7 @@ class MicropostMock < ActiveMock::Base
     end
 
     def model_instance_methods
-      @model_instance_methods ||= {"display_name"=>:not_implemented}
+      @model_instance_methods ||= {"display_name"=>:not_implemented, "post_id"=>:not_implemented}
     end
 
     def model_class_methods
@@ -135,6 +135,12 @@ class MicropostMock < ActiveMock::Base
   def display_name()
     block =  model_instance_methods['display_name']
     self.class.is_implemented(block, '#display_name')
+    block.call(*[])
+  end
+
+  def post_id()
+    block =  model_instance_methods['post_id']
+    self.class.is_implemented(block, '#post_id')
     block.call(*[])
   end
 

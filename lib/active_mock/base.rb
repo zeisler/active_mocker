@@ -150,7 +150,7 @@ class Base
   end
 
   def inspect
-    ObjectInspect.new(self.class.name, attributes)
+    ObjectInspect.new(self.class.name, attributes).to_s
   end
 
   def hash

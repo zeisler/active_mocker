@@ -127,6 +127,13 @@ class MicropostMock < ActiveMock::Base
   alias_method :create_user!, :create_user
 
 
+  module Scopes
+
+
+  end
+
+  extend Scopes
+
   ##################################
   #  Model Methods getter/setters  #
   ##################################

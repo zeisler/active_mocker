@@ -35,11 +35,12 @@ describe ActiveMocker::ModelSchema::Generate do
 
   it 'methods' do
     expect(run[-1].methods.map { |r| JSON.parse(r.to_json) })
-      .to eq([{"name" => "feed",       "arguments" => [],                     "type" => "instance"},
+      .to eq([{"name" => "find_by_name","arguments" =>[["req", "name"]],       "type" => "scope"},
+              {"name" => "feed",       "arguments" => [],                      "type" => "instance"},
               {"name" => "following?", "arguments" => [["req", "other_user"]], "type" => "instance"},
               {"name" => "follow!",    "arguments" => [["req", "other_user"]], "type" => "instance"},
               {"name" => "unfollow!",  "arguments" => [["req", "other_user"]], "type" => "instance"},
-              {"name" => "new_remember_token", "arguments" => [],             "type" => "class"},
+              {"name" => "new_remember_token", "arguments" => [],              "type" => "class"},
               {"name" => "digest",     "arguments" => [["req", "token"]],      "type" => "class"}])
   end
 

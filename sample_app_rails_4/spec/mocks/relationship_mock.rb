@@ -137,6 +137,13 @@ class RelationshipMock < ActiveMock::Base
   alias_method :create_followed!, :create_followed
 
 
+  module Scopes
+
+
+  end
+
+  extend Scopes
+
   ##################################
   #  Model Methods getter/setters  #
   ##################################

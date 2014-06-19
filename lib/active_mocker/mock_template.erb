@@ -142,6 +142,19 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
   end
 <% end -%>
 
+  module Scopes
+
+<% scope_methods.each do |method| -%>
+    def <%= method.name %>(<%= method.arguments %>)
+      block =  get_mock_class_method('<%= method.name %>')
+      block.call(*[<%= method.arguments.passable %>])
+    end
+<% end -%>
+
+  end
+
+  extend Scopes
+
   ##################################
   #  Model Methods getter/setters  #
   ##################################

@@ -21,4 +21,9 @@ class Micropost < ActiveRecord::Base
   def display_name
 
   end
+
+  def post_id
+    id
+  end
+
 end

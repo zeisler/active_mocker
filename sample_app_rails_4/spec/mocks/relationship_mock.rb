@@ -17,12 +17,12 @@ class RelationshipMock < ActiveMock::Base
       @associations ||= {:follower=>nil, :followed=>nil}
     end
 
-    def model_instance_methods
-      @model_instance_methods ||= {}
+    def mockable_instance_methods
+      @mockable_instance_methods ||= {}
     end
 
-    def model_class_methods
-      @model_class_methods ||= {}
+    def mockable_class_methods
+      @mockable_class_methods ||= {}
     end
 
     def mocked_class

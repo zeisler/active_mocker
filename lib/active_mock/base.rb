@@ -15,6 +15,9 @@ end
 class RejectedParams < Exception
 end
 
+class Unimplemented < Exception
+end
+
 class Base
 
   include DoNothingActiveRecordMethods
@@ -63,7 +66,7 @@ class Base
     public
 
     def clear_mock
-      @model_class_methods, @model_instance_methods = nil, nil
+      @mockable_class_methods, @mockable_instance_methods = nil, nil
       delete_all
     end
 
@@ -83,12 +86,12 @@ class Base
   end
 
   def setup_instance_variables
-    {:@model_instance_methods => :model_instance_methods,
-     :@model_class_methods    => :model_class_methods,
-     :@associations           => :associations,
-     :@attributes             => :attributes,
-     :@types                  => :types}.each do |var, value|
-      instance_variable_set(var, self.class.send(value).dup)
+    [:mockable_instance_methods,
+     :mockable_class_methods,
+     :associations,
+     :attributes,
+     :types].each do |var|
+      instance_variable_set("@#{var}", self.class.send(var).dup)
     end
   end
 
@@ -195,52 +198,44 @@ class Base
 
     module ClassMethods
       def mock_instance_method(method, &block)
-        model_instance_methods[method.to_s] = block
+        mockable_instance_methods[method.to_s] = block
       end
+
+      alias_method :stub_instance_method, :mock_instance_method
 
       def mock_class_method(method, &block)
-        model_class_methods[method.to_s] = block
+        mockable_class_methods[method.to_s] = block
       end
 
-      def model_class_methods
-        @model_class_methods ||= HashWithIndifferentAccess.new
+      alias_method :stub_class_method, :mock_class_method
+
+      def is_implemented(val, method, type='::')
+        raise ActiveMock::Unimplemented, "#{type}#{method} is not Implemented for Class: #{name}" if val == nil
       end
 
-      def model_instance_methods
-        @model_instance_methods ||= HashWithIndifferentAccess.new
+      def get_mock_class_method(method)
+        method_block = mockable_class_methods[method]
+        is_implemented(method_block, method)
+        method_block
       end
 
-      private :model_class_methods, :model_instance_methods
-
-
-      def is_implemented(val, method)
-        raise "#{method} is not Implemented for Class: #{name}" if val == :not_implemented
-      end
+      private :get_mock_class_method
 
     end
 
     def mock_instance_method(method, &block)
-      @model_instance_methods[method.to_s] = block
+      @mockable_instance_methods[method.to_s] = block
+    end
+    alias_method :stub_instance_method, :mock_instance_method
+
+    def get_mock_instance_method(method)
+      method_block = @mockable_instance_methods[method]
+      method_block = self.class.mockable_instance_methods[method] if method_block.nil?
+      self.class.is_implemented(method_block, method, '#')
+      method_block
     end
 
-    def model_instance_methods
-      class_level_mocks = self.class.send(:model_instance_methods)
-      merged_mocks      = class_level_mocks.merge(@model_instance_methods)
-      return class_level_mocks if all_not_implemented?(merged_mocks) && !all_not_implemented?(class_level_mocks)
-      merged_mocks
-    end
-
-    def all_not_implemented?(hash)
-      hash.select { |k, v| v == :not_implemented }.count == hash.count
-    end
-    
-    private :all_not_implemented?
-
-    def model_class_methods
-      self.class.send(:model_class_methods).merge(@model_class_methods)
-    end
-
-    private :model_class_methods, :model_instance_methods
+    private :get_mock_instance_method
 
   end
 

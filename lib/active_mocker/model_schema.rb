@@ -254,6 +254,10 @@ module ActiveMocker
           @arguments
         end
 
+        def empty?
+          @arguments.empty?
+        end
+
         def to_s
           Reparameterize.call(arguments)
         end

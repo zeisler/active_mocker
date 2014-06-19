@@ -153,7 +153,7 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
   end
 <% end -%>
 <% class_methods.each do |method| %>
-  def self.<%= method.name %>(<%= method.arguments %>)
+  def self.<%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
     block =  get_mock_class_method('<%= method.name %>')
     block.call(*[<%= method.arguments.passable %>])
   end

@@ -190,7 +190,7 @@ class UserMock < ActiveMock::Base
     block.call(*[other_user])
   end
 
-  def self.new_remember_token()
+  def self.new_remember_token
     block =  get_mock_class_method('new_remember_token')
     block.call(*[])
   end

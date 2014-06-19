@@ -1,7 +1,5 @@
 module ActiveMock
-  class HasAndBelongsToMany < Collection
-
-    include Queries
+  class HasAndBelongsToMany < HasMany
 
   end
 end

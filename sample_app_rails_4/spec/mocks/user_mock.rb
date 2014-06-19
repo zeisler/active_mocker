@@ -165,6 +165,26 @@ class UserMock < ActiveMock::Base
     @associations[:followers] ||= ActiveMock::HasMany.new(val,'user_id', @attributes['id'], classes('Follower'))
   end
 
+  module Scopes
+
+    def find_by_name(name)
+      block = ActiveMocker::LoadedMocks.find('User').send(:get_mock_class_method, 'find_by_name')
+      block.call(*[name])
+    end
+
+    def by_name(name)
+      block = ActiveMocker::LoadedMocks.find('User').send(:get_mock_class_method, 'by_name')
+      block.call(*[name])
+    end
+
+    class Relation < ActiveMock::Relation
+      include Scopes
+    end
+
+  end
+
+  extend Scopes
+
   ##################################
   #  Model Methods getter/setters  #
   ##################################

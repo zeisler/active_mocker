@@ -175,5 +175,10 @@ class Base
 
   include PropertiesGetterAndSetter
 
+  module Scopes
+    class Relation < ActiveMock::Relation
+    end
+  end
+
 end
 end

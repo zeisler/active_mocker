@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
                                    dependent:   :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
 
+  scope :find_by_name, -> (name) { where(name: name) }
+  scope :by_name, -> (name) { where(name: name) }
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end

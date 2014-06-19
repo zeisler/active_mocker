@@ -1,11 +1,11 @@
 module Scope
 
   def scope(method_name, proc)
-    singleton_class.class_eval do
-      params = ActiveMocker::Reparameterize.call(proc.parameters)
-      block = eval("lambda { |#{params}| }")
-      define_method(method_name, block)
-    end
+    get_named_scopes[method_name] = proc
+  end
+
+  def get_named_scopes
+    @scope_methods ||= {}
   end
 
 end

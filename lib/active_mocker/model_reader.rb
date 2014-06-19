@@ -46,6 +46,16 @@ module ActiveMocker
       klass.methods(false)
     end
 
+    def scopes
+      klass.get_named_scopes
+    end
+
+    def scopes_with_arguments
+      scopes.map do |name, proc|
+        {name => proc.parameters, :proc => proc}
+      end
+    end
+
     def class_methods_with_arguments
       class_methods.map do |m|
         {m => klass.method(m).parameters }

@@ -2,12 +2,15 @@ module ActiveMock
 
   module Queries
 
+    def self.extended(klass)
+      @extended = klass
+    end
+
     def self.included(klass)
       @included = klass
     end
 
     def self.included_klass
-      return Relation if @included.name == 'ActiveMocker::Base'
       @included
     end
 
@@ -28,12 +31,13 @@ module ActiveMock
 
     class WhereNotChain
 
-      def initialize(collection)
+      def initialize(collection, parent_class)
         @collection = collection
+        @parent_class = parent_class
       end
 
       def not(options={})
-        Queries.included_klass.new(@collection.reject do |record|
+        @parent_class.new(@collection.reject do |record|
           Find.new(record).is_of(options)
         end)
       end
@@ -47,13 +51,20 @@ module ActiveMock
       delete_all
     end
 
+    def parent_class
+      if self.try(:superclass).try(:name) == 'ActiveMock::Base'
+        return "#{self.name}::Scopes::Relation".constantize if Object.const_defined?("#{self.name}::Scopes::Relation")
+      end
+      Queries.included_klass
+    end
+
     def all
-      Queries.included_klass.new( to_a || [] )
+      parent_class.new( to_a || [] )
     end
 
     def where(options=nil)
-      return WhereNotChain.new(all) if options.nil?
-      Queries.included_klass.new(all.select do |record|
+      return WhereNotChain.new(all, parent_class) if options.nil?
+      parent_class.new(all.select do |record|
         Find.new(record).is_of(options)
       end)
     end
@@ -63,7 +74,7 @@ module ActiveMock
       results = ids_array.map do |id|
         where(id: id).first
       end
-      return Queries.included_klass.new(results) if ids.class == Array
+      return parent_class.new(results) if ids.class == Array
       results.first
     end
 
@@ -82,7 +93,7 @@ module ActiveMock
     end
 
     def limit(num)
-      Queries.included_klass.new(all.take(num))
+      parent_class.new(all.take(num))
     end
 
     def sum(key)
@@ -105,11 +116,11 @@ module ActiveMock
     end
 
     def order(key)
-      Queries.included_klass.new(all.sort_by { |item| item.send(key) })
+      parent_class.new(all.sort_by { |item| item.send(key) })
     end
 
     def reverse_order
-      Queries.included_klass.new(to_a.reverse)
+      parent_class.new(to_a.reverse)
     end
 
     private

@@ -32,10 +32,6 @@ class <%= class_name + @mock_append_name %> < ActiveMock::Base
       '<%= class_name %>'
     end
 
-    def column_names
-      attribute_names
-    end
-
     def attribute_names
       @attribute_names ||= <%= attribute_names %>
     end

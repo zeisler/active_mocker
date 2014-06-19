@@ -23,12 +23,7 @@ module ActiveMock
         raise ActiveMock::Unimplemented
       end
 
-
       def attribute_names
-        raise ActiveMock::Unimplemented
-      end
-
-      def column_names
         raise ActiveMock::Unimplemented
       end
 

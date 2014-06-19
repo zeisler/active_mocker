@@ -29,10 +29,6 @@ class UserMock < ActiveMock::Base
       'User'
     end
 
-    def column_names
-      attribute_names
-    end
-
     def attribute_names
       @attribute_names ||= ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
     end

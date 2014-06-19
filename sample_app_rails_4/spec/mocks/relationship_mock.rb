@@ -29,10 +29,6 @@ class RelationshipMock < ActiveMock::Base
       'Relationship'
     end
 
-    def column_names
-      attribute_names
-    end
-
     def attribute_names
       @attribute_names ||= ["id", "follower_id", "followed_id", "created_at", "updated_at"]
     end

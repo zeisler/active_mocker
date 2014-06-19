@@ -15,6 +15,10 @@ module DoNothingActiveRecordMethods
       raise e
     end
 
+    def column_names
+      attribute_names
+    end
+
   end
 
   def readonly?

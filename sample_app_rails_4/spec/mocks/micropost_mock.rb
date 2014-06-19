@@ -33,10 +33,6 @@ class MicropostMock < ActiveMock::Base
       'Micropost'
     end
 
-    def column_names
-      attribute_names
-    end
-
     def attribute_names
       @attribute_names ||= ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
     end

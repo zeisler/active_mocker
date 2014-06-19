@@ -29,6 +29,8 @@ class Base
     ActiveMocker::LoadedMocks.add_subclass(subclass)
   end
 
+  include TemplateMethods
+
   class << self
 
     def records
@@ -197,6 +199,15 @@ class Base
     end
 
     module ClassMethods
+
+      def mockable_instance_methods
+        raise ActiveMock::Unimplemented
+      end
+
+      def mockable_class_methods
+        raise ActiveMock::Unimplemented
+      end
+
       def mock_instance_method(method, &block)
         mockable_instance_methods[method.to_s] = block
       end
@@ -245,6 +256,7 @@ class Base
     def clear_mocked_methods
       @mockable_instance_methods.clear
     end
+
   end
 
   include MockAbilities

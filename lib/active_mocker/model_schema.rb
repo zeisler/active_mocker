@@ -156,20 +156,12 @@ module ActiveMocker
       klass_name + "Mock"
     end
 
-    def class_method_not_implemented
-      not_implemented(class_methods)
+    def mockable_class_methods
+      class_methods.map(&:name).each_with_object({}) { |val, hash| hash[val] = nil }
     end
 
-    def instance_method_not_implemented
-      not_implemented(instance_methods)
-    end
-
-    def not_implemented(collection)
-      hash = {}
-      collection.each do |meth|
-        hash[meth.name.to_s] = :not_implemented
-      end
-      hash
+    def mockable_instance_methods
+      instance_methods.map(&:name).each_with_object({}) { |val, hash| hash[val] = nil }
     end
 
     def render(template, mock_append_name)

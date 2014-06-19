@@ -76,7 +76,7 @@ describe 'UserMock' do
     it 'will raise exception for unimplemented methods' do
       expect(UserMock.new.method(:following?).parameters).to eq  [[:req, :other_user]]
       expect{UserMock.new.following?}.to raise_error ArgumentError
-      expect{UserMock.new.following?('foo')}.to raise_error(RuntimeError, '#following? is not Implemented for Class: UserMock')
+      expect{UserMock.new.following?('foo')}.to raise_error(ActiveMock::Unimplemented, '#following? is not Implemented for Class: UserMock')
     end
 
     it 'can be implemented dynamically' do
@@ -109,7 +109,7 @@ describe 'UserMock' do
   describe 'class methods' do
 
     it 'will raise exception for unimplemented methods' do
-      expect{UserMock.new_remember_token}.to raise_error('::new_remember_token is not Implemented for Class: UserMock')
+      expect{UserMock.new_remember_token}.to raise_error(ActiveMock::Unimplemented, '::new_remember_token is not Implemented for Class: UserMock')
     end
 
     it 'can be implemented as follows' do

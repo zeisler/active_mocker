@@ -17,12 +17,12 @@ class UserMock < ActiveMock::Base
       @associations ||= {:microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}
     end
 
-    def model_instance_methods
-      @model_instance_methods ||= {"feed"=>:not_implemented, "following?"=>:not_implemented, "follow!"=>:not_implemented, "unfollow!"=>:not_implemented}
+    def mockable_instance_methods
+      @mockable_instance_methods ||= {"feed"=>nil, "following?"=>nil, "follow!"=>nil, "unfollow!"=>nil}
     end
 
-    def model_class_methods
-      @model_class_methods ||= {"new_remember_token"=>:not_implemented, "digest"=>:not_implemented}
+    def mockable_class_methods
+      @mockable_class_methods ||= {"new_remember_token"=>nil, "digest"=>nil}
     end
 
     def mocked_class
@@ -171,38 +171,32 @@ class UserMock < ActiveMock::Base
 
 
   def feed()
-    block =  model_instance_methods['feed']
-    self.class.is_implemented(block, '#feed')
+    block =  get_mock_instance_method('feed')
     block.call(*[])
   end
 
   def following?(other_user)
-    block =  model_instance_methods['following?']
-    self.class.is_implemented(block, '#following?')
+    block =  get_mock_instance_method('following?')
     block.call(*[other_user])
   end
 
   def follow!(other_user)
-    block =  model_instance_methods['follow!']
-    self.class.is_implemented(block, '#follow!')
+    block =  get_mock_instance_method('follow!')
     block.call(*[other_user])
   end
 
   def unfollow!(other_user)
-    block =  model_instance_methods['unfollow!']
-    self.class.is_implemented(block, '#unfollow!')
+    block =  get_mock_instance_method('unfollow!')
     block.call(*[other_user])
   end
 
   def self.new_remember_token()
-    block =  model_class_methods['new_remember_token']
-    is_implemented(block, '::new_remember_token')
+    block =  get_mock_class_method('new_remember_token')
     block.call(*[])
   end
 
   def self.digest(token)
-    block =  model_class_methods['digest']
-    is_implemented(block, '::digest')
+    block =  get_mock_class_method('digest')
     block.call(*[token])
   end
 

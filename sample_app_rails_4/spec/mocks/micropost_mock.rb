@@ -21,12 +21,12 @@ class MicropostMock < ActiveMock::Base
       @associations ||= {:user=>nil}
     end
 
-    def model_instance_methods
-      @model_instance_methods ||= {"display_name"=>:not_implemented, "post_id"=>:not_implemented}
+    def mockable_instance_methods
+      @mockable_instance_methods ||= {"display_name"=>nil, "post_id"=>nil}
     end
 
-    def model_class_methods
-      @model_class_methods ||= {"from_users_followed_by"=>:not_implemented}
+    def mockable_class_methods
+      @mockable_class_methods ||= {"from_users_followed_by"=>nil}
     end
 
     def mocked_class
@@ -133,20 +133,17 @@ class MicropostMock < ActiveMock::Base
 
 
   def display_name()
-    block =  model_instance_methods['display_name']
-    self.class.is_implemented(block, '#display_name')
+    block =  get_mock_instance_method('display_name')
     block.call(*[])
   end
 
   def post_id()
-    block =  model_instance_methods['post_id']
-    self.class.is_implemented(block, '#post_id')
+    block =  get_mock_instance_method('post_id')
     block.call(*[])
   end
 
   def self.from_users_followed_by(user=nil)
-    block =  model_class_methods['from_users_followed_by']
-    is_implemented(block, '::from_users_followed_by')
+    block =  get_mock_class_method('from_users_followed_by')
     block.call(*[user])
   end
 

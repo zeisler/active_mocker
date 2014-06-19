@@ -66,7 +66,7 @@ class Base
     public
 
     def clear_mock
-      @mockable_class_methods, @mockable_instance_methods = nil, nil
+      clear_mocked_methods
       delete_all
     end
 
@@ -221,6 +221,11 @@ class Base
 
       private :get_mock_class_method
 
+      def clear_mocked_methods
+        mockable_instance_methods.clear
+        mockable_class_methods.clear
+      end
+
     end
 
     def mock_instance_method(method, &block)
@@ -237,6 +242,9 @@ class Base
 
     private :get_mock_instance_method
 
+    def clear_mocked_methods
+      @mockable_instance_methods.clear
+    end
   end
 
   include MockAbilities

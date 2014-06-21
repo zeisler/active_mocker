@@ -32,7 +32,7 @@ class Base
     alias_method :destroy, :delete
 
     def delete_all(options=nil)
-      return records.reset_all_records if options.nil?
+      return records.reset if options.nil?
       where(options).map { |r| r.delete }.count
     end
 

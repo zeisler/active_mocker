@@ -19,8 +19,6 @@ class Reparameterize
           "#{param}:"
         when :key
           "#{param}: nil"
-        else
-          param
       end
     end.join(', ')
 

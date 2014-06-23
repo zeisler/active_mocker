@@ -13,7 +13,7 @@ Example from a real app
 
 
 ------------------------------------------
-
+* [Contact](#contact)
 * [Installation](#installation)
 * [Setup](#setup)
 * [Dependencies](#dependencies)
@@ -27,6 +27,12 @@ Example from a real app
 
 
 ------------------------------------------
+
+## Contact
+
+Ask a question in the [chat room](https://gitter.im/zeisler/active_mocker).
+
+------------------------
 
 
 ## Installation

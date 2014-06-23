@@ -1,8 +1,8 @@
 module ActiveMocker
 class Reparameterize
 
-  def self.call(params, param_list:false)
-    return param_list(params) if param_list
+  def self.call(params, param_list:nil)
+    return param_list(params) unless param_list.nil?
     method_arguments(params)
   end
 

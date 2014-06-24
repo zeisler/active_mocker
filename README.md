@@ -17,6 +17,8 @@ Example from a real app
 * [Contact](#contact)
 * [Installation](#installation)
 * [Setup](#setup)
+  * [Configuration](#overwrite_defaults_configuration)
+  * [Generate](#generate_mocks)
 * [Dependencies](#dependencies)
 * [Usage](#usage)
 * [Mocking Methods](#mocking-methods)
@@ -57,34 +59,20 @@ Or install it yourself as:
 
 ## Setup
 
-### Configure the Mock Generator
-  config/initializers/active_mocker.rb
+### Overwrite defaults configuration
 
     ActiveMocker::Generate.configure do |config|
-      # Required Options
       config.schema_file = File.join(Rails.root, 'db/schema.rb')
       config.model_dir   = File.join(Rails.root, 'app/models')
       config.mock_dir    = File.join(Rails.root, 'spec/mocks')
-      # Logging
       config.logger      = Rails.logger
     end
 
-### Create a Rake Task to Auto Regenerate Mocks
+### Generate Mocks
 
-Here is an example of a rake task to regenerate mocks after every schema modifiation. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.
+Running this rake task builds/rebuilds the mocks. It will be ran automatically after every schema modification. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.
 
-  lib/tasks/active_mocker.rake
-
-    task rebuild_mocks: :environment do
-      puts 'rebuilding mocks'
-      ActiveMocker.create_mocks
-    end
-
-    ['db:schema:load', 'db:migrate', 'db:reset'].each do |task|
-      Rake::Task[task].enhance do
-        Rake::Task['rebuild_mocks'].invoke
-      end
-    end
+    rake active_mocker::build
 
 ## Usage
 

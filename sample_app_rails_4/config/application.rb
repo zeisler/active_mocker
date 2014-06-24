@@ -1,7 +1,7 @@
     require File.expand_path('../boot', __FILE__)
-
     # Pick the frameworks you want:
     require "active_record/railtie"
+    Bundler.require(*Rails.groups)
     # require "rails/test_unit/railtie"
 
     # Assets should be precompiled for production (so we don't need the gems loaded then)

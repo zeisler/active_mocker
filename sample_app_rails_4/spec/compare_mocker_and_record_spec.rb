@@ -1,9 +1,15 @@
 $:.unshift File.expand_path('../', __FILE__)
 require 'spec_helper'
-load 'mocks/user_mock.rb'
-load 'mocks/micropost_mock.rb'
+
+require 'mocks/user_mock.rb'
+require 'mocks/micropost_mock.rb'
 
 describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
+
+  before(:all) do
+    SampleApp::Application.load_tasks
+    Rake::Task['active_mocker:build'].invoke
+  end
 
   before(:each) do
     User.destroy_all

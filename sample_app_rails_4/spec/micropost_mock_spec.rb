@@ -1,7 +1,6 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
 APP_ROOT = File.expand_path('../../', __FILE__) unless defined? APP_ROOT
-require 'config/initializers/active_mocker.rb'
 load 'spec/mocks/micropost_mock.rb'
 load 'spec/mocks/user_mock.rb'
 

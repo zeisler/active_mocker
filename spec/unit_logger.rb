@@ -2,8 +2,8 @@ require 'logger'
 class UnitLogger
 
   def self.method_missing(meth, *args, &block)
+    return unit.send(meth, *args, &block) unless unit.nil?
     return Rails.logger.send(meth, *args, &block) if defined? Rails
-    return unit.send(meth, *args, &block)
   end
 
   def self.unit

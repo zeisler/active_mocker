@@ -1,4 +1,10 @@
-# http://blog.nathanhumbert.com/2010/02/rails-3-loading-rake-tasks-from-gem.html
+namespace :active_mocker do
+  desc('Rebuild mocks.')
+  task :build => :environment do
+    ActiveMocker::Generate.new
+  end
+
+end
 
 ['db:schema:load', 'db:migrate', 'db:reset'].each do |task|
   Rake::Task[task].enhance do
@@ -6,6 +12,4 @@
   end
 end
 
-task rebuild_mocks: :environment do
-  ActiveMocker::Generate.new
-end
+

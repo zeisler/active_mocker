@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
 module DoNothingActiveRecordMethods
 
   def self.included(base)
@@ -51,5 +52,6 @@ module DoNothingActiveRecordMethods
     false
   end
 
+end
 end
 end

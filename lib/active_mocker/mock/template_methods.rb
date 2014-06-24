@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
   module TemplateMethods
 
     def self.included(base)
@@ -8,30 +9,31 @@ module ActiveMock
     module ClassMethods
 
       def attributes
-        raise ActiveMock::Unimplemented
+        raise Mock::Unimplemented
       end
 
       def types
-        raise ActiveMock::Unimplemented
+        raise Mock::Unimplemented
       end
 
       def associations
-        raise ActiveMock::Unimplemented
+        raise Mock::Unimplemented
       end
 
       def mocked_class
-        raise ActiveMock::Unimplemented
+        raise Mock::Unimplemented
       end
 
       def attribute_names
-        raise ActiveMock::Unimplemented
+        raise Mock::Unimplemented
       end
 
       def primary_key
-        raise ActiveMock::Unimplemented
+        raise Mock::Unimplemented
       end
 
     end
 
   end
+end
 end

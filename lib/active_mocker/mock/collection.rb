@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
 
   class Collection
 
@@ -49,4 +50,5 @@ module ActiveMock
 
   end
 
+end
 end

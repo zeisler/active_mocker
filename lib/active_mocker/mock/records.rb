@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
 class Records
 
   extend Forwardable
@@ -56,5 +57,6 @@ class Records
     raise IdError, "Duplicate ID found for record #{record.inspect}" if record_index.has_key?(record.id.to_s)
   end
 
+end
 end
 end

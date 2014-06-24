@@ -1,16 +1,16 @@
 require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
-require 'active_support/all'
-require 'active_mock/queries'
-require 'active_mock/collection'
+$:.unshift File.expand_path('../../../../../lib/active_mocker/mock', __FILE__)
+require 'active_support/core_ext'
+require 'queries'
+require 'collection'
 require 'ostruct'
 
-describe ActiveMock::Queries do
+describe ActiveMocker::Mock::Queries do
 
   before do
 
-    class Queriable < ActiveMock::Collection
-      include ActiveMock::Queries
+    class Queriable < ActiveMocker::Mock::Collection
+      include ActiveMocker::Mock::Queries
     end
 
   end
@@ -185,7 +185,7 @@ describe ActiveMock::Queries do
       subject { Queriable.new(given_collection) }
 
       it 'return a WhereNotChain' do
-        expect(subject.where).to be_a_kind_of(ActiveMock::Queries::WhereNotChain)
+        expect(subject.where).to be_a_kind_of(ActiveMocker::Mock::Queries::WhereNotChain)
       end
 
       let(:given_collection) { [OpenStruct.new(value: 1),

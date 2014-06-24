@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
 
   class HasMany < Association
 
@@ -50,5 +51,6 @@ module ActiveMock
 
   end
 
+end
 end
 

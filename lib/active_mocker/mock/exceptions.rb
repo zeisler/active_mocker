@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
   class RecordNotFound < StandardError
   end
 
@@ -16,4 +17,5 @@ module ActiveMock
 
   class Unimplemented < Exception
   end
+end
 end

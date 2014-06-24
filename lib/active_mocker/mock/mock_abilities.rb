@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
   module MockAbilities
 
     def self.included(base)
@@ -8,11 +9,11 @@ module ActiveMock
     module ClassMethods
 
       def mockable_instance_methods
-        raise ActiveMock::Unimplemented
+        raise Unimplemented
       end
 
       def mockable_class_methods
-        raise ActiveMock::Unimplemented
+        raise Unimplemented
       end
 
       def mock_instance_method(method, &block)
@@ -28,7 +29,7 @@ module ActiveMock
       alias_method :stub_class_method, :mock_class_method
 
       def is_implemented(val, method, type='::')
-        raise ActiveMock::Unimplemented, "#{type}#{method} is not Implemented for Class: #{name}" if val == nil
+        raise Unimplemented, "#{type}#{method} is not Implemented for Class: #{name}" if val == nil
       end
 
       def get_mock_class_method(method)
@@ -66,4 +67,5 @@ module ActiveMock
     end
 
   end
+end
 end

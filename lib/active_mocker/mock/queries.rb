@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
 
   module Queries
 
@@ -120,4 +121,5 @@ module ActiveMock
 
   end
 
+end
 end

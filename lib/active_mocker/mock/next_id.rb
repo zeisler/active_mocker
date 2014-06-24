@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
 class NextId
 
   def initialize(records)
@@ -14,5 +15,6 @@ class NextId
     @max_record ||= @records.max { |a, b| a.id <=> b.id }
   end
 
+end
 end
 end

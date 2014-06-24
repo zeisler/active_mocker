@@ -47,7 +47,7 @@ describe 'UserMock' do
     end
 
     it 'will raise error if not an attribute or association' do
-      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMock::RejectedParams, '{:baz=>"Hello"} for UserMock')
+      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMocker::Mock::RejectedParams, '{:baz=>"Hello"} for UserMock')
     end
 
   end
@@ -76,7 +76,7 @@ describe 'UserMock' do
     it 'will raise exception for unimplemented methods' do
       expect(UserMock.new.method(:following?).parameters).to eq  [[:req, :other_user]]
       expect{UserMock.new.following?}.to raise_error ArgumentError
-      expect{UserMock.new.following?('foo')}.to raise_error(ActiveMock::Unimplemented, '#following? is not Implemented for Class: UserMock')
+      expect{UserMock.new.following?('foo')}.to raise_error(ActiveMocker::Mock::Unimplemented, '#following? is not Implemented for Class: UserMock')
     end
 
     it 'can be implemented dynamically' do
@@ -109,7 +109,7 @@ describe 'UserMock' do
   describe 'class methods' do
 
     it 'will raise exception for unimplemented methods' do
-      expect{UserMock.new_remember_token}.to raise_error(ActiveMock::Unimplemented, '::new_remember_token is not Implemented for Class: UserMock')
+      expect{UserMock.new_remember_token}.to raise_error(ActiveMocker::Mock::Unimplemented, '::new_remember_token is not Implemented for Class: UserMock')
     end
 
     it 'can be implemented as follows' do
@@ -124,10 +124,10 @@ describe 'UserMock' do
 
   end
 
-  context 'active_mock' do
+  context 'mock' do
 
-    it 'uses active_mock::base as superclass' do
-      expect(UserMock.superclass.name).to eq 'ActiveMock::Base'
+    it 'uses mock::base as superclass' do
+      expect(UserMock.superclass.name).to eq 'ActiveMocker::Mock::Base'
     end
 
     it 'can save to class and then find instance by attribute' do

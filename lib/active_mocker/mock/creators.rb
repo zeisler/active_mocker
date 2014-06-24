@@ -1,4 +1,5 @@
-module ActiveMock
+module ActiveMocker
+module Mock
     module Creators
 
       def create(attributes = {}, &block)
@@ -21,5 +22,6 @@ module ActiveMock
 
     end
 
+end
 end
 

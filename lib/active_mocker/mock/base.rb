@@ -1,12 +1,13 @@
-module ActiveMock
+module ActiveMocker
+module Mock
 
 class Base
 
   include DoNothingActiveRecordMethods
   include MockAbilities
   include TemplateMethods
-  extend  ActiveMock::Queries
-  extend  ActiveMock::Creators
+  extend  Queries
+  extend  Creators
 
   def self.inherited(subclass)
     return ActiveMocker::LoadedMocks.add(subclass) if subclass.superclass == Base
@@ -97,7 +98,7 @@ class Base
       begin
         send "#{key}=", value
       rescue NoMethodError
-        raise ActiveMock::RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
+        raise RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
       end
     end
   end
@@ -175,5 +176,6 @@ class Base
 
   include PropertiesGetterAndSetter
 
+end
 end
 end

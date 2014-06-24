@@ -40,24 +40,25 @@ class Generate
     mocks_created = 0
     ProgressBar.create
     models = generate_model_schema
-    progress_bar = ProgressBar.create(:title => "Generating Mocks", :starting_at => 0, :total => models.count, format: '%a %B %p%% %t')
+    progress_bar = ProgressBar.create(:title => "Generating Mocks", :total => models.count, format: '%t |%b>>%i| %c of %C')
     models.each do |model|
-      # begin
-        klass_str = ''
-        klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
+      begin
+
+      klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
       FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
       File.open(File.join(mock_dir,"#{model.table_name.singularize}_mock.rb"), 'w').write(klass_str)
       logger.info "saving mock #{model.class_name} to #{mock_dir}"
 
-      # rescue Exception => exception
-      #   logger.debug $!.backtrace
-      #   logger.debug exception
-      #   logger.info "failed to load #{model} model"
-      #   next
-      # end
+      rescue Exception => exception
+        logger.debug $!.backtrace
+        logger.debug exception
+        logger.info "failed to load #{model} model"
+        next
+      end
       mocks_created += 1
       progress_bar.increment
     end
+    progress_bar.finish
     logger.info "Generated #{mocks_created} of #{models.count} mocks"
   end
 

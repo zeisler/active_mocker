@@ -1,3 +1,4 @@
+require 'ruby-progressbar'
 module ActiveMocker
 class Generate
   extend Config
@@ -37,7 +38,9 @@ class Generate
 
   def create_template
     mocks_created = 0
+    ProgressBar.create
     models = generate_model_schema
+    progress_bar = ProgressBar.create(:title => "Generating Mocks", :starting_at => 0, :total => models.count, format: '%a %B %p%% %t')
     models.each do |model|
       # begin
         klass_str = ''
@@ -53,7 +56,7 @@ class Generate
       #   next
       # end
       mocks_created += 1
-
+      progress_bar.increment
     end
     logger.info "Generated #{mocks_created} of #{models.count} mocks"
   end

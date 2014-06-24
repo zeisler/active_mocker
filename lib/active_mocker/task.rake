@@ -7,6 +7,5 @@
 end
 
 task rebuild_mocks: :environment do
-  puts 'rebuilding mocks'
   ActiveMocker::Generate.new
 end

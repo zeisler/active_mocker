@@ -1,6 +1,7 @@
 require "active_mocker/version"
 $:.unshift File.expand_path('../../', __FILE__)
 
+require 'active_mocker/railtie'
 require 'active_mocker/public_methods'
 require 'active_mocker/config'
 require 'active_mocker/generate'

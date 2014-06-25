@@ -4,12 +4,17 @@ module ActiveMocker
 
     class Generate
 
-      attr_reader :schema_file, :models_dir
+      attr_reader :schema_file, :models_dir, :progress
 
-      def initialize(schema_file:nil, models_dir:nil, logger:nil)
+      def initialize(schema_file:nil, models_dir:nil, logger:nil, progress: nil)
         @schema_file = schema_file
         @models_dir  = models_dir
+        @progress    = progress
         Logger.set(logger)
+      end
+
+      def increment_progress
+        progress.increment unless progress.nil?
       end
 
       def tables
@@ -35,12 +40,15 @@ module ActiveMocker
           table      = get_table(model, model_name)
           attributes = build_attributes(table.fields, primary_key(table.fields, model))
 
+          increment_progress
+
           ModelSchema.new(class_name:    model_name.camelize,
                           table_name:    table.name,
                           attributes:    attributes,
                           methods:       build_methods(model),
                           relationships: build_relationships(model),
                           constants:     model.constants)
+
         end
 
         ModelSchemaCollection.new(model_schemas.compact)

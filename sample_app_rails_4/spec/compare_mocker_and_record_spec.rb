@@ -7,8 +7,7 @@ require 'mocks/micropost_mock.rb'
 describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   before(:all) do
-    SampleApp::Application.load_tasks
-    Rake::Task['active_mocker:build'].invoke
+    ActiveMocker::Generate.new(silence: true)
   end
 
   before(:each) do

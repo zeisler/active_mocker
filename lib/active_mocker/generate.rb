@@ -15,7 +15,10 @@ class Generate
                  :mock_dir,
                  :logger
 
-  def initialize
+  attr_reader :silence
+
+  def initialize(silence: false)
+    @silence = silence
     create_template
   end
 
@@ -33,15 +36,28 @@ class Generate
   end
 
   def generate_model_schema
-    ActiveMocker::ModelSchema::Generate.new(schema_file: schema_file, models_dir: model_dir, logger: logger).run
+    ActiveMocker::ModelSchema::Generate.new(schema_file: schema_file, models_dir: model_dir, logger: logger, progress: progress).run
+  end
+
+  def model_count
+    ActiveMocker::ModelSchema::Generate.new(schema_file: schema_file, models_dir: model_dir, logger: logger).models.count
+  end
+
+  def progress
+    return @progress if !@progress.nil? || silence == true
+    progress_options = {:title => "Generating Mocks",
+                        :total => model_count * 4,
+                        format: '%t |%b>>%i| %p%%'}
+    @progress = ProgressBar.create(progress_options)
+  end
+
+  def increment_progress
+    progress.increment unless silence
   end
 
   def create_template
     mocks_created = 0
-    ProgressBar.create
-    models = generate_model_schema
-    progress_bar = ProgressBar.create(:title => "Generating Mocks", :total => models.count, format: '%t |%b>>%i| %c of %C')
-    models.each do |model|
+    generate_model_schema.each do |model|
       begin
 
       klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
@@ -56,14 +72,39 @@ class Generate
         next
       end
       mocks_created += 1
-      progress_bar.increment
+      increment_progress
     end
-    progress_bar.finish
-    logger.info "Generated #{mocks_created} of #{models.count} mocks"
+    logger.info "Generated #{mocks_created} of #{model_count} mocks"
   end
 
   def mock_append_name
     'Mock'
+  end
+
+  class Silent
+
+    def initialize(logger)
+      @logger = logger
+    end
+
+    # def print(*args)
+    # end
+
+    def tty?
+      true
+    end
+
+    def flush
+      false
+    end
+
+    # def puts(*args)
+    #
+    # end
+
+    def method_missing(method, *args)
+      puts "calling #{method} with #{args}"
+    end
   end
 
 end

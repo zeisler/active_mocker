@@ -8,7 +8,7 @@ require 'forwardable'
 describe 'UserMock' do
 
   before(:each){
-    ActiveMocker::Generate.new
+    ActiveMocker::Generate.new(silence: true)
     UserMock.clear_mock
   }
 

@@ -20,7 +20,7 @@ describe ActiveMocker::Generate do
 
   end
 
-  subject{described_class.new}
+  subject{described_class.new(silence: true)}
 
   describe 'new' do
 

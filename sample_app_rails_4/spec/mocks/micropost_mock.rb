@@ -21,14 +21,6 @@ class MicropostMock < ActiveMocker::Mock::Base
       @associations ||= {:user=>nil}
     end
 
-    def mockable_instance_methods
-      @mockable_instance_methods ||= {"display_name"=>nil, "post_id"=>nil}
-    end
-
-    def mockable_class_methods
-      @mockable_class_methods ||= {"from_users_followed_by"=>nil}
-    end
-
     def mocked_class
       'Micropost'
     end
@@ -129,18 +121,15 @@ class MicropostMock < ActiveMocker::Mock::Base
 
 
   def display_name()
-    block =  get_mock_instance_method('display_name')
-    block.call(*[])
+    call_mock_method :display_name
   end
 
   def post_id()
-    block =  get_mock_instance_method('post_id')
-    block.call(*[])
+    call_mock_method :post_id
   end
 
   def self.from_users_followed_by(user=nil)
-    block =  get_mock_class_method('from_users_followed_by')
-    block.call(*[user])
+    call_mock_method :from_users_followed_by, user
   end
 
   private

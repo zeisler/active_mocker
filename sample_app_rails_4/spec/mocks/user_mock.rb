@@ -17,14 +17,6 @@ class UserMock < ActiveMocker::Mock::Base
       @associations ||= {:microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}
     end
 
-    def mockable_instance_methods
-      @mockable_instance_methods ||= {"feed"=>nil, "following?"=>nil, "follow!"=>nil, "unfollow!"=>nil}
-    end
-
-    def mockable_class_methods
-      @mockable_class_methods ||= {"new_remember_token"=>nil, "digest"=>nil}
-    end
-
     def mocked_class
       'User'
     end
@@ -167,33 +159,27 @@ class UserMock < ActiveMocker::Mock::Base
 
 
   def feed()
-    block =  get_mock_instance_method('feed')
-    block.call(*[])
+    call_mock_method :feed
   end
 
   def following?(other_user)
-    block =  get_mock_instance_method('following?')
-    block.call(*[other_user])
+    call_mock_method :following?, other_user
   end
 
   def follow!(other_user)
-    block =  get_mock_instance_method('follow!')
-    block.call(*[other_user])
+    call_mock_method :follow!, other_user
   end
 
   def unfollow!(other_user)
-    block =  get_mock_instance_method('unfollow!')
-    block.call(*[other_user])
+    call_mock_method :unfollow!, other_user
   end
 
   def self.new_remember_token
-    block =  get_mock_class_method('new_remember_token')
-    block.call(*[])
+    call_mock_method :new_remember_token
   end
 
   def self.digest(token)
-    block =  get_mock_class_method('digest')
-    block.call(*[token])
+    call_mock_method :digest, token
   end
 
   private

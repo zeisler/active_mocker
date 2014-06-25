@@ -72,9 +72,7 @@ class Base
   end
 
   def setup_instance_variables
-    [:mockable_instance_methods,
-     :mockable_class_methods,
-     :associations,
+    [:associations,
      :attributes,
      :types].each do |var|
       instance_variable_set("@#{var}", self.class.send(var).dup)

@@ -20,14 +20,6 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
       @associations ||= <%= associations %>
     end
 
-    def mockable_instance_methods
-      @mockable_instance_methods ||= <%= mockable_instance_methods %>
-    end
-
-    def mockable_class_methods
-      @mockable_class_methods ||= <%= mockable_class_methods %>
-    end
-
     def mocked_class
       '<%= class_name %>'
     end
@@ -144,14 +136,12 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
 
 <% instance_methods.each do |method| %>
   def <%= method.name %>(<%= method.arguments %>)
-    block =  get_mock_instance_method('<%= method.name %>')
-    block.call(*[<%= method.arguments.passable %>])
+    call_mock_method :<%= method.name %><%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
   end
 <% end -%>
 <% class_methods.each do |method| %>
   def self.<%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
-    block =  get_mock_class_method('<%= method.name %>')
-    block.call(*[<%= method.arguments.passable %>])
+    call_mock_method :<%= method.name %><%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
   end
 <% end -%>
 

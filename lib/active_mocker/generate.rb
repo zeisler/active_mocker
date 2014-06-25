@@ -74,6 +74,7 @@ class Generate
       mocks_created += 1
       increment_progress
     end
+    progress.finish unless silence
     logger.info "Generated #{mocks_created} of #{model_count} mocks"
   end
 

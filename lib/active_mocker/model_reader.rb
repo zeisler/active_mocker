@@ -25,6 +25,12 @@ module ActiveMocker
         begin
           m = Module.new
           m.module_eval(read_file, file_path)
+        rescue SyntaxError => e
+          Logger.error "ActiveMocker :: Error loading Model: #{model_name} \n \t\t\t\t\t\t\t\t`#{e}` \n"
+          puts "ActiveMocker :: Error loading Model: #{model_name} \n \t\t\t\t\t\t\t\t`#{e}` \n"
+          Logger.error "\t\t\t\t\t\t\t\t #{file_path}\n"
+          puts "\t\t\t\t\t\t\t\t #{file_path}\n"
+          failure = true
         rescue Exception => e
           Logger.error "ActiveMocker :: Error loading Model: #{model_name} \n \t\t\t\t\t\t\t\t`#{e}` \n"
           Logger.error "\t\t\t\t\t\t\t\t #{file_path}\n"

@@ -17,5 +17,9 @@ module Mock
 
   class Unimplemented < Exception
   end
+
+  class IdNotNumber < Exception
+  end
+
 end
 end

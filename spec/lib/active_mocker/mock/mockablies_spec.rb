@@ -1,15 +1,17 @@
 require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
-require 'active_mock/exceptions'
-require 'active_mock/mock_abilities'
+$:.unshift File.expand_path('../../../../../lib/active_mocker/mock', __FILE__)
+require 'exceptions'
+require 'mock_abilities'
 
-describe ActiveMock::MockAbilities do
+describe ActiveMocker::Mock::MockAbilities do
+
+  subject{ described_class}
 
   describe 'mocking class methods' do
 
     before do
       class TestClass
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def self.buz
           call_mock_method(__method__, [])
@@ -37,7 +39,7 @@ describe ActiveMock::MockAbilities do
 
     before do
       class TestableBinding
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def buz
           call_mock_method(__method__)
@@ -121,7 +123,7 @@ describe ActiveMock::MockAbilities do
 
     before do
       class TestHierarchy
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def buz
           call_mock_method(__method__)
@@ -155,7 +157,7 @@ describe ActiveMock::MockAbilities do
     before do
 
       class TestBoth
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def zip
           call_mock_method(__method__)
@@ -183,7 +185,7 @@ describe ActiveMock::MockAbilities do
     before do
 
       class WithArgs
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def foo(stuff, other = nil)
           call_mock_method(__method__, stuff, other)
@@ -239,7 +241,7 @@ describe ActiveMock::MockAbilities do
 
     before do
       class TestClearInstance
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def buz
           call_mock_method(__method__, [])
@@ -262,7 +264,7 @@ describe ActiveMock::MockAbilities do
 
     before do
       class TestClearInstance
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def buz
           call_mock_method(__method__, [])
@@ -290,7 +292,7 @@ describe ActiveMock::MockAbilities do
 
     before do
       class TestRaise
-        include ActiveMock::MockAbilities
+        include ActiveMocker::Mock::MockAbilities
 
         def buz
           call_mock_method(__method__, [])
@@ -304,11 +306,11 @@ describe ActiveMock::MockAbilities do
     end
 
     it 'will raise if unmocked class method is called' do
-      expect{ TestRaise.pop}.to raise_error(ActiveMock::Unimplemented, '::pop is not Implemented for Class: TestRaise')
+      expect{ TestRaise.pop}.to raise_error(ActiveMocker::Mock::Unimplemented, '::pop is not Implemented for Class: TestRaise')
     end
 
     it 'will raise if unmocked instance method is called' do
-      expect{ TestRaise.new.buz}.to raise_error(ActiveMock::Unimplemented, '#buz is not Implemented for Class: TestRaise')
+      expect{ TestRaise.new.buz}.to raise_error(ActiveMocker::Mock::Unimplemented, '#buz is not Implemented for Class: TestRaise')
     end
 
   end

@@ -81,30 +81,6 @@ class Generate
     'Mock'
   end
 
-  class Silent
-
-    def initialize(logger)
-      @logger = logger
-    end
-
-    # def print(*args)
-    # end
-
-    def tty?
-      true
-    end
-
-    def flush
-      false
-    end
-
-    # def puts(*args)
-    #
-    # end
-
-    def method_missing(method, *args)
-      puts "calling #{method} with #{args}"
-    end
   end
 
 end

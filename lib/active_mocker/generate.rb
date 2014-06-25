@@ -46,7 +46,7 @@ class Generate
   def progress
     return @progress if !@progress.nil? || silence == true
     progress_options = {:title => "Generating Mocks",
-                        :total => model_count * 4,
+                        :total => model_count * 2,
                         format: '%t |%b>>%i| %p%%'}
     @progress = ProgressBar.create(progress_options)
   end
@@ -79,8 +79,6 @@ class Generate
 
   def mock_append_name
     'Mock'
-  end
-
   end
 
 end

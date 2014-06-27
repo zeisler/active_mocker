@@ -89,11 +89,9 @@ class Base
   end
 
   def setup_instance_variables
-    [:associations,
-     :attributes,
-     :types].each do |var|
-      instance_variable_set("@#{var}", self.class.send(var).dup)
-    end
+    @types        = self.class.send(:types)
+    @attributes   = self.class.send(:attributes).dup
+    @associations = self.class.send(:associations).dup
   end
 
   private :setup_instance_variables

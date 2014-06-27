@@ -1,15 +1,6 @@
-require 'active_support'
+require 'active_support/core_ext'
+require 'virtus'
 
-begin
-  require 'active_support/core_ext'
-rescue
-end
-
-begin
-  require 'active_model'
-  require 'active_model/naming'
-rescue LoadError
-end
 require 'active_mocker/logger'
 require 'active_mocker/loaded_mocks'
 require 'active_mocker/mock/collection'
@@ -25,4 +16,3 @@ require 'active_mocker/mock/next_id'
 require 'active_mocker/mock/records'
 require 'active_mocker/mock/object_inspect'
 require 'active_mocker/mock/base'
-require 'virtus'

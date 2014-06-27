@@ -1,14 +1,18 @@
 require 'rspec'
+require 'active_mocker'
 $:.unshift File.expand_path('../../', __FILE__)
 require 'active_support'
 require 'spec/mocks/user_mock.rb'
 APP_ROOT =  File.expand_path('../../', __FILE__) unless defined? APP_ROOT
 require 'forwardable'
+require_relative 'active_record_shared_example'
 
-describe 'UserMock' do
+describe UserMock do
+
+  it_behaves_like 'ActiveRecord'
 
   before(:each){
-    ActiveMocker::Generate.new(silence: true)
+    # ActiveMocker::Generate.new(silence: true)
     UserMock.clear_mock
   }
 

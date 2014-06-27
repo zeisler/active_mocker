@@ -49,7 +49,7 @@ class Base
 
     def delete_all(options=nil)
       return records.reset if options.nil?
-      where(options).map { |r| r.delete }.count
+      super
     end
 
     alias_method :destroy_all, :delete_all

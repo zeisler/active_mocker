@@ -6,7 +6,7 @@ module Mock
     include Queries
 
     def self.new(collection, foreign_key=nil, foreign_id=nil, relation_class=nil)
-      return Association.new(collection) if relation_class.nil?
+      return Relation.new(collection) if relation_class.nil?
       super
     end
 

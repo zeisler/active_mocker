@@ -7,8 +7,8 @@ class Records
 
   attr_reader :records, :record_index
   private     :records, :record_index
-  def initialize
-    @records      ||= []
+  def initialize(records = [])
+    @records      ||= records
     @record_index ||= {}
   end
 

@@ -32,8 +32,12 @@ module Mock
       end
     end
 
-    def delete_all
-      all.map(&:delete)
+    def delete_all(options=nil)
+      if options.nil?
+        to_a.map(&:delete)
+        return to_a.clear
+      end
+      where(options).map { |r| r.delete }.count
     end
 
     def destroy_all
@@ -42,7 +46,7 @@ module Mock
 
     def where(options=nil)
       return WhereNotChain.new(all, method(:new_relation)) if options.nil?
-      new_relation(all.select do |record|
+      new_relation(to_a.select do |record|
         Find.new(record).is_of(options)
       end)
     end

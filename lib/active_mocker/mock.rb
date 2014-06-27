@@ -1,4 +1,6 @@
-require 'active_support/core_ext'
+# require 'active_support/core_ext'
+require 'active_support/hash_with_indifferent_access'
+require 'active_support/core_ext/module/delegation'
 require 'virtus'
 
 require 'active_mocker/logger'

@@ -5,7 +5,7 @@ shared_examples_for 'HasMany' do
 
     it 'will create an association if no relation class is passed' do
       subject = described_class.new(collection, nil, nil, nil)
-      expect(subject.class).to eq ActiveMocker::Mock::Association
+      expect(subject.class).to eq ActiveMocker::Mock::Relation
       expect(subject.to_a).to eq collection
     end
 

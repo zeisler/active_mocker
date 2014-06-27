@@ -5,17 +5,16 @@ module Mock
 
     include Queries
 
-    def self.new(collection, foreign_key=nil, foreign_id=nil, relation_class=nil)
+    def self.new(collection, foreign_key, foreign_id, relation_class)
       return Association.new(collection) if relation_class.nil?
-      super(collection, foreign_key, foreign_id, relation_class)
+      super
     end
 
 
-    def initialize(collection, foreign_key=nil, foreign_id=nil, relation_class=nil)
+    def initialize(collection, foreign_key, foreign_id, relation_class)
       @relation_class = relation_class
       @foreign_key    = foreign_key
       @foreign_id     = foreign_id
-
       super(collection)
     end
 
@@ -24,17 +23,16 @@ module Mock
     public
 
     def build(options={}, &block)
-      new_record = relation_class.new({foreign_key => foreign_id}.merge!(options), &block)
+      new_record = relation_class.new(init_options.merge!(options), &block)
 
-      def new_record.belongs_to(collection, foreign_key)
-        @belongs_to_collection ||={}
-        @belongs_to_collection[foreign_key] = collection
+      def new_record.belongs_to(collection)
+        @belongs_to_collection = collection
       end
 
-      new_record.belongs_to(self, foreign_key)
+      new_record.belongs_to(self)
 
       def new_record.save
-        @belongs_to_collection.each {|k ,v| v << self}
+        @belongs_to_collection << self
         super
       end
 
@@ -42,12 +40,18 @@ module Mock
     end
 
     def create(options={}, &block)
-      created_record = relation_class.create({foreign_key => foreign_id}.merge!(options), &block)
+      created_record = relation_class.create(init_options.merge!(options), &block)
       collection << created_record
       created_record
     end
 
     alias_method :create!, :create
+
+    def init_options
+      {foreign_key => foreign_id}
+    end
+
+    private :init_options
 
   end
 

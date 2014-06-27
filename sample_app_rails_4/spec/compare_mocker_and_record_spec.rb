@@ -1040,4 +1040,33 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
+  describe 'named scopes' do
+
+    context 'given a collection user' do
+
+      context 'can call a scope method' do
+
+        def by_name(user_class, post_class)
+          users = [user_class.create(name: 'dustin', email: '1'), user_class.create(email: '2'), user_class.create(email: '3')]
+          expect(user_class.all.by_name('dustin')).to eq [users.first]
+        end
+
+        it 'User' do
+          by_name(User, Micropost)
+        end
+
+        it 'UserMock' do
+          UserMock.mock_class_method(:by_name) do |name|
+            UserMock.where(name: name)
+          end
+
+          by_name(UserMock, MicropostMock)
+        end
+
+      end
+
+    end
+
+  end
+
 end

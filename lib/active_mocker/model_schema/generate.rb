@@ -75,13 +75,17 @@ module ActiveMocker
       # noinspection RubyArgCount
       def build_methods(model)
         result = []
-        {instance: model.instance_methods_with_arguments,
+        {scope: model.scopes_with_arguments,
+         instance: model.instance_methods_with_arguments,
          class: model.class_methods_with_arguments}.each do |type,methods|
           methods.map do |method|
             method_name = method.keys.first.to_s
-            arguments = method.values.first
+            arguments   = method.values.first
 
-            result.push(ModelSchema::Methods.new(name: method_name,arguments: arguments,type:type))
+            result.push(ModelSchema::Methods.new(name:      method_name,
+                                                 arguments: arguments,
+                                                 type:      type,
+                                                 proc:      method[:proc]))
           end
         end
         result

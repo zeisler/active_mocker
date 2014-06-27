@@ -115,6 +115,10 @@ module ActiveMocker
       method_find(:class)
     end
 
+    def scope_methods
+      method_find(:scope)
+    end
+
     def method_find(type)
       return [] if methods.nil?
       methods.select { |r| r.type.to_sym == type }
@@ -235,11 +239,17 @@ module ActiveMocker
 
       def initialize( name:,
                       arguments:,
-                      type:
+                      type:,
+                      proc: nil
                     )
         @name      = name
         @arguments = Arguments.new(arguments)
         @type      = type
+        @proc      = proc
+      end
+
+      def to_hash
+        {"name" => name, "arguments" => arguments, "type" => type}
       end
 
       class Arguments

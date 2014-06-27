@@ -5,7 +5,6 @@ require 'do_nothing_active_record_methods'
 require 'mock_abilities'
 require 'template_methods'
 require 'queries'
-require 'creators'
 require 'base'
 
 describe ActiveMocker::Mock::Base do

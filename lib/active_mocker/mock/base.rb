@@ -1,20 +1,36 @@
-module ActiveMock
-
+module ActiveMocker
+module Mock
 class Base
 
   include DoNothingActiveRecordMethods
   include MockAbilities
   include TemplateMethods
-  extend  ActiveMock::Queries
-  extend  ActiveMock::Creators
+  extend  Queries
 
   def self.inherited(subclass)
     return ActiveMocker::LoadedMocks.add(subclass) if subclass.superclass == Base
     ActiveMocker::LoadedMocks.add_subclass(subclass)
   end
 
-
   class << self
+
+    def create(attributes = {}, &block)
+      record = new
+      record.save
+      record.send(:set_properties, attributes) unless block_given?
+      record.send(:set_properties_block, attributes, &block) if block_given?
+      record
+    end
+
+    alias_method :create!, :create
+
+    def find_or_create_by(attributes)
+      find_by(attributes) || create(attributes)
+    end
+
+    def find_or_initialize_by(attributes)
+      find_by(attributes) || new(attributes)
+    end
 
     def records
       @records ||= Records.new
@@ -46,7 +62,11 @@ class Base
       ActiveMocker::LoadedMocks.find(klass)
     end
 
-    private :classes
+    def new_relation(collection)
+      ActiveMocker::Mock::Relation.new(collection)
+    end
+
+    private :classes, :build_type, :new_relation
 
     public
 
@@ -172,9 +192,9 @@ class Base
   include PropertiesGetterAndSetter
 
   module Scopes
-    class Relation < ActiveMock::Relation
+    class Relation < ::ActiveMocker::Mock::Association
     end
   end
-
+end
 end
 end

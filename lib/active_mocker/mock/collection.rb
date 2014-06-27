@@ -42,11 +42,9 @@ module Mock
       collection.hash == val.hash
     end
 
-    private
+    protected
 
-    def collection
-      @collection
-    end
+    attr_accessor :collection
 
   end
 

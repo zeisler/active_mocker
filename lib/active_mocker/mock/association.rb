@@ -1,9 +1,6 @@
 module ActiveMocker
 module Mock
-  class Association < Collection
-
-    include Queries
-
+  class Association < Relation
   end
 end
 end

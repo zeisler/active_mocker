@@ -127,7 +127,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   module Scopes
 
-    class Relation < ActiveMock::Relation
+    class Relation < ActiveMocker::Mock::Association
       include Scopes
     end
 

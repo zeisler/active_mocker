@@ -122,7 +122,7 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
 <%= '# has_and_belongs_to_many' unless has_and_belongs_to_many.empty? -%>
 <% has_and_belongs_to_many.each do |meth| %>
   def <%= meth.name %>
-    @associations[:<%= meth.name %>] ||= ActiveMocker::Mock::HasAndBelongsToMany.new
+    @associations[:<%= meth.name %>] ||= ActiveMocker::Mock::HasAndBelongsToMany.new([])
   end
 
   def <%= meth.name %>=(val)
@@ -139,7 +139,7 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
     end
 
 <% end -%>
-    class Relation < ActiveMock::Relation
+    class Relation < ActiveMocker::Mock::Association
       include Scopes
     end
 

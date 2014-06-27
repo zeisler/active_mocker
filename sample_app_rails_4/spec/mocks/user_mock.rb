@@ -165,7 +165,7 @@ class UserMock < ActiveMocker::Mock::Base
       block.call(*[name])
     end
 
-    class Relation < ActiveMock::Relation
+    class Relation < ActiveMocker::Mock::Association
       include Scopes
     end
 

@@ -1040,7 +1040,7 @@ describe 'Comparing ActiveMocker Api to ActiveRecord Api' do
 
   end
 
-  describe 'named scopes' do
+  describe 'named scopes', pending:true do
 
     context 'given a collection user' do
 

@@ -5,11 +5,10 @@ module Mock
 
     include Queries
 
-    def self.new(collection, foreign_key, foreign_id, relation_class)
+    def self.new(collection, foreign_key=nil, foreign_id=nil, relation_class=nil)
       return Association.new(collection) if relation_class.nil?
       super
     end
-
 
     def initialize(collection, foreign_key, foreign_id, relation_class)
       @relation_class = relation_class

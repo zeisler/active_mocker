@@ -3,18 +3,6 @@ module Mock
 
   module Queries
 
-    def self.extended(klass)
-      @extended = klass
-    end
-
-    def self.included(klass)
-      @included = klass
-    end
-
-    def self.included_klass
-      @included
-    end
-
     class Find
 
       def initialize(record)
@@ -38,7 +26,7 @@ module Mock
       end
 
       def not(options={})
-        @parent_class.new(@collection.reject do |record|
+        @parent_class.call(@collection.reject do |record|
           Find.new(record).is_of(options)
         end)
       end
@@ -52,35 +40,23 @@ module Mock
       delete_all
     end
 
-    def parent_class
-      if self.try(:superclass).try(:name) == 'ActiveMock::Base'
-        return "#{self.name}::Scopes::Relation".constantize if Object.const_defined?("#{self.name}::Scopes::Relation")
-      end
-      Queries.included_klass
-    end
-
-    def all
-      parent_class.new( to_a || [] )
-    end
-
     def where(options=nil)
-      return WhereNotChain.new(all, parent_class) if options.nil?
-      parent_class.new(all.select do |record|
+      return WhereNotChain.new(all, method(:new_relation)) if options.nil?
+      new_relation(all.select do |record|
         Find.new(record).is_of(options)
       end)
     end
 
     def find(ids)
-      ids_array = [*ids]
-      results = ids_array.map do |id|
+      results = [*ids].map do |id|
         where(id: id).first
       end
-      return parent_class.new(results) if ids.class == Array
+      return new_relation(results) if ids.class == Array
       results.first
     end
 
     def update_all(options)
-      all.each{ |i| i.update(options)}
+      all.each { |i| i.update(options) }
     end
 
     def find_by(options = {})
@@ -94,7 +70,7 @@ module Mock
     end
 
     def limit(num)
-      parent_class.new(all.take(num))
+      new_relation(all.take(num))
     end
 
     def sum(key)
@@ -109,7 +85,7 @@ module Mock
     end
 
     def minimum(key)
-      values_by_key(key).min_by{|i| i }
+      values_by_key(key).min_by { |i| i }
     end
 
     def maximum(key)
@@ -117,11 +93,15 @@ module Mock
     end
 
     def order(key)
-      parent_class.new(all.sort_by { |item| item.send(key) })
+      new_relation(all.sort_by { |item| item.send(key) })
     end
 
     def reverse_order
-      parent_class.new(to_a.reverse)
+      new_relation(to_a.reverse)
+    end
+
+    def all
+      new_relation(to_a || [])
     end
 
     private
@@ -130,7 +110,13 @@ module Mock
       all.map { |obj| obj.send(key) }
     end
 
+    def new_relation(collection)
+      duped = self.dup
+      duped.collection = collection
+      duped
+    end
+
   end
 
-end
+  end
 end

@@ -1,4 +1,6 @@
 require 'rspec'
+require 'ruby-prof'
+
 $:.unshift File.expand_path('../../../../../lib/active_mocker/', __FILE__)
 require 'logger'
 require 'mock'
@@ -39,6 +41,15 @@ describe ActiveMocker::Mock::Base do
       ActiveMocker::Mock::Base.clear_mock
       ActiveMocker::Mock::Base.send(:records=, ActiveMocker::Mock::Records.new(args.flatten))
       ActiveMocker::Mock::Base
+  }
+
+  it {
+    RubyProf.measure_mode = RubyProf::PROCESS_TIME
+    result = RubyProf.profile do
+      ActiveMocker::Mock::Base.create
+    end
+    printer = RubyProf::GraphPrinter.new(result)
+    printer.print(STDOUT, {})
   }
 
 end

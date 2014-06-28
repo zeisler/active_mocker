@@ -1,11 +1,14 @@
 require 'rspec'
 require 'active_mocker'
+require 'ruby-prof'
 $:.unshift File.expand_path('../../', __FILE__)
 require 'active_support'
 require 'spec/mocks/user_mock.rb'
 require 'spec/mocks/micropost_mock.rb'
 APP_ROOT =  File.expand_path('../../', __FILE__) unless defined? APP_ROOT
 require 'forwardable'
+
+
 require_relative 'active_record_shared_example'
 
 describe UserMock do
@@ -196,5 +199,14 @@ describe UserMock do
     end
 
   end
+
+  it {
+    RubyProf.measure_mode = RubyProf::PROCESS_TIME
+    result = RubyProf.profile do
+      UserMock.create
+    end
+    printer = RubyProf::GraphPrinter.new(result)
+    printer.print(STDOUT, {})
+  }
 
 end

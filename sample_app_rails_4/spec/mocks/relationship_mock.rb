@@ -10,7 +10,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= { id: build_type(Fixnum), follower_id: build_type(Fixnum), followed_id: build_type(Fixnum), created_at: build_type(DateTime), updated_at: build_type(DateTime) }
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, follower_id: Fixnum, followed_id: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type))
     end
 
     def associations

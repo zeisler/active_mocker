@@ -14,7 +14,7 @@ class MicropostMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= { id: build_type(Fixnum), content: build_type(String), user_id: build_type(Fixnum), up_votes: build_type(Fixnum), created_at: build_type(DateTime), updated_at: build_type(DateTime) }
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, content: String, user_id: Fixnum, up_votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type))
     end
 
     def associations

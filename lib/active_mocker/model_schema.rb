@@ -131,7 +131,7 @@ module ActiveMocker
     def types_hash
       types = {}
       attributes.each do |attr|
-        types[attr.name] = "build_type(#{attr.ruby_type})"
+        types[attr.name] = "#{attr.ruby_type}"
       end
 
       type_array = types.map do |name, type|

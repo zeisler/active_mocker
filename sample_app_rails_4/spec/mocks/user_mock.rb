@@ -10,7 +10,7 @@ class UserMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= { id: build_type(Fixnum), name: build_type(String), email: build_type(String), credits: build_type(BigDecimal), created_at: build_type(DateTime), updated_at: build_type(DateTime), password_digest: build_type(String), remember_token: build_type(Axiom::Types::Boolean), admin: build_type(Axiom::Types::Boolean) }
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type))
     end
 
     def associations

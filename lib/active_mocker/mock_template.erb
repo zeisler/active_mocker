@@ -13,7 +13,7 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= <%= types_hash %>
+      @types ||= ActiveMocker::Mock::HashProcess.new(<%= types_hash %>, method(:build_type))
     end
 
     def associations

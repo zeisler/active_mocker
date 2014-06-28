@@ -21,7 +21,7 @@ module Mock
     class WhereNotChain
 
       def initialize(collection, parent_class)
-        @collection = collection
+        @collection   = collection
         @parent_class = parent_class
       end
 

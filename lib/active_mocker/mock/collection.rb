@@ -37,9 +37,16 @@ module Mock
       @collection
     end
 
+    def to_ary
+      to_a
+    end
+
+    def hash
+      @collection.hash
+    end
+
     def ==(val)
-      return false if val.nil?
-      collection.hash == val.hash
+      @collection == val
     end
 
     protected

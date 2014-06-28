@@ -138,13 +138,17 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
     end
 
 <% end -%>
-    class Relation < ActiveMocker::Mock::Association
-      include Scopes
-    end
-
   end
 
   extend Scopes
+
+  class ScopeRelation < ActiveMocker::Mock::Association
+    include <%= class_name + @mock_append_name %>::Scopes
+  end
+
+  def self.new_relation(collection)
+    <%= class_name + @mock_append_name %>::ScopeRelation.new(collection)
+  end
 
   ##################################
   #  Model Methods getter/setters  #

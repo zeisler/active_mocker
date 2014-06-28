@@ -450,17 +450,20 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
     expect(user.microposts.first).to eq(new_post)
   end
 
-  describe 'named scopes', pending: true do
+  describe 'named scopes' do
 
-    context 'given a collection user' do
-
-      it 'can call a scope method' do
-        users = [described_class.create(name: 'dustin', email: '1'), described_class.create(email: '2'), described_class.create(email: '3')]
-        expect(described_class.all.by_name('dustin')).to eq [users.first]
-      end
-
+    it 'can call a scope method from all' do
+      expect(described_class.all.respond_to?(:by_name)).to eq true
     end
 
+    it 'can call a scope method from where' do
+      expect(described_class.where(credit: 1).respond_to?(:by_name)).to eq true
+    end
+
+    it 'can call a scope method from all.where' do
+      expect(described_class.all.where(credit: 1).respond_to?(:by_name)).to eq true
+    end
+    
   end
 
 end

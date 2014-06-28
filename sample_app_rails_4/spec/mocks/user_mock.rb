@@ -156,22 +156,24 @@ class UserMock < ActiveMocker::Mock::Base
   module Scopes
 
     def find_by_name(name)
-      block = ActiveMocker::LoadedMocks.find('User').send(:get_mock_class_method, 'find_by_name')
-      block.call(*[name])
+      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'find_by_name', *[name])
     end
 
     def by_name(name)
-      block = ActiveMocker::LoadedMocks.find('User').send(:get_mock_class_method, 'by_name')
-      block.call(*[name])
-    end
-
-    class Relation < ActiveMocker::Mock::Association
-      include Scopes
+      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'by_name', *[name])
     end
 
   end
 
   extend Scopes
+
+  class ScopeRelation < ActiveMocker::Mock::Association
+    include UserMock::Scopes
+  end
+
+  def self.new_relation(collection)
+    UserMock::ScopeRelation.new(collection)
+  end
 
   ##################################
   #  Model Methods getter/setters  #

@@ -127,13 +127,17 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   module Scopes
 
-    class Relation < ActiveMocker::Mock::Association
-      include Scopes
-    end
-
   end
 
   extend Scopes
+
+  class ScopeRelation < ActiveMocker::Mock::Association
+    include RelationshipMock::Scopes
+  end
+
+  def self.new_relation(collection)
+    RelationshipMock::ScopeRelation.new(collection)
+  end
 
   ##################################
   #  Model Methods getter/setters  #

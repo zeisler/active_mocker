@@ -63,7 +63,7 @@ class Base
     end
 
     def new_relation(collection)
-      ActiveMocker::Mock::Relation.new(collection)
+      ScopeRelation.new(collection)
     end
 
     private :classes, :build_type, :new_relation
@@ -195,9 +195,7 @@ class Base
 
   include PropertiesGetterAndSetter
 
-  module Scopes
-    class Relation < ::ActiveMocker::Mock::Association
-    end
+  class ScopeRelation < ::ActiveMocker::Mock::Association
   end
 end
 end

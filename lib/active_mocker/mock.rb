@@ -1,10 +1,10 @@
-# require 'active_support/core_ext'
 require 'active_support/hash_with_indifferent_access'
 require 'active_support/core_ext/module/delegation'
 require 'virtus'
 
 require 'active_mocker/logger'
 require 'active_mocker/loaded_mocks'
+require 'active_mocker/rspec_helper'
 require 'active_mocker/mock/hash_process'
 require 'active_mocker/mock/collection'
 require 'active_mocker/mock/queries'

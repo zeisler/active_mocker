@@ -57,4 +57,8 @@ describe ActiveMocker::Mock::Base do
 
   end
 
+  after(:all) do
+    described_class.clear_mock
+  end
+
 end

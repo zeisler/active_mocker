@@ -1,14 +1,16 @@
 shared_examples_for 'HasMany' do
 
-  let(:relation_class) {
-    class RelationClass
-      def initialize(options)
-      end
-      module Scopes
-        def scoped_method
-        end
+  class RelationClass
+    def initialize(options)
+    end
+
+    module Scopes
+      def scoped_method
       end
     end
+  end
+
+  let(:relation_class) {
     RelationClass
   }
   describe '::new' do
@@ -153,10 +155,10 @@ shared_examples_for 'HasMany' do
 
     context 'with block' do
 
-      subject { described_class.new([], 'foreign_key', 1, InstanceWithBlock) }
+      subject { described_class.new([], 'foreign_key', 1, InstanceWithBlockCreate) }
 
       before do
-        class InstanceWithBlock
+        class InstanceWithBlockCreate < RelationClass
           attr_reader :saved
           attr_accessor :name
 
@@ -174,7 +176,7 @@ shared_examples_for 'HasMany' do
         end
       end
 
-      let(:relation_class) { InstanceWithBlock }
+      let(:relation_class) { InstanceWithBlockCreate }
 
       it 'makes a new object with block' do
         instance = subject.create do |i|

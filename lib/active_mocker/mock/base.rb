@@ -45,8 +45,6 @@ class Base
       find(id).delete
     end
 
-    alias_method :destroy, :delete
-
     def delete_all(options=nil)
       return records.reset if options.nil?
       super
@@ -138,6 +136,8 @@ class Base
   def delete
     records.delete(self)
   end
+
+  alias_method :destroy, :delete
 
   delegate :[], :[]=, to: :attributes
 

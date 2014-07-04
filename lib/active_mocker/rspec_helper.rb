@@ -25,11 +25,11 @@ RSpec.configure do |config|
     bool
   end
 
-  config.before(:each) do
-    if RSpec.current_example.metadata[:active_mocker]
-      ActiveMocker::LoadedMocks.class_name_to_mock.each { |class_name, mock| stub_const(class_name, mock) }
-    end
-  end
+  # config.before(:each) do
+  #   if RSpec.current_example.metadata[:active_mocker]
+  #     ActiveMocker::LoadedMocks.class_name_to_mock.each { |class_name, mock| stub_const(class_name, mock) }
+  #   end
+  # end
 
   config.after(:all) do
     ActiveMocker::LoadedMocks.clear_all

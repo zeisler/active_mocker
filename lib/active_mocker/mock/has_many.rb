@@ -14,6 +14,7 @@ module Mock
       @relation_class = relation_class
       @foreign_key    = foreign_key
       @foreign_id     = foreign_id
+      self.class.include "#{relation_class.name}::Scopes".constantize
       super(collection)
     end
 

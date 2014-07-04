@@ -6,6 +6,7 @@ require 'relation'
 require 'association'
 require 'has_many'
 require 'ostruct'
+require 'active_support/inflector'
 require_relative 'has_many_shared_example'
 require_relative 'queriable_shared_example'
 

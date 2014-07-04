@@ -1,4 +1,16 @@
 shared_examples_for 'HasMany' do
+
+  let(:relation_class) {
+    class RelationClass
+      def initialize(options)
+      end
+      module Scopes
+        def scoped_method
+        end
+      end
+    end
+    RelationClass
+  }
   describe '::new' do
 
     let(:collection) { [1, 2] }
@@ -10,11 +22,11 @@ shared_examples_for 'HasMany' do
     end
 
     it 'will create self object if has relation class' do
-      expect(described_class.new(collection, nil, nil, Object)).to be_a_kind_of ActiveMocker::Mock::HasMany
+      expect(described_class.new(collection, nil, nil, relation_class)).to be_a_kind_of ActiveMocker::Mock::HasMany
     end
 
     it 'passes all attributes to super' do
-      subject = described_class.new(collection, :key, 1, Object)
+      subject = described_class.new(collection, :key, 1, relation_class)
       expect(subject.to_a).to eq collection
       expect(subject.send(:foreign_key)).to eq(:key)
       expect(subject.send(:foreign_id)).to eq(1)
@@ -22,23 +34,28 @@ shared_examples_for 'HasMany' do
 
   end
 
-  describe '#build' do
+  describe 'scoped methods' do
 
-    let(:relation_class) { double(new: new_instance, save: true) }
-    let(:new_instance) { double }
-
-    subject { described_class.new([], 'foreign_key', 1, relation_class) }
-
-    it 'makes a new object from relation_class' do
-      subject.build(name: 'Name')
-      expect(relation_class).to have_received(:new).with({'foreign_key' => 1, name: 'Name'})
+    it 'will have scoped methods from relation_class' do
+      expect(described_class.new([],nil,nil,relation_class).respond_to?(:scoped_method)).to eq true
     end
 
+  end
+
+  describe '#build' do
+
+    subject { described_class.new([], 'foreign_key', 1, RelationClass) }
+
+    it 'makes a new object from relation_class' do
+      allow(RelationClass).to receive(:new)
+      subject.build(name: 'Name')
+      expect(RelationClass).to have_received(:new).with({'foreign_key' => 1, name: 'Name'})
+    end
 
     context 'with block' do
 
       before do
-        class InstanceWithBlock
+        class InstanceWithBlock < RelationClass
           attr_reader :saved
           attr_accessor :name
 
@@ -52,7 +69,7 @@ shared_examples_for 'HasMany' do
         end
       end
 
-      let(:relation_class) { InstanceWithBlock }
+      subject { described_class.new([], 'foreign_key', 1, InstanceWithBlock) }
 
       it 'makes a new object with block' do
         instance = subject.build do |i|
@@ -66,13 +83,13 @@ shared_examples_for 'HasMany' do
     end
 
     it 'returns the new instance' do
-      expect(subject.build).to eq (new_instance)
+      expect(subject.build).to be_kind_of(RelationClass)
     end
 
     context 'save' do
 
       before do
-        class InstanceSave
+        class InstanceSave < RelationClass
           attr_reader :saved
 
           def initialize(*args)
@@ -85,7 +102,7 @@ shared_examples_for 'HasMany' do
         end
       end
 
-      let(:relation_class) { InstanceSave }
+      subject { described_class.new([], 'foreign_key', 1, InstanceSave) }
 
       it 'when calling save on the instance it will add it to the collection' do
         new_instance = subject.build
@@ -102,14 +119,18 @@ shared_examples_for 'HasMany' do
 
   describe '#create' do
 
-    let(:created_instance) { double }
-    let(:relation_class) { double(create: created_instance) }
+    before do
+      allow(RelationClass).to receive(:create) { created_instance}
+    end
 
-    subject { described_class.new([], 'foreign_key', 1, relation_class) }
+    let(:created_instance) { double }
+    let(:relation_class) { double(create: created_instance, name: 'RelationClass') }
+
+    subject { described_class.new([], 'foreign_key', 1, RelationClass) }
 
     it 'create a new object from relation_class' do
       subject.create(name: 'Name')
-      expect(relation_class).to have_received(:create).with({'foreign_key' => 1, name: 'Name'})
+      expect(RelationClass).to have_received(:create).with({'foreign_key' => 1, name: 'Name'})
     end
 
     it 'will add the created relation to the collection' do
@@ -125,12 +146,14 @@ shared_examples_for 'HasMany' do
 
       it 'will delegate to create' do
         subject.create!
-        expect(relation_class).to have_received(:create)
+        expect(RelationClass).to have_received(:create)
       end
 
     end
 
     context 'with block' do
+
+      subject { described_class.new([], 'foreign_key', 1, InstanceWithBlock) }
 
       before do
         class InstanceWithBlock

@@ -1,13 +1,10 @@
 require 'rspec'
-require 'active_mocker'
-# require 'ruby-prof'
 $:.unshift File.expand_path('../../', __FILE__)
-require 'active_support'
-require 'spec/mocks/user_mock.rb'
-require 'spec/mocks/micropost_mock.rb'
 APP_ROOT =  File.expand_path('../../', __FILE__) unless defined? APP_ROOT
-require 'forwardable'
+require 'lib/post_methods'
 
+require_relative 'mocks/micropost_mock.rb'
+require_relative 'mocks/user_mock.rb'
 
 require_relative 'active_record_shared_example'
 

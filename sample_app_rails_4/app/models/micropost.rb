@@ -4,7 +4,14 @@ class Micropost < ActiveRecord::Base
   MAGIC_ID_NUMBER = 90
   MAGIC_ID_STRING = 'F-1'
 
+  include PostMethods
+  extend PostMethods
+
   module DoNotIncludeInMock
+
+    def sample_method
+
+    end
 
   end
   include DoNotIncludeInMock

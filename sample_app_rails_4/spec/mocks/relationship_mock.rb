@@ -100,7 +100,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def create_follower(attributes={}, &block)
     association = classes('User').try(:create,attributes, &block)
-    write_association(:follower, nil) unless association.nil?
+    write_association(:follower, association) unless association.nil?
   end
   alias_method :create_follower!, :create_follower
 
@@ -120,7 +120,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def create_followed(attributes={}, &block)
     association = classes('User').try(:create,attributes, &block)
-    write_association(:followed, nil) unless association.nil?
+    write_association(:followed, association) unless association.nil?
   end
   alias_method :create_followed!, :create_followed
 
@@ -135,12 +135,16 @@ class RelationshipMock < ActiveMocker::Mock::Base
     include RelationshipMock::Scopes
   end
 
+  private
+
   def self.new_relation(collection)
     RelationshipMock::ScopeRelation.new(collection)
   end
 
+  public
+
   ##################################
-  #  Model Methods getter/setters  #
+  #        Model Methods           #
   ##################################
 
 

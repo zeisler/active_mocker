@@ -47,14 +47,13 @@ module ActiveMocker
                           attributes:    attributes,
                           methods:       build_methods(model),
                           relationships: build_relationships(model),
-                          constants:     model.constants)
+                          constants:     model.constants,
+                          modules:       model.modules)
 
         end
 
         ModelSchemaCollection.new(model_schemas.compact)
       end
-
-
 
       # noinspection RubyArgCount
       def build_attributes(attributes, primary_attribute)

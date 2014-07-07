@@ -40,6 +40,14 @@ describe ActiveMocker::ModelReader do
 
   end
 
+  describe '#modules' do
+
+    it 'returns all public class methods' do
+      expect(subject.modules).to eq({:included => ["FooBar", "ModelCore::PlanService::Dah"], :extended => ["Baz"]})
+    end
+
+  end
+
   describe '#instance methods' do
 
     it 'returns all public instance methods' do

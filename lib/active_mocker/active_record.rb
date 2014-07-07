@@ -6,11 +6,11 @@ require 'active_mocker/active_record/unknown_module'
 
 module ActiveMocker
   module ActiveRecord
-    class Base
+    class Base #< ::ActiveRecord::Base
       extend Scope
       extend Relationships
       extend UnknownClassMethod
-      extend UnknownModule
+      # extend UnknownModule
 
       def self.table_name=(table_name)
         @table_name = table_name
@@ -30,8 +30,32 @@ module ActiveMocker
         @primary_key
       end
 
+      class ConstMissing
+
+        def self.const_missing(name)
+          self.const_set name, Class.new(ConstMissing)
+        end
+
+      end
+
       def self.const_missing(name)
-        # Logger_.debug "ActiveMocker :: Can't can't find Constant #{name} from class #{}."
+        Object.const_set name, Class.new(ConstMissing)
+      end
+
+      def self.include(name)
+        _included << name
+      end
+
+      def self._included
+        @included ||= []
+      end
+
+      def self.extend(name)
+        _extended << name
+      end
+
+      def self._extended
+        @extended ||= []
       end
     end
   end

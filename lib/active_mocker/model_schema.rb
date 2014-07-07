@@ -53,7 +53,7 @@ module ActiveMocker
 
     include LoggerToJson
 
-    attr_reader :class_name, :table_name, :attributes, :relationships, :methods
+    attr_reader :class_name, :table_name, :attributes, :relationships, :methods, :modules
 
     def initialize( class_name:    nil,
                     table_name:    nil,
@@ -61,6 +61,7 @@ module ActiveMocker
                     relationships: nil,
                     methods:       nil,
                     constants:     nil,
+                    modules:       nil,
                     is_join_table: nil,
                     join_table_members: nil
                     )
@@ -70,9 +71,9 @@ module ActiveMocker
       @relationships = relationships unless relationships.nil?
       @methods       = methods       unless (methods || []).empty?
       @constants     = constants     unless (constants || []).empty?
+      @modules       = modules       unless (modules || {}).empty?
       @is_join_table = is_join_table unless is_join_table.nil?
       @join_table_members = join_table_members unless join_table_members.nil?
-
       # UnitLogger.unit.info "#{caller_locations[1]}\n"
       # obj = ::JSON.parse(self.to_json)
       # UnitLogger.unit.info "#{self.class.name}: #{JSON.pretty_unparse(obj)}\n"

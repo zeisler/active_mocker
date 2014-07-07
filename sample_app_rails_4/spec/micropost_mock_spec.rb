@@ -1,8 +1,9 @@
 require 'rspec'
 $:.unshift File.expand_path('../../', __FILE__)
 APP_ROOT = File.expand_path('../../', __FILE__) unless defined? APP_ROOT
-load 'spec/mocks/micropost_mock.rb'
-load 'spec/mocks/user_mock.rb'
+require 'lib/post_methods'
+require_relative 'mocks/micropost_mock.rb'
+require_relative 'mocks/user_mock.rb'
 
 describe MicropostMock do
 
@@ -32,6 +33,32 @@ describe MicropostMock do
 
   end
 
+  context 'included methods' do
+
+    it 'has methods' do
+
+      expect(MicropostMock.new.respond_to?(:sample_method)).to eq true
+
+    end
+
+    it 'can override attributes' do
+      post = MicropostMock.new(content: 'attribute')
+      expect(post.content).to eq 'from PostMethods'
+
+    end
+
+  end
+
+  context 'extended methods' do
+
+    it 'has methods' do
+
+      expect(MicropostMock.respond_to?(:sample_method)).to eq true
+
+    end
+
+  end
+
   describe '::MAGIC_ID_STRING' do
 
     it 'has constant from model' do
@@ -48,6 +75,30 @@ describe MicropostMock do
 
       expect(MicropostMock.constants).to include(:MAGIC_ID_NUMBER, :MAGIC_ID_STRING)
 
+    end
+
+  end
+
+  describe 'has_one#create_attribute' do
+
+    let(:post){ MicropostMock.new}
+
+    it 'can create off of has_one' do
+      user = post.create_user
+      expect(post.user).to eq user
+      expect(user.persisted?).to eq true
+    end
+
+  end
+
+  describe 'has_one#build_attribute' do
+
+    let(:post) { MicropostMock.new }
+
+    it 'can create off of has_one' do
+      user = post.build_user
+      expect(post.user).to eq user
+      expect(user.persisted?).to eq false
     end
 
   end

@@ -49,6 +49,14 @@ describe ActiveMocker::ModelSchema::Generate do
     expect(run[-1].methods.last.arguments.passable).to eq('token')
   end
 
+  it 'constants' do
+    expect(run.first.constants).to eq({:MAGIC_ID_NUMBER => 90, :MAGIC_ID_STRING => "F-1"})
+  end
+
+  it 'modules' do
+    expect(run.first.modules).to eq({:included => ['PostMethods'], :extended => ['PostMethods']})
+  end
+
   it 'attributes' do
     expect(run[-1].attributes.map { |r| JSON.parse(r.to_json) })
     .to eq([{"name" => "id",              "type" => "integer", "primary_key" => true},

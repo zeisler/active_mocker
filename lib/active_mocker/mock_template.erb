@@ -2,8 +2,14 @@ require 'active_mocker/mock'
 Object.send(:remove_const, "<%= class_name + @mock_append_name %>") if Object.const_defined?("<%= class_name + @mock_append_name %>")
 
 class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
-<% constants.each do |constant| %>
+<% constants.each do |constant| -%>
   <%= constant.first %> = <%= constant.last.inspect %>
+<% end -%>
+<% modules[:included].each do |constant| -%>
+  prepend <%= constant %>
+<% end -%>
+<% modules[:extended].each do |constant| -%>
+  extend  <%= constant %>
 <% end -%>
 
   class << self
@@ -78,7 +84,7 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
 <% association = relation_find(:name, meth.name).first -%>
 <% if association -%>
     association = classes('<%= association.class_name %>').try(:create,attributes, &block)
-    write_association(:<%= meth.name %>, nil) unless association.nil?
+    write_association(:<%= meth.name %>, association) unless association.nil?
 <% end -%>
   end
   alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>
@@ -103,7 +109,7 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
   def create_<%= meth.name %>(attributes={}, &block)
 <% association = relation_find(:name, meth.name).first -%>
 <% if association -%>
-    write_association(:<%= meth.name %>,classes('<%= association.class_name %>').create(attributes, &block)) if classes('<%= association.class_name %>')
+    write_association(:<%= meth.name %>, classes('<%= association.class_name %>').new(attributes, &block)) if classes('<%= association.class_name %>')
 <% end -%>
   end
   alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>
@@ -133,8 +139,8 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
   module Scopes
 
 <% scope_methods.each do |method| -%>
-    def <%= method.name %>(<%= method.arguments %>)
-      ActiveMocker::LoadedMocks.find('<%= class_name %>').send(:call_mock_method, '<%= method.name %>', *[<%= method.arguments.passable %>])
+    def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
+      ActiveMocker::LoadedMocks.find('<%= class_name %>').send(:call_mock_method, '<%= method.name %>', <%= method.arguments.passable %>)
     end
 
 <% end -%>
@@ -146,16 +152,20 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
     include <%= class_name + @mock_append_name %>::Scopes
   end
 
+  private
+
   def self.new_relation(collection)
     <%= class_name + @mock_append_name %>::ScopeRelation.new(collection)
   end
 
+  public
+
   ##################################
-  #  Model Methods getter/setters  #
+  #        Model Methods           #
   ##################################
 
 <% instance_methods.each do |method| %>
-  def <%= method.name %>(<%= method.arguments %>)
+  def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
     call_mock_method :<%= method.name %><%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
   end
 <% end -%>

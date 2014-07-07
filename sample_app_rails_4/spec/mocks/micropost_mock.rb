@@ -2,10 +2,10 @@ require 'active_mocker/mock'
 Object.send(:remove_const, "MicropostMock") if Object.const_defined?("MicropostMock")
 
 class MicropostMock < ActiveMocker::Mock::Base
-
   MAGIC_ID_NUMBER = 90
-
   MAGIC_ID_STRING = "F-1"
+  prepend PostMethods
+  extend  PostMethods
 
   class << self
 
@@ -110,7 +110,7 @@ class MicropostMock < ActiveMocker::Mock::Base
 
   def create_user(attributes={}, &block)
     association = classes('User').try(:create,attributes, &block)
-    write_association(:user, nil) unless association.nil?
+    write_association(:user, association) unless association.nil?
   end
   alias_method :create_user!, :create_user
 
@@ -125,20 +125,24 @@ class MicropostMock < ActiveMocker::Mock::Base
     include MicropostMock::Scopes
   end
 
+  private
+
   def self.new_relation(collection)
     MicropostMock::ScopeRelation.new(collection)
   end
 
+  public
+
   ##################################
-  #  Model Methods getter/setters  #
+  #        Model Methods           #
   ##################################
 
 
-  def display_name()
+  def display_name
     call_mock_method :display_name
   end
 
-  def post_id()
+  def post_id
     call_mock_method :post_id
   end
 

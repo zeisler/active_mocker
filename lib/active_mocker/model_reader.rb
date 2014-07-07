@@ -40,6 +40,10 @@ module ActiveMocker
       return false
     end
 
+    def real
+      model_name.classify.constantize
+    end
+
     def read_file
       file_reader.read(file_path)
     end
@@ -125,6 +129,15 @@ module ActiveMocker
         v.class == Module || v.class == Class
       end
       const
+    end
+
+    def modules
+      {included:  process_module_names(klass._included),
+       extended: process_module_names(klass._extended)}
+    end
+
+    def process_module_names(names)
+      names.reject { |m| /#{klass.inspect}/ =~ m.name }.map(&:inspect)
     end
 
   end

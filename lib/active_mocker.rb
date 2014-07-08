@@ -1,5 +1,4 @@
 require "active_mocker/version"
-$:.unshift File.expand_path('../../', __FILE__)
 
 require 'active_mocker/railtie' if defined?(Rails)
 require 'ruby-progressbar'

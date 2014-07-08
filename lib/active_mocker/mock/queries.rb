@@ -79,7 +79,9 @@ module Mock
 
     def sum(key)
       values = values_by_key(key)
-      values.inject { |sum, n| sum + n }
+      values.inject(0) do |sum, n|
+        sum + (n || 0)
+      end
     end
 
     def average(key)

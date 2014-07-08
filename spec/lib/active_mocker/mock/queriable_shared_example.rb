@@ -9,8 +9,18 @@ shared_examples_for 'Queriable' do |klass|
 describe '#sum' do
 
   it 'sum values by attribute name' do
-    query = new_class.call(OpenStruct.new(value: 1), OpenStruct.new(value: 1))
-    expect(query.sum(:value)).to eq 2
+    query = new_class.call(OpenStruct.new(value: 1), OpenStruct.new(value: 1), OpenStruct.new(value: 2))
+    expect(query.sum(:value)).to eq 4
+  end
+
+  it 'if attribute is nil will default zero' do
+    query = new_class.call(OpenStruct.new(value: nil), OpenStruct.new(value: 1))
+    expect(query.sum(:value)).to eq 1
+  end
+
+  it 'if attribute is zero' do
+    query = new_class.call(OpenStruct.new(value: 0))
+    expect(query.sum(:value)).to eq 0
   end
 
 end

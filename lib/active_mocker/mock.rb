@@ -6,7 +6,6 @@ require 'virtus'
 
 require 'active_mocker/logger'
 require 'active_mocker/loaded_mocks'
-require 'active_mocker/rspec_helper'
 require 'active_mocker/mock/hash_process'
 require 'active_mocker/mock/collection'
 require 'active_mocker/mock/queries'

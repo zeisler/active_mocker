@@ -1,7 +1,7 @@
 require 'active_support/hash_with_indifferent_access'
 require 'active_support/core_ext/module/delegation'
-require 'active_support/core_ext/object'
 require 'active_support/inflector'
+require 'active_support/core_ext/object/try'
 require 'virtus'
 
 require 'active_mocker/logger'

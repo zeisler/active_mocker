@@ -1,4 +1,5 @@
 require 'ruby-progressbar'
+require 'forwardable'
 module ActiveMocker
 class Generate
   extend Config

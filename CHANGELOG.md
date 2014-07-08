@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.5.1 - 2014-07-08
+
+### Fixed
+- Fix Queriable#sum to default to zero when value is nil
+- Remove rspec_helper.rb from mock.rb.
+
 ## 1.5 - 2014-07-07
 
 ### Added

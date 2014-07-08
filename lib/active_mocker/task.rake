@@ -8,7 +8,7 @@ end
 
 ['db:schema:load', 'db:migrate', 'db:reset'].each do |task|
   Rake::Task[task].enhance do
-    Rake::Task['rebuild_mocks'].invoke
+    Rake::Task['active_mocker:build'].invoke
   end
 end
 

@@ -155,7 +155,8 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
      PersonMock.bar('baz')
         => RuntimeError: ::bar is not Implemented for Class: PersonMock
 
-     PersonMock.mock_class_method(:bar) do  |name, type=nil|
+     # Rspec 3 Mocks
+     allow(PersonMock).to receive(:bar) do  |name, type=nil|
         "Now implemented with #{name} and #{type}"
      end
      
@@ -165,14 +166,11 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
       PersonMock.new.bar('foo', 'type')
         => "Now implemented with foo and type"
 
-      PersonMock.mock_instance_method(:bar) do
+      # Rspec 3 Mocks
+      allow_any_instance(PersonMock).to receive(:bar) do
          "Now implemented"
       end
 
-	# override mock on an individual instance
-	PersonMock.new.mock_instance_method(:bar) do
-        "Now implemented!!!!"
-     end
 
 #### When the model changes, the mock fails
 (Requires a regeneration of the mocks files.)
@@ -212,12 +210,21 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 
      #person_spec.rb
 
-    person_mock.mock_instance_method(:bar) do  |name, type=nil|
+    # Rspec 3 Mocks
+    allow(person_mock).to receive(:bar) do  |name, type=nil|
       "Now implemented with #{name} and #{type}"
     end
       => NoMethodError: undefined method `bar' for class `PersonMock'
 
 ### Managing Mocks
+
+Rspec Tag - active_mocker:true
+
+    describe 'Example', active_mocker:true do
+    
+    end
+    
+  Assigning this tag will stub any ActiveRecord model Constants for Mock classes in any `it's` or `before(:each)`. To stub any Constants in `before(:all)`, `after(:all)` use `mock_class('ClassName')`. 
 
 Deletes All Records and Clears Mocked Methods
     
@@ -240,8 +247,10 @@ Map The Mock Class to it's Model
 
 	ActiveMocker::LoadedMocks.class_name_to_mock
 		=> { 'Person' => PersonMock } 
+		
 
-### Constants are Available -  (Modules and classes are excluded.)     
+
+### Constants and included and extended Modules are Available.
 
 	#app/models/person.rb
 
@@ -335,9 +344,9 @@ Map The Mock Class to it's Model
 
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
-* Included/extended module methods will not be included on the mock. I suggest you keep domain logic out of the model and only add database queries. Domain logic can be put into modules and then included into the mock during test setup.
-* Whatever associations are setup in one mock object will not effect any other objects.
+* Whatever associations are setup in one mock object will not reflected in any other objects.
 * Validation are not present in mocks.
+* Sql queries, joins, etc will never be supported.
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

@@ -12,7 +12,7 @@ RSpec.configure do |config|
   end
 
   config.after(:all) do
-    ActiveMocker::LoadedMocks.clear_all
+    ActiveMocker::LoadedMocks.clear_all if self.class.metadata[:active_mocker]
   end
 
 end

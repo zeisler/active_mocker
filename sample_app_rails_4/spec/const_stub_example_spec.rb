@@ -8,11 +8,17 @@ require_relative 'mocks/user_mock.rb'
 
 describe MicropostMock, active_mocker:true do
 
-  before :all do
-    mock_class('Micropost').create!
+  context '#mock_class' do
+
+    before :all do
+      mock_class('Micropost').create!
+    end
+
+    it 'will create an instance of mock' do
+      expect(Micropost.first.class).to eq MicropostMock
+    end
+
+
   end
 
-  it 'will create an instance of mock' do
-    expect(Micropost.first.class).to eq MicropostMock
-  end
 end

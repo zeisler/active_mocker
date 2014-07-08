@@ -167,7 +167,7 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
         => "Now implemented with foo and type"
 
       # Rspec 3 Mocks
-      allow_any_instance(PersonMock).to receive(:bar) do
+      allow_any_instance_of(PersonMock).to receive(:bar) do
          "Now implemented"
       end
 

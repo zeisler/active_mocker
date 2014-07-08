@@ -1,20 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 0.0.1 - 2014-05-31
+## 1.5 - 2014-07-07
 
 ### Added
-- This CHANGELOG file to hopefully serve as an evolving example of a standardized open source project CHANGELOG.
-- CNAME file to enable GitHub Pages custom domain
-- README now contains answers to common questions about CHANGELOGs
-- Good examples and basic guidelines, including proper date formatting.
-- Counter-examples: "What makes unicorns cry?"
-
+- Modules that are included/extended in ActiveRecord Models are now available. This may cause failing tests, requiring the modules will fix the issues. 
+- Scoped methods from association will be available if the associated mock is loaded.
+- rspec_helper.rb
+  - Using `tag active_mocker:true` will stub ActiveRecord Model constants for Mock constants. To use with `before(:all)` wrap Constant in `#mock_class('ClassName')`. Using all AR Model names will allow a spec file to run as a full Rails test and as a unit test. 
+  - Tag will also clear all mocks after(:all)
+  
 ### Deprecated
-- Nothing.
+- mock_class_method and mock_instance_method are deprecated and will be removed in 2.0. Rspec 3 mocks has a better implantation of this feature.
 
 ### Removed
 - Nothing.
 
 ### Fixed
-- Nothing.
+- `has_many#create_assocation` will now correctly add it self to the parent record.

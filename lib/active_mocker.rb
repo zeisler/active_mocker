@@ -2,7 +2,6 @@ require "active_mocker/version"
 $:.unshift File.expand_path('../../', __FILE__)
 
 require 'active_mocker/railtie' if defined?(Rails)
-require 'active_mocker/ar_methods' if defined?(Rails)
 require 'ruby-progressbar'
 require 'forwardable'
 require 'active_mocker/public_methods'

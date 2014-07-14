@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.5.2 - 2014-07-14
+
+### Fixed
+- `rake active_mocker:build` will only run after `rake db:migrate` instead of `db:schema:load` and `db:reset`.
+- Removed Unused folder lib/active_record
+
 ## 1.5.1 - 2014-07-08
 
 ### Fixed

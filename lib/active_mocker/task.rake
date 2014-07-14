@@ -6,7 +6,7 @@ namespace :active_mocker do
 
 end
 
-['db:schema:load', 'db:migrate', 'db:reset'].each do |task|
+['db:migrate'].each do |task|
   Rake::Task[task].enhance do
     Rake::Task['active_mocker:build'].invoke
   end

@@ -15,8 +15,8 @@ task :specs do
       end
     end
   end
-  raise "Tests Failed" unless system "rspec --seed #{random_seed}"
-  raise "Tests Failed" unless system "cd sample_app_rails_4 && rspec --seed #{random_seed}"
+  raise "Tests Failed" unless system "bundle exec rspec --seed #{random_seed}"
+  raise "Tests Failed" unless system "cd sample_app_rails_4 && bundle exec rspec --seed #{random_seed}"
 end
 
 def random_seed

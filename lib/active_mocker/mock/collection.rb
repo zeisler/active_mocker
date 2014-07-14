@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module ActiveMocker
 module Mock
 
@@ -13,7 +15,7 @@ module Mock
       collection.concat(records.flatten)
     end
 
-    extend Forwardable
+    extend ::Forwardable
     def_delegators :@collection, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, :delete
     alias distinct uniq
 

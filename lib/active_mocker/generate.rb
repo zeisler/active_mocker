@@ -58,11 +58,13 @@ class Generate
 
   def create_template
     mocks_created = 0
+    FileUtils.rm_rf("#{mock_dir}/", secure: true)
+    FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
     generate_model_schema.each do |model|
       begin
 
       klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
-      FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
+
       File.open(File.join(mock_dir,"#{model.table_name.singularize}_mock.rb"), 'w').write(klass_str)
       logger.info "saving mock #{model.class_name} to #{mock_dir}"
 

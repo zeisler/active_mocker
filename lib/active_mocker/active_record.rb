@@ -6,11 +6,10 @@ require 'active_mocker/active_record/unknown_module'
 
 module ActiveMocker
   module ActiveRecord
-    class Base #< ::ActiveRecord::Base
+    class Base
       extend Scope
       extend Relationships
       extend UnknownClassMethod
-      # extend UnknownModule
 
       def self.table_name=(table_name)
         @table_name = table_name

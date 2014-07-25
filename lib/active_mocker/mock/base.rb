@@ -59,8 +59,11 @@ class Base
 
     alias_method :destroy, :delete
 
-    def delete_all(options=nil)
-      return records.reset if options.nil?
+    # Deletes the records matching +conditions+.
+    #
+    #   Post.where(person_id: 5).where(category: ['Something', 'Else']).delete_all
+    def delete_all(conditions=nil)
+      return records.reset if conditions.nil?
       super
     end
 

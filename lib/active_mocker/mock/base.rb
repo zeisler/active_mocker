@@ -17,8 +17,7 @@ class Base
     def create(attributes = {}, &block)
       record = new
       record.save
-      record.send(:set_properties, attributes) unless block_given?
-      record.send(:set_properties_block, attributes, &block) if block_given?
+      record.assign_attributes(attributes, &block)
       record
     end
 
@@ -104,9 +103,17 @@ class Base
 
   attr_reader :associations, :types, :attributes
 
+  # New objects can be instantiated as either empty (pass no construction parameter) or pre-set with
+  # attributes but not yet saved (pass a hash with key names matching the associated table column names).
+  # In both instances, valid attribute keys are determined by the column names of the associated table --
+  # hence you can't have attributes that aren't part of the table columns.
+  #
+  # ==== Example:
+  #   # Instantiates a single new object
+  #   UserMock.new(first_name: 'Jamie')
   def initialize(attributes = {}, &block)
     setup_instance_variables
-    set_properties_block(attributes, &block)
+    assign_attributes(attributes, &block)
   end
 
   def setup_instance_variables
@@ -117,27 +124,33 @@ class Base
 
   private :setup_instance_variables
 
-  def set_properties_block(attributes = {}, &block)
-    yield self if block_given?
-    set_properties(attributes)
-  end
-  private :set_properties_block
-
   def update(attributes={})
-    set_properties(attributes)
+    assign_attributes(attributes)
   end
 
-  def set_properties(attributes={})
-    attributes.each do |key, value|
-      begin
-        send "#{key}=", value
-      rescue NoMethodError
-        raise RejectedParams, "{:#{key}=>#{value.inspect}} for #{self.class.name}"
-      end
+  def assign_attributes(new_attributes, &block)
+    yield self if block_given?
+    unless new_attributes.respond_to?(:stringify_keys)
+      raise ArgumentError, "When assigning attributes, you must pass a hash as an argument."
+    end
+    return nil if new_attributes.blank?
+    attributes = new_attributes.stringify_keys
+    attributes.each do |k, v|
+      _assign_attribute(k, v)
     end
   end
 
-  private :set_properties
+  alias attributes= assign_attributes
+
+  def _assign_attribute(k, v)
+    public_send("#{k}=", v)
+  rescue NoMethodError
+    if respond_to?("#{k}=")
+      raise
+    else
+      raise UnknownAttributeError.new(self, k)
+    end
+  end
 
   def save(*args)
     unless self.class.exists?(self)

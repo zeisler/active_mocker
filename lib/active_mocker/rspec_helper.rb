@@ -1,3 +1,5 @@
+require 'active_mocker/loaded_mocks'
+
 RSpec.configure do |config|
 
   def mock_class(class_name)

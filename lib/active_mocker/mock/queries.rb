@@ -32,12 +32,30 @@ module Mock
       end
     end
 
-    def delete_all(options=nil)
-      if options.nil?
+    # Deletes the records matching +conditions+ by instantiating each
+    # record and calling its +delete+ method.
+    #
+    # ==== Parameters
+    #
+    # * +conditions+ - A string, array, or hash that specifies which records
+    #   to destroy. If omitted, all records are destroyed.
+    #
+    # ==== Examples
+    #
+    #   PersonMock.destroy_all(status: "inactive")
+    #   PersonMock.where(age: 0..18).destroy_all
+    #
+    # If a limit scope is supplied, +delete_all+ raises an ActiveRecord error:
+    #
+    #   Post.limit(100).delete_all
+    #   # => ActiveMocker::Mock::Error: delete_all doesn't support limit scope
+    def delete_all(conditions=nil)
+      raise ActiveMocker::Mock::Error.new("delete_all doesn't support limit scope") if from_limit?
+      if conditions.nil?
         to_a.map(&:delete)
         return to_a.clear
       end
-      where(options).map { |r| r.delete }.count
+      where(conditions).map { |r| r.delete }.count
     end
 
     def destroy_all
@@ -112,7 +130,9 @@ module Mock
     end
 
     def limit(num)
-      new_relation(all.take(num))
+      relation = new_relation(all.take(num))
+      relation.send(:set_from_limit)
+      relation
     end
 
     def sum(key)

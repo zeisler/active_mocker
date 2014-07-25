@@ -46,6 +46,10 @@ class Base
 
     alias_method :destroy_all, :delete_all
 
+    def from_limit?
+      false
+    end
+
     def build_type(type)
       Virtus::Attribute.build(type)
     end

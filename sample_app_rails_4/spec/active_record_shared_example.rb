@@ -356,6 +356,14 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
     expect(described_class.limit(2).where(name: 'fred')).to eq [records[0]]
   end
 
+  context 'limit(10).delete_all' do
+
+    it "If a limit scope is supplied, delete_all raises an ActiveRecord error:" do
+      expect{described_class.limit(10).delete_all}.to raise_error("delete_all doesn't support limit scope")
+    end
+
+  end
+
   describe '::find_by!' do
 
     it 'will raise exception if not found' do

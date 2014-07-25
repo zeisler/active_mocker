@@ -4,45 +4,63 @@ module ActiveMocker
     
     class << self
 
-      def add(mocks_to_add)
-        mocks.merge!({mocks_to_add.name => mocks_to_add})
-      end
-
-      def add_subclass(subclass)
-        subclasses.merge!({subclass.mocked_class => subclass})
-      end
-
-      def subclasses
-        @subclasses ||= {}
-      end
-
-      def clear_subclasses
-        subclasses.clear
-      end
-
-      def mocks
-        @mocks ||= {}
-      end
-
+      # Input ActiveRecord Model as String returns ActiveMock equivalent class.
+      #   +find('User')+ => UserMock
       def find(klass)
         class_name_to_mock[klass]
       end
 
+      # Returns Hash key being a string of the active_record class name
+      # and the value being the mocked class.
+      #   ActiveMocker::LoadedMocks.all
+      #      => {'PersonMock' => PersonMock}
       def all
         mocks
       end
 
+      # Calls clear_all for all mocks, which deletes all saved records and removes mock_class/instance_method.
+      #   It will also clear any sub classed mocks from the list
+      #   Method will be deprecated in v2 because mocking is deprecated
       def clear_all
         all_mocks.each { |m| m.clear_mock }
         clear_subclasses
       end
 
+      # Calls delete_all for all mocks, which deletes all saved records.
+      #
       def delete_all
         all_mocks.each { |m| m.delete_all }
       end
 
+      # Reloads the mocks file from disk.
+      #   *Experimental Feature*
       def reload_all
         all_mocks.each { |m| m.send(:reload) }
+      end
+
+      # Returns Hash +{"ActiveRecordModel" => MockVersion}+, key being a string of the active_record class name
+      # and the value being the mocked class. Any sub classed mocked will override the original mock until clear_all is called.
+      #
+      #   ActiveMocker::LoadedMocks.class_name_to_mock
+      #       => {'Person' => PersonMock}
+      def class_name_to_mock
+        mocks.values.each_with_object({}) do |mock_constant, hash|
+          hash[mock_constant.send(:mocked_class)] = mock_constant
+        end.merge(subclasses)
+      end
+
+      private
+
+      def add(mocks_to_add)
+        mocks.merge!({mocks_to_add.name => mocks_to_add})
+      end
+
+      def add_subclass(subclass)
+        subclasses.merge!({subclass.send(:mocked_class) => subclass})
+      end
+
+      def mocks
+        @mocks ||= {}
       end
 
       def undefine_all
@@ -55,20 +73,18 @@ module ActiveMocker
         mocks.keys + subclasses.keys
       end
 
-      def class_name_to_mock
-        hash = mocks.values.each_with_object({}) do |mock_constant, hash|
-          hash[mock_constant.mocked_class] = mock_constant
-        end
-        hash.merge(subclasses)
+      def subclasses
+        @subclasses ||= {}
       end
 
-      private
+      def clear_subclasses
+        subclasses.clear
+      end
 
       def internal_clear
         clear_subclasses
         mocks.clear
       end
-
 
       def all_mocks
         mocks.values + subclasses.values

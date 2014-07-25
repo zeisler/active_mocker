@@ -73,6 +73,44 @@ module Mock
       result
     end
 
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   UserMock.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   UserMock.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    #
+    # This method accepts a block, which is passed down to +create+. The last example
+    # above can be alternatively written this way:
+    #
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # different last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    #
+    def find_or_create_by(attributes, &block)
+      find_by(attributes) || create(attributes, &block)
+    end
+
+    alias_method :find_or_create_by!, :find_or_create_by
+
+    # Like <tt>find_or_create_by</tt>, but calls <tt>new</tt> instead of <tt>create</tt>.
+    def find_or_initialize_by(attributes, &block)
+      find_by(attributes) || new(attributes, &block)
+    end
+
     def limit(num)
       new_relation(all.take(num))
     end

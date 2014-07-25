@@ -16,7 +16,7 @@ module Mock
     end
 
     extend ::Forwardable
-    def_delegators :@collection, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?, :delete
+    def_delegators :@collection, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :many?, :include?, :delete
     alias distinct uniq
 
     def select(&block)
@@ -49,6 +49,11 @@ module Mock
 
     def ==(val)
       @collection == val
+    end
+
+    # Returns true if relation is blank.
+    def blank?
+      to_a.blank?
     end
 
     protected

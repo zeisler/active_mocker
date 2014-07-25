@@ -267,11 +267,6 @@ Map The Mock Class to it's Model
 	UserMock::CONSTANT_VALUE
 		=> 13
 
-### Mocked Class
-	
-	UserMock.mocked_class
-		=> 'User'
-
 ### ActiveRecord supported methods
 **class methods**
 

@@ -1,19 +1,32 @@
 module ActiveMocker
 
-  def self.mock(model_name, options=nil)
-    Generate.mock(model_name)
-  end
+  class << self
 
-  def self.configure(&block)
-    Generate.configure(&block)
-  end
+    # Method will be deprecated in v2
+    def mock(model_name, options=nil)
+      Generate.mock(model_name)
+    end
 
-  def self.config(&block)
-    Generate.configure(&block)
-  end
+    # Override default Configurations
+    #
+    #  ActiveMocker::Generate.configure do |config|
+    #    config.schema_file = File.join(Rails.root, 'db/schema.rb')
+    #    config.model_dir   = File.join(Rails.root, 'app/models')
+    #    config.mock_dir    = File.join(Rails.root, 'spec/mocks')
+    #    config.logger      = Rails.logger
+    #  end
+    #
+    def configure(&block)
+      Generate.configure(&block)
+    end
 
-  def self.create_mocks
-    Generate.new
+    alias_method :config, :configure
+
+    # Generates Mocks file
+    def create_mocks
+      Generate.new
+    end
+
   end
 
 end

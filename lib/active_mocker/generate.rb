@@ -27,9 +27,12 @@ class Generate
     config(&block)
   end
 
+  # Method will be deprecated in v2
   def self.mock(model_name, force_reload: false)
     load_mock(model_name)
   end
+
+  private
 
   def self.load_mock(model_name)
     load File.join(mock_dir, "#{model_name.tableize.singularize}_mock.rb")

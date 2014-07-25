@@ -59,7 +59,7 @@ describe ActiveMocker::LoadedMocks do
     subject{ described_class.class_name_to_mock }
 
     it 'returns key of mocked_class and a constant of the mock class' do
-      described_class.add MockClass
+      described_class.send :add, MockClass
       expect(subject).to eq({'Object' => MockClass})
     end
 
@@ -68,8 +68,8 @@ describe ActiveMocker::LoadedMocks do
   describe '::clear_all' do
 
     before do
-      ActiveMocker::LoadedMocks.add MockClass
-      ActiveMocker::LoadedMocks.add_subclass MockClass2
+      ActiveMocker::LoadedMocks.send(:add, MockClass)
+      ActiveMocker::LoadedMocks.send(:add_subclass, MockClass2)
       described_class.clear_all
     end
 
@@ -79,7 +79,7 @@ describe ActiveMocker::LoadedMocks do
     end
 
     it 'will empty the sub classes' do
-      expect(ActiveMocker::LoadedMocks.subclasses.empty?).to eq true
+      expect(ActiveMocker::LoadedMocks.send(:subclasses).empty?).to eq true
     end
 
     def clear_mock_called?(mock)
@@ -93,8 +93,8 @@ describe ActiveMocker::LoadedMocks do
 
     it 'will call delete_all on each loaded mock' do
 
-      described_class.add MockClass
-      described_class.add_subclass MockClass2
+      described_class.send(:add, MockClass)
+      described_class.send(:add_subclass, MockClass2)
       described_class.delete_all
       expect(delete_all_called?(MockClass)).to eq true
       expect(delete_all_called?(MockClass2)).to eq true
@@ -112,9 +112,9 @@ describe ActiveMocker::LoadedMocks do
 
     it 'returns hash the key being a string and the value being the constant' do
 
-      described_class.add MockClass
-      described_class.add MockClass2
-      expect(described_class.mocks).to eq({"MockClass" => MockClass, "MockClass2" => MockClass2})
+      described_class.send :add, MockClass
+      described_class.send :add, MockClass2
+      expect(described_class.send(:mocks)).to eq({"MockClass" => MockClass, "MockClass2" => MockClass2})
 
     end
 
@@ -124,8 +124,8 @@ describe ActiveMocker::LoadedMocks do
 
     it 'returns hash the key being a string and the value being the constant' do
 
-      described_class.add MockClass
-      described_class.add MockClass2
+      described_class.send :add, MockClass
+      described_class.send :add, MockClass2
       expect(described_class.all).to eq({"MockClass" => MockClass, "MockClass2" => MockClass2})
 
     end
@@ -150,8 +150,8 @@ describe ActiveMocker::LoadedMocks do
   describe '::reload_all' do
 
     it 'will call reload on each loaded mock' do
-      described_class.add MockClass
-      described_class.add_subclass MockClass2
+      described_class.send :add, MockClass
+      described_class.send :add_subclass, MockClass2
       described_class.reload_all
       expect(reload_all_called?(MockClass)).to eq true
       expect(reload_all_called?(MockClass2)).to eq true

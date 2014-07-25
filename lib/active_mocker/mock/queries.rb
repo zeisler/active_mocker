@@ -77,8 +77,50 @@ module Mock
       results.first
     end
 
-    def update_all(options)
-      all.each { |i| i.update(options) }
+    # Updates all records with details given if they match a set of conditions supplied, limits and order can
+    # also be supplied.
+    #
+    # ==== Parameters
+    #
+    # * +updates+ - A string, array, or hash.
+    #
+    # ==== Examples
+    #
+    #   # Update all customers with the given attributes
+    #   Customer.update_all wants_email: true
+    #
+    #   # Update all books with 'Rails' in their title
+    #   BookMock.where(title: 'Rails').update_all(author: 'David')
+    #
+    #   # Update all books that match conditions, but limit it to 5 ordered by date
+    #   BookMock.where(title: 'Rails').order(:created_at).limit(5).update_all(author: 'David')
+    def update_all(conditions)
+      all.each { |i| i.update(conditions) }
+    end
+
+    # Updates an object (or multiple objects) and saves it.
+    #
+    # ==== Parameters
+    #
+    # * +id+ - This should be the id or an array of ids to be updated.
+    # * +attributes+ - This should be a hash of attributes or an array of hashes.
+    #
+    # ==== Examples
+    #
+    #   # Updates one record
+    #   Person.update(15, user_name: 'Samuel', group: 'expert')
+    #
+    #   # Updates multiple records
+    #   people = { 1 => { "first_name" => "David" }, 2 => { "first_name" => "Jeremy" } }
+    #   Person.update(people.keys, people.values)
+    def update(id, attributes)
+      if id.is_a?(Array)
+        id.map.with_index { |one_id, idx| update(one_id, attributes[idx]) }
+      else
+        object = find(id)
+        object.update(attributes)
+        object
+      end
     end
 
     def find_by(conditions = {})

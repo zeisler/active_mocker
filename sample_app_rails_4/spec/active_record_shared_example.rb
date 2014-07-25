@@ -149,6 +149,26 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
     expect(described_class.all.map { |a| a.name }).to eq(['John', 'John', 'John'])
   end
 
+  describe '::update' do
+
+    it 'Updates one record' do
+      user = described_class.create(email: '90')
+      described_class.update(user.id, email: 'Samuel', name: 'Name')
+      user.reload
+      expect(user.email).to eq 'Samuel'
+      expect(user.name).to eq 'Name'
+    end
+
+    it 'Updates multiple records' do
+      user_records = [described_class.create(email: '1'), described_class.create(email: '2')]
+      users = {user_records.first.id => {name: 'Fred'}, user_records.last.id => { name: 'Dave'}}
+      described_class.update(users.keys, users.values)
+      user_records.map(&:reload)
+      expect(user_records.map(&:name)).to eq ['Fred', 'Dave']
+    end
+
+  end
+
   describe 'type coercion' do
 
     it 'will coerce string to integer' do

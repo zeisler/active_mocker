@@ -25,6 +25,8 @@ class MicropostMock < ActiveMocker::Mock::Base
       'Micropost'
     end
 
+    private :mocked_class
+
     def attribute_names
       @attribute_names ||= ["id", "content", "user_id", "up_votes", "created_at", "updated_at"]
     end
@@ -101,6 +103,10 @@ class MicropostMock < ActiveMocker::Mock::Base
   def user=(val)
     @associations[:user] = val
     write_attribute(:user_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
+    if ActiveMocker::Mock.config.experimental
+      val.microposts << self if val.respond_to?(:microposts)
+    end
+    val
   end
 
   def build_user(attributes={}, &block)

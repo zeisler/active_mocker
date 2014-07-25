@@ -21,16 +21,12 @@ describe ActiveMocker::ModelSchema::Generate do
 
   it 'test' do
     result = described_class.new(schema_file: schema_file, models_dir: models_dir, logger: UnitLogger.unit).run
-    expect(result.count).to eq 3
+    expect(result.count).to eq 4
   end
 
   it 'relationships' do
     expect(run[-1].relationships.map{ |r| JSON.parse(r.to_json)})
-      .to eq [{"name" => "microposts", "class_name" => "Micropost", "type" => "has_many", "foreign_key" => "user_id"},
-              {"name" => "relationships", "class_name" => "Relationship", "type" => "has_many", "foreign_key" => "follower_id"},
-              {"name" => "followed_users", "class_name" => "FollowedUser", "type" => "has_many", "foreign_key" => "user_id", "through" => "relationships"},
-              {"name" => "reverse_relationships", "class_name" => "Relationship", "type" => "has_many", "foreign_key" => "followed_id"},
-              {"name" => "followers", "class_name" => "Follower", "type" => "has_many", "foreign_key" => "user_id", "through" => "reverse_relationships"}]
+      .to eq [{"name" => "account", "class_name" => "Account", "type" => "has_one", "foreign_key" => "account_id"}, {"name" => "microposts", "class_name" => "Micropost", "type" => "has_many", "foreign_key" => "user_id"}, {"name" => "relationships", "class_name" => "Relationship", "type" => "has_many", "foreign_key" => "follower_id"}, {"name" => "followed_users", "class_name" => "FollowedUser", "type" => "has_many", "foreign_key" => "user_id", "through" => "relationships"}, {"name" => "reverse_relationships", "class_name" => "Relationship", "type" => "has_many", "foreign_key" => "followed_id"}, {"name" => "followers", "class_name" => "Follower", "type" => "has_many", "foreign_key" => "user_id", "through" => "reverse_relationships"}]
   end
 
   it 'methods' do
@@ -50,11 +46,11 @@ describe ActiveMocker::ModelSchema::Generate do
   end
 
   it 'constants' do
-    expect(run.first.constants).to eq({:MAGIC_ID_NUMBER => 90, :MAGIC_ID_STRING => "F-1"})
+    expect(run[1].constants).to eq({:MAGIC_ID_NUMBER => 90, :MAGIC_ID_STRING => "F-1"})
   end
 
   it 'modules' do
-    expect(run.first.modules).to eq({:included => ['PostMethods'], :extended => ['PostMethods']})
+    expect(run[1].modules).to eq({:included => ['PostMethods'], :extended => ['PostMethods']})
   end
 
   it 'attributes' do

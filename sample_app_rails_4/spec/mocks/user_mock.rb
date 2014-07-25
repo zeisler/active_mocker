@@ -14,12 +14,14 @@ class UserMock < ActiveMocker::Mock::Base
     end
 
     def associations
-      @associations ||= {:microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}
+      @associations ||= {:account=>nil, :microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}
     end
 
     def mocked_class
       'User'
     end
+
+    private :mocked_class
 
     def attribute_names
       @attribute_names ||= ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
@@ -111,6 +113,27 @@ class UserMock < ActiveMocker::Mock::Base
   #         Associations           #
   ##################################
 
+# has_one
+  def account
+    read_association('account')
+  end
+
+  def account=(val)
+    @associations['account'] = val
+    if ActiveMocker::Mock.config.experimental
+      account.send(:write_association, user,  self) if val.respond_to?(:user=)
+    end
+    account
+  end
+
+  def build_account(attributes={}, &block)
+    write_association(:account, classes('Account').new(attributes, &block)) if classes('Account')
+  end
+
+  def create_account(attributes={}, &block)
+    write_association(:account, classes('Account').new(attributes, &block)) if classes('Account')
+  end
+  alias_method :create_account!, :create_account
 
 # has_many
   def microposts

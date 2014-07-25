@@ -434,10 +434,18 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
       expect(post.user_id).to eq user.id
     end
 
-    it 'when setting association by object it will set the child association', pending: true do
-      user = described_class.create
-      post = micropost_class.create(user: user)
-      expect(user.microposts).to eq [post]
+    describe 'experimental features' do
+
+      before do
+        ActiveMocker::Mock.config.experimental = true
+      end
+
+      it 'when setting association by object it will set the child association' do
+        user = described_class.create
+        post = micropost_class.create(user: user)
+        expect(user.microposts).to eq [post]
+      end
+
     end
 
     it 'when setting association by id it will set the object on the parent' do
@@ -463,7 +471,11 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
 
   describe 'has_many association' do
 
-    it 'when passing in collection all item in collection will set its foreign key to the parent', pending: true do
+    before do
+      ActiveMocker::Mock.config.experimental = true
+    end
+
+    it 'when passing in collection all item in collection will set its foreign key to the parent' do
       posts = [micropost_class.create, micropost_class.create, micropost_class.create]
       user = described_class.create(microposts: posts)
       expect(user.microposts.map(&:user_id)).to eq posts.map(&:user_id)

@@ -19,7 +19,7 @@ describe UserMock do
   describe '::mocked_class' do
 
     it 'returns the name of the class being mocked' do
-      expect(UserMock.mocked_class).to eq 'User'
+      expect(UserMock.send(:mocked_class)).to eq('User')
     end
 
   end
@@ -50,7 +50,7 @@ describe UserMock do
     end
 
     it 'will raise error if not an attribute or association' do
-      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMocker::Mock::RejectedParams, '{:baz=>"Hello"} for UserMock')
+      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMocker::Mock::UnknownAttributeError, 'unknown attribute: baz')
     end
 
   end
@@ -170,7 +170,7 @@ describe UserMock do
     it '::find_or_create_by' do
       person = UserMock.find_or_create_by(name: 'dustin')
       expect(UserMock.find_by(name: 'dustin')).to eq person
-      person = UserMock.find_or_create_by(name: 'dustin')
+      UserMock.find_or_create_by(name: 'dustin')
       expect(UserMock.count).to eq 1
     end
 
@@ -196,14 +196,5 @@ describe UserMock do
     end
 
   end
-
-  # it {
-  #   RubyProf.measure_mode = RubyProf::PROCESS_TIME
-  #   result = RubyProf.profile do
-  #     UserMock.create.build_micropost.save
-  #   end
-  #   printer = RubyProf::GraphPrinter.new(result)
-  #   printer.print(STDOUT, {})
-  # }
 
 end

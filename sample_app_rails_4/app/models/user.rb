@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
                                    class_name:  "Relationship",
                                    dependent:   :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
-
+  has_one :account
   scope :find_by_name, -> (name) { where(name: name) }
   scope :by_name, -> (name) { where(name: name) }
 

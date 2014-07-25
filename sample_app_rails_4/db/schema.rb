@@ -45,6 +45,11 @@ ActiveRecord::Schema.define(version: 20130315230445) do
     t.boolean  "admin",           default: false
   end
 
+  create_table "accounts", force: true do |t|
+    t.integer "user_id"
+    t.decimal "balance"
+  end
+
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["remember_token"], name: "index_users_on_remember_token"
 

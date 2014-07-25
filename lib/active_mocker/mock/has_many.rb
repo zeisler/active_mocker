@@ -16,6 +16,13 @@ module Mock
       @foreign_id     = foreign_id
       self.class.include "#{relation_class.name}::Scopes".constantize
       super(collection)
+      set_foreign_key if ActiveMocker::Mock.config.experimental
+    end
+
+    def set_foreign_key
+      collection.each do |item|
+        item.send(:write_attribute, foreign_key, foreign_id) if item.respond_to?("#{foreign_key}=")
+      end
     end
 
     private

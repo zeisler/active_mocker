@@ -167,6 +167,7 @@ class Base
 
   private :records
 
+
   def delete
     records.delete(self)
   end
@@ -231,6 +232,16 @@ class Base
 
   class ScopeRelation < ::ActiveMocker::Mock::Association
   end
+
 end
+
+def self.config
+  @config ||= Config.new
+end
+
+class Config
+  attr_accessor :experimental
+end
+
 end
 end

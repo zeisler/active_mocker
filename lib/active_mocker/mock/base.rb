@@ -33,8 +33,28 @@ class Base
     delegate :count, :insert, :exists?, :to_a, :to => :records
     delegate :first, :last, :to => :all
 
+    # Delete an object (or multiple objects) that has the given id.
+    #
+    # This essentially finds the object (or multiple objects) with the given id and then calls delete on it.
+    #
+    # ==== Parameters
+    #
+    # * +id+ - Can be either an Integer or an Array of Integers.
+    #
+    # ==== Examples
+    #
+    #   # Destroy a single object
+    #   TodoMock.delete(1)
+    #
+    #   # Destroy multiple objects
+    #   todos = [1,2,3]
+    #   TodoMock.delete(todos)
     def delete(id)
-      find(id).delete
+      if id.is_a?(Array)
+        id.map { |one_id| delete(one_id) }
+      else
+        find(id).delete
+      end
     end
 
     alias_method :destroy, :delete

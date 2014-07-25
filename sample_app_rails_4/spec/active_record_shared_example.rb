@@ -362,12 +362,18 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
 
   end
 
-  describe '::destroy(id)' do
+  describe '::delete(id)' do
 
     it 'delete a single record when only one exists' do
       user = described_class.create
-      described_class.destroy(user.id)
+      described_class.delete(user.id)
       expect(described_class.count).to eq 0
+    end
+
+    it 'will delete all by array of ids' do
+      ids = [micropost_class.create.id, micropost_class.create.id, micropost_class.create.id]
+      micropost_class.delete(ids)
+      expect(micropost_class.count).to eq 0
     end
 
   end

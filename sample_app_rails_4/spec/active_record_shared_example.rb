@@ -124,6 +124,14 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
         expect(described_class.where(name: 'fred').where(admin: true)).to eq([records[0]])
     end
 
+    context 'with range value' do
+
+      let!(:given_record) { micropost_class.create(up_votes: 9) }
+
+      it { expect(micropost_class.where(up_votes: 0..10)).to eq [given_record] }
+
+    end
+
   end
 
   it '::where.not' do

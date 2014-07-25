@@ -9,9 +9,9 @@ module Mock
         @record = record
       end
 
-      def is_of(options={})
-        options.all? do |col, match|
-          next match.any? { |m| @record.send(col) == m } if match.class == Array
+      def is_of(conditions={})
+        conditions.all? do |col, match|
+          next match.any? { |m| @record.send(col) == m } if match.is_a? Enumerable
           @record.send(col) == match
         end
       end

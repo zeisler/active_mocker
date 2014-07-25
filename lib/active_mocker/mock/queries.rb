@@ -25,9 +25,9 @@ module Mock
         @parent_class = parent_class
       end
 
-      def not(options={})
+      def not(conditions={})
         @parent_class.call(@collection.reject do |record|
-          Find.new(record).is_of(options)
+          Find.new(record).is_of(conditions)
         end)
       end
     end
@@ -62,10 +62,10 @@ module Mock
       delete_all
     end
 
-    def where(options=nil)
-      return WhereNotChain.new(all, method(:new_relation)) if options.nil?
+    def where(conditions=nil)
+      return WhereNotChain.new(all, method(:new_relation)) if conditions.nil?
       new_relation(to_a.select do |record|
-        Find.new(record).is_of(options)
+        Find.new(record).is_of(conditions)
       end)
     end
 
@@ -81,13 +81,13 @@ module Mock
       all.each { |i| i.update(options) }
     end
 
-    def find_by(options = {})
-      send(:where, options).first
+    def find_by(conditions = {})
+      send(:where, conditions).first
     end
 
-    def find_by!(options={})
-      result = find_by(options)
-      raise RecordNotFound if result.blank?
+    def find_by!(conditions={})
+      result = find_by(conditions)
+      raise RecordNotFound if result.nil?
       result
     end
 

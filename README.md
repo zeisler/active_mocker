@@ -5,7 +5,7 @@
 [![Dependency Status](https://gemnasium.com/zeisler/active_mocker.svg)](https://gemnasium.com/zeisler/active_mocker)
 [![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.png)](https://gitter.im/zeisler/active_mocker)
 
-ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
+ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. The mock can be run by themselves and include a partial implementation of ActiveRecord. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
 
 Example from a real app
 
@@ -18,7 +18,6 @@ Example from a real app
 * [Contact](#contact)
 * [Installation](#installation)
 * [Setup](#setup)
-  * [Configuration](#overwrite_defaults_configuration)
   * [Generate](#generate_mocks)
 * [Dependencies](#dependencies)
 * [Usage](#usage)
@@ -65,15 +64,6 @@ Or install it yourself as:
 
 
 ## Setup
-
-### Overwrite defaults configuration
-
-    ActiveMocker::Generate.configure do |config|
-      config.schema_file = File.join(Rails.root, 'db/schema.rb')
-      config.model_dir   = File.join(Rails.root, 'app/models')
-      config.mock_dir    = File.join(Rails.root, 'spec/mocks')
-      config.logger      = Rails.logger
-    end
 
 ### Generate Mocks
 
@@ -226,36 +216,27 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 ### Managing Mocks
 
 Rspec Tag - active_mocker:true
-
+    require 'active_mocker/rspec_helper'
+    
     describe 'Example', active_mocker:true do
+    
+       before do
+          User.create # Is stubbed for UserMock.create
+       end
     
     end
     
-  Assigning this tag will stub any ActiveRecord model Constants for Mock classes in any `it's` or `before(:each)`. To stub any Constants in `before(:all)`, `after(:all)` use `mock_class('ClassName')`. 
+  * Assigning this tag will stub any ActiveRecord model Constants for Mock classes in any `it's` or `before(:each)`. This removes any need for dependency injection. Write tests and code like you would normally.
+  * To stub any Constants in `before(:all)`, `after(:all)` use `mock_class('ClassName')`.
+  * Calls `ActiveMocker::LoadedMocks.clear_all` `in after(:all)` block to clean up for other tests.
 
-Deletes All Records and Clears Mocked Methods
+Deletes All Records
     
-    PersonMock.clear_mock     
-    
-Clears all Loaded Mocks - (Use in after(:all) to keep state from leaking to other tests.)
-    
-    ActiveMocker::LoadedMocks.clear_all
+    PersonMock.delete_all     
 
 Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)
     
     ActiveMocker::LoadedMocks.delete_all
-    
-List All Loaded Mocks
-    
-    ActiveMocker::LoadedMocks.all
-    		=> { 'PersonMock' => PersonMock } 
-
-Map The Mock Class to it's Model
-
-	ActiveMocker::LoadedMocks.class_name_to_mock
-		=> { 'Person' => PersonMock } 
-		
-
 
 ### Constants and included and extended Modules are Available.
 
@@ -280,6 +261,9 @@ Map The Mock Class to it's Model
   * new
   * create/create!
   * column_names/attribute_names
+  
+**Query Methods**
+  * all
   * find
   * find_by/find_by!
   * find_or_create_by
@@ -291,10 +275,28 @@ Map The Mock Class to it's Model
   * delete_all(conditions_hash)
   * destroy(id)/delete(id)
   * update_all
-  * all
+  * update(id, attributes)
   * count
+  * uniq
   * first/last
+  * average(:field_name)
+  * minimum(:field_name)
+  * maximum(:field_name)
+  * sum(:field_name)
+  * order(:field_name)
+  * reverse_order
   * limit
+  
+**Relation Methods**
+  * concat
+  * include
+  * push
+  * clear
+  * take
+  * empty?
+  * replace
+  * any?
+  * many?
 
 **instance methods**
   
@@ -303,41 +305,18 @@ Map The Mock Class to it's Model
   * save/save!
   * write_attribute/read_attribute - (protected, can be used within modules)
   * delete
+  * new_record?
+  * persisted?
+  * reload
 
-**has_one/belongs_to**
+**has_one/belongs_to/has_many**
 
   * build_< association >
   * create_< association >
   * create_< association >!
-
-**has_many associations/Collections**
-
-  * empty?
-  * length/size/count
-  * uniq
-  * replace
-  * first/last
-  * concat
-  * include
-  * push
-  * clear
-  * take
-  * average(:field_name)
-  * minimum(:field_name)
-  * maximum(:field_name)
-  * sum(:field_name)
-  * find
-  * find_by/find_by!
-  * where(conditions_hash)
-  * where(key: array_of_values)
-  * where.not(conditions_hash)
-  * update_all
-  * delete_all
-  * order(:field_name)
-  * reverse_order
-  * limit
   * < association >.create
   * < association >.build
+  
 
 ### Schema/Migration Option Support
 * All schema types are supported and coerced by [Virtus](https://github.com/solnic/virtus). If coercion fails the passed value will be retained.
@@ -346,7 +325,9 @@ Map The Mock Class to it's Model
 
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
-* Whatever associations are setup in one mock object will not reflected in any other objects.
+* Whatever associations are setup in one mock object will not be reflected in any other objects. 
+    * There partial support for this feature in v1.6 when 'ActiveMocker::Mock.config.experimental = true' is set. 
+
 * Validation are not present in mocks.
 * Sql queries, joins, etc will never be supported.
 

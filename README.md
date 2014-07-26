@@ -237,9 +237,11 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
     end
       => NoMethodError: undefined method `bar' for class `PersonMock'
       
-### Constants and included and extended Modules are Available.
-* Any local modules will not be included or extended.
+### Constants and Modules are Available.
 
+* Any locally defined modules will not be included or extended.
+
+---------------
 
     class Person < ActiveRecord::Base
        CONSTANT_VALUE = 13
@@ -332,7 +334,7 @@ Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
 * Whatever associations are setup in one mock object will not be reflected in any other objects. 
-    * There partial support for this feature in v1.6 when `ActiveMocker::Mock.config.experimental = true` is set. 
+    * There partial support for this feature coming in v1.6 when `ActiveMocker::Mock.config.experimental = true` is set. 
 
 * Validation are not present in mocks.
 * Sql queries, joins, etc will never be supported.

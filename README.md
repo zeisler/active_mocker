@@ -14,6 +14,7 @@ Example from a real app
 
 
 ------------------------------------------
+* [Documentation](#documentation)
 * [Contact](#contact)
 * [Installation](#installation)
 * [Setup](#setup)
@@ -28,6 +29,12 @@ Example from a real app
 * [Inspiration](#inspiration)
 * [Contributing](#contributing)
 
+
+---------------------------
+
+## Documentation
+
+[rdoc](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker)
 
 ------------------------------------------
 

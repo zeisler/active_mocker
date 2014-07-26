@@ -7,13 +7,19 @@
 
 ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. The mock can be run by themselves and include a partial implementation of ActiveRecord. Mocks are regenerated when the schema is modified so your mocks will not go stale. This prevents the case where your units tests pass but production code is failing.
 
-Example from a real app
+Examples from a real apps
 
 		Finished in 0.54599 seconds
 		190 examples, 0 failures
+		
+------
+		
+		Finished in 1 seconds
+		374 examples, 0 failures
 
 
 ------------------------------------------
+
 * [Documentation](#documentation)
 * [Contact](#contact)
 * [Installation](#installation)
@@ -326,7 +332,7 @@ Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
 * Whatever associations are setup in one mock object will not be reflected in any other objects. 
-    * There partial support for this feature in v1.6 when 'ActiveMocker::Mock.config.experimental = true' is set. 
+    * There partial support for this feature in v1.6 when `ActiveMocker::Mock.config.experimental = true` is set. 
 
 * Validation are not present in mocks.
 * Sql queries, joins, etc will never be supported.

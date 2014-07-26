@@ -18,7 +18,7 @@
 #   end
 #
 #   let(:schema_file){
-#     StringReader.new <<-eos
+#     ActiveMocker::StringReader.new <<-eos
 #
 #       ActiveRecord::Schema.define(version: 20140327205359) do
 #
@@ -36,7 +36,7 @@
 #   }
 #
 #   let(:model_file){
-#     StringReader.new <<-eos
+#     ActiveMocker::StringReader.new <<-eos
 #       class Person < ActiveRecord::Base
 #         belongs_to :account
 #
@@ -81,7 +81,7 @@
 #   describe 'When schema.rb changes, the mock fails' do
 #
 #     let(:schema_file){
-#       StringReader.new <<-eos
+#       ActiveMocker::StringReader.new <<-eos
 #
 #       ActiveRecord::Schema.define(version: 20140327205359) do
 #
@@ -142,7 +142,7 @@
 #     context 'different arguments' do
 #
 #       let(:model_file){
-#         StringReader.new <<-eos
+#         ActiveMocker::StringReader.new <<-eos
 #         class Person < ActiveRecord::Base
 #           belongs_to :account
 #
@@ -169,7 +169,7 @@
 #     context 'different method name' do
 #
 #       let(:model_file){
-#           StringReader.new <<-eos
+#           ActiveMocker::StringReader.new <<-eos
 #         class Person < ActiveRecord::Base
 #           belongs_to :account
 #

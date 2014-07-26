@@ -1,12 +1,22 @@
-module Scope
+module ActiveMocker
 
-  def scope(method_name, proc)
-    get_named_scopes[method_name] = proc
-  end
+  module ActiveRecord
 
-  def get_named_scopes
-    @scope_methods ||= {}
+    module Scope
+
+      def scope(method_name, proc)
+        get_named_scopes[method_name] = proc
+      end
+
+      def get_named_scopes
+        @scope_methods ||= {}
+      end
+
+    end
+
   end
 
 end
+
+
 

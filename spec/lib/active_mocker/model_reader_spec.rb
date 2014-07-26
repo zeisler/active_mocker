@@ -192,7 +192,7 @@ describe ActiveMocker::ModelReader do
   context 'inject string_reader as file_reader' do
 
     let(:example_model){
-      StringReader.new(
+      ActiveMocker::StringReader.new(
           <<-eos
             class Person < ActiveRecord::Base
 

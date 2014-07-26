@@ -13,7 +13,7 @@ describe ActiveMocker::SchemaReader do
   let(:schema_file){ File.join(File.expand_path('../../', __FILE__), 'schema.rb') }
 
   let(:example_schema){
-    StringReader.new(
+    ActiveMocker::StringReader.new(
         <<-eos
             ActiveRecord::Schema.define(version: 20140327205359) do
 

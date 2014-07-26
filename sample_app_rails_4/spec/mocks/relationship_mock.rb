@@ -51,7 +51,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def follower_id=(val)
     write_attribute(:follower_id, val)
-    association = classes('User').try(:find, follower_id)
+    association = classes('User').try(:where, id: follower_id).first
     write_association(:follower,association) unless association.nil?
   end
 
@@ -61,7 +61,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def followed_id=(val)
     write_attribute(:followed_id, val)
-    association = classes('User').try(:find, followed_id)
+    association = classes('User').try(:where, id: followed_id).first
     write_association(:followed,association) unless association.nil?
   end
 

@@ -69,9 +69,19 @@ module Mock
       end)
     end
 
+    # Find by id - This can either be a specific id (1), a list of ids (1, 5, 6), or an array of ids ([5, 6, 10]).
+    # If no record can be found for all of the listed ids, then RecordNotFound will be raised. If the primary key
+    # is an integer, find by id coerces its arguments using +to_i+.
+    #
+    #   Person.find(1)          # returns the object for ID = 1
+    #   Person.find(1, 2, 6)    # returns an array for objects with IDs in (1, 2, 6)
+    #   Person.find([7, 17])    # returns an array for objects with IDs in (7, 17)
+    #   Person.find([1])        # returns an array for the object with ID = 1
+    #
+    # <tt>ActiveRecord::RecordNotFound</tt> will be raised if one or more ids are not found.
     def find(ids)
       results = [*ids].map do |id|
-        where(id: id).first
+        find_by!(id: id)
       end
       return new_relation(results) if ids.class == Array
       results.first

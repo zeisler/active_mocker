@@ -58,10 +58,50 @@ module Mock
       where(conditions).map { |r| r.delete }.count
     end
 
-    def destroy_all
-      delete_all
-    end
+    alias_method :destroy_all, :delete_all
 
+    # Returns a new relation, which is the result of filtering the current relation
+    # according to the conditions in the arguments.
+    #
+    # === hash
+    #
+    # #where will accept a hash condition, in which the keys are fields and the values
+    # are values to be searched for.
+    #
+    # Fields can be symbols or strings. Values can be single values, arrays, or ranges.
+    #
+    #    User.where({ name: "Joe", email: "joe@example.com" })
+    #
+    #    User.where({ name: ["Alice", "Bob"]})
+    #
+    #    User.where({ created_at: (Time.now.midnight - 1.day)..Time.now.midnight })
+    #
+    # In the case of a belongs_to relationship, an association key can be used
+    # to specify the model if an ActiveRecord object is used as the value.
+    #
+    #    author = Author.find(1)
+    #
+    #    # The following queries will be equivalent:
+    #    Post.where(author: author)
+    #    Post.where(author_id: author)
+    #
+    # This also works with polymorphic belongs_to relationships:
+    #
+    #    treasure = Treasure.create(name: 'gold coins')
+    #    treasure.price_estimates << PriceEstimate.create(price: 125)
+    #
+    #    # The following queries will be equivalent:
+    #    PriceEstimate.where(estimate_of: treasure)
+    #    PriceEstimate.where(estimate_of_type: 'Treasure', estimate_of_id: treasure)
+    #
+    # === no argument
+    #
+    # If no argument is passed, #where returns a new instance of WhereChain, that
+    # can be chained with #not to return a new relation that negates the where clause.
+    #
+    #    User.where.not(name: "Jon")
+    #
+    # See WhereChain for more details on #not.
     def where(conditions=nil)
       return WhereNotChain.new(all, method(:new_relation)) if conditions.nil?
       new_relation(to_a.select do |record|
@@ -133,10 +173,19 @@ module Mock
       end
     end
 
+    # Finds the first record matching the specified conditions. There
+    # is no implied ordering so if order matters, you should specify it
+    # yourself.
+    #
+    # If no record is found, returns <tt>nil</tt>.
+    #
+    #   Post.find_by name: 'Spartacus', rating: 4
     def find_by(conditions = {})
       send(:where, conditions).first
     end
 
+    # Like <tt>find_by</tt>, except that if no record is found, raises
+    # an <tt>ActiveRecord::RecordNotFound</tt> error.
     def find_by!(conditions={})
       result = find_by(conditions)
       raise RecordNotFound if result.nil?
@@ -154,11 +203,6 @@ module Mock
     #   # We already have one so the existing record will be returned.
     #   UserMock.find_or_create_by(first_name: 'Penélope')
     #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
-    #
-    #   # Find the first user named "Scarlett" or create a new one with
-    #   # a particular last name.
-    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
-    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
     #
     # This method accepts a block, which is passed down to +create+. The last example
     # above can be alternatively written this way:
@@ -181,12 +225,31 @@ module Mock
       find_by(attributes) || new(attributes, &block)
     end
 
+    # Count the records.
+    #
+    #   PersonMock.count
+    #   # => the total count of all people
+    #
+    #   PersonMock.count(:age)
+    #   # => returns the total count of all people whose age is present in database
+    def count(column_name = nil)
+      return all.size if column_name.nil?
+      where.not(column_name => nil).size
+    end
+
+    # Specifies a limit for the number of records to retrieve.
+    #
+    #   User.limit(10)
     def limit(num)
       relation = new_relation(all.take(num))
       relation.send(:set_from_limit)
       relation
     end
 
+    # Calculates the sum of values on a given column. The value is returned
+    # with the same data type of the column, 0 if there's no row.
+    #
+    #   Person.sum(:age) # => 4562
     def sum(key)
       values = values_by_key(key)
       values.inject(0) do |sum, n|
@@ -194,24 +257,44 @@ module Mock
       end
     end
 
+    # Calculates the average value on a given column. Returns +nil+ if there's
+    # no row.
+    #
+    #   PersonMock.average(:age) # => 35.8
     def average(key)
       values = values_by_key(key)
       total = values.inject { |sum, n| sum + n }
       BigDecimal.new(total) / BigDecimal.new(values.count)
     end
 
+    # Calculates the minimum value on a given column. The value is returned
+    # with the same data type of the column, or +nil+ if there's no row.
+    #
+    #   Person.minimum(:age) # => 7
     def minimum(key)
       values_by_key(key).min_by { |i| i }
     end
 
+    # Calculates the maximum value on a given column. The value is returned
+    # with the same data type of the column, or +nil+ if there's no row.
+    #
+    #   Person.maximum(:age) # => 93
     def maximum(key)
       values_by_key(key).max_by { |i| i }
     end
 
+    # Allows to specify an order attribute:
+    #
+    #   User.order('name')
+    #
+    #   User.order(:name)
     def order(key)
       new_relation(all.sort_by { |item| item.send(key) })
     end
 
+    # Reverse the existing order clause on the relation.
+    #
+    #   User.order('name').reverse_order
     def reverse_order
       new_relation(to_a.reverse)
     end

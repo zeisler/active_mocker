@@ -112,8 +112,21 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 
     #person_spec.rb
 
+    require 'active_mocker/rspec_helper'
     require 'spec/mocks/person_mock.rb'
     require 'spec/mocks/account_mock.rb'
+        
+    describe 'Example', active_mocker:true do
+    
+       before do
+          User.create # Is stubbed for UserMock.create
+       end
+    
+    end
+        
+      * Assigning this tag will stub any ActiveRecord model Constants for Mock classes in any `it's` or `before(:each)`. This removes any need for dependency injection. Write tests and code like you would normally.
+      * To stub any Constants in `before(:all)`, `after(:all)` use `mock_class('ClassName')`.
+      * Calls `ActiveMocker::LoadedMocks.clear_all` `in after(:all)` block to clean up for other tests.
 
     PersonMock.column_names
         => ["id", "account_id", "first_name", "last_name", "address", "city"]

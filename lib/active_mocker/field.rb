@@ -1,5 +1,5 @@
 module ActiveMocker
-
+  # @api private
   class Field
 
     attr_accessor :name, :type, :options

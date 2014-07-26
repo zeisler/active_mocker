@@ -1,4 +1,5 @@
 module ActiveMocker
+  # @api private
   class Logger
 
     def self.set(logger)

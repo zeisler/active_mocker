@@ -1,5 +1,5 @@
 module ActiveMocker
-
+  # @api private
   class Table
 
     attr_reader :name, :fields

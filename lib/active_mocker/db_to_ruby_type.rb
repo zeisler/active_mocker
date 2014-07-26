@@ -1,4 +1,5 @@
 module ActiveMocker
+  # @api private
   class DBToRubyType
 
     def self.call(type)

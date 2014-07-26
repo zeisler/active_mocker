@@ -1,4 +1,5 @@
 module ActiveMocker
+# @api private
 class Reparameterize
 
   def self.call(params, param_list:nil)

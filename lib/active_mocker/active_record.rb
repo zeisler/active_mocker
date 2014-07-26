@@ -5,6 +5,7 @@ require 'active_mocker/active_record/unknown_class_method'
 require 'active_mocker/active_record/unknown_module'
 
 module ActiveMocker
+  # @api private
   module ActiveRecord
     class Base
       extend Scope

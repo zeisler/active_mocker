@@ -1,5 +1,5 @@
 module ActiveMocker
-
+  # @api private
   module LoggerToJson
 
     def initialize(*args)
@@ -12,6 +12,7 @@ module ActiveMocker
 
   end
 
+  # @api private
   class ModelSchemaCollection
 
     include Enumerable

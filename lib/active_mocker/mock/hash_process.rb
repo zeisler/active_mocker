@@ -1,5 +1,6 @@
 module ActiveMocker
   module Mock
+    # @api private
     class HashProcess
 
       attr_accessor :hash, :processor

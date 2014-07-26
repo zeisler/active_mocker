@@ -1,5 +1,5 @@
 module ActiveMocker
-
+  # @api private
   class StringReader
     def initialize(file)
       @read = file
@@ -9,6 +9,6 @@ module ActiveMocker
       @read
     end
   end
-  
+
 end
 

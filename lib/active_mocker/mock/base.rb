@@ -142,6 +142,7 @@ class Base
 
   alias attributes= assign_attributes
 
+  # @api private
   def _assign_attribute(k, v)
     public_send("#{k}=", v)
   rescue NoMethodError

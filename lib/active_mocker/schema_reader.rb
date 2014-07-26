@@ -1,5 +1,6 @@
 require 'pathname'
 module ActiveMocker
+  # @api private
   class SchemaReader
 
     attr_reader :model_name,

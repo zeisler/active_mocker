@@ -1,5 +1,5 @@
 module ActiveMocker
-
+  # @api private
   class ModelReader
 
     attr_reader :model_name, :model_dir, :file_reader

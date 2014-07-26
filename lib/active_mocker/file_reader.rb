@@ -1,5 +1,5 @@
 module ActiveMocker
-
+# @api private
 class FileReader
 
   def self.read(file_and_path)

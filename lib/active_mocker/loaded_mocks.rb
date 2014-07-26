@@ -33,7 +33,7 @@ module ActiveMocker
       end
 
       # Reloads the mocks file from disk.
-      #   *Experimental Feature*
+      # === Experimental Feature
       def reload_all
         all_mocks.each { |m| m.send(:reload) }
       end

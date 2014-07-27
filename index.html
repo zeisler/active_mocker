@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Active mocker by zeisler</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Active mocker</h1>
+          <h2>Create mocks from active record models without loading rails or running a database.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/zeisler/active_mocker/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/zeisler/active_mocker/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/zeisler/active_mocker" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="activemocker" class="anchor" href="#activemocker"><span class="octicon octicon-link"></span></a>ActiveMocker</h1>
+
+<p><a href="http://badge.fury.io/rb/active_mocker"><img src="https://badge.fury.io/rb/active_mocker.svg" alt="Gem Version"></a>
+<a href="https://travis-ci.org/zeisler/active_mocker"><img src="https://travis-ci.org/zeisler/active_mocker.png?branch=master" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/zeisler/active_mocker"><img src="https://codeclimate.com/github/zeisler/active_mocker.png" alt="Code Climate"></a>
+<a href="https://gemnasium.com/zeisler/active_mocker"><img src="https://gemnasium.com/zeisler/active_mocker.svg" alt="Dependency Status"></a>
+<a href="https://gitter.im/zeisler/active_mocker"><img src="https://badges.gitter.im/zeisler/active_mocker.png" alt="Gitter chat"></a></p>
+
+<p>ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. The mock can be run by themselves and run with a partial implementation of ActiveRecord. Mocks are regenerated when the schema is modified so your mocks will not go stale. Preventing the case where your units tests pass but production code is failing.</p>
+
+<p>Examples from a real apps</p>
+
+<pre><code>    Finished in 0.54599 seconds
+    190 examples, 0 failures
+</code></pre>
+
+<hr><pre><code>    Finished in 1 seconds
+    374 examples, 0 failures
+</code></pre>
+
+<hr><ul>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#contact">Contact</a></li>
+<li><a href="#installation">Installation</a></li>
+<li>
+<a href="#setup">Setup</a>
+
+<ul>
+<li><a href="#generate_mocks">Generate</a></li>
+</ul>
+</li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#mocking-methods">Mocking Methods</a></li>
+<li><a href="#managing-mocks">Managing Mocks</a></li>
+<li><a href="#activerecord-supported-methods">ActiveRecord supported methods</a></li>
+<li><a href="#known-limitations">Known Limitations</a></li>
+<li><a href="#inspiration">Inspiration</a></li>
+<li><a href="#contributing">Contributing</a></li>
+</ul><hr><h2>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p><a href="http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker">rdoc</a></p>
+
+<hr><h2>
+<a name="contact" class="anchor" href="#contact"><span class="octicon octicon-link"></span></a>Contact</h2>
+
+<p>Ask a question in the <a href="https://gitter.im/zeisler/active_mocker">chat room</a>.</p>
+
+<hr><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'active_mocker'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install active_mocker
+</code></pre>
+
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<ul>
+<li>Tested with Rails 4.1 may work with older versions but not supported.</li>
+<li>Requires Ruby MRI =&lt; 2.1.</li>
+</ul><h2>
+<a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<h3>
+<a name="generate-mocks" class="anchor" href="#generate-mocks"><span class="octicon octicon-link"></span></a>Generate Mocks</h3>
+
+<p>Running this rake task builds/rebuilds the mocks. It will be ran automatically after every schema modification. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.</p>
+
+<pre><code>rake active_mocker::build
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<pre><code>#db/schema.rb
+
+ActiveRecord::Schema.define(version: 20140327205359) do
+
+  create_table "people", force: true do |t|
+    t.integer  "account_id"
+    t.string   "first_name",        limit: 128
+    t.string   "last_name",         limit: 128
+    t.string   "address",           limit: 200
+    t.string   "city",              limit: 100
+  end
+
+end
+</code></pre>
+
+<hr><pre><code>#app/models/person.rb
+
+class Person &lt; ActiveRecord::Base
+  belongs_to :account
+
+  def bar(name, type=nil)
+    puts name
+  end
+
+  def self.bar
+  end
+
+end
+</code></pre>
+
+<hr><h3>
+<a name="using-with-rspec---tag-active_mockertrue" class="anchor" href="#using-with-rspec---tag-active_mockertrue"><span class="octicon octicon-link"></span></a>Using With Rspec, --tag active_mocker:true</h3>
+
+<pre><code>require 'rspec'
+require 'active_mocker/rspec_helper'
+require 'spec/mocks/person_mock'
+require 'spec/mocks/account_mock'
+
+describe 'Example', active_mocker:true do
+
+   before do
+      Person.create # stubbed for PersonMock.create
+   end
+
+end
+</code></pre>
+
+<hr><ul>
+<li>Assigning the tag <code>active_mocker:true</code> will stub any ActiveRecord model Constants for Mock classes in <code>it</code> or <code>before/after(:each)</code>. This removes any need for dependency injection. Write tests and code like you would normally.</li>
+<li>To stub any Constants in <code>before(:all)</code>, <code>after(:all)</code> use <code>mock_class('ClassName')</code>.</li>
+<li>Will call <code>ActiveMocker::LoadedMocks.delete_all</code> in <code>after(:all)</code> block to clean up mock state for other tests.</li>
+</ul><hr><pre><code>Person.column_names
+    =&gt; ["id", "account_id", "first_name", "last_name", "address", "city"]
+
+person = Person.new( first_name:  "Dustin", 
+                              last_name:   "Zeisler", 
+                              account:      AccountMock.new )
+    =&gt; "#&lt;PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler, address: nil, city: nil&gt;"
+
+ person.first_name
+    =&gt; "Dustin"
+</code></pre>
+
+<h3>
+<a name="when-schemarb-changes-the-mock-fails" class="anchor" href="#when-schemarb-changes-the-mock-fails"><span class="octicon octicon-link"></span></a>When schema.rb changes, the mock fails</h3>
+
+<p>(After <code>rake db:migrate</code> is called the mocks will be regenerated.)</p>
+
+<pre><code>#db/schema.rb
+
+ ActiveRecord::Schema.define(version: 20140327205359) do
+
+   create_table "people", force: true do |t|
+     t.integer  "account_id"
+     t.string   "f_name",        limit: 128
+     t.string   "l_name",        limit: 128
+     t.string   "address",       limit: 200
+     t.string   "city",          limit: 100
+   end
+
+ end
+</code></pre>
+
+<hr><pre><code> Person.new(first_name: "Dustin", last_name: "Zeisler")
+         =&gt;#&lt;UnknownAttributeError unknown attribute: first_name &gt;
+</code></pre>
+
+<h2>
+<a name="mocking-methods" class="anchor" href="#mocking-methods"><span class="octicon octicon-link"></span></a>Mocking Methods</h2>
+
+<h3>
+<a name="class-methods" class="anchor" href="#class-methods"><span class="octicon octicon-link"></span></a>Class Methods</h3>
+
+<pre><code> Person.bar('baz')
+    =&gt; RuntimeError: ::bar is not Implemented for Class: PersonMock
+
+ # Rspec 3 Mocks
+
+ RSpec.configure do |config|
+   config.mock_framework = :rspec
+   config.mock_with :rspec do |mocks|
+     mocks.verify_doubled_constant_names = true
+     mocks.verify_partial_doubles = true
+   end
+ end
+
+ allow(Person).to receive(:bar) do  |name, type=nil|
+    "Now implemented with #{name} and #{type}"
+ end
+
+ Person.bar('foo', 'type')
+   =&gt; "Now implemented with foo and type"
+
+ # Rspec 3 mock class method
+ allow_any_instance_of(Person).to receive(:bar) do
+    "Now implemented"
+ end
+</code></pre>
+
+<h4>
+<a name="when-the-model-changes-the-mock-fails" class="anchor" href="#when-the-model-changes-the-mock-fails"><span class="octicon octicon-link"></span></a>When the model changes, the mock fails</h4>
+
+<p>(Requires a regeneration of the mocks files.)</p>
+
+<pre><code>#app/models/person.rb
+
+class Person &lt; ActiveRecord::Base
+  belongs_to :account
+
+  def bar(name)
+    puts name
+  end
+
+end
+</code></pre>
+
+<hr><pre><code>Person.new.bar('foo', 'type')
+  =&gt; ArgumentError: wrong number of arguments (2 for 1)
+</code></pre>
+
+<hr><pre><code>#app/models/person.rb
+
+class Person &lt; ActiveRecord::Base
+  belongs_to :account
+
+  def foo(name, type=nil)
+    puts name
+  end
+
+end
+</code></pre>
+
+<hr><pre><code># Rspec 3 Mocks
+allow(person).to receive(:bar) do  |name, type=nil|
+  "Now implemented with #{name} and #{type}"
+end
+  =&gt; NoMethodError: undefined method `bar' for class `PersonMock'
+</code></pre>
+
+<h3>
+<a name="constants-and-modules-are-available" class="anchor" href="#constants-and-modules-are-available"><span class="octicon octicon-link"></span></a>Constants and Modules are Available.</h3>
+
+<ul>
+<li>Any locally defined modules will not be included or extended.</li>
+</ul><hr><pre><code>class Person &lt; ActiveRecord::Base
+   CONSTANT_VALUE = 13
+end
+</code></pre>
+
+<hr><pre><code>PersonMock::CONSTANT_VALUE
+    =&gt; 13
+</code></pre>
+
+<h3>
+<a name="scoped-methods" class="anchor" href="#scoped-methods"><span class="octicon octicon-link"></span></a>Scoped Methods</h3>
+
+<ul>
+<li>As long the mock file that holds the scope method is required it will be available but implemented.</li>
+</ul><h3>
+<a name="managing-mocks" class="anchor" href="#managing-mocks"><span class="octicon octicon-link"></span></a>Managing Mocks</h3>
+
+<p>Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)</p>
+
+<pre><code>ActiveMocker::LoadedMocks.delete_all
+</code></pre>
+
+<h3>
+<a name="activerecord-supported-methods" class="anchor" href="#activerecord-supported-methods"><span class="octicon octicon-link"></span></a>ActiveRecord supported methods</h3>
+
+<p><strong>class methods</strong></p>
+
+<ul>
+<li>new</li>
+<li>create/create!</li>
+<li>column_names/attribute_names</li>
+<li>delete_all/destroy_all</li>
+</ul><p><strong>Query Methods</strong></p>
+
+<ul>
+<li>all</li>
+<li>find</li>
+<li>find_by/find_by!</li>
+<li>find_or_create_by</li>
+<li>find_or_initialize_by</li>
+<li>where(conditions_hash)</li>
+<li>where(key: array_of_values)</li>
+<li>where.not(conditions_hash)</li>
+<li>delete_all/destroy_all</li>
+<li>delete_all(conditions_hash)</li>
+<li>destroy(id)/delete(id)</li>
+<li>update_all</li>
+<li>update(id, attributes)</li>
+<li>count</li>
+<li>uniq</li>
+<li>first/last</li>
+<li>average(:field_name)</li>
+<li>minimum(:field_name)</li>
+<li>maximum(:field_name)</li>
+<li>sum(:field_name)</li>
+<li>order(:field_name)</li>
+<li>reverse_order</li>
+<li>limit</li>
+</ul><p><strong>Relation Methods</strong></p>
+
+<ul>
+<li>concat</li>
+<li>include</li>
+<li>push</li>
+<li>clear</li>
+<li>take</li>
+<li>empty?</li>
+<li>replace</li>
+<li>any?</li>
+<li>many?</li>
+</ul><p><strong>instance methods</strong></p>
+
+<ul>
+<li>attributes</li>
+<li>update</li>
+<li>save/save!</li>
+<li>write_attribute/read_attribute - (protected, can be used within modules)</li>
+<li>delete</li>
+<li>new_record?</li>
+<li>persisted?</li>
+<li>reload</li>
+</ul><p><strong>has_one/belongs_to/has_many</strong></p>
+
+<ul>
+<li>build_&lt; association &gt;</li>
+<li>create_&lt; association &gt;</li>
+<li>create_&lt; association &gt;!</li>
+<li>&lt; association &gt;.create</li>
+<li>&lt; association &gt;.build</li>
+</ul><h3>
+<a name="schemamigration-option-support" class="anchor" href="#schemamigration-option-support"><span class="octicon octicon-link"></span></a>Schema/Migration Option Support</h3>
+
+<ul>
+<li>All schema types are supported and coerced by <a href="https://github.com/solnic/virtus">Virtus</a>. If coercion fails the passed value will be retained.</li>
+<li>Default value is supported.</li>
+<li>Scale and Precision are not supported.</li>
+</ul><h3>
+<a name="known-limitations" class="anchor" href="#known-limitations"><span class="octicon octicon-link"></span></a>Known Limitations</h3>
+
+<ul>
+<li>Model names and table names must follow the default ActiveRecord naming pattern.</li>
+<li>
+<p>Whatever associations are setup in one mock object will not be reflected in any other objects. </p>
+
+<ul>
+<li>There partial support for this feature coming in v1.6 when <code>ActiveMocker::Mock.config.experimental = true</code> is set. </li>
+</ul>
+</li>
+<li><p>Validation are not present in mocks.</p></li>
+<li>Sql queries, joins, etc will never be supported.</li>
+</ul><h2>
+<a name="inspiration" class="anchor" href="#inspiration"><span class="octicon octicon-link"></span></a>Inspiration</h2>
+
+<p>Thanks to Jeff Olfert for being my original inspiration for this project.</p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Your contribution are welcome!</p>
+
+<ol>
+<li>Fork it ( <a href="http://github.com/zeisler/active_mocker/fork">http://github.com/zeisler/active_mocker/fork</a> )</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+        </section>
+
+        <footer>
+          Active mocker is maintained by <a href="https://github.com/zeisler">zeisler</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>

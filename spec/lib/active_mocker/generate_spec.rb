@@ -6,12 +6,12 @@ require_relative '../../unit_logger'
 describe ActiveMocker::Generate do
 
   let(:app_root){ File.expand_path('../../../../', __FILE__)}
-  let(:mock_dir){ File.join(app_root, 'sample_app_rails_4/spec/mocks')}
+  let(:mock_dir){ File.join(app_root, 'test_rails_4_app/spec/mocks')}
 
   before(:each) do
     ActiveMocker.config do |config|
-      config.schema_file = File.join(app_root, 'sample_app_rails_4/db/schema.rb')
-      config.model_dir   = File.join(app_root, 'sample_app_rails_4/app/models')
+      config.schema_file = File.join(app_root, 'test_rails_4_app/db/schema.rb')
+      config.model_dir   = File.join(app_root, 'test_rails_4_app/app/models')
       config.mock_dir    = mock_dir
       config.logger      = UnitLogger
     end

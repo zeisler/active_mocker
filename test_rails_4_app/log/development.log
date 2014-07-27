@@ -1,0 +1,978 @@
+ActiveMocker :: Error loading Model: micropost 
+ 								`/Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb:3: syntax error, unexpected ->, expecting keyword_do or '{' or '('
+  default_scope -> { order('created_at DESC') }
+                  ^` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007febaa7b5618>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007febaa7b5618>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: Error loading Model: micropost 
+ 								`/Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb:3: syntax error, unexpected ->, expecting keyword_do or '{' or '('
+  default_scope -> { order('created_at DESC') }
+                  ^` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa3536a92a0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa3536a92a0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: Error loading Model: micropost 
+ 								`/Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb:3: syntax error, unexpected ->, expecting keyword_do or '{' or '('
+  default_scope -> { order('created_at DESC') }
+                  ^` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbb85811788>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbb85811788>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: Error loading Model: micropost 
+ 								`/Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb:3: syntax error, unexpected ->, expecting keyword_do or '{' or '('
+  default_scope -> { order('created_at DESC') }
+                  ^` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9c3500e000>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9c3500e000>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: Error loading Model: micropost 
+ 								`/Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb:3: syntax error, unexpected ->, expecting keyword_do or '{' or '('
+  default_scope -> { order('created_at DESC') }
+                  ^` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9f2c6494c0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9f2c6494c0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: Error loading Model: micropost 
+ 								`/Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb:3: syntax error, unexpected ->, expecting keyword_do or '{' or '('
+  default_scope -> { order('created_at DESC') }
+                  ^` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa10c011698>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa10c011698>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: Error loading Model: micropost 
+ 								`/Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb:3: syntax error, unexpected ->, expecting keyword_do or '{' or '('
+  default_scope -> { order('created_at DESC') }
+                  ^` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8e9c6a7598>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8e9c6a7598>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f9a2cea6550>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: _module called from class #<Module:0x007f9a2cea6550>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: try_and_log called from class #<Module:0x007f9a2cea6550>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9a2ce58030>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9a2ce58030>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fafb5131f20>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: _module called from class #<Module:0x007fafb5131f20>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: try_and_log called from class #<Module:0x007fafb5131f20>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fafb4a03280>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fafb4a03280>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc18cfba590>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: _module called from class #<Module:0x007fc18cfba590>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: try_and_log called from class #<Module:0x007fc18cfba590>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc18cf673b8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc18cf673b8>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc1593c80a8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: _module called from class #<Module:0x007fc1593c80a8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: try_and_log called from class #<Module:0x007fc1593c80a8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc159379340>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc159379340>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f87549fdf20>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: _module called from class #<Module:0x007f87549fdf20>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: try_and_log called from class #<Module:0x007f87549fdf20>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f875314a708>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f875314a708>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fe0949169d8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: _module called from class #<Module:0x007fe0949169d8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: try_and_log called from class #<Module:0x007fe0949169d8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe0950b9ed8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe0950b9ed8>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fb88385fc80>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: _module called from class #<Module:0x007fb88385fc80>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: try_and_log called from class #<Module:0x007fb88385fc80>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb882151f20>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb882151f20>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fdd70a4e520>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fdd70a4e520>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fdd70a42770>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fdd70a42770>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fbace2c2f28>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fbace2c2f28>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbace2b2ee8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbace2b2ee8>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f811e25a890>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007f811e25a890>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f811e24a878>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f811e24a878>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fb2bf3b7a58>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fb2bf3b7a58>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb2bf3b0aa0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb2bf3b0aa0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fbf84246f30>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fbf84246f30>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbf8423af00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbf8423af00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: include_modules called from class #<Module:0x007fbf8423af00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fd1c6fce7a8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fd1c6fce7a8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd1c6fbe740>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd1c6fbe740>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: include_modules called from class #<Module:0x007fd1c6fbe740>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc687d24f38>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fc687d24f38>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc687d16f00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc687d16f00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fee68394910>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fee68394910>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fee68382918>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fee68382918>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f83c6a626a0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007f83c6a626a0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f83c6a52750>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f83c6a52750>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007ff5b0312628>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007ff5b0312628>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff5b03026d8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff5b03026d8>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc0161ba908>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fc0161ba908>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc0161aa8c8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc0161aa8c8>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fd345e2ebc0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fd345e2ebc0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd345e1ebf8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd345e1ebf8>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fe0a00d2cc0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fe0a00d2cc0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe0a00c2d48>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe0a00c2d48>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fa0c70f2d90>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fa0c70f2d90>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa0c70e2dc8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa0c70e2dc8>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007ff1c558ad68>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007ff1c558ad68>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff1c557edb0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff1c557edb0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fd9b1caeda0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fd9b1caeda0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd9b1c9f788>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd9b1c9f788>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fbc2da4a510>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fbc2da4a510>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbc2da3a598>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbc2da3a598>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fcb85d8b528>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fcb85d8b528>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fcb85d84598>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fcb85d84598>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fe34cc16ad8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fe34cc16ad8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe34cc06bd8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe34cc06bd8>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f95bc8ea518>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007f95bc8ea518>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f95bc8da578>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f95bc8da578>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc277272ef0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fc277272ef0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc277262f00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc277262f00>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fb6be5288a8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`undefined method `name' for :PostMethods:Symbol` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fa4cfa7a640>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`undefined method `name' for :PostMethods:Symbol` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa4cfa71770>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa4cfa71770>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fd77dba6a60>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`undefined method `name' for :PostMethods:Symbol` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd77db9dc58>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd77db9dc58>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f870c27a8e0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`undefined method `name' for :PostMethods:Symbol` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f870c271a88>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f870c271a88>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f90ad3a9748>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`undefined method `name' for :PostMethods:Symbol` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f90ad3a1390>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f90ad3a1390>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f8f56caf660>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007f8f56caf660>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8f56ca86d0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8f56ca86d0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc0af5869d0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fc0af5869d0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc0af5768f0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc0af5768f0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fa63f2aa980>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fa63f2aa980>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa63f29a8f0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fa63f29a8f0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f9595bb1f48>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007f9595bb1f48>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9595ba2070>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9595ba2070>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fe6753b2000>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fe6753b2000>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe6753a2038>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe6753a2038>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007ff8a6422178>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007ff8a6422178>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff8a64121b0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff8a64121b0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fbd2d4421d0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fbd2d4421d0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbd2d432410>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbd2d432410>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007faf8cd9e818>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007faf8cd9e818>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007faf8cd8e8f0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007faf8cd8e8f0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc2fee26300>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fc2fee26300>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc2fee16400>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc2fee16400>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fb495a8abc8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fb495a8abc8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb495a7ac00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb495a7ac00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc3b0972c98>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fc3b0972c98>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc3b0962d48>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc3b0962d48>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fe0697320e8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fe0697320e8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe069726360>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe069726360>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fafa3da9da0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fafa3da9da0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fafa3d9a288>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fafa3d9a288>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f947e9d26b8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007f947e9d26b8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f947e9c2858>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f947e9c2858>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fea0887b2f8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fea0887b2f8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fea08870970>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fea08870970>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fbc36bd2410>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007fbc36bd2410>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbc36bc26c8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbc36bc26c8>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f8fdc332cc8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007f8fdc332cc8>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8fdc322d00>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8fdc322d00>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007ff5d64aa6e0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: Error loading Model: micropost 
+ 								`wrong constant name #<Module:0x007ff5d64aa6e0>` 
+
+								 /Users/zeisler/dev/active_mocker/sample_app_rails_4/app/models/micropost.rb
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff5d649a6f0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff5d649a6f0>::Relationship is unknown and will not be available in mock.
+
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 2 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fcf12ee96a0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fcf12ec3568>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fcf12ec3568>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f7f999b62a0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f7f99998598>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f7f99998598>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007ff4f23c9e90>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff4f24eb6c0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007ff4f24eb6c0>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fd8ac272130>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd8ac25bdb8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fd8ac25bdb8>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fea3da7a998>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fea3da69968>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fea3da69968>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fb2139d2728>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb2139b2b80>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fb2139b2b80>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f840f88a690>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f840f86ae30>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f840f86ae30>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007feeb2d6e900>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007feeb2d4d750>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007feeb2d4d750>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fe878e966d8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe878e76b80>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe878e76b80>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f938776e6d0>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f938774e9e8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f938774e9e8>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f8f37152688>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8f37133058>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f8f37133058>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fe676a3e990>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe673f7f088>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fe673f7f088>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc5851d9f28>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc5851b3760>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc5851b3760>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fbf0a8de570>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbf0a8bf508>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbf0a8bf508>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f95464c2600>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f95464a1ab8>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f95464a1ab8>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fbd125b6658>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbd125970f0>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fbd125970f0>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007fc3dd37e940>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc3dd369888>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007fc3dd369888>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f9e40011dd8>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9e3d7e3640>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f9e3d7e3640>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks
+ActiveMocker :: DEBUG :: default_scope called from class #<Module:0x007f90a032a680>::Micropost is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f90a030ab50>::Relationship is unknown and will not be available in mock.
+
+ActiveMocker :: DEBUG :: validates called from class #<Module:0x007f90a030ab50>::Relationship is unknown and will not be available in mock.
+
+saving mock Micropost to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock Relationship to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+saving mock User to /Users/zeisler/dev/active_mocker/sample_app_rails_4/spec/mocks
+Generated 3 of 3 mocks

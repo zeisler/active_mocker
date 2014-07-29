@@ -29,7 +29,7 @@ class Base
 
     private :records
 
-    delegate :count, :insert, :exists?, :to_a, :to => :records
+    delegate :insert, :exists?, :to_a, :to => :records
     delegate :first, :last, :to => :all
 
     # Delete an object (or multiple objects) that has the given id.

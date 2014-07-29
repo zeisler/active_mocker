@@ -95,6 +95,27 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
     expect(described_class.maximum(:credits).to_s).to eq "12.0"
   end
 
+  describe '::count' do
+
+    it 'the total count of all records' do
+      [described_class.create!(credits: 12, email: '1'),
+       described_class.create!(credits: 2, email: '2'),
+       described_class.create!(credits: 8, email: '3'),
+       described_class.create!(credits: 4, email: '4')]
+      expect(described_class.count).to eq 4
+
+    end
+
+    it 'returns the total count of all records where the attribute is present in database' do
+      [described_class.create!(credits: 12, email: '1'),
+       described_class.create!(credits: 2, email: '2'),
+       described_class.create!(credits: 8, email: '3'),
+       described_class.create!(credits: nil, email: '4')]
+      expect(described_class.count(:credits)).to eq 3
+    end
+
+  end
+
   it '::find_by' do
     expect(described_class.create(attributes)).to eq described_class.find_by(attributes)
   end

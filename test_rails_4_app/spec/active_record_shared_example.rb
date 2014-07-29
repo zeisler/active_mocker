@@ -277,6 +277,10 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
           expect(described_class.count).to eq 1
       end
 
+      it 'If a limit scope is supplied, +delete_all+ raises an ActiveMocker error:' do
+        expect{described_class.limit(100).delete_all}.to raise_error("delete_all doesn't support limit scope")
+      end
+
     end
 
     context 'where' do

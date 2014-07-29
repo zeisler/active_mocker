@@ -45,7 +45,7 @@ module Mock
     #   PersonMock.destroy_all(status: "inactive")
     #   PersonMock.where(age: 0..18).destroy_all
     #
-    # If a limit scope is supplied, +delete_all+ raises an ActiveRecord error:
+    # If a limit scope is supplied, +delete_all+ raises an ActiveMocker error:
     #
     #   Post.limit(100).delete_all
     #   # => ActiveMocker::Mock::Error: delete_all doesn't support limit scope

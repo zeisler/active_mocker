@@ -38,6 +38,24 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
 
   end
 
+  describe '::update' do
+
+    it 'Updates one record' do
+      user = described_class.create
+      described_class.update(user.id, name: 'Samuel')
+      expect(described_class.find(user.id).name).to eq 'Samuel'
+    end
+
+    it 'Updates multiple records' do
+      users = [described_class.create!(email: '1'),
+                described_class.create!(email: '2')]
+      people = {users.first.id => {"name" => "David"}, users.last.id => {"name" => "Jeremy"}}
+      described_class.update(people.keys, people.values)
+      expect(described_class.all.map(&:name)).to eq ["David", "Jeremy"]
+    end
+
+  end
+
   it '#attributes' do
     expect(described_class.new(attributes).attributes).to eq({"id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false})
   end

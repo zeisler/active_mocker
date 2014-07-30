@@ -1,5 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## 1.6.1 - 2014-07-30
+
+### Fix
+- In `experimental` features where variable name should of been a symbol.
+### Enhancement
+- `experimental` features: When assigning an association the record being associated will now try to either assign a has_many or has_one association onto the inputted record.
+
 ## 1.6 - 2014-07-29
 
 ### Enhancement

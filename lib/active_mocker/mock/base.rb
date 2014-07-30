@@ -215,8 +215,6 @@ class Base
     records.persisted?(id)
   end
 
-  def to_hash
-    attributes
   # Returns +true+ if the given attribute is in the attributes hash, otherwise +false+.
   #
   #   person = Person.new

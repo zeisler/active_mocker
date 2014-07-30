@@ -63,7 +63,7 @@ class MicropostMock < ActiveMocker::Mock::Base
 
   def user_id=(val)
     write_attribute(:user_id, val)
-    association = classes('User').try(:where, id: user_id).first
+    association = classes('User').try(:find_by, id: user_id)
     write_association(:user,association) unless association.nil?
   end
 

@@ -44,6 +44,16 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
       end
 
     end
+
+    describe '#new_record?' do
+
+      it 'Indicates if the model is persisted' do
+        expect(described_class.new.new_record?).to eq true
+        expect(described_class.create.new_record?).to eq false
+      end
+
+    end
+
   end
 
   describe '::create' do

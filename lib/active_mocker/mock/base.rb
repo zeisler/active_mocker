@@ -202,8 +202,9 @@ class Base
 
   delegate :[], :[]=, to: :attributes
 
+  # Returns true if this object hasn't been saved yet; otherwise, returns false.
   def new_record?
-    !records.new_record?(self)
+    records.new_record?(self)
   end
 
   # Indicates if the model is persisted. Default is +false+.

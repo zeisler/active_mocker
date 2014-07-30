@@ -177,10 +177,6 @@ class Base
 
   delegate :[], :[]=, to: :attributes
 
-  def reload
-    self
-  end
-
   def new_record?
     !records.new_record?(self)
   end

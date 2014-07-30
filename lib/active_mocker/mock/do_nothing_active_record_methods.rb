@@ -52,6 +52,10 @@ module DoNothingActiveRecordMethods
     false
   end
 
+  def reload
+    self
+  end
+
 end
 end
 end

@@ -8,6 +8,35 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
   let(:attributes) { {name: 'Dustin Zeisler', email: 'dustin@example.com'} }
   let(:attributes_with_admin) { {name: 'Dustin Zeisler', email: 'dustin@example.com', admin: true} }
 
+  describe 'instance only methods' do
+
+    describe '#attribute_names' do
+
+      it 'Returns an array of names for the attributes available on this object' do
+        expect(described_class.new.attribute_names).to eq ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
+      end
+
+    end
+
+    describe '#attribute_present?' do
+
+      it 'Returns true if the specified +attribute+ has been set and is neither nil nor empty?' do
+        expect(described_class.new(name: 'Dustin').attribute_present?(:name)).to eq true
+        expect(described_class.new.attribute_present?(:name)).to eq false
+      end
+
+    end
+
+    describe '#has_attribute?' do
+
+      it 'Returns true if the specified +attribute+ has been set and is neither nil nor empty?' do
+        expect(described_class.new.has_attribute?(:name)).to eq true
+        expect(described_class.new.has_attribute?(:last_name)).to eq false
+      end
+
+    end
+  end
+
   describe '::create' do
 
     let(:create_attributes) { attributes }

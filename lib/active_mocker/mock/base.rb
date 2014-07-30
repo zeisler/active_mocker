@@ -187,6 +187,39 @@ class Base
 
   def to_hash
     attributes
+  # Returns +true+ if the given attribute is in the attributes hash, otherwise +false+.
+  #
+  #   person = Person.new
+  #   person.has_attribute?(:name)    # => true
+  #   person.has_attribute?('age')    # => true
+  #   person.has_attribute?(:nothing) # => false
+  def has_attribute?(attr_name)
+    @attributes.has_key?(attr_name.to_s)
+  end
+
+  # Returns +true+ if the specified +attribute+ has been set and is neither +nil+ nor <tt>empty?</tt> (the latter only applies
+  # to objects that respond to <tt>empty?</tt>, most notably Strings). Otherwise, +false+.
+  # Note that it always returns +true+ with boolean attributes.
+  #
+  #   person = Task.new(title: '', is_done: false)
+  #   person.attribute_present?(:title)   # => false
+  #   person.attribute_present?(:is_done) # => true
+  #   person.name = 'Francesco'
+  #   person.is_done = true
+  #   person.attribute_present?(:title)   # => true
+  #   person.attribute_present?(:is_done) # => true
+  def attribute_present?(attribute)
+    value = read_attribute(attribute)
+    !value.nil? && !(value.respond_to?(:empty?) && value.empty?)
+  end
+
+  # Returns an array of names for the attributes available on this object.
+  #
+  #   person = Person.new
+  #   person.attribute_names
+  #   # => ["id", "created_at", "updated_at", "name", "age"]
+  def attribute_names
+    self.class.attribute_names
   end
 
   def inspect

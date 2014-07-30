@@ -23,7 +23,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Added documentation for many methods.
 - find_or_create_by/find_or_initialize_by now accessible from any collection.
-- Instance methods attribute_names, attribute_present?, has_attribute?
+- Instance methods `attribute_names`, `attribute_present?`, `has_attribute?`
 - Using `ActiveMocker::Mock.config.experimental = true`. This will turn on features that are not complete and may not work as expected, especially if you have complex relationships. This will activate the following features:
     - When passing in collection all item in collection will set its foreign key to the parent.
     - When setting association by object it will set the child association.

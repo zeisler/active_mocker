@@ -14,11 +14,36 @@ class Base
 
   class << self
 
+    # Creates an object (or multiple objects) and saves it to memory.
+    #
+    # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+    # attributes on the objects that are to be created.
+    #
+    # ==== Examples
+    #   # Create a single new object
+    #   User.create(first_name: 'Jamie')
+    #
+    #   # Create an Array of new objects
+    #   User.create([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+    #
+    #   # Create a single object and pass it into a block to set other attributes.
+    #   User.create(first_name: 'Jamie') do |u|
+    #     u.is_admin = false
+    #   end
+    #
+    #   # Creating an Array of new objects using a block, where the block is executed for each object:
+    #   User.create([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+    #     u.is_admin = false
+    #   end
     def create(attributes = {}, &block)
-      record = new
-      record.save
-      record.assign_attributes(attributes, &block)
-      record
+      if attributes.is_a?(Array)
+        attributes.collect { |attr| create(attr, &block) }
+      else
+        record = new
+        record.save
+        record.assign_attributes(attributes, &block)
+        record
+      end
     end
 
     alias_method :create!, :create

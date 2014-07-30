@@ -93,6 +93,7 @@ class Base
 
     alias_method :destroy_all, :delete_all
 
+    # @api private
     def from_limit?
       false
     end
@@ -153,6 +154,7 @@ class Base
     assign_attributes(attributes)
   end
 
+  # @api private
   def assign_attributes(new_attributes, &block)
     yield self if block_given?
     unless new_attributes.respond_to?(:stringify_keys)
@@ -280,10 +282,12 @@ class Base
       @attributes[attr] = types[attr].coerce(value)
     end
 
+    # @api private
     def read_association(attr)
       @associations[attr]
     end
 
+    # @api private
     def write_association(attr, value)
       @associations[attr] = value
     end

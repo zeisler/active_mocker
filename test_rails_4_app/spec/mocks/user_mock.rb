@@ -121,9 +121,10 @@ class UserMock < ActiveMocker::Mock::Base
   def account=(val)
     @associations['account'] = val
     if ActiveMocker::Mock.config.experimental
-      account.send(:write_association, user,  self) if val.respond_to?(:user=)
+      account.users <<  self if val.respond_to?(:users=)
+      account.send(:write_association, :user,  self) if val.respond_to?(:user=)
     end
-    account
+    val
   end
 
   def build_account(attributes={}, &block)

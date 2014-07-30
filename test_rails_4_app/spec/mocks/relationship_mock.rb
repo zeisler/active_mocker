@@ -94,7 +94,8 @@ class RelationshipMock < ActiveMocker::Mock::Base
     @associations[:follower] = val
     write_attribute(:follower_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
     if ActiveMocker::Mock.config.experimental
-      val.relationships << self if val.respond_to?(:relationships)
+      val.relationships << self if val.respond_to?(:relationships=)
+      val.relationship = self if val.respond_to?(:relationship=)
     end
     val
   end
@@ -118,7 +119,8 @@ class RelationshipMock < ActiveMocker::Mock::Base
     @associations[:followed] = val
     write_attribute(:followed_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
     if ActiveMocker::Mock.config.experimental
-      val.relationships << self if val.respond_to?(:relationships)
+      val.relationships << self if val.respond_to?(:relationships=)
+      val.relationship = self if val.respond_to?(:relationship=)
     end
     val
   end

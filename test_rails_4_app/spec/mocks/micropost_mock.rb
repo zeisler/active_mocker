@@ -104,7 +104,8 @@ class MicropostMock < ActiveMocker::Mock::Base
     @associations[:user] = val
     write_attribute(:user_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
     if ActiveMocker::Mock.config.experimental
-      val.microposts << self if val.respond_to?(:microposts)
+      val.microposts << self if val.respond_to?(:microposts=)
+      val.micropost = self if val.respond_to?(:micropost=)
     end
     val
   end

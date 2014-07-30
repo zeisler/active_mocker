@@ -73,7 +73,8 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
     @associations[:<%= meth.name %>] = val
     write_attribute(:<%= meth.foreign_key %>, val.id) if val.respond_to?(:persisted?) && val.persisted?
     if ActiveMocker::Mock.config.experimental
-      val.<%= class_name.tableize %> << self if val.respond_to?(:<%= class_name.tableize %>)
+      val.<%= class_name.tableize %> << self if val.respond_to?(:<%= class_name.tableize %>=)
+      val.<%= class_name.tableize.singularize %> = self if val.respond_to?(:<%= class_name.tableize.singularize %>=)
     end
     val
   end
@@ -104,9 +105,10 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
   def <%= meth.name %>=(val)
     @associations['<%= meth.name %>'] = val
     if ActiveMocker::Mock.config.experimental
-      <%= meth.name %>.send(:write_association, <%= class_name.tableize.singularize %>,  self) if val.respond_to?(:<%= class_name.tableize.singularize %>=)
+      <%= meth.name %>.<%= class_name.tableize %> <<  self if val.respond_to?(:<%= class_name.tableize %>=)
+      <%= meth.name %>.send(:write_association, :<%= class_name.tableize.singularize %>,  self) if val.respond_to?(:<%= class_name.tableize.singularize %>=)
     end
-    <%= meth.name %>
+    val
   end
 
   def build_<%= meth.name %>(attributes={}, &block)

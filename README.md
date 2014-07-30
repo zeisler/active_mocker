@@ -5,7 +5,7 @@
 [![Dependency Status](https://gemnasium.com/zeisler/active_mocker.svg)](https://gemnasium.com/zeisler/active_mocker)
 [![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.png)](https://gitter.im/zeisler/active_mocker)
 
-ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. The mock can be run by themselves and run with a partial implementation of ActiveRecord. Mocks are regenerated when the schema is modified so your mocks will not go stale. Preventing the case where your units tests pass but production code is failing.
+ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an Unimplemented error when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.
 
 Examples from a real apps
 
@@ -138,7 +138,7 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 
     person = Person.new( first_name:  "Dustin", 
     							  last_name:   "Zeisler", 
-    							  account:      AccountMock.new )
+    							  account:      Account.new )
         => "#<PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler, address: nil, city: nil>"
 
      person.first_name

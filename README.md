@@ -263,6 +263,9 @@ Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state
     ActiveMocker::LoadedMocks.delete_all
 
 ### ActiveRecord supported methods
+
+See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker) for a complete list of methods and usage.
+
 **class methods**
 
   * new
@@ -271,6 +274,7 @@ Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state
   * delete_all/destroy_all
   
 **Query Methods**
+
   * all
   * find
   * find_by/find_by!
@@ -316,6 +320,9 @@ Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state
   * new_record?
   * persisted?
   * reload
+  * attribute_names
+  * attribute_present?
+  * has_attribute?
 
 **has_one/belongs_to/has_many**
 

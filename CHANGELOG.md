@@ -1,5 +1,30 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## 1.6 - 2014-07-29
+
+### Enhancement
+- When calling limit and then delete_all will raises an ActiveMocker error:
+- When mass assignment an unknown attribute the error message will mirror ActiveRecord.
+- `where` can now accept a range instead of just an array as a value.
+- `update` can update multiple records.
+- `delete` can take an array or an integer
+- `find` will now raise RecordNotFound
+- `count` can now take an attribute name and will return the total count of records where the attribute is present.
+- `create` now supports creating multiple records at once.
+
+### Added
+- Added documentation for many methods.
+- find_or_create_by/find_or_initialize_by now accessible from any collection.
+- Instance methods attribute_names, attribute_present?, has_attribute?
+- Using `ActiveMocker::Mock.config.experimental = true`. This will turn on features that are not complete and may not work as expected, especially if you have complex relationships. This will activate the following features:
+    - When passing in collection all item in collection will set its foreign key to the parent.
+    - When setting association by object it will set the child association.
+
+### Fixed
+- `new_record?` would return the opposite of the truth.
+- Remove method `to_hash` because it is unsupported in ActiveRecord.
+- Requiring `active_mocker/rspec_helper` will now require loaded_mocks class. If no mocks were required the constant lookup would fails.
+- When a model is deleted the mock file will not linger and letting tests pass.
 
 ## 1.5.2 - 2014-07-14
 

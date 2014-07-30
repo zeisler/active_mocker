@@ -206,6 +206,10 @@ class Base
     !records.new_record?(self)
   end
 
+  # Indicates if the model is persisted. Default is +false+.
+  #
+  #  person = Person.new(id: 1, name: 'bob')
+  #  person.persisted? # => false
   def persisted?
     records.persisted?(id)
   end
@@ -263,10 +267,16 @@ class Base
 
   module PropertiesGetterAndSetter
 
+    # Returns the value of the attribute identified by <tt>attr_name</tt> after
+    # it has been typecast (for example, "2004-12-12" in a date column is cast
+    # to a date object, like Date.new(2004, 12, 12))
     def read_attribute(attr)
       @attributes[attr]
     end
 
+    # Updates the attribute identified by <tt>attr_name</tt> with the
+    # specified +value+. Empty strings for fixnum and float columns are
+    # turned into +nil+.
     def write_attribute(attr, value)
       @attributes[attr] = types[attr].coerce(value)
     end

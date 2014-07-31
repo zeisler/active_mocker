@@ -71,6 +71,10 @@ Or install it yourself as:
 
 ## Setup
 
+
+  See [example_rails_app](https://github.com/zeisler/active_mocker/tree/master/example_rails_app) for complete setup.
+
+
 ### Generate Mocks
 
 Running this rake task builds/rebuilds the mocks. It will be ran automatically after every schema modification. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.

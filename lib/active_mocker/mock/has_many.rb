@@ -25,9 +25,8 @@ module Mock
       end
     end
 
-    private
+    # @api private
     attr_reader :relation_class, :foreign_key, :foreign_id
-    public
 
     def build(options={}, &block)
       new_record = relation_class.new(init_options.merge!(options), &block)
@@ -54,11 +53,10 @@ module Mock
 
     alias_method :create!, :create
 
+    # @api private
     def init_options
       {foreign_key => foreign_id}
     end
-
-    private :init_options
 
   end
 

@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'active_support/core_ext'
 require 'lib/subscribe_user'
 require 'spec/mocks/user_mock'
 require 'spec/mocks/subscription_mock'

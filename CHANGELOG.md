@@ -1,5 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## 1.6.2 - 2014-07-31
+
+## Fix 
+- Ruby interpreter warnings
+- calling `#blank?` inside of `Base#assign_attributes` would get a no method error. Solution is to require ‘active_support/core_ext’ in mock.rb.
 
 ## 1.6.1 - 2014-07-30
 

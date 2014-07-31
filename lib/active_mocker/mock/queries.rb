@@ -317,5 +317,5 @@ module Mock
 
   end
 
-  end
+end
 end

@@ -10,11 +10,18 @@ RSpec.describe SubscribeUser, active_mocker:true do
   subject{ described_class.new(user: user) }
 
   describe 'with_yearly' do
-    it { subject.with_yearly }
+    it {
+      subject.with_yearly
+      expect(Subscription.where(user: user, type: 'yearly').count).to eq 1
+    }
   end
 
   describe 'with_monthly' do
-    it { subject.with_monthly }
+    it {
+      subject.with_monthly
+      expect(Subscription.where(user: user, type: 'monthly').count).to eq 1
+
+    }
   end
 
 end

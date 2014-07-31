@@ -8,13 +8,13 @@ RSpec.configure do |config|
   end
 
   config.before(:each, active_mocker: true) do
-    unless ENV['RUN_WITH_RAILS'] && self.class.metadata[:rails_compatible]
+    unless  ENV['RUN_WITH_RAILS'] && self.class.metadata[:rails_compatible]
       ActiveMocker::LoadedMocks.class_name_to_mock.each { |class_name, mock| stub_const(class_name, mock) }
     end
   end
 
-  config.after(:all, active_mock:true) do
-    ActiveMocker::LoadedMocks.clear_all
+  config.after(:all) do
+    ActiveMocker::LoadedMocks.clear_all if self.class.metadata[:active_mocker]
   end
 
 end

@@ -1,37 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>Active mocker by zeisler</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>Active mocker by zeisler</title>
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
+    <div class="wrapper">
+      <header>
+        <h1>Active mocker</h1>
+        <p>Create mocks from active record models without loading rails or running a database.</p>
 
-        <header>
-          <h1>Active mocker</h1>
-          <h2>Create mocks from active record models without loading rails or running a database.</h2>
-        </header>
+        <p class="view"><a href="https://github.com/zeisler/active_mocker">View the Project on GitHub <small>zeisler/active_mocker</small></a></p>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/zeisler/active_mocker/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/zeisler/active_mocker/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/zeisler/active_mocker" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
 
-        <hr>
-
-        <section id="main_content">
-          <h1>
+        <ul>
+          <li><a href="https://github.com/zeisler/active_mocker/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/zeisler/active_mocker/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/zeisler/active_mocker">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
 <a name="activemocker" class="anchor" href="#activemocker"><span class="octicon octicon-link"></span></a>ActiveMocker</h1>
 
 <p><a href="http://badge.fury.io/rb/active_mocker"><img src="https://badge.fury.io/rb/active_mocker.svg" alt="Gem Version"></a>
@@ -40,7 +37,7 @@
 <a href="https://gemnasium.com/zeisler/active_mocker"><img src="https://gemnasium.com/zeisler/active_mocker.svg" alt="Dependency Status"></a>
 <a href="https://gitter.im/zeisler/active_mocker"><img src="https://badges.gitter.im/zeisler/active_mocker.png" alt="Gitter chat"></a></p>
 
-<p>ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema definition and the defined methods on a model then saves a ruby file that can be included within a test. The mock can be run by themselves and run with a partial implementation of ActiveRecord. Mocks are regenerated when the schema is modified so your mocks will not go stale. Preventing the case where your units tests pass but production code is failing.</p>
+<p>ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an Unimplemented error when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.</p>
 
 <p>Examples from a real apps</p>
 
@@ -107,6 +104,8 @@
 <li>Requires Ruby MRI =&lt; 2.1.</li>
 </ul><h2>
 <a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>See <a href="https://github.com/zeisler/active_mocker/tree/master/example_rails_app">example_rails_app</a> for complete setup.</p>
 
 <h3>
 <a name="generate-mocks" class="anchor" href="#generate-mocks"><span class="octicon octicon-link"></span></a>Generate Mocks</h3>
@@ -175,7 +174,7 @@ end
 
 person = Person.new( first_name:  "Dustin", 
                               last_name:   "Zeisler", 
-                              account:      AccountMock.new )
+                              account:      Account.new )
     =&gt; "#&lt;PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler, address: nil, city: nil&gt;"
 
  person.first_name
@@ -308,6 +307,8 @@ end
 <h3>
 <a name="activerecord-supported-methods" class="anchor" href="#activerecord-supported-methods"><span class="octicon octicon-link"></span></a>ActiveRecord supported methods</h3>
 
+<p>See <a href="http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker">Documentation</a> for a complete list of methods and usage.</p>
+
 <p><strong>class methods</strong></p>
 
 <ul>
@@ -364,6 +365,9 @@ end
 <li>new_record?</li>
 <li>persisted?</li>
 <li>reload</li>
+<li>attribute_names</li>
+<li>attribute_present?</li>
+<li>has_attribute?</li>
 </ul><p><strong>has_one/belongs_to/has_many</strong></p>
 
 <ul>
@@ -410,15 +414,13 @@ end
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
 </ol>
-        </section>
-
-        <footer>
-          Active mocker is maintained by <a href="https://github.com/zeisler">zeisler</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/zeisler">zeisler</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>

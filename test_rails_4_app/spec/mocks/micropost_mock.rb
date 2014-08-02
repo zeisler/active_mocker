@@ -1,5 +1,4 @@
 require 'active_mocker/mock'
-Object.send(:remove_const, "MicropostMock") if Object.const_defined?("MicropostMock")
 
 class MicropostMock < ActiveMocker::Mock::Base
   MAGIC_ID_NUMBER = 90

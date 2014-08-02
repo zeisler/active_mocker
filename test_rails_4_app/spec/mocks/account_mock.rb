@@ -1,5 +1,4 @@
 require 'active_mocker/mock'
-Object.send(:remove_const, "AccountMock") if Object.const_defined?("AccountMock")
 
 class AccountMock < ActiveMocker::Mock::Base
 

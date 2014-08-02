@@ -1,5 +1,4 @@
 require 'active_mocker/mock'
-Object.send(:remove_const, "<%= class_name + @mock_append_name %>") if Object.const_defined?("<%= class_name + @mock_append_name %>")
 
 class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
 <% constants.each do |constant| -%>

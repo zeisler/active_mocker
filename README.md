@@ -37,7 +37,7 @@ Examples from a real apps
 
 ---------------------------
 
-## Documentation
+## Documentation [![Inline docs](http://inch-ci.org/github/zeisler/active_mocker.png?branch=master)](http://inch-ci.org/github/zeisler/active_mocker)
 
 [rdoc](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker)
 

@@ -35,20 +35,22 @@ module ActiveMocker
       def run
         model_schemas = models.map do |model_name|
 
-          model      = get_model(model_name)
+          model = get_model(model_name)
           next if model == false
-          table      = get_table(model, model_name)
-          attributes = build_attributes(table.fields, primary_key(table.fields, model))
+          table = get_table(model, model_name)
+          table_name = model_name
+          attributes = []
+          attributes = build_attributes(table.fields, primary_key(table.fields, model)) unless table.nil?
 
           increment_progress
 
-          ModelSchema.new(class_name:    model_name.camelize,
-                          table_name:    table.name,
-                          attributes:    attributes,
-                          methods:       build_methods(model),
+          ModelSchema.new(class_name: model_name.camelize,
+                          table_name: table_name,
+                          attributes: attributes,
+                          methods: build_methods(model),
                           relationships: build_relationships(model),
-                          constants:     model.constants,
-                          modules:       model.modules)
+                          constants: model.constants,
+                          modules: model.modules)
 
         end
 

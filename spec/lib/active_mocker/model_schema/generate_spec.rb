@@ -21,7 +21,7 @@ describe ActiveMocker::ModelSchema::Generate do
 
   it 'test' do
     result = described_class.new(schema_file: schema_file, models_dir: models_dir, logger: UnitLogger.unit).run
-    expect(result.count).to eq 4
+    expect(result.count).to eq 5
   end
 
   it 'relationships' do
@@ -46,11 +46,11 @@ describe ActiveMocker::ModelSchema::Generate do
   end
 
   it 'constants' do
-    expect(run[1].constants).to eq({:MAGIC_ID_NUMBER => 90, :MAGIC_ID_STRING => "F-1"})
+    expect(run[2].constants).to eq({:MAGIC_ID_NUMBER => 90, :MAGIC_ID_STRING => "F-1"})
   end
 
   it 'modules' do
-    expect(run[1].modules).to eq({:included => ['PostMethods'], :extended => ['PostMethods']})
+    expect(run[2].modules).to eq({:included => ['PostMethods'], :extended => ['PostMethods']})
   end
 
   it 'attributes' do

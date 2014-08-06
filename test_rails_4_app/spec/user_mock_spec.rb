@@ -84,27 +84,13 @@ describe UserMock do
 
     it 'can be implemented dynamically' do
 
-      UserMock.mock_instance_method(:follow!) do  |other_user|
+      allow_any_instance_of(UserMock).to receive(:follow!) do |this, other_user|
         "Now implemented with #{other_user}"
       end
       result = UserMock.new
       result = result.follow!('foo')
       expect(result).to eq "Now implemented with foo"
 
-    end
-
-    it 'can not reference another method within the mock' do
-
-      UserMock.mock_instance_method(:following?) do  |person|
-        true
-      end
-
-      UserMock.mock_instance_method(:follow!) do |person|
-        following?(person)
-      end
-
-      expect{UserMock.new.follow!("name") }.to raise_error
-      expect(UserMock.new.following?(1)).to eq true
     end
 
   end
@@ -117,7 +103,7 @@ describe UserMock do
 
     it 'can be implemented as follows' do
 
-      UserMock.mock_class_method(:new_remember_token) do
+      allow(UserMock).to receive(:new_remember_token) do
         "Now implemented"
       end
       expect{UserMock.new_remember_token}.to_not raise_error

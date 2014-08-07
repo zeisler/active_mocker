@@ -8,24 +8,10 @@ describe ActiveMocker::Generate do
   let(:app_root){ File.expand_path('../../../../', __FILE__)}
   let(:mock_dir){ File.join(app_root, 'test_rails_4_app/spec/mocks')}
 
-  before(:each) do
-    ActiveMocker.config do |config|
-      config.schema_file = File.join(app_root, 'test_rails_4_app/db/schema.rb')
-      config.model_dir   = File.join(app_root, 'test_rails_4_app/app/models')
-      config.mock_dir    = mock_dir
-      config.logger      = UnitLogger
-    end
-
-    FileUtils.rm_rf mock_dir
-
-  end
-
-  subject{described_class.new(silence: true)}
-
   describe 'new' do
 
     before(:each) do
-      subject
+      `cd test_rails_4_app && bundle exec rake active_mocker:build`
     end
 
     it 'generates all mocks files' do

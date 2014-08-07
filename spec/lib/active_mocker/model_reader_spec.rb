@@ -4,8 +4,8 @@ require 'active_support/core_ext/hash/indifferent_access'
 require 'singleton'
 require 'logger'
 require 'active_mocker/logger'
-require 'string_reader'
-require 'file_reader'
+require 'active_mocker/string_reader'
+require 'active_mocker/file_reader'
 require 'active_mocker/logger'
 require 'active_mocker/active_record'
 require 'active_mocker/model_reader'
@@ -215,6 +215,64 @@ describe ActiveMocker::ModelReader do
       expect(search.relationships_types.belongs_to.first.name).to eq :zip_code
       expect(subject.instance_methods).to eq([:full_name])
       expect(subject.instance_methods_with_arguments).to eq([{:full_name=>[[:req, :first_name], [:req, :last_name]]}])
+    end
+
+  end
+
+  context 'parent child', pending:true do
+
+    let(:example_model) {
+      module ActiveMocker
+        # @api private
+        class StringReader2
+
+          attr_accessor :reader
+          def initialize(child)
+            @reader = {child: child}
+          end
+
+          def read(path)
+            @reader[Pathname.new(path).basename.sub('.rb', '').to_s.to_sym]
+          end
+        end
+
+      end
+
+
+      reader = ActiveMocker::StringReader2.new(<<-eos
+            class Child < Parent
+
+              def child_method
+
+              end
+
+              scope :scoped_method, -> {}
+
+            end
+      eos
+      )
+
+      reader.reader[:parent] = <<-eos
+            class Parent < ActiveRecord::Base
+
+              belongs_to :zip_code
+
+              def full_name(first_name, last_name)
+
+              end
+
+            end
+      eos
+      reader
+    }
+
+    let(:subject) { described_class.new({model_dir: File.expand_path('../../', __FILE__), file_reader: example_model}) }
+
+    let(:search) { subject.parse('child') }
+
+    it 'let not read a file but return a string instead to be evaluated' do
+      expect(search.instance_methods).to eq([:child_method, :full_name])
+      expect(search.scopes).to eq([:scoped_method])
     end
 
   end

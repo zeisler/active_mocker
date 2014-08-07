@@ -1,5 +1,7 @@
+
 module ActiveMocker
   # @api private
+
   class ModelReader
 
     attr_reader :model_name, :model_dir, :file_reader
@@ -12,7 +14,7 @@ module ActiveMocker
     def parse(model_name)
       @model_name = model_name
       klass
-      return self unless @klass == false
+      return self if @klass
       return false
     end
 
@@ -25,31 +27,41 @@ module ActiveMocker
         begin
           m = Module.new
           m.module_eval(read_file, file_path)
+          _klass = m.const_get(m.constants.last)
         rescue SyntaxError => e
-          Logger.error "ActiveMocker :: Error loading Model: #{model_name} \n \t\t\t\t\t\t\t\t`#{e}` \n"
-          puts "ActiveMocker :: Error loading Model: #{model_name} \n \t\t\t\t\t\t\t\t`#{e}` \n"
-          Logger.error "\t\t\t\t\t\t\t\t #{file_path}\n"
-          puts "\t\t\t\t\t\t\t\t #{file_path}\n"
+          log_loading_error(e, true)
           failure = true
         rescue Exception => e
-          Logger.error "ActiveMocker :: Error loading Model: #{model_name} \n \t\t\t\t\t\t\t\t`#{e}` \n"
-          Logger.error "\t\t\t\t\t\t\t\t #{file_path}\n"
+          log_loading_error(e, false)
           failure = true
         end
-      return m.const_get m.constants.first unless failure
-      return false
+
+      return false if _klass.nil? || failure
+
+      if _klass.superclass != ActiveMocker::ActiveRecord::Base
+        log_loading_error("Single Table inheritance not supported yet.\n\tFor more info: https://github.com/zeisler/active_mocker/issues/10", true)
+        return false
+      end
+       _klass
+    end
+
+    def log_loading_error(msg, print_to_stdout=false)
+      main = "ActiveMocker :: Error loading Model: #{model_name} \n\t#{msg}\n"
+      file = "\t#{file_path}\n"
+      Logger.error main + file
+      print main + file if print_to_stdout
     end
 
     def real
       model_name.classify.constantize
     end
 
-    def read_file
-      file_reader.read(file_path)
+    def read_file(m_name=model_name)
+      file_reader.read(file_path(m_name))
     end
 
-    def file_path
-      "#{model_dir}/#{model_name}.rb"
+    def file_path(m_name=model_name)
+      "#{model_dir}/#{m_name}.rb"
     end
 
     def class_methods
@@ -74,12 +86,14 @@ module ActiveMocker
 
     def instance_methods_with_arguments
       instance_methods.map do |m|
-        {m => klass.new.method(m).parameters }
+        {m => klass.instance_method(m).parameters }
       end
     end
 
     def instance_methods
-      klass.public_instance_methods(false)
+      methods = klass.public_instance_methods(false)
+      methods << klass.superclass.public_instance_methods(false) if klass.superclass != ActiveRecord::Base
+      methods.flatten
     end
 
     def relationships_types

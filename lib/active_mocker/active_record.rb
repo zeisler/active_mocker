@@ -33,6 +33,7 @@ module ActiveMocker
       class ConstMissing
 
         def self.const_missing(name)
+          Logger.debug "ActiveMocker :: Debug :: const_missing #{name} from class #{self.name}.\n\t\t\t\t\t\t\t\t#{caller}\n"
           self.const_set name, Class.new(ConstMissing)
         end
 

@@ -13,11 +13,11 @@ module ActiveMocker
     end
 
     def class_name
-      Unparser.unparse(ast.to_a[0])
+      Unparser.unparse(find_class.to_a[0])
     end
 
     def parent_class_name
-      Unparser.unparse(ast.to_a[1])
+      Unparser.unparse(find_class.to_a[1])
     end
 
     def has_parent_class?
@@ -42,6 +42,11 @@ module ActiveMocker
         new_ast = ast.updated(nil, nodes, nil)
       end
       Unparser.unparse(new_ast)
+    end
+
+    def find_class
+      return ast if ast.type == :class
+      ast.to_a.select {|n| n.type == :class}.first
     end
 
     def ast

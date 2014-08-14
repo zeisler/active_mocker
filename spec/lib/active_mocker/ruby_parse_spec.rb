@@ -9,6 +9,7 @@ describe ActiveMocker::RubyParse do
 
     it 'returns the parent class as a symbol' do
       subject = described_class.new <<-RUBY
+      require 'uri-open'
       class A < B
         def method
         end
@@ -23,6 +24,7 @@ describe ActiveMocker::RubyParse do
 
     it 'returns the parent class as a symbol' do
       subject = described_class.new <<-RUBY
+      require 'uri-open'
       class A < B
         def method
         end

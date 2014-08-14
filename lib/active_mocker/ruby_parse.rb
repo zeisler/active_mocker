@@ -21,8 +21,8 @@ module ActiveMocker
     end
 
     def has_parent_class?
-      return false if ast.to_a[1].nil?
-      ast.to_a[1].type == :const
+      return false if find_class.nil?
+      find_class.to_a[1].try(:type) == :const
     end
 
     def change_class_name(class_name)
@@ -35,8 +35,9 @@ module ActiveMocker
     def modify_parent_class(parent_class)
       reset_nodes
       if has_parent_class?
-        nodes[1] = Parser::CurrentRuby.parse(parent_class)
-        new_ast = ast.updated(nil, nodes, nil)
+        class_node = find_class.to_a.dup
+        class_node[1] = Parser::CurrentRuby.parse(parent_class)
+        new_ast = find_class.updated(nil, class_node, nil)
       else
         nodes[1] = nodes[0].updated(:const, [nil, parent_class.to_sym])
         new_ast = ast.updated(nil, nodes, nil)
@@ -45,8 +46,8 @@ module ActiveMocker
     end
 
     def find_class
-      return ast if ast.type == :class
-      ast.to_a.select {|n| n.type == :class}.first
+      return ast if ast.try(:type) == :class
+      ast.to_a.select {|n| n.try(:type) == :class}.first
     end
 
     def ast

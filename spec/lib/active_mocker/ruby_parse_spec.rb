@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'parser/current'
 require 'unparser'
 require 'lib/active_mocker/ruby_parse'
+require 'active_support/core_ext/object/try'
 
 describe ActiveMocker::RubyParse do
 
@@ -10,6 +11,7 @@ describe ActiveMocker::RubyParse do
     it 'returns the parent class as a symbol' do
       subject = described_class.new <<-RUBY
       require 'uri-open'
+
       class A < B
         def method
         end
@@ -47,7 +49,16 @@ describe ActiveMocker::RubyParse do
 
   describe '#has_parent_class?' do
 
-    it 'has no parent class' do
+    it 'has parent class' do
+      subject = described_class.new <<-RUBY
+      require 'uri-open'
+      class A < B
+        def method
+        end
+      end
+      RUBY
+      expect(subject.has_parent_class?).to eq true
+
       subject = described_class.new <<-RUBY
       class A < B
         def method
@@ -57,8 +68,9 @@ describe ActiveMocker::RubyParse do
       expect(subject.has_parent_class?).to eq true
     end
 
-    it 'has parent class' do
+    it 'has no parent class' do
       subject = described_class.new <<-RUBY
+      require 'uri-open'
       class A
         def method
         end
@@ -66,6 +78,13 @@ describe ActiveMocker::RubyParse do
       RUBY
       expect(subject.has_parent_class?).to eq false
 
+      subject = described_class.new <<-RUBY
+      class A
+        def method
+        end
+      end
+      RUBY
+      expect(subject.has_parent_class?).to eq false
     end
 
     it 'its not a class' do
@@ -84,6 +103,15 @@ describe ActiveMocker::RubyParse do
 
     it 'will change parent class const' do
       subject = described_class.new <<-RUBY
+      class A < B
+        def method(name:)
+        end
+      end
+      RUBY
+      expect(subject.modify_parent_class('C')).to eq "class A < C\n  def method(name:)\n  end\nend"
+
+      subject = described_class.new <<-RUBY
+      require 'uri-open'
       class A < B
         def method(name:)
         end

@@ -258,7 +258,7 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 
 
 ### Scoped Methods 
-* As long the mock file that holds the scope method is required it will be available but implemented.
+* As long the mock file that holds the scope method is required it will be available but raise an `unimplemented error` when called.
 
 ### Managing Mocks  
 

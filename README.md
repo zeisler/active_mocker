@@ -258,7 +258,7 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 
 
 ### Scoped Methods 
-* As long the mock file that holds the scope method is required it will be available but implemented.
+* As long the mock file that holds the scope method is required it will be available but raise an `unimplemented error` when called.
 
 ### Managing Mocks  
 
@@ -345,9 +345,9 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
 * Whatever associations are setup in one mock object will not be reflected in any other objects. 
-    * There partial support for this feature coming in v1.6 when `ActiveMocker::Mock.config.experimental = true` is set. 
+    * There's partial support for it to work more like ActiveRecord in v1.6 when `ActiveMocker::Mock.config.experimental = true` is set. When v1.7 comes out these features will be moved out of experimantal.
 
-* Validation are not present in mocks.
+* Validation/Callbacks are not present in mocks. A Work around is putting the method into a module with required ActiveSupport/ActiveModel dependencies and make sure the code is supported by the mock. 
 * Sql queries, joins, etc will never be supported.
 
 ## Inspiration

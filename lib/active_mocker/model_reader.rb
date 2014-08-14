@@ -19,30 +19,44 @@ module ActiveMocker
     end
 
     def klass
-      @klass ||= eval_file
+      @klass ||= eval_file(sandbox_model, file_path)
     end
 
-    def eval_file
-      failure = false
-        begin
-          m = Module.new
-          m.module_eval(read_file, file_path)
-          _klass = m.const_get(m.constants.last)
-        rescue SyntaxError => e
-          log_loading_error(e, true)
-          failure = true
-        rescue Exception => e
-          log_loading_error(e, false)
-          failure = true
-        end
-
-      return false if _klass.nil? || failure
-
-      if _klass.superclass != ActiveMocker::ActiveRecord::Base
-        log_loading_error("Single Table inheritance not supported yet.\n\tFor more info: https://github.com/zeisler/active_mocker/issues/10", true)
-        return false
+    def sandbox_model
+      source = ActiveMocker::RubyParse.new(read_file)
+      if source.has_parent_class? && source.parent_class_name == 'ActiveRecord::Base'
+        source.modify_parent_class('ActiveMocker::ActiveRecord::Base')
+      else
+        load_parent_class(source.parent_class_name)
+        read_file
       end
-       _klass
+    end
+
+    def load_parent_class(class_name)
+      file_name = class_name.tableize.singularize
+      source = ActiveMocker::RubyParse.new(read_file(file_name)).modify_parent_class('ActiveMocker::ActiveRecord::Base')
+      eval_file(source, file_path(file_name))
+    end
+
+    def module_namespace
+      @module ||= Module.new
+    end
+
+    def eval_file(string, file_path)
+      failure = false
+      begin
+
+        module_namespace.module_eval(string, file_path)
+        _klass = module_namespace.const_get(module_namespace.constants.last)
+      rescue SyntaxError => e
+        log_loading_error(e, true)
+        failure = true
+      rescue Exception => e
+        log_loading_error(e, false)
+        failure = true
+      end
+      return false if failure
+      _klass
     end
 
     def log_loading_error(msg, print_to_stdout=false)

@@ -1,15 +1,17 @@
-require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
+require 'spec_helper'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'singleton'
 require 'logger'
-require 'active_mocker/logger'
-require 'active_mocker/string_reader'
-require 'active_mocker/file_reader'
-require 'active_mocker/logger'
-require 'active_mocker/active_record'
-require 'active_mocker/model_reader'
-require 'active_mocker/reparameterize'
+require 'lib/active_mocker/logger'
+require 'lib/active_mocker/string_reader'
+require 'lib/active_mocker/file_reader'
+require 'lib/active_mocker/logger'
+require 'lib/active_mocker/active_record'
+require 'lib/active_mocker/model_reader'
+require 'lib/active_mocker/reparameterize'
+require 'parser/current'
+require 'unparser'
+require 'lib/active_mocker/ruby_parse'
 require_relative '../../unit_logger'
 
 describe ActiveMocker::ModelReader do
@@ -219,7 +221,7 @@ describe ActiveMocker::ModelReader do
 
   end
 
-  context 'parent child', pending:true do
+  context 'parent child', pending:false do
 
     let(:example_model) {
       module ActiveMocker
@@ -272,7 +274,7 @@ describe ActiveMocker::ModelReader do
 
     it 'let not read a file but return a string instead to be evaluated' do
       expect(search.instance_methods).to eq([:child_method, :full_name])
-      expect(search.scopes).to eq([:scoped_method])
+      expect(search.scopes.keys).to eq([:scoped_method])
     end
 
   end

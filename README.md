@@ -347,7 +347,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 * Whatever associations are setup in one mock object will not be reflected in any other objects. 
     * There's partial support for it to work more like ActiveRecord in v1.6 when `ActiveMocker::Mock.config.experimental = true` is set. When v1.7 comes out these features will be moved out of experimantal.
 
-* Validation are not present in mocks.
+* Validation/Callbacks are not present in mocks. A Work around is putting the method into a module with required ActiveSupport/ActiveModel dependencies and make sure the code is supported by the mock. 
 * Sql queries, joins, etc will never be supported.
 
 ## Inspiration

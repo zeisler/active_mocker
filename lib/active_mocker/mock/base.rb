@@ -256,16 +256,6 @@ class Base
     ObjectInspect.new(self.class.name, attributes).to_s
   end
 
-  def hash
-    attributes.hash
-  end
-
-  def ==(obj)
-    return false if obj.nil?
-    return hash == obj.attributes.hash if obj.respond_to?(:attributes)
-    hash == obj.hash if obj.respond_to?(:hash)
-  end
-
   module PropertiesGetterAndSetter
 
     # Returns the value of the attribute identified by <tt>attr_name</tt> after

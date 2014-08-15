@@ -99,7 +99,8 @@ class Base
     end
 
     def build_type(type)
-      Virtus::Attribute.build(type)
+      @@built_types ||= {}
+      @@built_types[type] ||= Virtus::Attribute.build(type)
     end
 
     def classes(klass)

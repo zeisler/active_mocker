@@ -27,7 +27,7 @@ module ActiveMocker
         if selected_table.nil?
           Logger.error "The Implicit or defined table, `#{table_name}`, can not be found for model #{model_name.camelize}."
         end
-        tables.delete(selected_table)
+        # tables.delete(selected_table)
         selected_table
       end
 

@@ -1,5 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## 1.6.3 - 2014-08-14
+
+### Fix
+- Remove check for object is defined and then deleting, it is no longer needed there are better ways to manage clearing state.
+- `rake active_mock:build` failed parsing when an ActiveRecord Model had no table, example where `self.abstract_class = true` was set.
+- `rake active_mock:build` failed for STI models.
+
+###Enhancement
+- Removing methods `#hash` and `==` and using Ruby defaults gives modest performance improvements.
+- Cache build_types object for small performance improvements. 
+
 ## 1.6.2 - 2014-07-31
 
 ## Fix 

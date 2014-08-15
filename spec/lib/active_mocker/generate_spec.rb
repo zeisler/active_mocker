@@ -1,7 +1,6 @@
-require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
+require 'spec_helper'
 require 'active_mocker'
-require_relative '../../unit_logger'
+require 'spec/unit_logger'
 
 describe ActiveMocker::Generate do
 

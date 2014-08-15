@@ -1,7 +1,6 @@
-require 'rspec'
-$:.unshift File.expand_path('../../../../../lib/active_mocker/mock', __FILE__)
-require 'next_id'
-require 'exceptions'
+require 'spec_helper'
+require 'active_mocker/mock/next_id'
+require 'active_mocker/mock/exceptions'
 require 'ostruct'
 
 describe ActiveMocker::Mock::NextId do

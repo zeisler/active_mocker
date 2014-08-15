@@ -1,8 +1,7 @@
-require 'rspec'
-$:.unshift File.expand_path('../../../../../lib/active_mocker/mock', __FILE__)
-require 'records'
-require 'next_id'
-require 'exceptions'
+require 'spec_helper'
+require 'active_mocker/mock/records'
+require 'active_mocker/mock/next_id'
+require 'active_mocker/mock/exceptions'
 require 'active_support/hash_with_indifferent_access'
 
 describe ActiveMocker::Mock::Records do

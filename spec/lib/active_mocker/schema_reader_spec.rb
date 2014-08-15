@@ -1,7 +1,6 @@
-require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
-require 'string_reader'
-require 'file_reader'
+require 'spec_helper'
+require 'active_mocker/string_reader'
+require 'active_mocker/file_reader'
 require 'active_mocker/table'
 require 'active_mocker/field'
 require 'active_mocker/active_record/schema'

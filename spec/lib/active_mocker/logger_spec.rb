@@ -1,5 +1,4 @@
-require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
+require 'active_mocker/db_to_ruby_type'
 require 'active_mocker/logger'
 
 describe ActiveMocker::Logger do

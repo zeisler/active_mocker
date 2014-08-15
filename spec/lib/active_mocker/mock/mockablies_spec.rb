@@ -1,7 +1,6 @@
-require 'rspec'
-$:.unshift File.expand_path('../../../../../lib/active_mocker/mock', __FILE__)
-require 'exceptions'
-require 'mock_abilities'
+require 'spec_helper'
+require 'active_mocker/mock/exceptions'
+require 'active_mocker/mock/mock_abilities'
 
 describe ActiveMocker::Mock::MockAbilities do
 

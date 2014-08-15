@@ -1,6 +1,5 @@
-require 'rspec'
+require 'spec_helper'
 require 'rspec/given'
-$:.unshift File.expand_path('../../../lib', __FILE__)
 require 'bigdecimal'
 require 'axiom/types'
 require 'active_mocker/db_to_ruby_type'

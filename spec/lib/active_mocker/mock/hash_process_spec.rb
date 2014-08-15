@@ -1,6 +1,6 @@
-require 'rspec'
-$:.unshift File.expand_path('../../../../../lib/active_mocker/mock', __FILE__)
-require 'hash_process'
+require 'spec_helper'
+require 'active_mocker/mock/hash_process'
+
 describe ActiveMocker::Mock::HashProcess do
 
   it do

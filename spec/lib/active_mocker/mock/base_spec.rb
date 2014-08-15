@@ -1,8 +1,6 @@
-require 'rspec'
-
-$:.unshift File.expand_path('../../../../../lib/active_mocker/', __FILE__)
+require 'spec_helper'
 require 'logger'
-require 'mock'
+require 'active_mocker/mock'
 require_relative 'queriable_shared_example'
 describe ActiveMocker::Mock::Base do
 

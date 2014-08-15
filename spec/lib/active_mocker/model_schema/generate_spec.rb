@@ -1,5 +1,4 @@
-require 'rspec'
-$:.unshift File.expand_path('../../../../../lib', __FILE__)
+require 'spec_helper'
 require 'active_mocker'
 require 'json'
 require 'active_support/core_ext/string/inflections'
@@ -7,7 +6,7 @@ require 'active_support/core_ext/object/deep_dup.rb'
 require 'active_mocker/model_schema'
 require 'active_mocker/model_schema'
 require 'active_mocker/model_schema/generate'
-require_relative '../../../unit_logger'
+require 'spec/unit_logger'
 
 describe ActiveMocker::ModelSchema::Generate do
 

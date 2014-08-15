@@ -1,7 +1,7 @@
-require 'rspec'
-$:.unshift File.expand_path('../../../../lib', __FILE__)
+require 'spec/spec_helper'
+require 'active_mocker/db_to_ruby_type'
 require 'json'
-require_relative '../../unit_logger'
+require 'spec/unit_logger'
 require 'active_mocker/model_schema'
 
 describe ActiveMocker::ModelSchema do

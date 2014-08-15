@@ -1,5 +1,4 @@
-require 'rspec'
-$:.unshift File.expand_path('../../../lib', __FILE__)
+require 'spec/spec_helper'
 require 'active_mocker/reparameterize'
 
 describe ActiveMocker::Reparameterize do

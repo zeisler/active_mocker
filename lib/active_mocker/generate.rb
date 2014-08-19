@@ -4,17 +4,6 @@ module ActiveMocker
 class Generate
   extend Forwardable
 
-  def_delegators :config,
-                 :schema_attributes,
-                 :model_attributes,
-                 :model_dir,
-                 :schema_file,
-                 :model_file_reader,
-                 :schema_file_reader,
-                 :mock_dir,
-                 :logger,
-                 :model_base_classes
-
   attr_reader :silence
 
   def initialize(silence: false)
@@ -42,7 +31,7 @@ class Generate
   private
 
   def self.load_mock(model_name)
-    load File.join(mock_dir, "#{model_name.tableize.singularize}_mock.rb")
+    require File.join(mock_dir, "#{model_name.tableize.singularize}_mock.rb")
     "#{model_name}Mock".constantize
   end
 
@@ -68,27 +57,31 @@ class Generate
 
   def create_template
     mocks_created = 0
-    FileUtils.rm_rf("#{mock_dir}/", secure: true)
-    FileUtils::mkdir_p mock_dir unless File.directory? mock_dir
+    FileUtils.rm_rf("#{Config.mock_dir}/", secure: true)
+    FileUtils::mkdir_p Config.mock_dir unless File.directory? Config.mock_dir
     generate_model_schema.each do |model|
       begin
 
       klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
 
-      File.open(File.join(mock_dir,"#{model.table_name.singularize}_mock.rb"), 'w').write(klass_str)
-      logger.info "saving mock #{model.class_name} to #{mock_dir}"
+      File.open(File.join(Config.mock_dir,"#{model.table_name.singularize}_mock.rb"), 'w').write(klass_str)
+      Config.logger.info "saving mock #{model.class_name} to #{Config.mock_dir}"
 
       rescue Exception => exception
-        logger.debug $!.backtrace
-        logger.debug exception
-        logger.info "failed to load #{model} model"
+        Config.logger.debug $!.backtrace
+        Config.logger.debug exception
+        Config.logger.info "failed to load #{model} model"
         next
       end
       mocks_created += 1
       increment_progress
     end
     progress.finish unless silence
-    logger.info "Generated #{mocks_created} of #{model_count} mocks"
+    Config.logger.info "Generated #{mocks_created} of #{model_count} mocks"
+    failed_mocks = model_count - mocks_created
+    if failed_mocks > 0
+      puts "#{failed_mocks} mock(s) out of #{model_count} failed. See log for more info."
+    end
   end
 
   def mock_append_name

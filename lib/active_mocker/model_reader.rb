@@ -1,4 +1,3 @@
-
 module ActiveMocker
   # @api private
 
@@ -8,9 +7,8 @@ module ActiveMocker
 
     def parse(model_name)
       @model_name = model_name
-      klass
-      return self if @klass
-      return false
+      return ParsedProperties.new(klass, parent_class) if klass
+      false
     end
 
     def klass
@@ -30,7 +28,7 @@ module ActiveMocker
     def load_parent_class(class_name)
       @parent_class = class_name
       file_name     = class_name.tableize.singularize
-      source        = ActiveMocker::RubyParse.new(read_file(file_name)).modify_parent_class('ActiveMocker::ActiveRecord::Base')
+      source        = RubyParse.new(read_file(file_name)).modify_parent_class('ActiveMocker::ActiveRecord::Base')
       eval_file(source, file_path(file_name))
     end
 
@@ -57,12 +55,10 @@ module ActiveMocker
     def log_loading_error(msg, print_to_stdout=false)
       main = "ActiveMocker :: Error loading Model: #{model_name} \n\t#{msg}\n"
       file = "\t#{file_path}\n"
-      Logger.error main + file
-      print main + file if print_to_stdout
-    end
-
-    def real
-      model_name.classify.constantize
+      stack_trace = msg.backtrace_locations.map{|e| "\t#{e}"}.join("\n")
+      str = main + file + stack_trace
+      Config.logger.error str
+      print str if print_to_stdout
     end
 
     def parent_class
@@ -77,97 +73,91 @@ module ActiveMocker
       "#{Config.model_dir}/#{m_name}.rb"
     end
 
-    def class_methods
-      klass.methods(false)
-    end
+    class ParsedProperties
 
-    def scopes
-      klass.get_named_scopes
-    end
+      attr_reader :klass, :parent_class
 
-    def scopes_with_arguments
-      scopes.map do |name, proc|
-        {name => proc.parameters, :proc => proc}
+      def initialize(klass, parent_class)
+        @klass        = klass
+        @parent_class = parent_class
       end
-    end
 
-    def class_methods_with_arguments
-      class_methods.map do |m|
-        {m => klass.method(m).parameters }
+      def class_methods
+        klass.methods(false)
       end
-    end
 
-    def instance_methods_with_arguments
-      instance_methods.map do |m|
-        {m => klass.instance_method(m).parameters }
+      def scopes
+        klass.get_named_scopes
       end
-    end
 
-    def instance_methods
-      methods = klass.public_instance_methods(false)
-      methods << klass.superclass.public_instance_methods(false) if klass.superclass != ActiveRecord::Base
-      methods.flatten
-    end
-
-    def relationships_types
-      klass.relationships
-    end
-
-    def relationships
-      relationships_types.to_h.values.flatten
-    end
-
-    def collections
-      klass.collections.flatten.compact
-    end
-
-    def single_relationships
-      klass.single_relationships.flatten.compact
-    end
-
-    def belongs_to
-      klass.relationships.belongs_to
-    end
-
-    def has_one
-      klass.relationships.has_one
-    end
-
-    def has_and_belongs_to_many
-      klass.relationships.has_and_belongs_to_many
-    end
-
-    def has_many
-      klass.relationships.has_many
-    end
-
-    def table_name
-      klass.table_name
-    end
-
-    def primary_key
-      klass.primary_key
-    end
-
-    def constants
-      const = {}
-      klass.constants.each {|c| const[c] = klass.const_get(c)}
-      const = const.reject do |c, v|
-        v.class == Module || v.class == Class
+      def scopes_with_arguments
+        scopes.map do |name, proc|
+          {name => proc.parameters, :proc => proc}
+        end
       end
-      const
-    end
 
-    def modules
-      {included:  process_module_names(klass._included),
-       extended: process_module_names(klass._extended)}
-    end
+      def class_methods_with_arguments
+        class_methods.map do |m|
+          {m => klass.method(m).parameters}
+        end
+      end
 
-    def process_module_names(names)
-      names.reject { |m| /#{klass.inspect}/ =~ m.name }.map(&:inspect)
+      def instance_methods_with_arguments
+        instance_methods.map do |m|
+          {m => klass.instance_method(m).parameters}
+        end
+      end
+
+      def instance_methods
+        methods = klass.public_instance_methods(false)
+        methods << klass.superclass.public_instance_methods(false) if klass.superclass != ActiveRecord::Base
+        methods.flatten
+      end
+
+      def belongs_to
+        klass.relationships.belongs_to
+      end
+
+      def has_one
+        klass.relationships.has_one
+      end
+
+      def has_and_belongs_to_many
+        klass.relationships.has_and_belongs_to_many
+      end
+
+      def has_many
+        klass.relationships.has_many
+      end
+
+      def table_name
+        klass.table_name
+      end
+
+      def primary_key
+        klass.primary_key
+      end
+
+      def constants
+        const = {}
+        klass.constants.each { |c| const[c] = klass.const_get(c) }
+        const = const.reject do |c, v|
+          v.class == Module || v.class == Class
+        end
+        const
+      end
+
+      def modules
+        {included: process_module_names(klass._included),
+         extended: process_module_names(klass._extended)}
+      end
+
+      def process_module_names(names)
+        names.reject { |m| /#{klass.inspect}/ =~ m.name }.map(&:inspect)
+      end
+
     end
 
   end
 
 end
-

@@ -223,9 +223,9 @@ describe ActiveMocker::ModelReader do
     let(:search){subject.parse('person')}
 
     it 'let not read a file but return a string instead to be evaluated' do
-      expect(search.relationships_types.belongs_to.first.name).to eq :zip_code
-      expect(subject.instance_methods).to eq([:full_name])
-      expect(subject.instance_methods_with_arguments).to eq([{:full_name=>[[:req, :first_name], [:req, :last_name]]}])
+      expect(search.belongs_to.first.name).to eq :zip_code
+      expect(search.instance_methods).to eq([:full_name])
+      expect(search.instance_methods_with_arguments).to eq([{:full_name=>[[:req, :first_name], [:req, :last_name]]}])
     end
 
   end
@@ -258,7 +258,7 @@ describe ActiveMocker::ModelReader do
 
       it 'it gets the method' do
         ActiveMocker::Config.model_base_classes = %w[ActiveRecord::Base OmniAuth::Identity::Models::ActiveRecord]
-        expect(subject.instance_methods).to eq([:id])
+        expect(search.instance_methods).to eq([:id])
       end
 
     end

@@ -30,11 +30,6 @@ class Generate
 
   private
 
-  def self.load_mock(model_name)
-    require File.join(mock_dir, "#{model_name.tableize.singularize}_mock.rb")
-    "#{model_name}Mock".constantize
-  end
-
   def generate_model_schema
     ActiveMocker::ModelSchema::Generate.new(progress: progress).run
   end

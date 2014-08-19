@@ -3,8 +3,10 @@ module ActiveMocker
   class << self
 
     # Method will be deprecated in v2
-    def mock(model_name, options=nil)
-      Generate.mock(model_name)
+    def self.mock(model_name, options=nil)
+      require File.join(Config.mock_dir,
+                        "#{model_name.tableize.singularize}_mock.rb")
+      "#{model_name}Mock".constantize
     end
 
     # Override default Configurations

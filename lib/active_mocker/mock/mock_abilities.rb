@@ -27,7 +27,7 @@ module ActiveMocker
       end
 
       def is_implemented(val, method, type)
-        raise Unimplemented, "#{type}#{method} is not Implemented for Class: #{class_name}" if val.nil?
+        raise Unimplemented, "#{type}#{method} is not Implemented for Class: #{class_name}. To continue stub the method." if val.nil?
       end
 
       def execute_block(method)

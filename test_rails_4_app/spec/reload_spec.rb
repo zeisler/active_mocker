@@ -38,7 +38,7 @@ describe 'should have fresh mock' do
   end
 
   it 'should raise error when calling digest' do
-    expect{UserMock.digest(nil)}.to raise_error(ActiveMocker::Mock::Unimplemented, '::digest is not Implemented for Class: UserMock')
+    expect{UserMock.digest(nil)}.to raise_error(ActiveMocker::Mock::Unimplemented, '::digest is not Implemented for Class: UserMock. To continue stub the method.')
   end
 
 end

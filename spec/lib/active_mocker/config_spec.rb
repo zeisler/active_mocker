@@ -9,6 +9,10 @@ describe ActiveMocker::Config do
     described_class.clear_settings
   end
 
+  before do
+    described_class.clear_settings
+  end
+
   let(:set_defaults){
     stub_const('Rails', double(root: ''))
     described_class.set do |config|

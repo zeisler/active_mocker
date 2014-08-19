@@ -153,11 +153,11 @@ class ChildModelMock < ActiveMocker::Mock::Base
   end
 
   def followed_users
-    @associations[:followed_users] ||= ActiveMocker::Mock::HasMany.new([],'followed_id', @attributes['id'], classes('User'))
+    @associations[:followed_users] ||= ActiveMocker::Mock::HasMany.new([],'user_id', @attributes['id'], classes('FollowedUser'))
   end
 
   def followed_users=(val)
-    @associations[:followed_users] ||= ActiveMocker::Mock::HasMany.new(val,'followed_id', @attributes['id'], classes('User'))
+    @associations[:followed_users] ||= ActiveMocker::Mock::HasMany.new(val,'user_id', @attributes['id'], classes('FollowedUser'))
   end
 
   def reverse_relationships
@@ -169,11 +169,11 @@ class ChildModelMock < ActiveMocker::Mock::Base
   end
 
   def followers
-    @associations[:followers] ||= ActiveMocker::Mock::HasMany.new([],'follower_id', @attributes['id'], classes('User'))
+    @associations[:followers] ||= ActiveMocker::Mock::HasMany.new([],'user_id', @attributes['id'], classes('Follower'))
   end
 
   def followers=(val)
-    @associations[:followers] ||= ActiveMocker::Mock::HasMany.new(val,'follower_id', @attributes['id'], classes('User'))
+    @associations[:followers] ||= ActiveMocker::Mock::HasMany.new(val,'user_id', @attributes['id'], classes('Follower'))
   end
 
   module Scopes

@@ -2,11 +2,9 @@ require 'ruby-progressbar'
 require 'forwardable'
 module ActiveMocker
 class Generate
-  extend Config
   extend Forwardable
 
-  @@_self = self
-  def_delegators :@@_self,
+  def_delegators :config,
                  :schema_attributes,
                  :model_attributes,
                  :model_dir,
@@ -14,7 +12,8 @@ class Generate
                  :model_file_reader,
                  :schema_file_reader,
                  :mock_dir,
-                 :logger
+                 :logger,
+                 :model_base_classes
 
   attr_reader :silence
 
@@ -32,6 +31,14 @@ class Generate
     load_mock(model_name)
   end
 
+  def self.config
+    ActiveMocker::Config
+  end
+
+  def config
+    ActiveMocker::Config
+  end
+
   private
 
   def self.load_mock(model_name)
@@ -40,11 +47,11 @@ class Generate
   end
 
   def generate_model_schema
-    ActiveMocker::ModelSchema::Generate.new(schema_file: schema_file, models_dir: model_dir, logger: logger, progress: progress).run
+    ActiveMocker::ModelSchema::Generate.new(progress: progress).run
   end
 
   def model_count
-    ActiveMocker::ModelSchema::Generate.new(schema_file: schema_file, models_dir: model_dir, logger: logger).models.count
+    ActiveMocker::ModelSchema::Generate.new.models.count
   end
 
   def progress

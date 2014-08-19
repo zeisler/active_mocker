@@ -8,5 +8,4 @@ class FileReader
 
 end
 
-  private_constant :FileReader
 end

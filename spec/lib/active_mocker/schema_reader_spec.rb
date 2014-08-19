@@ -6,6 +6,7 @@ require 'active_mocker/field'
 require 'active_mocker/active_record/schema'
 require 'active_mocker/schema_reader'
 require 'active_support/all'
+require 'active_mocker/config'
 
 describe ActiveMocker::SchemaReader do
 
@@ -56,38 +57,42 @@ describe ActiveMocker::SchemaReader do
 
   context 'inject string_reader as file_reader' do
 
-    let(:subject){described_class.new({schema_file:nil, file_reader: example_schema, clear_cache: true})}
+    before do
+      ActiveMocker::Config.file_reader = example_schema
+    end
 
-    let!(:search){subject.search(nil)}
+    after do
+      ActiveMocker::Config.clear_settings
+    end
+
+    let(:subject){
+      described_class.new.tables
+    }
 
     it 'let not read a file but return a string instead to be evaluated' do
-      tables = subject.tables
-      expect(tables.first.name).to eq 'people'
-      expect(tables.last.name).to eq 'zip_codes'
-      expect(tables.last.fields.count).to eq 8
+      expect(subject.first.name).to eq 'people'
+      expect(subject.last.name).to eq 'zip_codes'
+      expect(subject.last.fields.count).to eq 8
     end
 
   end
 
   context 'reads from file' do
 
-    let(:subject){described_class.new({schema_file: schema_file})}
-
-
-    describe '#search' do
-
-      it 'takes a table name and will return its attributes' do
-        described_class.new({schema_file: schema_file}).search(nil)
-      end
-
+    before do
+      ActiveMocker::Config.clear_settings
+      ActiveMocker::Config.schema_file = schema_file
     end
 
-    let(:tables){subject.search("people")}
+    after do
+      ActiveMocker::Config.clear_settings
+    end
+
+    let(:subject){described_class.new}
 
     describe '#column_names' do
 
       it 'returns an array of columns from the schema.rb' do
-        tables
         expect(subject.tables.first.name).to eq 'people'
         expect(subject.tables.first.column_names).to eq ["id", "company_id", "first_name", "middle_name", "last_name", "address_1", "address_2", "city", "state_id", "zip_code_id", "title", "department", "person_email", "work_phone", "cell_phone", "home_phone", "fax", "user_id_assistant", "birth_date", "needs_review", "created_at", "updated_at"]
       end
@@ -97,7 +102,6 @@ describe ActiveMocker::SchemaReader do
     describe '#fields' do
 
       it 'returns all fields from schema' do
-        tables
         expect(subject.tables.first.fields[1].to_h).to eq({:name=>"company_id", :type=>:integer, :options=>{}})
       end
 

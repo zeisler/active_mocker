@@ -4,12 +4,7 @@ module ActiveMocker
 
   class ModelReader
 
-    attr_reader :model_name, :model_dir, :file_reader
-
-    def initialize(options={})
-      @file_reader = options[:file_reader] ||= FileReader
-      @model_dir   = options[:model_dir]
-    end
+    attr_reader :model_name
 
     def parse(model_name)
       @model_name = model_name
@@ -23,8 +18,8 @@ module ActiveMocker
     end
 
     def sandbox_model
-      source = ActiveMocker::RubyParse.new(read_file)
-      if source.has_parent_class? && source.parent_class_name == 'ActiveRecord::Base'
+      source = RubyParse.new(read_file)
+      if source.has_parent_class? && Config.model_base_classes.include?(source.parent_class_name)
         source.modify_parent_class('ActiveMocker::ActiveRecord::Base')
       else
         load_parent_class(source.parent_class_name)
@@ -33,8 +28,9 @@ module ActiveMocker
     end
 
     def load_parent_class(class_name)
-      file_name = class_name.tableize.singularize
-      source = ActiveMocker::RubyParse.new(read_file(file_name)).modify_parent_class('ActiveMocker::ActiveRecord::Base')
+      @parent_class = class_name
+      file_name     = class_name.tableize.singularize
+      source        = ActiveMocker::RubyParse.new(read_file(file_name)).modify_parent_class('ActiveMocker::ActiveRecord::Base')
       eval_file(source, file_path(file_name))
     end
 
@@ -45,7 +41,6 @@ module ActiveMocker
     def eval_file(string, file_path)
       failure = false
       begin
-
         module_namespace.module_eval(string, file_path)
         _klass = module_namespace.const_get(module_namespace.constants.last)
       rescue SyntaxError => e
@@ -70,12 +65,16 @@ module ActiveMocker
       model_name.classify.constantize
     end
 
+    def parent_class
+      @parent_class
+    end
+
     def read_file(m_name=model_name)
-      file_reader.read(file_path(m_name))
+      Config.file_reader.read(file_path(m_name))
     end
 
     def file_path(m_name=model_name)
-      "#{model_dir}/#{m_name}.rb"
+      "#{Config.model_dir}/#{m_name}.rb"
     end
 
     def class_methods

@@ -1,48 +1,40 @@
 module ActiveMocker
 
-  module Config
-    extend self
+  class Config
+    class << self
 
-    attr_accessor :schema_file,
-                  :model_dir,
-                  :schema_attributes,
-                  :model_attributes,
-                  :schema_file_reader,
-                  :model_file_reader,
-                  :clear_cache,
-                  :migration_dir,
-                  :mock_dir,
-                  :logger,
-                  :log_level
+      attr_accessor :schema_file,
+                    :model_dir,
+                    :mock_dir,
+                    :logger,
+                    :model_base_classes,
+                    :file_reader
 
-    def config
-      @@first_load ||= reload_default
-      yield self
-      check_required_settings
-    end
+      def set
+        @first_load ||= load_defaults
+        yield self
+        check_required_settings
+      end
 
-    def reload_default
-      @schema_file         = nil
-      @model_dir           = nil
-      @schema_attributes   = true
-      @model_attributes    = true
-      @clear_cache         = false
-      @schema_file_reader  = nil
-      @model_file_reader   = nil
-      @migration_dir       = nil
-      @mock_dir            = nil
-      @logger              = ::Logger.new(STDOUT)
-    end
+      def load_defaults
+        @schema_file        = nil
+        @model_dir          = nil
+        @mock_dir           = nil
+        @model_base_classes = nil
+        @file_reader        = FileReader
+        @logger = ::Logger.new(STDOUT)
+      end
 
-    def check_required_settings
-      raise 'schema_file must be specified' if schema_file.nil?
-      raise 'model_dir must be specified'   if model_dir.nil?
-      raise 'mock_dir must be specified'    if mock_dir.nil?
-    end
+      def check_required_settings
+        instance_variables.each do |ivar|
+          raise "ActiveMocker::Config ##{ivar.to_s.sub('@', '')} must be specified!" if instance_variable_get(ivar).nil?
+        end
+      end
 
-    def logger=(logger)
-      @logger = logger
-      Logger.set(logger)
+      def clear_settings
+        load_defaults
+      end
+
     end
 
   end

@@ -12,6 +12,13 @@ module ActiveMocker
       extend Relationships
       extend UnknownClassMethod
 
+      def self.inherited(subclass)
+        return if subclass.superclass == Base
+        instance_variables.each do |instance_var|
+          subclass.instance_variable_set(instance_var, instance_variable_get(instance_var))
+        end
+      end
+
       def self.table_name=(table_name)
         @table_name = table_name
       end

@@ -7,19 +7,28 @@ require 'active_mocker/model_schema'
 require 'active_mocker/model_schema'
 require 'active_mocker/model_schema/generate'
 require 'spec/unit_logger'
+require 'active_mocker/config'
 
 describe ActiveMocker::ModelSchema::Generate do
+
+  before(:each) do
+    ActiveMocker::Config.clear_settings
+    ActiveMocker::Config.model_base_classes = %w[ActiveRecord::Base]
+    ActiveMocker::Config.schema_file = schema_file
+    ActiveMocker::Config.model_dir   = models_dir
+    ActiveMocker::Config.logger      = UnitLogger.unit
+  end
 
   let(:app_root) { File.expand_path('../../../../../', __FILE__) }
   let(:schema_file){ File.join(app_root, 'test_rails_4_app/db/schema.rb') }
   # let(:schema_file){ '/Users/zeisler/dev/fbi/db/schema.rb' }
   let(:models_dir){ File.join(app_root, 'test_rails_4_app/app/models') }
   # let(:models_dir){'/Users/zeisler/dev/fbi/app/models' }
-  let(:run){described_class.new(schema_file: schema_file, models_dir: models_dir, logger: UnitLogger.unit).run.sort_by{|m| m.class_name}
+  let(:run){described_class.new.run.sort_by{|m| m.class_name}
   }
 
   it 'test' do
-    result = described_class.new(schema_file: schema_file, models_dir: models_dir, logger: UnitLogger.unit).run
+    result = described_class.new.run
     expect(result.count).to eq 6
   end
 

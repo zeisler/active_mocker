@@ -4,13 +4,10 @@ module ActiveMocker
 
     class Generate
 
-      attr_reader :schema_file, :models_dir, :progress
+      attr_reader :progress
 
-      def initialize(schema_file:nil, models_dir:nil, logger:nil, progress: nil)
-        @schema_file = schema_file
-        @models_dir  = models_dir
+      def initialize(progress: nil)
         @progress    = progress
-        Logger.set(logger)
       end
 
       def increment_progress
@@ -18,32 +15,32 @@ module ActiveMocker
       end
 
       def tables
-        @tables ||= SchemaReader.new({schema_file: schema_file}).search(nil)
+        @tables ||= SchemaReader.new.tables
       end
 
-      def get_table(model , model_name)
+      def get_table(model, model_name)
+        if model.parent_class.present?
+          model_name = model.parent_class.tableize.singularize
+          model = get_model(model_name)
+        end
         table_name = get_table_name(model.table_name, model_name)
         selected_table = tables.select{|table| table.name == table_name}.first
         if selected_table.nil?
           Logger.error "The Implicit or defined table, `#{table_name}`, can not be found for model #{model_name.camelize}."
         end
-        # tables.delete(selected_table)
         selected_table
       end
 
-      # noinspection RubyArgCount
       def run
         model_schemas = models.map do |model_name|
-
           model = get_model(model_name)
-          next if model == false
+          next unless model
           table = get_table(model, model_name)
           table_name = model_name
           attributes = []
           attributes = build_attributes(table.fields, primary_key(table.fields, model)) unless table.nil?
 
           increment_progress
-
           ModelSchema.new(class_name: model_name.camelize,
                           table_name: table_name,
                           attributes: attributes,
@@ -51,13 +48,11 @@ module ActiveMocker
                           relationships: build_relationships(model),
                           constants: model.constants,
                           modules: model.modules)
-
         end
 
         ModelSchemaCollection.new(model_schemas.compact)
       end
 
-      # noinspection RubyArgCount
       def build_attributes(attributes, primary_attribute)
         attributes.map do |attr|
           attribute = ModelSchema::Attributes
@@ -73,7 +68,6 @@ module ActiveMocker
         end
       end
 
-      # noinspection RubyArgCount
       def build_methods(model)
         result = []
         {scope: model.scopes_with_arguments,
@@ -159,13 +153,13 @@ module ActiveMocker
       public
 
       def models
-        Dir["#{models_dir}/*.rb"].map do |file|
+        Dir["#{Config.model_dir}/*.rb"].map do |file|
           Pathname.new(file).basename.to_s.sub('.rb', '')
         end
       end
 
       def get_model(model_file_name)
-        ModelReader.new({model_dir: models_dir}).parse(model_file_name)
+        ModelReader.new.parse(model_file_name)
       end
 
       def get_table_name(model_table_name, model_name)

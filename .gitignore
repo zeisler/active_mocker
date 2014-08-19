@@ -17,5 +17,5 @@ test/version_tmp
 tmp
 sample_app_rails_4/log/*
 log/*
-test_rails_4_app/log/test.log
 test_rails_4_app/db/development.sqlite3
+test_rails_4_app/log/*

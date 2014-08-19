@@ -20,7 +20,7 @@ module ActiveMocker
         @schema_file        = nil
         @model_dir          = nil
         @mock_dir           = nil
-        @model_base_classes = nil
+        @model_base_classes = %w[ ActiveRecord::Base ]
         @file_reader        = FileReader
         @logger = ::Logger.new(STDOUT)
       end

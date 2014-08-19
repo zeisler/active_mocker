@@ -11,23 +11,6 @@ class Generate
     create_template
   end
 
-  def self.configure(&block)
-    config(&block)
-  end
-
-  # Method will be deprecated in v2
-  def self.mock(model_name, force_reload: false)
-    load_mock(model_name)
-  end
-
-  def self.config
-    ActiveMocker::Config
-  end
-
-  def config
-    ActiveMocker::Config
-  end
-
   private
 
   def generate_model_schema
@@ -40,7 +23,7 @@ class Generate
 
   def progress
     return @progress if !@progress.nil? || silence == true
-    progress_options = {:title => "Generating Mocks",
+    progress_options = {:title => 'Generating Mocks',
                         :total => model_count * 2,
                         format: '%t |%b>>%i| %p%%'}
     @progress = ProgressBar.create(progress_options)

@@ -11,15 +11,20 @@ module ActiveMocker
 
     # Override default Configurations
     #
-    #  ActiveMocker::Generate.configure do |config|
+    #  ActiveMocker.configure do |config|
     #    config.schema_file = File.join(Rails.root, 'db/schema.rb')
     #    config.model_dir   = File.join(Rails.root, 'app/models')
     #    config.mock_dir    = File.join(Rails.root, 'spec/mocks')
+    #
+    #    # If a model has a base class that still behaves like ActiveRecord but doesn't directly inherit from it add it
+    #    # to the model_base_classes array
+    #    config.model_base_classes = %w[ ActiveRecord::Base ]
+    #
     #    config.logger      = Rails.logger
     #  end
     #
     def configure(&block)
-      Generate.configure(&block)
+      Config.set(&block)
     end
 
     alias_method :config, :configure

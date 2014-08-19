@@ -333,7 +333,7 @@ describe ActiveMocker::ModelReader do
 
   end
 
-  context 'parent child', pending:false do
+  context 'parent child' do
 
     let(:example_model) {
       module ActiveMocker

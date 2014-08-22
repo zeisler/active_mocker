@@ -2,7 +2,7 @@ module ActiveMocker
 
   class ModelSchema
 
-    class Generate
+    class Assemble
 
       attr_reader :progress
 

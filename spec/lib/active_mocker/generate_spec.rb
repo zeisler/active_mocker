@@ -51,7 +51,7 @@ describe ActiveMocker::Generate do
     end
 
     it do
-      allow_any_instance_of(ActiveMocker::ModelSchema::Generate).to receive(:models){['model']}
+      allow_any_instance_of(ActiveMocker::ModelSchema::Assemble).to receive(:models){['model']}
       output = capture(:stdout) {described_class.new(silence: true)}
       expect(output).to eq "1 mock(s) out of 1 failed. See log for more info.\n"
       expect(string_log.string).to match /Error loading Model: model/

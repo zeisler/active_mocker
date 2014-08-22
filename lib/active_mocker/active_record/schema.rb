@@ -49,7 +49,7 @@ module ActiveMocker
       end
 
       def create_table(name, options={}, &block)
-        tables << ActiveMocker::Table.new(name, options[:id], CreateTable.new.instance_eval(&block))
+        tables << Table.new(name, options[:id], CreateTable.new.instance_eval(&block))
       end
 
       def method_missing(meth, *args)
@@ -71,7 +71,7 @@ module ActiveMocker
     end
 
     def base_field(type, args)
-      fields << Field.new(args.shift, type, args)
+      fields << ActiveRecord::Field.new(args.shift, type, args)
     end
 
   end

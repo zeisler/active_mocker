@@ -1,4 +1,5 @@
 module ActiveMocker
+  module ActiveRecord
   # @api private
   class Table
 
@@ -21,5 +22,5 @@ module ActiveMocker
     end
 
   end
-
+  end
 end

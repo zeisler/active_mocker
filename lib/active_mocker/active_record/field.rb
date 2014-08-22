@@ -1,4 +1,5 @@
 module ActiveMocker
+  module ActiveRecord
   # @api private
   class Field
 
@@ -34,5 +35,5 @@ module ActiveMocker
     end
 
   end
-
+  end
 end

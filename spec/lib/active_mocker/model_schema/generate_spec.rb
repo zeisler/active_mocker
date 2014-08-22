@@ -4,12 +4,11 @@ require 'json'
 require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/object/deep_dup.rb'
 require 'active_mocker/model_schema'
-require 'active_mocker/model_schema'
-require 'active_mocker/model_schema/generate'
+require 'active_mocker/model_schema/assemble'
 require 'spec/unit_logger'
 require 'active_mocker/config'
 
-describe ActiveMocker::ModelSchema::Generate do
+describe ActiveMocker::ModelSchema::Assemble do
 
   before(:each) do
     ActiveMocker::Config.clear_settings

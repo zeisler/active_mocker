@@ -14,11 +14,11 @@ class Generate
   private
 
   def generate_model_schema
-    ActiveMocker::ModelSchema::Generate.new(progress: progress).run
+    ActiveMocker::ModelSchema::Assemble.new(progress: progress).run
   end
 
   def model_count
-    ActiveMocker::ModelSchema::Generate.new.models.count
+    ActiveMocker::ModelSchema::Assemble.new.models.count
   end
 
   def progress

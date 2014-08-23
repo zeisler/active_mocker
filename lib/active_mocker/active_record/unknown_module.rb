@@ -18,8 +18,8 @@ module ActiveMocker
         begin
           super _module
         rescue => e
-          Logger.debug "ActiveMocker :: Debug :: Can't #{type} module #{name} from class #{self.name}.\n\t\t\t\t\t\t\t\t#{_caller}\n"
-          Logger.debug "\t\t\t\t\t\t\t\t#{e}"
+          Config.logger.debug "ActiveMocker :: DEBUG :: Can't #{type} module #{name} from class #{self.name}.\n  #{_caller}\n"
+          Config.logger.debug "  #{e}"
         end
       end
 

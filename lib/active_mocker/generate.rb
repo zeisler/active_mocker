@@ -43,19 +43,19 @@ class Generate
       klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
 
       File.open(File.join(Config.mock_dir,"#{model.table_name.singularize}_mock.rb"), 'w').write(klass_str)
-      Config.logger.info "saving mock #{model.class_name} to #{Config.mock_dir}"
+      Config.logger.info "ActiveMocker :: INFO :: saving mock #{model.class_name} to #{Config.mock_dir}"
 
       rescue Exception => exception
         Config.logger.debug $!.backtrace
         Config.logger.debug exception
-        Config.logger.info "failed to load #{model} model"
+        Config.logger.info "ActiveMocker :: INFO :: Failed to load #{model} model."
         next
       end
       mocks_created += 1
       increment_progress
     end
     progress.finish unless silence
-    Config.logger.info "Generated #{mocks_created} of #{model_count} mocks"
+    Config.logger.info "ActiveMocker :: INFO :: Generated #{mocks_created} of #{model_count} mocks."
     failed_mocks = model_count - mocks_created
     if failed_mocks > 0
       puts "#{failed_mocks} mock(s) out of #{model_count} failed. See log for more info."

@@ -5,7 +5,8 @@ module ActiveMocker
     module UnknownClassMethod
 
       def method_missing(meth, *args)
-        Logger.debug "ActiveMocker :: DEBUG :: #{meth} called from class #{self.name} is unknown and will not be available in mock.\n"
+        Config.logger.debug "ActiveMocker :: DEBUG :: #{meth} called from class #{self.name.demodulize}" +
+                         " is unknown and will not be available in mock.\n  #{caller.first}\n"
       end
 
     end

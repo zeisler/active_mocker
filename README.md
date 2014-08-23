@@ -82,53 +82,55 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
     rake active_mocker:build
 
 ## Usage
+```ruby
+#db/schema.rb
 
-    #db/schema.rb
+ActiveRecord::Schema.define(version: 20140327205359) do
 
-    ActiveRecord::Schema.define(version: 20140327205359) do
+  create_table "people", force: true do |t|
+    t.integer  "account_id"
+    t.string   "first_name",        limit: 128
+    t.string   "last_name",         limit: 128
+    t.string   "address",           limit: 200
+    t.string   "city",              limit: 100
+  end
 
-      create_table "people", force: true do |t|
-        t.integer  "account_id"
-        t.string   "first_name",        limit: 128
-        t.string   "last_name",         limit: 128
-        t.string   "address",           limit: 200
-        t.string   "city",              limit: 100
-      end
-
-    end
+end
+```
 --------------
+```ruby
+#app/models/person.rb
 
-    #app/models/person.rb
+class Person < ActiveRecord::Base
+  belongs_to :account
 
-    class Person < ActiveRecord::Base
-      belongs_to :account
+  def bar(name, type=nil)
+	puts name
+  end
 
-      def bar(name, type=nil)
-        puts name
-      end
+  def self.bar
+  end
 
-      def self.bar
-      end
-
-    end
- 
+end
+ ```
 ----------------- 
   
 ### Using With Rspec, --tag active_mocker:true
 
-    require 'rspec'
-    require 'active_mocker/rspec_helper'
-    require 'spec/mocks/person_mock'
-    require 'spec/mocks/account_mock'
-        
-    describe 'Example', active_mocker:true do
-    
-       before do
-          Person.create # stubbed for PersonMock.create
-       end
-    
-    end
-       
+```ruby
+require 'rspec'
+require 'active_mocker/rspec_helper'
+require 'spec/mocks/person_mock'
+require 'spec/mocks/account_mock'
+
+describe 'Example', active_mocker:true do
+
+  before do
+	Person.create # stubbed for PersonMock.create
+  end
+
+end
+```       
 ----------
 
 * Assigning the tag `active_mocker:true` will stub any ActiveRecord model Constants for Mock classes in `it` or `before/after(:each)`. This removes any need for dependency injection. Write tests and code like you would normally.
@@ -137,125 +139,133 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 
 ---------
     
-    Person.column_names
-        => ["id", "account_id", "first_name", "last_name", "address", "city"]
+```ruby
+Person.column_names
+  => ["id", "account_id", "first_name", "last_name", "address", "city"]
 
-    person = Person.new( first_name:  "Dustin", 
-    							  last_name:   "Zeisler", 
-    							  account:      Account.new )
-        => "#<PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler, address: nil, city: nil>"
+person = Person.new( first_name:  "Dustin", 
+    				 last_name:   "Zeisler", 
+    				 account:      Account.new )
+  => "#<PersonMock id: nil, account_id: nil, first_name: "Dustin", last_name: "Zeisler", address: nil, city: nil>"
 
-     person.first_name
-        => "Dustin"
+person.first_name
+  => "Dustin"
+```
 
 ### When schema.rb changes, the mock fails
 (After `rake db:migrate` is called the mocks will be regenerated.)
- 
-	#db/schema.rb
 
-     ActiveRecord::Schema.define(version: 20140327205359) do
+```ruby
+#db/schema.rb
 
-       create_table "people", force: true do |t|
-         t.integer  "account_id"
-         t.string   "f_name",        limit: 128
-         t.string   "l_name",        limit: 128
-         t.string   "address",       limit: 200
-         t.string   "city",          limit: 100
-       end
+ActiveRecord::Schema.define(version: 20140327205359) do
 
-     end
+  create_table "people", force: true do |t|
+    t.integer  "account_id"
+    t.string   "f_name",        limit: 128
+    t.string   "l_name",        limit: 128
+    t.string   "address",       limit: 200
+    t.string   "city",          limit: 100
+  end
 
+end
+```
 --------------
 
-     Person.new(first_name: "Dustin", last_name: "Zeisler")
-             =>#<UnknownAttributeError unknown attribute: first_name >
+```ruby
+Person.new(first_name: "Dustin", last_name: "Zeisler")
+  =>#<UnknownAttributeError unknown attribute: first_name >
+```
 
 ## Mocking Methods
 
 
 ### Class Methods
 
-     Person.bar('baz')
-        => RuntimeError: ::bar is not Implemented for Class: PersonMock
+```ruby
+Person.bar('baz')
+  => RuntimeError : :: bar is not Implemented for Class :PersonMock
 
-     # Rspec 3 Mocks
-     
-     RSpec.configure do |config|
-       config.mock_framework = :rspec
-       config.mock_with :rspec do |mocks|
-         mocks.verify_doubled_constant_names = true
-         mocks.verify_partial_doubles = true
-       end
-     end
-     
-     allow(Person).to receive(:bar) do  |name, type=nil|
-        "Now implemented with #{name} and #{type}"
-     end
+# Rspec 3 Mocks
 
-     Person.bar('foo', 'type')
-       => "Now implemented with foo and type"
-       
-     # Rspec 3 mock class method
-     allow_any_instance_of(Person).to receive(:bar) do
-        "Now implemented"
-     end
+RSpec.configure do |config|
+  config.mock_framework = :rspec
+  config.mock_with :rspec do |mocks|
+    mocks.verify_doubled_constant_names = true
+    mocks.verify_partial_doubles = true
+  end
+end
 
+allow(Person).to receive(:bar) do |name, type=nil|
+  "Now implemented with #{name} and #{type}"
+end
+
+Person.bar('foo', 'type')
+=> "Now implemented with foo and type"
+
+# Rspec 3 mock class method
+allow_any_instance_of(Person).to receive(:bar) do
+  "Now implemented"
+end
+```
 
 #### When the model changes, the mock fails
 (Requires a regeneration of the mocks files.)
 
-    #app/models/person.rb
+```ruby
+#app/models/person.rb
 
-    class Person < ActiveRecord::Base
-      belongs_to :account
+class Person < ActiveRecord::Base
+  belongs_to :account
 
-      def bar(name)
-        puts name
-      end
+  def bar(name)
+    puts name
+  end
 
-    end
-   
+end
+```
+
 --------------
-
-    Person.new.bar('foo', 'type')
-      => ArgumentError: wrong number of arguments (2 for 1)
-
+```ruby
+Person.new.bar('foo', 'type')
+  => ArgumentError: wrong number of arguments (2 for 1)
+```
 ----------------
+```ruby
+#app/models/person.rb
 
-    #app/models/person.rb
+class Person < ActiveRecord::Base
+  belongs_to :account
 
-    class Person < ActiveRecord::Base
-      belongs_to :account
+  def foo(name, type=nil)
+    puts name
+  end
 
-      def foo(name, type=nil)
-        puts name
-      end
-
-    end
-    
+end
+ ```   
 --------------
-
-    # Rspec 3 Mocks
-    allow(person).to receive(:bar) do  |name, type=nil|
-      "Now implemented with #{name} and #{type}"
-    end
-      => NoMethodError: undefined method `bar' for class `PersonMock'
-      
+```ruby
+# Rspec 3 Mocks
+allow(person).to receive(:bar) do |name, type=nil|
+  "Now implemented with #{name} and #{type}"
+end
+=> NoMethodError : undefined method `bar' for class ` PersonMock '
+ ```     
 ### Constants and Modules are Available.
 
 * Any locally defined modules will not be included or extended.
 
 ---------------
-
-    class Person < ActiveRecord::Base
-       CONSTANT_VALUE = 13
-    end
-
+```ruby
+class Person < ActiveRecord::Base
+  CONSTANT_VALUE = 13
+end
+```
 -----------------------
-
-    PersonMock::CONSTANT_VALUE
-    	=> 13
-
+```ruby
+PersonMock::CONSTANT_VALUE
+  => 13
+```
 
 ### Scoped Methods 
 * As long the mock file that holds the scope method is required it will be available but raise an `unimplemented error` when called.
@@ -263,9 +273,9 @@ Running this rake task builds/rebuilds the mocks. It will be ran automatically a
 ### Managing Mocks  
 
 Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)
-    
-    ActiveMocker::LoadedMocks.delete_all
-
+```ruby    
+ActiveMocker::LoadedMocks.delete_all
+```
 ### ActiveRecord supported methods
 
 See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker) for a complete list of methods and usage.

@@ -5,16 +5,17 @@ module Mock
 
     include Queries
 
-    def self.new(collection, foreign_key=nil, foreign_id=nil, relation_class=nil)
-      return Relation.new(collection) if relation_class.nil?
-      super
+    def self.new(collection, options = {})
+      return Relation.new(collection) if options[:relation_class].nil?
+      super(collection, options)
     end
 
-    def initialize(collection, foreign_key, foreign_id, relation_class)
-      @relation_class = relation_class
-      @foreign_key    = foreign_key
-      @foreign_id     = foreign_id
-      self.class.include "#{relation_class.name}::Scopes".constantize
+    def initialize(collection, options={})
+      @relation_class = options[:relation_class]
+      @foreign_key    = options[:foreign_key]
+      @foreign_id     = options[:foreign_id]
+      @source         = options[:source]
+      self.class.include "#{@relation_class.name}::Scopes".constantize
       super(collection)
       set_foreign_key if ActiveMocker::Mock.config.experimental
     end
@@ -26,7 +27,7 @@ module Mock
     end
 
     # @api private
-    attr_reader :relation_class, :foreign_key, :foreign_id
+    attr_reader :relation_class, :foreign_key, :foreign_id, :source
 
     def build(options={}, &block)
       new_record = relation_class.new(init_options.merge!(options), &block)

@@ -18,17 +18,18 @@ shared_examples_for 'HasMany' do
     let(:collection) { [1, 2] }
 
     it 'will create an association if no relation class is passed' do
-      subject = described_class.new(collection, nil, nil, nil)
+
+      subject = described_class.new(collection)
       expect(subject.class).to eq ActiveMocker::Mock::Relation
       expect(subject.to_a).to eq collection
     end
 
     it 'will create self object if has relation class' do
-      expect(described_class.new(collection, nil, nil, relation_class)).to be_a_kind_of ActiveMocker::Mock::HasMany
+      expect(described_class.new(collection, relation_class: relation_class)).to be_a_kind_of ActiveMocker::Mock::HasMany
     end
 
     it 'passes all attributes to super' do
-      subject = described_class.new(collection, :key, 1, relation_class)
+      subject = described_class.new(collection, foreign_key: :key, foreign_id: 1, relation_class: relation_class)
       expect(subject.to_a).to eq collection
       expect(subject.send(:foreign_key)).to eq(:key)
       expect(subject.send(:foreign_id)).to eq(1)
@@ -39,14 +40,14 @@ shared_examples_for 'HasMany' do
   describe 'scoped methods' do
 
     it 'will have scoped methods from relation_class' do
-      expect(described_class.new([],nil,nil,relation_class).respond_to?(:scoped_method)).to eq true
+      expect(described_class.new([],relation_class: relation_class).respond_to?(:scoped_method)).to eq true
     end
 
   end
 
   describe '#build' do
 
-    subject { described_class.new([], 'foreign_key', 1, RelationClass) }
+    subject { described_class.new([], foreign_key: 'foreign_key', foreign_id: 1, relation_class: RelationClass) }
 
     it 'makes a new object from relation_class' do
       allow(RelationClass).to receive(:new)
@@ -71,7 +72,7 @@ shared_examples_for 'HasMany' do
         end
       end
 
-      subject { described_class.new([], 'foreign_key', 1, InstanceWithBlock) }
+      subject { described_class.new([], foreign_key: 'foreign_key', foreign_id: 1, relation_class: InstanceWithBlock) }
 
       it 'makes a new object with block' do
         instance = subject.build do |i|
@@ -104,7 +105,7 @@ shared_examples_for 'HasMany' do
         end
       end
 
-      subject { described_class.new([], 'foreign_key', 1, InstanceSave) }
+      subject { described_class.new([], foreign_key: 'foreign_key', foreign_id: 1, relation_class: InstanceSave) }
 
       it 'when calling save on the instance it will add it to the collection' do
         new_instance = subject.build
@@ -128,7 +129,7 @@ shared_examples_for 'HasMany' do
     let(:created_instance) { double }
     let(:relation_class) { double(create: created_instance, name: 'RelationClass') }
 
-    subject { described_class.new([], 'foreign_key', 1, RelationClass) }
+    subject { described_class.new([], foreign_key: 'foreign_key', foreign_id: 1, relation_class: RelationClass) }
 
     it 'create a new object from relation_class' do
       subject.create(name: 'Name')
@@ -155,7 +156,7 @@ shared_examples_for 'HasMany' do
 
     context 'with block' do
 
-      subject { described_class.new([], 'foreign_key', 1, InstanceWithBlockCreate) }
+      subject { described_class.new([], foreign_key: 'foreign_key', foreign_key_id: 1, relation_class: InstanceWithBlockCreate) }
 
       before do
         class InstanceWithBlockCreate < RelationClass

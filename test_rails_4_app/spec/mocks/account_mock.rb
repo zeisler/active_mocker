@@ -50,6 +50,8 @@ class AccountMock < ActiveMocker::Mock::Base
 
   def user_id=(val)
     write_attribute(:user_id, val)
+    association = classes('User').try(:find_by, id: user_id)
+    write_association(:user,association) unless association.nil?
   end
 
   def balance
@@ -64,26 +66,29 @@ class AccountMock < ActiveMocker::Mock::Base
   #         Associations           #
   ##################################
 
-# has_one
+# belongs_to
   def user
-    read_association('user')
+    @associations[:user]
   end
 
   def user=(val)
-    @associations['user'] = val
+    @associations[:user] = val
+    write_attribute(:user_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
     if ActiveMocker::Mock.config.experimental
-      user.accounts <<  self if val.respond_to?(:accounts=)
-      user.send(:write_association, :account,  self) if val.respond_to?(:account=)
+      val.accounts << self if val.respond_to?(:accounts=)
+      val.account = self if val.respond_to?(:account=)
     end
     val
   end
 
   def build_user(attributes={}, &block)
-    write_association(:user, classes('User').new(attributes, &block)) if classes('User')
+    association = classes('User').try(:new, attributes, &block)
+    write_association(:user, association) unless association.nil?
   end
 
   def create_user(attributes={}, &block)
-    write_association(:user, classes('User').new(attributes, &block)) if classes('User')
+    association = classes('User').try(:create,attributes, &block)
+    write_association(:user, association) unless association.nil?
   end
   alias_method :create_user!, :create_user
 

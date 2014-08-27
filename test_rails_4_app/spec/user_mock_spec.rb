@@ -82,10 +82,6 @@ describe UserMock do
       expect(subject.followed_users.foreign_id).to eq subject.id
     end
 
-    it do
-      expect(subject.followed_users.source).to eq 'followed'
-    end
-
   end
 
   describe 'has_many reverse_relationships' do

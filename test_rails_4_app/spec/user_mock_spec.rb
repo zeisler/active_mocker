@@ -5,6 +5,8 @@ require 'lib/post_methods'
 
 require_relative 'mocks/micropost_mock.rb'
 require_relative 'mocks/user_mock.rb'
+require_relative 'mocks/relationship_mock'
+require_relative 'mocks/account_mock'
 
 require_relative 'active_record_shared_example'
 
@@ -15,6 +17,98 @@ describe UserMock do
   before(:each){
     UserMock.clear_mock
   }
+
+  describe 'has_many microposts' do
+
+    subject{described_class.create}
+
+    it do
+      expect(subject.microposts.class).to eq ActiveMocker::Mock::HasMany
+    end
+
+    it do
+      expect(subject.microposts.relation_class).to eq MicropostMock
+    end
+
+    it do
+      expect(subject.microposts.foreign_key).to eq 'user_id'
+    end
+
+    it do
+      expect(subject.microposts.foreign_id).to eq subject.id
+    end
+
+  end
+
+  describe 'has_many relationships' do
+
+    subject { described_class.create }
+
+    it do
+      expect(subject.relationships.class).to eq ActiveMocker::Mock::HasMany
+    end
+
+    it do
+      expect(subject.relationships.relation_class).to eq RelationshipMock
+    end
+
+    it do
+      expect(subject.relationships.foreign_key).to eq 'follower_id'
+    end
+
+    it do
+      expect(subject.relationships.foreign_id).to eq subject.id
+    end
+
+  end
+
+  describe 'has_many followed_users' do
+
+    subject { described_class.create }
+
+    it do
+      expect(subject.followed_users.class).to eq ActiveMocker::Mock::HasMany
+    end
+
+    it do
+      expect(subject.followed_users.relation_class).to eq UserMock
+    end
+
+    it do
+      expect(subject.followed_users.foreign_key).to eq 'followed_id'
+    end
+
+    it do
+      expect(subject.followed_users.foreign_id).to eq subject.id
+    end
+
+    it do
+      expect(subject.followed_users.source).to eq 'followed'
+    end
+
+  end
+
+  describe 'has_many reverse_relationships' do
+
+    subject { described_class.create }
+
+    it do
+      expect(subject.reverse_relationships.class).to eq ActiveMocker::Mock::HasMany
+    end
+
+    it do
+      expect(subject.reverse_relationships.relation_class).to eq RelationshipMock
+    end
+
+    it do
+      expect(subject.reverse_relationships.foreign_key).to eq 'followed_id'
+    end
+
+    it do
+      expect(subject.reverse_relationships.foreign_id).to eq subject.id
+    end
+
+  end
 
   describe '::mocked_class' do
 

@@ -7,7 +7,7 @@ module ActiveMocker
 
     def parse(model_name)
       @model_name = model_name
-      return ParsedProperties.new(klass, parent_class) if klass
+      return ParsedProperties.new(klass, parent_class, model_name) if klass
       false
     end
 
@@ -75,11 +75,40 @@ module ActiveMocker
 
     class ParsedProperties
 
-      attr_reader :klass, :parent_class
+      attr_reader :klass, :parent_class, :model_name
 
-      def initialize(klass, parent_class)
+      def initialize(klass, parent_class, model_name)
         @klass        = klass
         @parent_class = parent_class
+        @model_name   = model_name
+      end
+
+      def rails_version
+        @rails_version ||= model_name.classify.constantize
+      end
+
+      def belongs_to
+        rails_version.reflect_on_all_associations(:belongs_to)
+      end
+
+      def has_one
+        rails_version.reflect_on_all_associations(:has_one)
+      end
+
+      def has_and_belongs_to_many
+        rails_version.reflect_on_all_associations(:has_and_belongs_to_many)
+      end
+
+      def has_many
+        rails_version.reflect_on_all_associations(:has_many)
+      end
+
+      def table_name
+        rails_version.table_name
+      end
+
+      def primary_key
+        rails_version.primary_key
       end
 
       def class_methods
@@ -112,30 +141,6 @@ module ActiveMocker
         methods = klass.public_instance_methods(false)
         methods << klass.superclass.public_instance_methods(false) if klass.superclass != ActiveRecord::Base
         methods.flatten
-      end
-
-      def belongs_to
-        klass.relationships.belongs_to
-      end
-
-      def has_one
-        klass.relationships.has_one
-      end
-
-      def has_and_belongs_to_many
-        klass.relationships.has_and_belongs_to_many
-      end
-
-      def has_many
-        klass.relationships.has_many
-      end
-
-      def table_name
-        klass.table_name
-      end
-
-      def primary_key
-        klass.primary_key
       end
 
       def constants

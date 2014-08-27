@@ -41,15 +41,14 @@ module ActiveMocker
           attributes = build_attributes(table.fields, primary_key(table.fields, model)) unless table.nil?
 
           increment_progress
-          ModelSchema.new(class_name: model_name.camelize,
-                          table_name: table_name,
-                          attributes: attributes,
-                          methods: build_methods(model),
-                          relationships: build_relationships(model),
-                          constants: model.constants,
-                          modules: model.modules)
+          ModelSchema.new(class_name:    -> { model_name.camelize },
+                          table_name:    -> { table_name },
+                          attributes:    -> { attributes },
+                          _methods:      -> { build_methods(model) },
+                          relationships: -> { build_relationships(model) },
+                          constants:     -> { model.constants },
+                          modules:       -> { model.modules })
         end
-
         ModelSchemaCollection.new(model_schemas.compact)
       end
 
@@ -94,7 +93,8 @@ module ActiveMocker
             Relationships.new(name:        relation.name,
                               class_name:  relation.class_name,
                               type:        type,
-                              through:     relation.through,
+                              through:     nil,
+                              source:      nil,
                               foreign_key: relation.foreign_key,
                               join_table:  join_table)
           end
@@ -103,10 +103,9 @@ module ActiveMocker
 
       def relations_by_type(model)
         {belongs_to: model.belongs_to,
-         has_one: model.has_one,
-         has_many: model.has_many,
+         has_one:    model.has_one,
+         has_many:   model.has_many,
          has_and_belongs_to_many: model.has_and_belongs_to_many
-
         }
       end
 
@@ -173,6 +172,10 @@ module ActiveMocker
 
       def table_to_class_name(table)
         table.camelize.singularize
+      end
+
+      def get_belongs_to(class_name, foreign_key)
+        get_table(nil, class_name)
       end
 
     end

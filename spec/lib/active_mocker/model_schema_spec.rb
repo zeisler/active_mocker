@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 require 'active_mocker/db_to_ruby_type'
 require 'json'
 require 'spec/unit_logger'
@@ -81,6 +81,7 @@ describe ActiveMocker::ModelSchema do
                                                       class_name: 'ClassName',
                                                       type:       'Relationship Type',
                                                       through:    'link',
+                                                      source:     'source',
                                                       foreign_key:'relationship_id',
                                                       join_table: 'join_table'
                                                       )
@@ -114,17 +115,17 @@ describe ActiveMocker::ModelSchema do
 
   end
 
-  describe '#methods -> Array' do
+  describe '#_methods -> Array' do
 
     subject { described_class.new(
-            methods:
+            _methods:
             [
               ActiveMocker::ModelSchema::Methods.new(name:      'method_name',
                                                      arguments: 'argument_array',
                                                      type:      'class_method'
                                                     )
             ]
-            ).methods.first
+            )._methods.first
     }
 
     it 'name' do

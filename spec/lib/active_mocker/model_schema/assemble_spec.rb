@@ -19,7 +19,7 @@ describe ActiveMocker::ModelSchema::Assemble do
   end
 
   before do
-    # allow_any_instance_of(ActiveMocker::ModelReader::ParsedProperties).to receive(:table_name){'TableName'}
+    allow_any_instance_of(ActiveMocker::ModelReader::ParsedProperties).to receive(:table_name){'TableName'}
   end
 
   let(:app_root) { File.expand_path('../../../../../', __FILE__) }
@@ -27,7 +27,7 @@ describe ActiveMocker::ModelSchema::Assemble do
   # let(:schema_file){ '/Users/zeisler/dev/fbi/db/schema.rb' }
   let(:models_dir){ File.join(app_root, 'test_rails_4_app/app/models') }
   # let(:models_dir){'/Users/zeisler/dev/fbi/app/models' }
-  let(:run){described_class.new.run.sort_by{|m| m.class_name}
+  let(:run){described_class.new.run
   }
 
   it 'test' do
@@ -35,25 +35,20 @@ describe ActiveMocker::ModelSchema::Assemble do
     expect(result.count).to eq 6
   end
 
-  it 'relationships', pending:true do
-    expect(run[-1].relationships.map{ |r| JSON.parse(r.to_json)})
-      .to eq [{"name" => "account", "class_name" => "Account", "type" => "has_one", "foreign_key" => "account_id"}, {"name" => "microposts", "class_name" => "Micropost", "type" => "has_many", "foreign_key" => "user_id"}, {"name" => "relationships", "class_name" => "Relationship", "type" => "has_many", "foreign_key" => "follower_id"}, {"name" => "followed_users", "class_name" => "FollowedUser", "type" => "has_many", "foreign_key" => "user_id", "through" => "relationships"}, {"name" => "reverse_relationships", "class_name" => "Relationship", "type" => "has_many", "foreign_key" => "followed_id"}, {"name" => "followers", "class_name" => "Follower", "type" => "has_many", "foreign_key" => "user_id", "through" => "reverse_relationships"}]
-  end
-
   it 'methods' do
-    expect(run[-1].methods.map { |r| JSON.parse(r.to_json) })
-      .to eq([{"name" => "find_by_name","arguments" =>[["req", "name"]],       "type" => "scope"},
-              {"name" => "by_name",     "arguments" => [["req", "name"]], "type" => "scope"},
-              {"name" => "feed",       "arguments" => [],                      "type" => "instance"},
-              {"name" => "following?", "arguments" => [["req", "other_user"]], "type" => "instance"},
-              {"name" => "follow!",    "arguments" => [["req", "other_user"]], "type" => "instance"},
-              {"name" => "unfollow!",  "arguments" => [["req", "other_user"]], "type" => "instance"},
-              {"name" => "new_remember_token", "arguments" => [],              "type" => "class"},
-              {"name" => "digest",     "arguments" => [["req", "token"]],      "type" => "class"}])
+    expect(run[-1]._methods.map { |r| r.to_hash(all_values_as_string: true) })
+      .to eq([{:name => "find_by_name", :arguments => "[[:req, :name]]",       :type => "scope"},
+              {:name => "by_name",      :arguments => "[[:req, :name]]",       :type => "scope"},
+              {:name => "feed",         :arguments => "[]",                    :type => "instance"},
+              {:name => "following?",   :arguments => "[[:req, :other_user]]", :type => "instance"},
+              {:name => "follow!",      :arguments => "[[:req, :other_user]]", :type => "instance"},
+              {:name => "unfollow!",    :arguments => "[[:req, :other_user]]", :type => "instance"},
+              {:name => "new_remember_token", :arguments => "[]",              :type => "class"},
+              {:name => "digest",       :arguments => "[[:req, :token]]",      :type => "class"}])
   end
 
   it 'arguments' do
-    expect(run[-1].methods.last.arguments.passable).to eq('token')
+    expect(run[-1]._methods.last.arguments.passable).to eq('token')
   end
 
   it 'constants' do
@@ -65,6 +60,9 @@ describe ActiveMocker::ModelSchema::Assemble do
   end
 
   it 'attributes' do
+    allow_any_instance_of(ActiveMocker::ModelReader::ParsedProperties).to receive(:table_name) { 'users' }
+    allow_any_instance_of(ActiveMocker::ModelReader::ParsedProperties).to receive(:primary_key) { 'id' }
+
     expect(run[-1].attributes.map { |r| JSON.parse(r.to_json) })
     .to eq([{"name" => "id",              "type" => "integer", "primary_key" => true},
             {"name" => "name",            "type" => "string"},

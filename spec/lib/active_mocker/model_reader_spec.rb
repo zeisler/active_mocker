@@ -89,37 +89,7 @@ describe ActiveMocker::ModelReader do
 
   end
 
-  describe '#belongs_to' do
-
-    let(:subject){model_reader.belongs_to}
-
-    it 'name of association' do
-      expect(subject.first.name).to eq(:company)
-    end
-
-    it 'class_name override' do
-      expect(subject.first.class_name).to eq('PlanServiceCategory')
-    end
-
-    it 'infer class_name' do
-      expect(subject.last.class_name).to eq('Person')
-    end
-
-    it 'infer foreign key' do
-      expect(subject.last.foreign_key).to eq('person_id')
-    end
-
-    it 'foreign key override' do
-      expect(subject.first.foreign_key).to eq('category_id')
-    end
-
-    it 'through' do
-      expect(subject.last.through).to eq('customer')
-    end
-
-  end
-
-  describe '#has_one' do
+  describe '#has_one', pending:true do
 
     let(:subject) { model_reader.has_one }
 
@@ -129,17 +99,7 @@ describe ActiveMocker::ModelReader do
 
   end
 
-  describe '#has_many' do
-
-    let(:subject) { model_reader.has_many }
-
-    it 'name of association' do
-      expect(subject.first.name).to eq(:users)
-    end
-
-  end
-
-  describe '#has_and_belongs_to_many' do
+  describe '#has_and_belongs_to_many', pending: true do
 
     let(:subject) { model_reader.has_and_belongs_to_many }
 
@@ -223,7 +183,7 @@ describe ActiveMocker::ModelReader do
     let(:search){subject.parse('person')}
 
     it 'let not read a file but return a string instead to be evaluated' do
-      expect(search.belongs_to.first.name).to eq :zip_code
+      # expect(search.belongs_to.first.name).to eq :zip_code
       expect(search.instance_methods).to eq([:full_name])
       expect(search.instance_methods_with_arguments).to eq([{:full_name=>[[:req, :first_name], [:req, :last_name]]}])
     end
@@ -392,13 +352,13 @@ describe ActiveMocker::ModelReader do
     it 'child has parent and self properties' do
       expect(child.instance_methods).to eq([:child_method, :full_name])
       expect(child.scopes.keys).to eq([:scoped_method])
-      expect(child.belongs_to.map(&:name)).to eq([:zip_code])
+      # expect(child.belongs_to.map(&:name)).to eq([:zip_code])
     end
 
     it 'parent has all self properties' do
       expect(parent.instance_methods).to eq([:full_name])
       expect(parent.scopes.keys).to eq([])
-      expect(parent.belongs_to.map(&:name)).to eq([:zip_code])
+      # expect(parent.belongs_to.map(&:name)).to eq([:zip_code])
     end
 
   end

@@ -1,3 +1,5 @@
+require  "#{Rails.root}/lib/post_methods"
+
 class Micropost < ActiveRecord::Base
   belongs_to :user
   default_scope -> { order('created_at DESC') }

@@ -50,39 +50,11 @@ module ActiveMocker
 
   end
 
-  class ModelSchema
-
-    include LoggerToJson
-
-    attr_reader :class_name, :table_name, :attributes, :relationships, :methods, :modules
-
-    def initialize( class_name:    nil,
-                    table_name:    nil,
-                    attributes:    nil,
-                    relationships: nil,
-                    methods:       nil,
-                    constants:     nil,
-                    modules:       nil,
-                    is_join_table: nil,
-                    join_table_members: nil
-                    )
-      @class_name    = class_name
-      @table_name    = table_name
-      @attributes    = attributes    unless attributes.nil?
-      @relationships = relationships unless relationships.nil?
-      @methods       = methods       unless (methods || []).empty?
-      @constants     = constants     unless (constants || []).empty?
-      @modules       = modules       unless (modules || {}).empty?
-      @is_join_table = is_join_table unless is_join_table.nil?
-      @join_table_members = join_table_members unless join_table_members.nil?
-      # UnitLogger.unit.info "#{caller_locations[1]}\n"
-      # obj = ::JSON.parse(self.to_json)
-      # UnitLogger.unit.info "#{self.class.name}: #{JSON.pretty_unparse(obj)}\n"
-      # puts "#{self.class.name}: #{JSON.pretty_unparse(obj)}\n"
-    end
+  class ModelSchema < AttrPermit
+    attr_permit :class_name, :table_name, :attributes, :relationships, :_methods, :modules, :constants
 
     def constants
-      @constants || []
+      call_method(:constants) || []
     end
 
     def has_many
@@ -119,6 +91,10 @@ module ActiveMocker
 
     def scope_methods
       method_find(:scope)
+    end
+
+    def methods
+      call_method(:_methods) || []
     end
 
     def method_find(type)
@@ -185,7 +161,7 @@ module ActiveMocker
 
     def default_primary_key
       default_id = Attributes.new(name: 'id', primary_key: true, type: :integer)
-      attributes.unshift(default_id)
+      call_method(:attributes).unshift(default_id)
       default_id
     end
 
@@ -216,42 +192,33 @@ module ActiveMocker
 
     class Relationships
 
-      attr_reader :name, :class_name, :type, :through, :foreign_key, :join_table
+      attr_reader :name, :class_name, :type, :through, :source, :foreign_key, :join_table
 
       def initialize(name:,
           class_name:,
           type:,
           through:,
+          source:,
           foreign_key:,
           join_table:
       )
         @name        = name
         @class_name  = class_name
         @type        = type
-        @through     = through     unless through.nil?
-        @foreign_key = foreign_key unless foreign_key.nil?
-        @join_table  = join_table  unless join_table.nil?
+        @through     = through
+        @source      = source
+        @foreign_key = foreign_key
+        @join_table  = join_table
       end
 
     end
 
-    class Methods
+    class Methods < AttrPermit
 
-      attr_reader :name, :arguments, :type
+      attr_permit :name, :arguments, :type
 
-      def initialize( name:,
-                      arguments:,
-                      type:,
-                      proc: nil
-                    )
-        @name      = name
-        @arguments = Arguments.new(arguments)
-        @type      = type
-        @proc      = proc
-      end
-
-      def to_hash
-        {"name" => name, "arguments" => arguments, "type" => type}
+      def arguments
+        Arguments.new(call_method(:arguments))
       end
 
       class Arguments

@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-given", "~>3.5"
   spec.add_development_dependency "mutant", "~>0.5"
   spec.add_development_dependency "mutant-rspec", "~>0.5"
+  spec.add_development_dependency "fuubar", "~>2"
 
   if ENV['DEBUG'] == '1'
     spec.add_development_dependency "debase", "~>0.0"

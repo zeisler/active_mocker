@@ -14,12 +14,11 @@ module ActiveMocker
 
       private
 
-      def try_and_log(type, name, _caller)
+      def try_and_log(method, name, _caller)
         begin
           super _module
         rescue => e
-          Config.logger.debug "ActiveMocker :: DEBUG :: Can't #{type} module #{name} from class #{self.name}.\n  #{_caller}\n"
-          Config.logger.debug "  #{e}"
+          Config.logger.debug "#{method} module #{name} from class #{self.name}.\n  #{_caller}\n  #{e}"
         end
       end
 

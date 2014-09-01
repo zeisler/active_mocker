@@ -26,7 +26,7 @@ module ActiveMocker
         table_name = get_table_name(model.table_name, model_name)
         selected_table = tables.select{|table| table.name == table_name}.first
         if selected_table.nil?
-          Logger.error "ActiveMocker :: INFO :: Table: `#{table_name}`, can not be found for model #{model_name.camelize}.\n"
+          Logger.info "Table: `#{model.table_name}`, can not be found for model #{model_name.camelize}.\n"
         end
         selected_table
       end

@@ -38,7 +38,7 @@ module ActiveMocker
       module ConstMissing
 
         def const_missing(name)
-          Config.logger.debug "ActiveMocker :: DEBUG :: const_missing #{name} from class #{self.name}. Creating Class.\n  #{caller.first}\n"
+          Config.logger.debug "const_missing #{name} from class #{self.name}. Creating Class.\n  #{caller.first}"
           m = Module.new
           m.extend ConstMissing
           self.const_set name, m
@@ -47,7 +47,7 @@ module ActiveMocker
       end
 
       def self.const_missing(name)
-        Config.logger.debug "ActiveMocker :: DEBUG :: const_missing #{name} from class #{self.name.demodulize }. Creating Class.\n  #{caller.first}\n"
+        Config.logger.debug "const_missing #{name} from class #{self.name.demodulize }. Creating Class.\n  #{caller.first}"
         m = Module.new
         m.extend ConstMissing
         Object.const_set name, m

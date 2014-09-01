@@ -53,7 +53,7 @@ module ActiveMocker
     end
 
     def log_loading_error(msg, print_to_stdout=false)
-      main = "ActiveMocker :: Error loading Model: #{model_name} \n\t#{msg}\n"
+      main = "Error loading Model: #{model_name} \n\t#{msg}\n"
       file = "\t#{file_path}\n"
       stack_trace = msg.backtrace_locations.map{|e| "\t#{e}"}.join("\n")
       str = main + file + stack_trace

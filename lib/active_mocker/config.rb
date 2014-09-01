@@ -22,7 +22,7 @@ module ActiveMocker
         @mock_dir           = nil
         @model_base_classes = %w[ ActiveRecord::Base ]
         @file_reader        = FileReader
-        @logger = ::Logger.new(STDOUT)
+        @logger             = default_logger
       end
 
       def check_required_settings
@@ -33,6 +33,9 @@ module ActiveMocker
 
       def clear_settings
         load_defaults
+      def default_logger
+        @default_logger ||= ::Logger.new('log/active_mocker.log', 'daily')
+      end
       end
 
     end

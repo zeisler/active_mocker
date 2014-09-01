@@ -52,9 +52,9 @@ Ask a question in the [chat room](https://gitter.im/zeisler/active_mocker).
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to the test group in your application's Gemfile:
 
-    gem 'active_mocker'
+    gem 'active_mocker', :group => :test
 
 And then execute:
 

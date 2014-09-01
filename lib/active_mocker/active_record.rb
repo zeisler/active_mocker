@@ -1,7 +1,7 @@
-$:.unshift File.expand_path('../../', __FILE__)
 require 'active_mocker/active_record/scope'
 require 'active_mocker/active_record/unknown_class_method'
 require 'active_mocker/active_record/unknown_module'
+require 'active_mocker/active_record/relationships'
 
 module ActiveMocker
   # @api private
@@ -9,6 +9,7 @@ module ActiveMocker
     class Base
       extend Scope
       extend UnknownClassMethod
+      extend Relationships
 
       def self.inherited(subclass)
         return if subclass.superclass == Base

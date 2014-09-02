@@ -42,7 +42,7 @@ class Generate
 
       klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
 
-      File.open(File.join(Config.mock_dir,"#{model.table_name.singularize}_mock.rb"), 'w').write(klass_str)
+      File.open(File.join(Config.mock_dir,"#{model.class_name.tableize.singularize}_mock.rb"), 'w').write(klass_str)
       Config.logger.info "saving mock #{model.class_name} to #{Config.mock_dir}"
 
       rescue Exception => exception

@@ -305,11 +305,11 @@ describe ActiveMocker::Mock::MockAbilities do
     end
 
     it 'will raise if unmocked class method is called' do
-      expect{ TestRaise.pop}.to raise_error(ActiveMocker::Mock::Unimplemented, '::pop is not Implemented for Class: TestRaise. To continue stub the method.')
+      expect{ TestRaise.pop}.to raise_error(ActiveMocker::Mock::NotImplementedError, '::pop for Class: TestRaise. To continue stub the method.')
     end
 
     it 'will raise if unmocked instance method is called' do
-      expect{ TestRaise.new.buz}.to raise_error(ActiveMocker::Mock::Unimplemented, '#buz is not Implemented for Class: TestRaise. To continue stub the method.')
+      expect{ TestRaise.new.buz}.to raise_error(ActiveMocker::Mock::NotImplementedError, '#buz for Class: TestRaise. To continue stub the method.')
     end
 
   end

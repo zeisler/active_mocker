@@ -15,6 +15,11 @@ module ActiveMocker
         @hash_process[val] ||= processor.call(hash[val])
       end
 
+      def merge(merge_hash)
+        self.hash = hash.merge(merge_hash.hash)
+        self
+      end
+
     end
   end
 end

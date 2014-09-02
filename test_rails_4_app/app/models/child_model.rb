@@ -1,6 +1,11 @@
 class ChildModel < User
 
-  def self.get_named_scopes
-    []
+  has_many :accounts
+
+  scope :by_credits, -> (credits) { where(credits: credits) }
+
+  def child_method
+
   end
+
 end

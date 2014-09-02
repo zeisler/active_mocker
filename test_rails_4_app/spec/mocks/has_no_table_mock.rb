@@ -5,15 +5,15 @@ class HasNoTableMock < ActiveMocker::Mock::Base
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({})
+      @attributes ||= HashWithIndifferentAccess.new({}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({  }, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new({  }, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= {}
+      @associations ||= {}.merge(super)
     end
 
     def mocked_class
@@ -23,11 +23,15 @@ class HasNoTableMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= []
+      @attribute_names ||= [] | super
     end
 
     def primary_key
       "id"
+    end
+
+    def abstract_class?
+      true
     end
 
   end
@@ -51,6 +55,7 @@ class HasNoTableMock < ActiveMocker::Mock::Base
 
 
   module Scopes
+    include ActiveMocker::Mock::Base::Scopes
 
   end
 

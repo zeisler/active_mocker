@@ -98,6 +98,10 @@ class Base
       false
     end
 
+    def abstract_class?
+      true
+    end
+
     def build_type(type)
       @@built_types ||= {}
       @@built_types[type] ||= Virtus::Attribute.build(type)
@@ -139,6 +143,9 @@ class Base
   #   # Instantiates a single new object
   #   UserMock.new(first_name: 'Jamie')
   def initialize(attributes = {}, &block)
+    if self.class.abstract_class?
+      raise NotImplementedError, "#{self.class.name} is an abstract class and cannot be instantiated."
+    end
     setup_instance_variables
     assign_attributes(attributes, &block)
   end
@@ -290,6 +297,10 @@ class Base
   include PropertiesGetterAndSetter
 
   class ScopeRelation < ::ActiveMocker::Mock::Association
+  end
+
+  module Scopes
+
   end
 
 end

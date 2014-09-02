@@ -6,25 +6,9 @@ describe ActiveMocker::Mock::Base do
 
   class ActiveMocker::Mock::Base
     class << self
-      def attributes
-        {}
-      end
 
-      def types
-        []
-      end
-
-      def associations
-        []
-      end
-
-      def mocked_class
-      end
-
-      def attribute_names
-      end
-
-      def primary_key
+      def abstract_class?
+        false
       end
 
       def records=(r)

@@ -1,6 +1,6 @@
 require 'active_mocker/mock'
 
-class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
+class <%= class_name + @mock_append_name %> < <%= parent_class %>
 <% constants.each do |constant| -%>
   <%= constant.first %> = <%= constant.last.inspect %>
 <% end -%>
@@ -14,15 +14,15 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new(<%= attributes_with_defaults %>)
+      @attributes ||= HashWithIndifferentAccess.new(<%= attributes_with_defaults %>).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new(<%= types_hash %>, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new(<%= types_hash %>, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= <%= associations %>
+      @associations ||= <%= associations %>.merge(super)
     end
 
     def mocked_class
@@ -32,11 +32,15 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= <%= attribute_names %>
+      @attribute_names ||= <%= attribute_names %> | super
     end
 
     def primary_key
       <%= primary_key.name.inspect %>
+    end
+
+    def abstract_class?
+      <%= abstract_class.inspect %>
     end
 
   end
@@ -148,6 +152,7 @@ class <%= class_name + @mock_append_name %> < ActiveMocker::Mock::Base
 <% end -%>
 
   module Scopes
+    include <%= parent_class %>::Scopes
 
 <% scope_methods.each do |method| -%>
     def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>

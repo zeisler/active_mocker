@@ -20,11 +20,9 @@ module ActiveMocker
 
       def get_table(model, model_name)
         if model.parent_class.present?
-          model_name = model.parent_class.tableize.singularize
           model = get_model(model_name)
         end
-        table_name = get_table_name(model.table_name, model_name)
-        selected_table = tables.select{|table| table.name == table_name}.first
+        selected_table = tables.select{|table| table.name == model.table_name}.first
         if selected_table.nil?
           Logger.info "Table: `#{model.table_name}`, can not be found for model #{model_name.camelize}.\n"
         end
@@ -36,18 +34,19 @@ module ActiveMocker
           model = get_model(model_name)
           next unless model
           table = get_table(model, model_name)
-          table_name = model_name
           attributes = []
           attributes = build_attributes(table.fields, primary_key(table.fields, model)) unless table.nil?
 
           increment_progress
-          ModelSchema.new(class_name:    -> { model_name.camelize },
-                          table_name:    -> { table_name },
-                          attributes:    -> { attributes },
-                          _methods:      -> { build_methods(model) },
-                          relationships: -> { build_relationships(model) },
-                          constants:     -> { model.constants },
-                          modules:       -> { model.modules })
+          ModelSchema.new(class_name:      -> { model_name.camelize },
+                          table_name:      -> { model.try(:table_name) },
+                          attributes:      -> { attributes },
+                          _methods:        -> { build_methods(model) },
+                          relationships:   -> { build_relationships(model) },
+                          constants:       -> { model.constants },
+                          modules:         -> { model.modules },
+                          parent_class:    -> { model.parent_class },
+                          abstract_class:  -> { model.abstract_class} )
         end
         ModelSchemaCollection.new(model_schemas.compact)
       end

@@ -51,7 +51,19 @@ module ActiveMocker
   end
 
   class ModelSchema < AttrPermit
-    attr_permit :class_name, :table_name, :attributes, :relationships, :_methods, :modules, :constants
+    attr_permit :class_name,
+                :table_name,
+                :attributes,
+                :relationships,
+                :_methods,
+                :modules,
+                :constants,
+                :parent_class,
+                :abstract_class
+
+    def abstract_class
+      !!call_method(:abstract_class)
+    end
 
     def constants
       call_method(:constants) || []
@@ -144,6 +156,15 @@ module ActiveMocker
 
     def mockable_instance_methods
       instance_methods.map(&:name).each_with_object({}) { |val, hash| hash[val] = nil }
+    end
+
+    def parent_class
+      return mock_name(call_method(:parent_class)) if call_method(:parent_class).present?
+      'ActiveMocker::Mock::Base'
+    end
+
+    def is_child_class?
+      call_method(:parent_class).present?
     end
 
     def render(template, mock_append_name)

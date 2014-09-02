@@ -17,19 +17,10 @@ module ActiveMocker
 
     def sandbox_model
       source = RubyParse.new(read_file)
-      if source.has_parent_class? && Config.model_base_classes.include?(source.parent_class_name)
-        source.modify_parent_class('ActiveMocker::ActiveRecord::Base')
-      else
-        load_parent_class(source.parent_class_name)
-        read_file
+      if source.has_parent_class? && !Config.model_base_classes.include?(source.parent_class_name)
+        @parent_class = source.parent_class_name
       end
-    end
-
-    def load_parent_class(class_name)
-      @parent_class = class_name
-      file_name     = class_name.tableize.singularize
-      source        = RubyParse.new(read_file(file_name)).modify_parent_class('ActiveMocker::ActiveRecord::Base')
-      eval_file(source, file_path(file_name))
+      source.modify_parent_class('ActiveMocker::ActiveRecord::Base')
     end
 
     def module_namespace
@@ -87,24 +78,36 @@ module ActiveMocker
         @rails_version ||= model_name.classify.constantize
       end
 
+      def abstract_class
+        rails_version.try(:abstract_class)
+      end
+
+      def select_only_current_class(type)
+        rails_version.reflect_on_all_associations(type).select do |a|
+          klass.relationships.send(type).map(&:name).include?(a.name)
+        end
+      end
+
       def belongs_to
-        rails_version.reflect_on_all_associations(:belongs_to)
+        select_only_current_class(:belongs_to)
       end
 
       def has_one
-        rails_version.reflect_on_all_associations(:has_one)
+        select_only_current_class(:has_one)
       end
 
       def has_and_belongs_to_many
-        rails_version.reflect_on_all_associations(:has_and_belongs_to_many)
+        select_only_current_class(:has_and_belongs_to_many)
       end
 
       def has_many
-        rails_version.reflect_on_all_associations(:has_many)
+        select_only_current_class(:has_many)
       end
 
       def table_name
-        rails_version.table_name
+        return rails_version.try(:table_name) if rails_version.try(:superclass).try(:name) == 'ActiveRecord::Base'
+        return nil if rails_version.superclass.try(:table_name) == rails_version.try(:table_name)
+        rails_version.try(:table_name)
       end
 
       def primary_key

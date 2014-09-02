@@ -9,27 +9,27 @@ module Mock
     module ClassMethods
 
       def attributes
-        raise Mock::Unimplemented
+        HashWithIndifferentAccess.new({})
       end
 
       def types
-        raise Mock::Unimplemented
+        ActiveMocker::Mock::HashProcess.new({}, method(:build_type))
       end
 
       def associations
-        raise Mock::Unimplemented
+        {}
       end
 
       def mocked_class
-        raise Mock::Unimplemented
+        ''
       end
 
       def attribute_names
-        raise Mock::Unimplemented
+        []
       end
 
       def primary_key
-        raise Mock::Unimplemented
+        ''
       end
 
     end

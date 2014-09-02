@@ -1,19 +1,19 @@
 require 'active_mocker/mock'
 
-class ChildModelMock < ActiveMocker::Mock::Base
+class ChildModelMock < UserMock
 
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "email"=>"", "credits"=>nil, "created_at"=>nil, "updated_at"=>nil, "password_digest"=>nil, "remember_token"=>true, "admin"=>false})
+      @attributes ||= HashWithIndifferentAccess.new({}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new({  }, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= {:account=>nil, :microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}
+      @associations ||= {:accounts=>nil}.merge(super)
     end
 
     def mocked_class
@@ -23,11 +23,15 @@ class ChildModelMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
+      @attribute_names ||= [] | super
     end
 
     def primary_key
       "id"
+    end
+
+    def abstract_class?
+      false
     end
 
   end
@@ -44,139 +48,26 @@ class ChildModelMock < ActiveMocker::Mock::Base
     write_attribute(:id, val)
   end
 
-  def name
-    read_attribute(:name)
-  end
-
-  def name=(val)
-    write_attribute(:name, val)
-  end
-
-  def email
-    read_attribute(:email)
-  end
-
-  def email=(val)
-    write_attribute(:email, val)
-  end
-
-  def credits
-    read_attribute(:credits)
-  end
-
-  def credits=(val)
-    write_attribute(:credits, val)
-  end
-
-  def created_at
-    read_attribute(:created_at)
-  end
-
-  def created_at=(val)
-    write_attribute(:created_at, val)
-  end
-
-  def updated_at
-    read_attribute(:updated_at)
-  end
-
-  def updated_at=(val)
-    write_attribute(:updated_at, val)
-  end
-
-  def password_digest
-    read_attribute(:password_digest)
-  end
-
-  def password_digest=(val)
-    write_attribute(:password_digest, val)
-  end
-
-  def remember_token
-    read_attribute(:remember_token)
-  end
-
-  def remember_token=(val)
-    write_attribute(:remember_token, val)
-  end
-
-  def admin
-    read_attribute(:admin)
-  end
-
-  def admin=(val)
-    write_attribute(:admin, val)
-  end
-
   ##################################
   #         Associations           #
   ##################################
 
-# has_one
-  def account
-    read_association('account')
-  end
-
-  def account=(val)
-    @associations['account'] = val
-    if ActiveMocker::Mock.config.experimental
-      account.child_models <<  self if val.respond_to?(:child_models=)
-      account.send(:write_association, :child_model,  self) if val.respond_to?(:child_model=)
-    end
-    val
-  end
-
-  def build_account(attributes={}, &block)
-    write_association(:account, classes('Account').new(attributes, &block)) if classes('Account')
-  end
-
-  def create_account(attributes={}, &block)
-    write_association(:account, classes('Account').new(attributes, &block)) if classes('Account')
-  end
-  alias_method :create_account!, :create_account
 
 # has_many
-  def microposts
-    @associations[:microposts] ||= ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: @attributes['id'], relation_class: classes('Micropost'), source: '')
+  def accounts
+    @associations[:accounts] ||= ActiveMocker::Mock::HasMany.new([],foreign_key: 'child_model_id', foreign_id: @attributes['id'], relation_class: classes('Account'), source: '')
   end
 
-  def microposts=(val)
-    @associations[:microposts] ||= ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: @attributes['id'], relation_class: classes('Micropost'), source: '')
-  end
-
-  def relationships
-    @associations[:relationships] ||= ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: @attributes['id'], relation_class: classes('Relationship'), source: '')
-  end
-
-  def relationships=(val)
-    @associations[:relationships] ||= ActiveMocker::Mock::HasMany.new(val, foreign_key: 'follower_id', foreign_id: @attributes['id'], relation_class: classes('Relationship'), source: '')
-  end
-
-  def followed_users
-    @associations[:followed_users] ||= ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: @attributes['id'], relation_class: classes('User'), source: '')
-  end
-
-  def followed_users=(val)
-    @associations[:followed_users] ||= ActiveMocker::Mock::HasMany.new(val, foreign_key: 'followed_id', foreign_id: @attributes['id'], relation_class: classes('User'), source: '')
-  end
-
-  def reverse_relationships
-    @associations[:reverse_relationships] ||= ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: @attributes['id'], relation_class: classes('Relationship'), source: '')
-  end
-
-  def reverse_relationships=(val)
-    @associations[:reverse_relationships] ||= ActiveMocker::Mock::HasMany.new(val, foreign_key: 'followed_id', foreign_id: @attributes['id'], relation_class: classes('Relationship'), source: '')
-  end
-
-  def followers
-    @associations[:followers] ||= ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: @attributes['id'], relation_class: classes('User'), source: '')
-  end
-
-  def followers=(val)
-    @associations[:followers] ||= ActiveMocker::Mock::HasMany.new(val, foreign_key: 'follower_id', foreign_id: @attributes['id'], relation_class: classes('User'), source: '')
+  def accounts=(val)
+    @associations[:accounts] ||= ActiveMocker::Mock::HasMany.new(val, foreign_key: 'child_model_id', foreign_id: @attributes['id'], relation_class: classes('Account'), source: '')
   end
 
   module Scopes
+    include UserMock::Scopes
+
+    def by_credits(credits)
+      ActiveMocker::LoadedMocks.find('ChildModel').send(:call_mock_method, 'by_credits', credits)
+    end
 
   end
 
@@ -199,24 +90,8 @@ class ChildModelMock < ActiveMocker::Mock::Base
   ##################################
 
 
-  def feed
-    call_mock_method :feed
-  end
-
-  def following?(other_user)
-    call_mock_method :following?, other_user
-  end
-
-  def follow!(other_user)
-    call_mock_method :follow!, other_user
-  end
-
-  def unfollow!(other_user)
-    call_mock_method :unfollow!, other_user
-  end
-
-  def self.get_named_scopes
-    call_mock_method :get_named_scopes
+  def child_method
+    call_mock_method :child_method
   end
 
   private

@@ -5,15 +5,15 @@ class AccountMock < ActiveMocker::Mock::Base
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "user_id"=>nil, "balance"=>nil})
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "user_id"=>nil, "balance"=>nil}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, user_id: Fixnum, balance: BigDecimal }, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, user_id: Fixnum, balance: BigDecimal }, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= {:user=>nil}
+      @associations ||= {:user=>nil}.merge(super)
     end
 
     def mocked_class
@@ -23,11 +23,15 @@ class AccountMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "user_id", "balance"]
+      @attribute_names ||= ["id", "user_id", "balance"] | super
     end
 
     def primary_key
       "id"
+    end
+
+    def abstract_class?
+      false
     end
 
   end
@@ -94,6 +98,7 @@ class AccountMock < ActiveMocker::Mock::Base
 
 
   module Scopes
+    include ActiveMocker::Mock::Base::Scopes
 
   end
 

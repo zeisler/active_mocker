@@ -5,15 +5,15 @@ class UserMock < ActiveMocker::Mock::Base
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "email"=>"", "credits"=>nil, "created_at"=>nil, "updated_at"=>nil, "password_digest"=>nil, "remember_token"=>true, "admin"=>false})
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "email"=>"", "credits"=>nil, "created_at"=>nil, "updated_at"=>nil, "password_digest"=>nil, "remember_token"=>true, "admin"=>false}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= {:account=>nil, :microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}
+      @associations ||= {:account=>nil, :microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}.merge(super)
     end
 
     def mocked_class
@@ -23,11 +23,15 @@ class UserMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"]
+      @attribute_names ||= ["id", "name", "email", "credits", "created_at", "updated_at", "password_digest", "remember_token", "admin"] | super
     end
 
     def primary_key
       "id"
+    end
+
+    def abstract_class?
+      false
     end
 
   end
@@ -177,6 +181,7 @@ class UserMock < ActiveMocker::Mock::Base
   end
 
   module Scopes
+    include ActiveMocker::Mock::Base::Scopes
 
     def find_by_name(name)
       ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'find_by_name', name)

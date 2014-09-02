@@ -48,7 +48,7 @@ describe ActiveMocker::ModelReader do
   describe '#modules' do
 
     it 'returns all public class methods' do
-      expect(subject.modules).to eq({:included => ["FooBar", "ModelCore::PlanService::Dah"], :extended => ["Baz"]})
+      expect(subject.modules).to eq({:included => %w[FooBar ModelCore::PlanService::Dah], :extended => ['Baz']})
     end
 
   end
@@ -87,73 +87,6 @@ describe ActiveMocker::ModelReader do
 
   end
 
-  describe '#has_one', pending:true do
-
-    let(:subject) { model_reader.has_one }
-
-    it 'name of association' do
-      expect(subject.first.name).to eq(:account)
-    end
-
-  end
-
-  describe '#has_and_belongs_to_many', pending: true do
-
-    let(:subject) { model_reader.has_and_belongs_to_many }
-
-    it 'name of association' do
-      expect(subject.first.name).to eq(:disclosures)
-    end
-
-  end
-
-# TODO JoinTable
-#     class Assembly < ActiveRecord::Base
-#       has_and_belongs_to_many :parts
-#     end
-#
-#     class Part < ActiveRecord::Base
-#       has_and_belongs_to_many :assemblies
-#     end
-#     These need to be backed up by a migration to create the assemblies_parts table.This table should be created without a primary key:
-
-#     class CreateAssembliesPartsJoinTable < ActiveRecord::Migration
-#       def change
-#         create_table :assemblies_parts, id: false do |t|
-#           t.integer :assembly_id
-#           t.integer :part_id
-#         end
-#       end
-#     end
-
-#   TODO Polymorphic Associations
-#   A slightly more advanced twist on associations is the polymorphic association.With polymorphic associations, a model can belong to more than one other model, on a single association.For example, you might have a picture model that belongs to either an employee model or a product model.Here 's how this could be declared:
-#
-#     class Picture < ActiveRecord::Base
-#       belongs_to :imageable, polymorphic: true
-#     end
-#
-#     class Employee < ActiveRecord::Base
-#       has_many :pictures, as: :imageable
-#     end
-#
-#     class Product < ActiveRecord::Base
-#       has_many :pictures, as: :imageable
-#     end
-
-#     class CreatePictures < ActiveRecord::Migration
-#       def change
-#         create_table :pictures do |t|
-#           t.string :name
-#           t.integer :imageable_id
-#           t.string :imageable_type
-#           t.timestamps
-#         end
-#       end
-#     end
-
-
-
   context 'inject string_reader as file_reader' do
 
     let(:example_model){
@@ -180,8 +113,7 @@ describe ActiveMocker::ModelReader do
 
     let(:search){subject.parse('person')}
 
-    it 'let not read a file but return a string instead to be evaluated' do
-      # expect(search.belongs_to.first.name).to eq :zip_code
+    it 'will evaluate string instead of opening file' do
       expect(search.instance_methods).to eq([:full_name])
       expect(search.instance_methods_with_arguments).to eq([{:full_name=>[[:req, :first_name], [:req, :last_name]]}])
     end
@@ -249,7 +181,7 @@ describe ActiveMocker::ModelReader do
 
               end
 
-              scope :scoped_method, -> {}
+              scope :scoped_method2, -> {}
 
             end
        eos
@@ -258,7 +190,7 @@ describe ActiveMocker::ModelReader do
        reader.reader[:parent] = <<-eos
             class Parent < ActiveRecord::Base
 
-              belongs_to :zip_code
+              scope :scoped_method, -> {}
 
               def full_name(first_name, last_name)
 
@@ -278,13 +210,14 @@ describe ActiveMocker::ModelReader do
      let(:child) { subject.parse('child') }
      let(:parent) { subject.parse('parent') }
 
-     it 'let not read a file but return a string instead to be evaluated' do
-       expect(child.instance_methods).to eq([:child_method, :full_name])
-       expect(child.scopes.keys).to eq([:scoped_method])
+     it 'it will only include properties from its self' do
+       expect(child.instance_methods).to eq([:child_method])
+       expect(child.scopes.keys).to eq([:scoped_method2])
      end
 
-     it 'let not read a file but return a string instead to be evaluated' do
+     it 'parent will have its own properties' do
        expect(parent.instance_methods).to eq([:full_name])
+       expect(parent.scopes.keys).to eq([:scoped_method])
      end
 
    end
@@ -347,19 +280,16 @@ describe ActiveMocker::ModelReader do
     let(:child) { subject.parse('child') }
     let(:parent) { subject.parse('parent') }
 
-    it 'child has parent and self properties' do
-      expect(child.instance_methods).to eq([:child_method, :full_name])
+    it 'child only self properties' do
+      expect(child.instance_methods).to eq([:child_method])
       expect(child.scopes.keys).to eq([:scoped_method])
-      # expect(child.belongs_to.map(&:name)).to eq([:zip_code])
     end
 
     it 'parent has all self properties' do
       expect(parent.instance_methods).to eq([:full_name])
       expect(parent.scopes.keys).to eq([])
-      # expect(parent.belongs_to.map(&:name)).to eq([:zip_code])
     end
 
   end
 
 end
-

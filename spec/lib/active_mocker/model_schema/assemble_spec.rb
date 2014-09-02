@@ -23,11 +23,8 @@ describe ActiveMocker::ModelSchema::Assemble do
 
   let(:app_root) { File.expand_path('../../../../../', __FILE__) }
   let(:schema_file){ File.join(app_root, 'test_rails_4_app/db/schema.rb') }
-  # let(:schema_file){ '/Users/zeisler/dev/fbi/db/schema.rb' }
   let(:models_dir){ File.join(app_root, 'test_rails_4_app/app/models') }
-  # let(:models_dir){'/Users/zeisler/dev/fbi/app/models' }
-  let(:run){described_class.new.run.sort_by{|c| c.class_name }
-  }
+  let(:run){described_class.new.run.sort_by{|c| c.class_name }}
 
   it 'test' do
     result = described_class.new.run

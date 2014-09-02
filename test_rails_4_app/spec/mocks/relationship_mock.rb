@@ -5,15 +5,15 @@ class RelationshipMock < ActiveMocker::Mock::Base
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil})
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, follower_id: Fixnum, followed_id: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, follower_id: Fixnum, followed_id: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= {:follower=>nil, :followed=>nil}
+      @associations ||= {:follower=>nil, :followed=>nil}.merge(super)
     end
 
     def mocked_class
@@ -23,11 +23,15 @@ class RelationshipMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "follower_id", "followed_id", "created_at", "updated_at"]
+      @attribute_names ||= ["id", "follower_id", "followed_id", "created_at", "updated_at"] | super
     end
 
     def primary_key
       "id"
+    end
+
+    def abstract_class?
+      false
     end
 
   end
@@ -137,6 +141,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
 
   module Scopes
+    include ActiveMocker::Mock::Base::Scopes
 
   end
 

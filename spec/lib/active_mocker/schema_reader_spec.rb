@@ -62,7 +62,7 @@ describe ActiveMocker::SchemaReader do
     end
 
     after do
-      ActiveMocker::Config.clear_settings
+      ActiveMocker::Config.load_defaults
     end
 
     let(:subject){
@@ -80,12 +80,12 @@ describe ActiveMocker::SchemaReader do
   context 'reads from file' do
 
     before do
-      ActiveMocker::Config.clear_settings
+      ActiveMocker::Config.load_defaults
       ActiveMocker::Config.schema_file = schema_file
     end
 
     after do
-      ActiveMocker::Config.clear_settings
+      ActiveMocker::Config.load_defaults
     end
 
     let(:subject){described_class.new}

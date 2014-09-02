@@ -11,11 +11,10 @@ require 'active_mocker/config'
 describe ActiveMocker::ModelSchema::Assemble do
 
   before(:each) do
-    ActiveMocker::Config.clear_settings
+    ActiveMocker::Config.load_defaults
     ActiveMocker::Config.model_base_classes = %w[ActiveRecord::Base]
     ActiveMocker::Config.schema_file = schema_file
     ActiveMocker::Config.model_dir   = models_dir
-    ActiveMocker::Config.logger      = UnitLogger.unit
   end
 
   before do

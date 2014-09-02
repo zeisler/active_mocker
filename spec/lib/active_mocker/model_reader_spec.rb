@@ -19,9 +19,7 @@ require_relative '../../unit_logger'
 describe ActiveMocker::ModelReader do
 
   before(:each) do
-    ActiveMocker::Config.clear_settings
-    ActiveMocker::Logger.set(UnitLogger)
-    ActiveMocker::Config.model_base_classes = %w[ActiveRecord::Base]
+    ActiveMocker::Config.load_defaults
     ActiveMocker::Config.model_dir = File.expand_path('../../', __FILE__)
   end
 

@@ -6,19 +6,18 @@ require 'active_mocker/file_reader'
 describe ActiveMocker::Config do
 
   after do
-    described_class.clear_settings
+    described_class.load_defaults
   end
 
   before do
-    described_class.clear_settings
+    described_class.load_defaults
   end
 
   let(:set_defaults){
-    stub_const('Rails', double(root: ''))
     described_class.set do |config|
-      config.schema_file = File.join(Rails.root, 'db/schema.rb')
-      config.model_dir = File.join(Rails.root, 'app/models')
-      config.mock_dir = File.join(Rails.root, 'spec/mocks')
+      config.schema_file = File.join('', 'db/schema.rb')
+      config.model_dir   = File.join('', 'app/models')
+      config.mock_dir    = File.join('Rails.root', 'spec/mocks')
       config.model_base_classes = %w[ ActiveRecord::Base ]
     end
   }

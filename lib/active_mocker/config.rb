@@ -11,7 +11,10 @@ module ActiveMocker
                     :file_reader
 
       def set
-        @first_load ||= load_defaults
+        unless @first_load
+          load_defaults
+          @first_load = true
+        end
         yield self
         check_required_settings
       end
@@ -23,6 +26,7 @@ module ActiveMocker
         @model_base_classes = %w[ ActiveRecord::Base ]
         @file_reader        = FileReader
         @logger             = default_logger
+        rails_defaults if Object.const_defined?('Rails')
       end
 
       def check_required_settings
@@ -31,11 +35,14 @@ module ActiveMocker
         end
       end
 
-      def clear_settings
-        load_defaults
       def default_logger
         @default_logger ||= ::Logger.new('log/active_mocker.log', 'daily')
       end
+
+      def rails_defaults
+        @schema_file        = File.join(Rails.root, 'db/schema.rb')
+        @model_dir          = File.join(Rails.root, 'app/models')
+        @mock_dir           = File.join(Rails.root, 'spec/mocks')
       end
 
     end

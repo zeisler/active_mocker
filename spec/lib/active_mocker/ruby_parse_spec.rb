@@ -68,6 +68,18 @@ describe ActiveMocker::RubyParse do
       expect(subject.has_parent_class?).to eq true
     end
 
+    it 'has parent class within module' do
+      subject = described_class.new <<-RUBY
+      module C
+        class A < B
+          def method
+          end
+        end
+      end
+      RUBY
+      expect(subject.has_parent_class?).to eq true
+    end
+
     it 'has no parent class' do
       subject = described_class.new <<-RUBY
       require 'uri-open'
@@ -94,7 +106,6 @@ describe ActiveMocker::RubyParse do
       end
       RUBY
       expect(subject.has_parent_class?).to eq false
-
     end
 
   end
@@ -128,6 +139,18 @@ describe ActiveMocker::RubyParse do
       end
       RUBY
       expect(subject.modify_parent_class('X::Y')).to eq "class A < X::Y\n  def method(name:)\n  end\nend"
+    end
+
+    it 'will change parent class const within a module but will not return the module' do
+      subject = described_class.new <<-RUBY
+      module C
+        class A < B
+          def method
+          end
+        end
+      end
+      RUBY
+      expect(subject.modify_parent_class('Y::Z')).to eq "class A < Y::Z\n  def method\n  end\nend"
     end
 
     it 'if non set it will add the parent' do

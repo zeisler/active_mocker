@@ -1,11 +1,11 @@
-require "active_mocker/version"
+require 'active_mocker/version'
 
+require 'logger'
 require 'active_mocker/railtie' if defined?(Rails)
 require 'ruby-progressbar'
 require 'forwardable'
 require 'active_support/all'
 require 'singleton'
-require 'logger'
 require 'parser/current'
 require 'unparser'
 require 'virtus'

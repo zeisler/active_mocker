@@ -36,6 +36,8 @@ module ActiveMocker
       end
 
       def default_logger
+        dir = File.dirname('log/active_mocker.log')
+        FileUtils.mkdir_p(dir) unless File.directory?(dir)
         @default_logger ||= ::Logger.new('log/active_mocker.log', 'daily')
       end
 

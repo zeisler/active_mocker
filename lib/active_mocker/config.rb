@@ -10,29 +10,35 @@ module ActiveMocker
                     :model_base_classes,
                     :file_reader
 
+      def model_base_classes=(val)
+        @model_base_classes = val
+      end
+
       def set
-        unless @first_load
-          load_defaults
-          @first_load = true
-        end
+        load_defaults
         yield self
-        check_required_settings
       end
 
       def load_defaults
-        @schema_file        = nil
-        @model_dir          = nil
-        @mock_dir           = nil
-        @model_base_classes = %w[ ActiveRecord::Base ]
-        @file_reader        = FileReader
-        @logger             = default_logger
+        @schema_file        = nil unless @schema_file
+        @model_dir          = nil unless @model_dir
+        @mock_dir           = nil unless @mock_dir
+        @model_base_classes = %w[ ActiveRecord::Base ] unless @model_base_classes
+        @file_reader        = FileReader     unless @file_reader
+        @logger             = default_logger unless @logger
         rails_defaults if Object.const_defined?('Rails')
       end
 
-      def check_required_settings
-        instance_variables.each do |ivar|
-          raise "ActiveMocker::Config ##{ivar.to_s.sub('@', '')} must be specified!" if instance_variable_get(ivar).nil?
-        end
+      def reset_all
+        [ :@schema_file,
+          :@model_dir,
+          :@mock_dir,
+          :@model_base_classes,
+          :@file_reader,
+          :@logger,
+          :@schema_file,
+          :@model_dir,
+          :@mock_dir].each{|ivar| instance_variable_set(ivar, nil)}
       end
 
       def default_logger
@@ -42,9 +48,9 @@ module ActiveMocker
       end
 
       def rails_defaults
-        @schema_file        = File.join(Rails.root, 'db/schema.rb')
-        @model_dir          = File.join(Rails.root, 'app/models')
-        @mock_dir           = File.join(Rails.root, 'spec/mocks')
+        @schema_file = File.join(Rails.root, 'db/schema.rb') unless @schema_file
+        @model_dir   = File.join(Rails.root, 'app/models')   unless @model_dir
+        @mock_dir    = File.join(Rails.root, 'spec/mocks')   unless @mock_dir
       end
 
     end

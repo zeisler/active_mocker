@@ -58,10 +58,13 @@ describe ActiveMocker::SchemaReader do
   context 'inject string_reader as file_reader' do
 
     before do
+      ActiveMocker::Config.reset_all
+      ActiveMocker::Config.load_defaults
       ActiveMocker::Config.file_reader = example_schema
     end
 
     after do
+      ActiveMocker::Config.reset_all
       ActiveMocker::Config.load_defaults
     end
 
@@ -80,11 +83,13 @@ describe ActiveMocker::SchemaReader do
   context 'reads from file' do
 
     before do
+      ActiveMocker::Config.reset_all
       ActiveMocker::Config.load_defaults
       ActiveMocker::Config.schema_file = schema_file
     end
 
     after do
+      ActiveMocker::Config.reset_all
       ActiveMocker::Config.load_defaults
     end
 

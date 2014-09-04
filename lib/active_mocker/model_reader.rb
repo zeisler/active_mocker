@@ -20,6 +20,10 @@ module ActiveMocker
       if source.has_parent_class? && !Config.model_base_classes.include?(source.parent_class_name)
         @parent_class = source.parent_class_name
       end
+
+      unless source.has_parent_class?
+        raise ModelLoadError::HasNoParentClass.new("#{model_name}")
+      end
       source.modify_parent_class('ActiveMocker::ActiveRecord::Base')
     end
 

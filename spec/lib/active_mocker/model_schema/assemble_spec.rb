@@ -11,6 +11,7 @@ require 'active_mocker/config'
 describe ActiveMocker::ModelSchema::Assemble do
 
   before(:each) do
+    ActiveMocker::Config.reset_all
     ActiveMocker::Config.load_defaults
     ActiveMocker::Config.model_base_classes = %w[ActiveRecord::Base]
     ActiveMocker::Config.schema_file = schema_file
@@ -28,11 +29,11 @@ describe ActiveMocker::ModelSchema::Assemble do
 
   it 'test' do
     result = described_class.new.run
-    expect(result.count).to eq 6
+    expect(result.count).to eq 8
   end
 
   it 'methods' do
-    expect(run[-1]._methods.map { |r| r.to_hash(all_values_as_string: true) })
+    expect(run[-2]._methods.map { |r| r.to_hash(all_values_as_string: true) })
       .to eq([{:name => "find_by_name", :arguments => "[[:req, :name]]",       :type => "scope"},
               {:name => "by_name",      :arguments => "[[:req, :name]]",       :type => "scope"},
               {:name => "feed",         :arguments => "[]",                    :type => "instance"},
@@ -44,22 +45,22 @@ describe ActiveMocker::ModelSchema::Assemble do
   end
 
   it 'arguments' do
-    expect(run[-1]._methods.last.arguments.passable).to eq('token')
+    expect(run[-2]._methods.last.arguments.passable).to eq('token')
   end
 
   it 'constants' do
-    expect(run[3].constants).to eq({:MAGIC_ID_NUMBER => 90, :MAGIC_ID_STRING => "F-1"})
+    expect(run[4].constants).to eq({:MAGIC_ID_NUMBER => 90, :MAGIC_ID_STRING => "F-1"})
   end
 
   it 'modules' do
-    expect(run[3].modules).to eq({:included => ['PostMethods'], :extended => ['PostMethods']})
+    expect(run[4].modules).to eq({:included => ['PostMethods'], :extended => ['PostMethods']})
   end
 
   it 'attributes' do
     allow_any_instance_of(ActiveMocker::ModelReader::ParsedProperties).to receive(:table_name) { 'users' }
     allow_any_instance_of(ActiveMocker::ModelReader::ParsedProperties).to receive(:primary_key) { 'id' }
 
-    expect(run[-1].attributes.map { |r| JSON.parse(r.to_json) })
+    expect(run[-2].attributes.map { |r| JSON.parse(r.to_json) })
     .to eq([{"name" => "id",              "type" => "integer", "primary_key" => true},
             {"name" => "name",            "type" => "string"},
             {"name" => "email",           "type" => "string", "default_value" => ""},

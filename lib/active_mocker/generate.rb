@@ -18,7 +18,7 @@ class Generate
   end
 
   def model_count
-    ActiveMocker::ModelSchema::Assemble.new.models.count
+    @model_count ||= ActiveMocker::ModelSchema::Assemble.new.models.count
   end
 
   def progress
@@ -35,9 +35,15 @@ class Generate
 
   def create_template
     mocks_created = 0
+    not_valid_models = 0
     FileUtils.rm_rf("#{Config.mock_dir}/", secure: true)
     FileUtils::mkdir_p Config.mock_dir unless File.directory? Config.mock_dir
     generate_model_schema.each do |model|
+      if model.class == ModelLoadError::HasNoParentClass
+        Config.logger.info "#{ModelLoadError::HasNoParentClass} #{model}. Model will not be mocked."
+        not_valid_models += 1
+        next
+      end
       begin
 
       klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
@@ -56,7 +62,7 @@ class Generate
     end
     progress.finish unless silence
     Config.logger.info "Generated #{mocks_created} of #{model_count} mocks."
-    failed_mocks = model_count - mocks_created
+    failed_mocks = (model_count - not_valid_models) - mocks_created
     if failed_mocks > 0
       puts "#{failed_mocks} mock(s) out of #{model_count} failed. See log for more info."
     end

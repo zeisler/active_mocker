@@ -1,5 +1,36 @@
 module ActiveMocker
 
+  module ModelLoadError
+
+    class HasNoParentClass < Exception
+
+      def initialize(msg)
+        @msg = msg
+        super
+      end
+
+      def class_name
+        @msg
+      end
+
+    end
+
+    class General < Exception
+
+      def initialize(msg)
+        @msg = msg
+        super
+      end
+
+      def class_name
+        @msg
+      end
+
+    end
+  end
+
+
+
   class ModelSchema
 
     class Assemble
@@ -31,22 +62,32 @@ module ActiveMocker
 
       def run
         model_schemas = models.map do |model_name|
+          error = nil
+          begin
           model = get_model(model_name)
-          next unless model
+          error = ModelLoadError::General.new(model_name) unless model
+          rescue ModelLoadError::HasNoParentClass => e
+            error =  e
+          end
+          unless error
           table = get_table(model, model_name)
-          attributes = []
-          attributes = build_attributes(table.fields, primary_key(table.fields, model)) unless table.nil?
+            attributes = []
+            attributes = build_attributes(table.fields, primary_key(table.fields, model)) unless table.nil?
 
-          increment_progress
-          ModelSchema.new(class_name:      -> { model_name.camelize },
-                          table_name:      -> { model.try(:table_name) },
-                          attributes:      -> { attributes },
-                          _methods:        -> { build_methods(model) },
-                          relationships:   -> { build_relationships(model) },
-                          constants:       -> { model.constants },
-                          modules:         -> { model.modules },
-                          parent_class:    -> { model.parent_class },
-                          abstract_class:  -> { model.abstract_class} )
+            increment_progress
+            ModelSchema.new(class_name:      -> { model_name.camelize },
+                            table_name:      -> { model.try(:table_name) },
+                            attributes:      -> { attributes },
+                            _methods:        -> { build_methods(model) },
+                            relationships:   -> { build_relationships(model) },
+                            constants:       -> { model.constants },
+                            modules:         -> { model.modules },
+                            parent_class:    -> { model.parent_class },
+                            abstract_class:  -> { model.abstract_class}
+            )
+          else
+            error
+          end
         end
         ModelSchemaCollection.new(model_schemas.compact)
       end

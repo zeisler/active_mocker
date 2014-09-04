@@ -1,0 +1,3 @@
+class HasNoParent
+
+end

@@ -161,10 +161,4 @@ class MicropostMock < ActiveMocker::Mock::Base
     call_mock_method :from_users_followed_by, user
   end
 
-  private
-
-  def self.reload
-    load __FILE__
-  end
-
 end

@@ -32,12 +32,6 @@ module ActiveMocker
         all_mocks.each { |m| m.delete_all }
       end
 
-      # Reloads the mocks file from disk.
-      # === Experimental Feature
-      def reload_all
-        all_mocks.each { |m| m.send(:reload) }
-      end
-
       # Returns Hash +{"ActiveRecordModel" => MockVersion}+, key being a string of the active_record class name
       # and the value being the mocked class. Any sub classed mocked will override the original mock until clear_all is called.
       #

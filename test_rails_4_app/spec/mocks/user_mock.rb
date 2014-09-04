@@ -236,10 +236,4 @@ class UserMock < ActiveMocker::Mock::Base
     call_mock_method :digest, token
   end
 
-  private
-
-  def self.reload
-    load __FILE__
-  end
-
 end

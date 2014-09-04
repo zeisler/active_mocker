@@ -121,10 +121,4 @@ class AccountMock < ActiveMocker::Mock::Base
   ##################################
 
 
-  private
-
-  def self.reload
-    load __FILE__
-  end
-
 end

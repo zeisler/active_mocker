@@ -94,10 +94,4 @@ class ChildModelMock < UserMock
     call_mock_method :child_method
   end
 
-  private
-
-  def self.reload
-    load __FILE__
-  end
-
 end

@@ -191,10 +191,4 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
   end
 <% end -%>
 
-  private
-
-  def self.reload
-    load __FILE__
-  end
-
 end

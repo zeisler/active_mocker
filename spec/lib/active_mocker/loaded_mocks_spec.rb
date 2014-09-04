@@ -146,21 +146,4 @@ describe ActiveMocker::LoadedMocks do
 
   end
 
-  describe '::reload_all' do
-
-    it 'will call reload on each loaded mock' do
-      described_class.send :add, MockClass
-      described_class.send :add_subclass, MockClass2
-      described_class.reload_all
-      expect(reload_all_called?(MockClass)).to eq true
-      expect(reload_all_called?(MockClass2)).to eq true
-    end
-
-    def reload_all_called?(mock)
-      return true if mock.class_variable_get(:@@reload_all_called)
-      return false
-    end
-
-  end
-
 end

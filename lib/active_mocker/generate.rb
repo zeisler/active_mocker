@@ -41,17 +41,17 @@ class Generate
     FileUtils.rm_rf("#{Config.mock_dir}/", secure: true)
     FileUtils::mkdir_p Config.mock_dir unless File.directory? Config.mock_dir
     generate_model_schema.each do |model|
-      if model.class == ModelLoadError::HasNoParentClass
-        Config.logger.info "#{ModelLoadError::HasNoParentClass} #{model}. Model will not be mocked."
-        not_valid_models += 1
+      if model.class.ancestors.include?(Exception)
+        Config.logger.info "#{model}"
+        not_valid_models += 1 if model.class == ModelLoadError::HasNoParentClass
         next
       end
+
       begin
+        klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
 
-      klass_str = model.render(File.open(File.join(File.expand_path('../', __FILE__), 'mock_template.erb')).read, mock_append_name)
-
-      File.open(File.join(Config.mock_dir,"#{model.class_name.tableize.singularize}_mock.rb"), 'w').write(klass_str)
-      Config.logger.info "saving mock #{model.class_name} to #{Config.mock_dir}"
+        File.open(File.join(Config.mock_dir,"#{model.class_name.tableize.singularize}_mock.rb"), 'w').write(klass_str)
+        Config.logger.info "saving mock #{model.class_name} to #{Config.mock_dir}"
 
       rescue Exception => exception
         Config.logger.debug $!.backtrace
@@ -66,7 +66,7 @@ class Generate
     Config.logger.info "Generated #{mocks_created} of #{model_count} mocks."
     failed_mocks = (model_count - not_valid_models) - mocks_created
     if failed_mocks > 0
-      puts "#{failed_mocks} mock(s) out of #{model_count} failed. See log for more info."
+      puts "#{failed_mocks} mock(s) out of #{model_count} failed. See `log/active_mocker.log` for more info."
     end
     Config.build_in_progress = false
   end

@@ -2,7 +2,7 @@ module ActiveMocker
 
   module ModelLoadError
 
-    class HasNoParentClass < Exception
+    class General < Exception
 
       def initialize(msg)
         @msg = msg
@@ -15,15 +15,14 @@ module ActiveMocker
 
     end
 
-    class General < Exception
+    class HasNoParentClass < General
+    end
 
-      def initialize(msg)
-        @msg = msg
-        super
-      end
+    class LoadingModelInRails < General
 
-      def class_name
-        @msg
+      def initialize(error, class_name)
+        @msg = "#{class_name}\n  #{error.message}\n  #{error.backtrace.join("\n  ")}"
+        super(@msg)
       end
 
     end
@@ -62,19 +61,15 @@ module ActiveMocker
 
       def run
         model_schemas = models.map do |model_name|
-          error = nil
           begin
-          model = get_model(model_name)
-          error = ModelLoadError::General.new(model_name) unless model
-          rescue ModelLoadError::HasNoParentClass => e
-            error =  e
-          end
-          unless error
-          table = get_table(model, model_name)
+            model = get_model(model_name)
+
+            table      = get_table(model, model_name)
             attributes = []
             attributes = build_attributes(table.fields, primary_key(table.fields, model)) unless table.nil?
 
             increment_progress
+
             ModelSchema.new(class_name:      -> { model_name.camelize },
                             table_name:      -> { model.try(:table_name) },
                             attributes:      -> { attributes },
@@ -85,8 +80,8 @@ module ActiveMocker
                             parent_class:    -> { model.parent_class },
                             abstract_class:  -> { model.abstract_class}
             )
-          else
-            error
+          rescue Exception => e
+            e
           end
         end
         ModelSchemaCollection.new(model_schemas.compact)
@@ -198,7 +193,9 @@ module ActiveMocker
       end
 
       def get_model(model_file_name)
-        ModelReader.new.parse(model_file_name)
+        model = ModelReader.new.parse(model_file_name)
+        raise ModelLoadError::General.new(model_file_name) unless model unless model
+        model
       end
 
       def get_table_name(model_table_name, model_name)

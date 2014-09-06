@@ -45,15 +45,15 @@ describe ActiveMocker::Generate do
         config.schema_file        = ''
         config.model_dir          = ''
         config.mock_dir           = File.join(mock_dir, 'spec/mocks')
-        config.logger             = Logger.new(string_log)
         config.file_reader        = ActiveMocker::StringReader.new(failing_model)
       end
+      allow(ActiveMocker::Config).to receive(:logger){Logger.new(string_log)}
     end
 
     it do
       allow_any_instance_of(ActiveMocker::ModelSchema::Assemble).to receive(:models){['model']}
       output = capture(:stdout) {described_class.new(silence: true)}
-      expect(output).to eq "1 mock(s) out of 1 failed. See log for more info.\n"
+      expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
       expect(string_log.string).to match /Error loading Model: model/
       expect(string_log.string).to match /uninitialized constant/
       expect(string_log.string).to match /model.rb:3:in `<module:BlowUp>'/

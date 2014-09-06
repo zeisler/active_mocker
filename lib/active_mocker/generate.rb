@@ -8,6 +8,7 @@ class Generate
 
   def initialize(silence: false)
     @silence = silence
+    Config.clear_log
     create_template
   end
 

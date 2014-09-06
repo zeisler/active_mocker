@@ -42,6 +42,7 @@ class Base
         record = new
         record.save
         record.assign_attributes(attributes, &block)
+        record._create_caller_locations = caller_locations
         record
       end
     end
@@ -133,7 +134,7 @@ class Base
   private :classes
 
   attr_reader :associations, :types, :attributes
-
+  attr_accessor :_create_caller_locations
   # New objects can be instantiated as either empty (pass no construction parameter) or pre-set with
   # attributes but not yet saved (pass a hash with key names matching the associated table column names).
   # In both instances, valid attribute keys are determined by the column names of the associated table --

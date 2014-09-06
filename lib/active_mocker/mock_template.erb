@@ -74,7 +74,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
   def <%= meth.name %>=(val)
     @associations[:<%= meth.name %>] = val
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :<%= meth.foreign_key %>, foreign_id: @attributes['id']).item
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :<%= meth.foreign_key %>, foreign_id: val.try(:id)).item
   end
 
   def build_<%= meth.name %>(attributes={}, &block)
@@ -102,12 +102,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
   def <%= meth.name %>=(val)
     @associations['<%= meth.name %>'] = val
-    val.send(:write_attribute, '<%= meth.foreign_key %>', @attributes['id']) if val.respond_to?('<%= meth.foreign_key %>=')
-    if ActiveMocker::Mock.config.experimental
-      <%= meth.name %>.<%= class_name.tableize %> <<  self if val.respond_to?(:<%= class_name.tableize %>=)
-      <%= meth.name %>.send(:write_association, :<%= class_name.tableize.singularize %>,  self) if val.respond_to?(:<%= class_name.tableize.singularize %>=)
-    end
-    val
+    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: '<%= meth.foreign_key %>', foreign_id: @attributes['id']).item
   end
 
   def build_<%= meth.name %>(attributes={}, &block)

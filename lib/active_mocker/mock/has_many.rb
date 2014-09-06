@@ -17,7 +17,7 @@ module Mock
       @source         = options[:source]
       self.class.include "#{@relation_class.name}::Scopes".constantize
       super(collection)
-      set_foreign_key if ActiveMocker::Mock.config.experimental
+      set_foreign_key
     end
 
     def set_foreign_key
@@ -32,11 +32,11 @@ module Mock
     def build(options={}, &block)
       new_record = relation_class.new(init_options.merge!(options), &block)
 
-      def new_record.belongs_to(collection)
+      def new_record._belongs_to(collection)
         @belongs_to_collection = collection
       end
 
-      new_record.belongs_to(self)
+      new_record._belongs_to(self)
 
       def new_record.save
         @belongs_to_collection << self

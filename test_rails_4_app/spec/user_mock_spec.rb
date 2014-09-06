@@ -38,6 +38,11 @@ describe UserMock do
       expect(subject.microposts.foreign_id).to eq subject.id
     end
 
+    it 'will set foreign_key with the foreign_id on all micropost' do
+      user = described_class.create(microposts: [MicropostMock.create])
+      expect(user.microposts.first.user_id).to eq user.id
+    end
+
   end
 
   describe 'has_many relationships' do
@@ -102,6 +107,15 @@ describe UserMock do
 
     it do
       expect(subject.reverse_relationships.foreign_id).to eq subject.id
+    end
+
+  end
+
+  describe 'has one account' do
+
+    it 'will set the foreign_key from the objects id' do
+      user = described_class.create(account: AccountMock.create)
+      expect(user.account.user_id).to eq user.id
     end
 
   end

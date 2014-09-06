@@ -102,6 +102,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
   def <%= meth.name %>=(val)
     @associations['<%= meth.name %>'] = val
+    val.send(:write_attribute, '<%= meth.foreign_key %>', @attributes['id']) if val.respond_to?('<%= meth.foreign_key %>=')
     if ActiveMocker::Mock.config.experimental
       <%= meth.name %>.<%= class_name.tableize %> <<  self if val.respond_to?(:<%= class_name.tableize %>=)
       <%= meth.name %>.send(:write_association, :<%= class_name.tableize.singularize %>,  self) if val.respond_to?(:<%= class_name.tableize.singularize %>=)

@@ -35,6 +35,7 @@ class Generate
   end
 
   def create_template
+    Config.build_in_progress = true
     mocks_created = 0
     not_valid_models = 0
     FileUtils.rm_rf("#{Config.mock_dir}/", secure: true)
@@ -67,6 +68,7 @@ class Generate
     if failed_mocks > 0
       puts "#{failed_mocks} mock(s) out of #{model_count} failed. See log for more info."
     end
+    Config.build_in_progress = false
   end
 
   def mock_append_name

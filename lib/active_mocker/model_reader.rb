@@ -79,7 +79,11 @@ module ActiveMocker
       end
 
       def rails_version
-        @rails_version ||= model_name.classify.constantize
+        begin
+          @rails_version ||= model_name.classify.constantize
+        rescue
+          raise ModelLoadError::LoadingModelInRails.new($!, model_name)
+        end
       end
 
       def abstract_class
@@ -172,4 +176,13 @@ module ActiveMocker
 
   end
 
+end
+
+# Hack for CarrierWave error - undefined method `validate_integrity'
+module ActiveRecord
+  class Base
+    def self.mount_uploader(*args)
+      super unless ActiveMocker::Config.build_in_progress
+    end
+  end
 end

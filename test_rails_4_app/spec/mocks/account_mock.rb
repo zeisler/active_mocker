@@ -77,7 +77,7 @@ class AccountMock < ActiveMocker::Mock::Base
 
   def user=(val)
     @associations[:user] = val
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id, foreign_id: @attributes['id']).item
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id, foreign_id: val.try(:id)).item
   end
 
   def build_user(attributes={}, &block)

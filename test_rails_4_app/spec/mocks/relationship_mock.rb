@@ -95,7 +95,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def follower=(val)
     @associations[:follower] = val
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :follower_id, foreign_id: @attributes['id']).item
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :follower_id, foreign_id: val.try(:id)).item
   end
 
   def build_follower(attributes={}, &block)
@@ -115,7 +115,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def followed=(val)
     @associations[:followed] = val
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :followed_id, foreign_id: @attributes['id']).item
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :followed_id, foreign_id: val.try(:id)).item
   end
 
   def build_followed(attributes={}, &block)

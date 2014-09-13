@@ -283,12 +283,12 @@ class Base
 
     # @api private
     def read_association(attr)
-      @associations[attr]
+      @associations[attr.to_sym]
     end
 
     # @api private
     def write_association(attr, value)
-      @associations[attr] = value
+      @associations[attr.to_sym] = value
     end
 
     protected :read_attribute, :write_attribute, :read_association, :write_association

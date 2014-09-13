@@ -97,11 +97,11 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 <%= '# has_one' unless has_one.empty? -%>
 <% has_one.each do |meth| %>
   def <%= meth.name %>
-    read_association('<%= meth.name %>')
+    read_association(:<%= meth.name %>)
   end
 
   def <%= meth.name %>=(val)
-    @associations['<%= meth.name %>'] = val
+    @associations[:<%= meth.name %>] = val
     ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: '<%= meth.foreign_key %>', foreign_id: @attributes['id']).item
   end
 

@@ -118,11 +118,11 @@ class UserMock < ActiveMocker::Mock::Base
 
 # has_one
   def account
-    read_association('account')
+    read_association(:account)
   end
 
   def account=(val)
-    @associations['account'] = val
+    @associations[:account] = val
     ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: 'user_id', foreign_id: @attributes['id']).item
   end
 

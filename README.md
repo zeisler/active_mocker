@@ -9,11 +9,6 @@ ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test 
 
 Examples from a real apps
 
-		Finished in 0.54599 seconds
-		190 examples, 0 failures
-		
-------
-		
 		Finished in 1 seconds
 		374 examples, 0 failures
 

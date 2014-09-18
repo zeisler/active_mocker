@@ -39,7 +39,7 @@ class Base
       if attributes.is_a?(Array)
         attributes.collect { |attr| create(attr, &block) }
       else
-        record = new
+        record = new(id: attributes[:id] || attributes['id'])
         record.save
         record.assign_attributes(attributes, &block)
         record._create_caller_locations = caller_locations

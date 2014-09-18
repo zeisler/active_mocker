@@ -611,4 +611,14 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
     
   end
 
+  describe 'creating a record with an id higher than 1 and then create a record with id 1' do
+
+    it do
+      micropost_class.create!(id: 3)
+      micropost_class.create!('id' => 1)
+      expect(micropost_class.create!.id).to eq 4
+    end
+
+  end
+
 end

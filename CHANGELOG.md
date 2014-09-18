@@ -1,5 +1,31 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## 1.7.beta2 - 2-14-09-18
+
+### Fix 
+- Bug where creating record with an id could cause a duplicate id error.
+- Issue whenever an ActiveRecord Model has no schema behind it.
+- Issue assigning association would fail, added guard to @associations to only read and write symbols.
+
+## 1.7.beta1 - 2-14-09-6
+
+### Enhancement
+- A class that Inherits a model now has the table of the parent.
+- Use this option if you need to modify where the mock generation hooks into. `ActiveMocker::Config.model_base_classes = %w[ ActiveRecord::Base ]`
+- When running `rake active_mocker:build` it will display the number of mocks that failed.
+- Remove deprecated option `ActiveMocker.mock`
+- Exceptions in mock generation no longer halt the rest of the mocks from generating.
+- Add explicit message of what to do when a method is unimplemented.
+- Will create own log file `log/active_mocker.log` it will be cleared on each generation.
+- Attributes, associations, and scopes will now inherit from their parent class.
+- Initialization of an abstract class will raise an error.
+- Remove Experimental feature reload
+- Remove experimental flag for set foreign_key on collection for has_many, belongs_to, and has_one.
+- `record._create_caller_locations` for debugging obj’s creation location.
+
+### Fix
+- Issue where using table names as the model file would replace a parent class with a child class that had the same table.
+
 ## 1.6.3 - 2014-08-14
 
 ### Fix

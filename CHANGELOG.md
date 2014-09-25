@@ -1,5 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## 1.7.beta3 - 2-14-09-25
+
+### Fix
+- Last beta introduced a breaking regression where after assigning some associations they could not be read. Solution was to never access @associations directly inside mock. 
+
 ## 1.7.beta2 - 2-14-09-18
 
 ### Fix 

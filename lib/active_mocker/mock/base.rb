@@ -282,8 +282,8 @@ class Base
     end
 
     # @api private
-    def read_association(attr)
-      @associations[attr.to_sym]
+    def read_association(attr, assign_if_value_nil=nil)
+      @associations[attr.to_sym] ||= assign_if_value_nil
     end
 
     # @api private

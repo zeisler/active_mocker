@@ -90,11 +90,11 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
 # belongs_to
   def follower
-    @associations[:follower]
+    read_association(:follower)
   end
 
   def follower=(val)
-    @associations[:follower] = val
+    write_association(:follower, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :follower_id, foreign_id: val.try(:id)).item
   end
 
@@ -110,11 +110,11 @@ class RelationshipMock < ActiveMocker::Mock::Base
   alias_method :create_follower!, :create_follower
 
   def followed
-    @associations[:followed]
+    read_association(:followed)
   end
 
   def followed=(val)
-    @associations[:followed] = val
+    write_association(:followed, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :followed_id, foreign_id: val.try(:id)).item
   end
 

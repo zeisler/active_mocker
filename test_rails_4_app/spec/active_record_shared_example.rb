@@ -1,8 +1,9 @@
-shared_examples_for 'ActiveRecord' do |micropost_class|
+shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
   before do
     micropost_class.delete_all
     described_class.delete_all
+    account_class.delete_all
   end
 
   let(:attributes) { {name: 'Dustin Zeisler', email: 'dustin@example.com'} }
@@ -556,6 +557,16 @@ shared_examples_for 'ActiveRecord' do |micropost_class|
       user = post.build_user
       expect(user.class).to eq described_class
       expect(post.user).to eq user
+    end
+
+  end
+
+  describe 'has one association' do
+
+    it 'account' do
+      account = account_class.new
+      user    = described_class.new(account: account)
+      expect(user.account).to eq account
     end
 
   end

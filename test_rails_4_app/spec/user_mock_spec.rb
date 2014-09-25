@@ -12,7 +12,7 @@ require_relative 'active_record_shared_example'
 
 describe UserMock do
 
-  it_behaves_like 'ActiveRecord', MicropostMock
+  it_behaves_like 'ActiveRecord', MicropostMock, AccountMock
 
   before(:each){
     UserMock.clear_mock

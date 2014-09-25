@@ -100,11 +100,11 @@ class MicropostMock < ActiveMocker::Mock::Base
 
 # belongs_to
   def user
-    @associations[:user]
+    read_association(:user)
   end
 
   def user=(val)
-    @associations[:user] = val
+    write_association(:user, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id, foreign_id: val.try(:id)).item
   end
 

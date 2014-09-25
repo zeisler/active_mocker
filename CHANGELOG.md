@@ -1,18 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
-## 1.7.beta3 - 2-14-09-25
+## 1.7.beta3 - 2014-09-25
 
 ### Fix
 - Last beta introduced a breaking regression where after assigning some associations they could not be read. Solution was to never access @associations directly inside mock. 
 
-## 1.7.beta2 - 2-14-09-18
+## 1.7.beta2 - 2014-09-18
 
 ### Fix 
 - Bug where creating record with an id could cause a duplicate id error.
 - Issue whenever an ActiveRecord Model has no schema behind it.
 - Issue assigning association would fail, added guard to @associations to only read and write symbols.
 
-## 1.7.beta1 - 2-14-09-6
+## 1.7.beta1 - 2014-09-06
 
 ### Enhancement
 - A class that Inherits a model now has the table of the parent.

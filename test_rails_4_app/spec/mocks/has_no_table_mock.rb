@@ -16,6 +16,10 @@ class HasNoTableMock < ActiveMocker::Mock::Base
       @associations ||= {}.merge(super)
     end
 
+    def associations_by_class
+      @associations_by_class ||= {}.merge(super)
+    end
+
     def mocked_class
       'HasNoTable'
     end

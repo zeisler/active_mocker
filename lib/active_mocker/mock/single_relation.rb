@@ -7,14 +7,19 @@ module ActiveMocker
 
       def initialize(item, child_self:, foreign_key:, foreign_id:)
         @item = item
-        assign_associations(child_self, item)
+        assign_associations(child_self, item) if item.class <= Base
       end
 
       def assign_associations(child_self, item)
-        has_many = child_self.class.send('mocked_class').tableize
-        has_one = child_self.class.send('mocked_class').tableize.singularize
-        item.send(has_many) << child_self if item.respond_to?("#{has_many}=") && !item.send(has_many).include?(child_self)
-        item.send(:write_association, has_one, child_self) if item.respond_to?("#{has_one}=")
+        item.class._find_associations_by_class(child_self.class.send('mocked_class')).each do |type, relations|
+          relations.each do |relation|
+            if item.send(relation).class <= Collection
+              item.send(relation) << child_self
+            else
+              item.send(:write_association, relation, child_self)
+            end
+          end
+        end
       end
 
     end

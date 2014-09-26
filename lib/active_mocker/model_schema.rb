@@ -146,6 +146,16 @@ module ActiveMocker
       hash
     end
 
+    def associations_by_class
+      hash = {}
+      relationships.each do |r|
+        hash[r.class_name] ||= {}
+        hash[r.class_name][r.type] ||= []
+        hash[r.class_name][r.type] << r.name
+      end
+      hash
+    end
+
     def mock_name(klass_name)
       klass_name + "Mock"
     end

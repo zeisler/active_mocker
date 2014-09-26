@@ -569,6 +569,18 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
       expect(user.account).to eq account
     end
 
+    it 'account.user will be a user if not persisted' do
+      account = account_class.new
+      user = described_class.new(account: account)
+      expect(account.user).to eq user
+    end
+
+    it 'account.user will be a user if is persisted' do
+      account = account_class.create
+      user = described_class.new(account: account)
+      expect(account.user).to eq user
+    end
+
   end
 
   describe 'has_many association' do

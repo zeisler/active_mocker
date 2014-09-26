@@ -16,6 +16,10 @@ class UserMock < ActiveMocker::Mock::Base
       @associations ||= {:account=>nil, :microposts=>nil, :relationships=>nil, :followed_users=>nil, :reverse_relationships=>nil, :followers=>nil}.merge(super)
     end
 
+    def associations_by_class
+      @associations_by_class ||= {"Account"=>{:has_one=>[:account]}, "Micropost"=>{:has_many=>[:microposts]}, "Relationship"=>{:has_many=>[:relationships, :reverse_relationships]}, "User"=>{:has_many=>[:followed_users, :followers]}}.merge(super)
+    end
+
     def mocked_class
       'User'
     end

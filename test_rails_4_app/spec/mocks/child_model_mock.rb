@@ -16,6 +16,10 @@ class ChildModelMock < UserMock
       @associations ||= {:accounts=>nil}.merge(super)
     end
 
+    def associations_by_class
+      @associations_by_class ||= {"Account"=>{:has_many=>[:accounts]}}.merge(super)
+    end
+
     def mocked_class
       'ChildModel'
     end

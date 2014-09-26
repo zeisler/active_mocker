@@ -20,6 +20,10 @@ class MicropostMock < ActiveMocker::Mock::Base
       @associations ||= {:user=>nil}.merge(super)
     end
 
+    def associations_by_class
+      @associations_by_class ||= {"User"=>{:belongs_to=>[:user]}}.merge(super)
+    end
+
     def mocked_class
       'Micropost'
     end

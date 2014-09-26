@@ -25,6 +25,10 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
       @associations ||= <%= associations %>.merge(super)
     end
 
+    def associations_by_class
+      @associations_by_class ||= <%= associations_by_class %>.merge(super)
+    end
+
     def mocked_class
       '<%= class_name %>'
     end

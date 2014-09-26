@@ -16,6 +16,10 @@ class RelationshipMock < ActiveMocker::Mock::Base
       @associations ||= {:follower=>nil, :followed=>nil}.merge(super)
     end
 
+    def associations_by_class
+      @associations_by_class ||= {"User"=>{:belongs_to=>[:follower, :followed]}}.merge(super)
+    end
+
     def mocked_class
       'Relationship'
     end

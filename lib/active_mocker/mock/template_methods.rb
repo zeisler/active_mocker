@@ -20,6 +20,10 @@ module Mock
         {}
       end
 
+      def associations_by_class
+        {}
+      end
+
       def mocked_class
         ''
       end

@@ -42,6 +42,16 @@ describe ActiveMocker::Mock::Base do
     end
 
   end
+
+  describe '::_find_associations_by_class' do
+
+    it do
+      allow(ActiveMocker::Mock::Base).to receive(:associations_by_class){ {'User' => [:customers]}}
+      result = described_class._find_associations_by_class('User')
+      expect(result).to eq [:customers]
+    end
+
+  end
   
   before do
     described_class.clear_mock

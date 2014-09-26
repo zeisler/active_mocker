@@ -125,6 +125,10 @@ class Base
       delete_all
     end
 
+    def _find_associations_by_class(klass_name)
+      associations_by_class[klass_name.to_s]
+    end
+
   end
 
   def classes(klass)
@@ -283,7 +287,6 @@ class Base
 
     # @api private
     def read_association(attr, assign_if_value_nil=nil)
-      # TODO make assign if value lazy
       @associations[attr.to_sym] ||= assign_if_value_nil.try(:call)
     end
 

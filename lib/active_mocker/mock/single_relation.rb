@@ -11,7 +11,7 @@ module ActiveMocker
       end
 
       def assign_associations(child_self, item)
-        item.class._find_associations_by_class(child_self.class.send('mocked_class')).each do |type, relations|
+        [*item.class._find_associations_by_class(child_self.class.send('mocked_class'))].each do |type, relations|
           relations.each do |relation|
             if item.send(relation).class <= Collection
               item.send(relation) << child_self

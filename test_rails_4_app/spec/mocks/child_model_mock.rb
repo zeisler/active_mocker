@@ -55,7 +55,7 @@ class ChildModelMock < UserMock
 
 # has_many
   def accounts
-    read_association(:accounts, ActiveMocker::Mock::HasMany.new([],foreign_key: 'child_model_id', foreign_id: self.id, relation_class: classes('Account'), source: ''))
+    read_association(:accounts, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'child_model_id', foreign_id: self.id, relation_class: classes('Account'), source: '') })
   end
 
   def accounts=(val)

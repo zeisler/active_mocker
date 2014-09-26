@@ -124,7 +124,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 <%= '# has_many' unless has_many.empty? -%>
 <% has_many.each do |meth| %>
   def <%= meth.name %>
-    read_association(:<%= meth.name %>, ActiveMocker::Mock::HasMany.new([],foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>'))
+    read_association(:<%= meth.name %>, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>') })
   end
 
   def <%= meth.name %>=(val)
@@ -134,7 +134,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 <%= '# has_and_belongs_to_many' unless has_and_belongs_to_many.empty? -%>
 <% has_and_belongs_to_many.each do |meth| %>
   def <%= meth.name %>
-    read_association(:<%= meth.name %>, ActiveMocker::Mock::HasAndBelongsToMany.new([]))
+    read_association(:<%= meth.name %>, ->{ ActiveMocker::Mock::HasAndBelongsToMany.new([]) })
   end
 
   def <%= meth.name %>=(val)

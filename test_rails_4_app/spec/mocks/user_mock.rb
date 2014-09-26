@@ -137,7 +137,7 @@ class UserMock < ActiveMocker::Mock::Base
 
 # has_many
   def microposts
-    read_association(:microposts, ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Micropost'), source: ''))
+    read_association(:microposts, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Micropost'), source: '') })
   end
 
   def microposts=(val)
@@ -145,7 +145,7 @@ class UserMock < ActiveMocker::Mock::Base
   end
 
   def relationships
-    read_association(:relationships, ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('Relationship'), source: ''))
+    read_association(:relationships, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('Relationship'), source: '') })
   end
 
   def relationships=(val)
@@ -153,7 +153,7 @@ class UserMock < ActiveMocker::Mock::Base
   end
 
   def followed_users
-    read_association(:followed_users, ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('User'), source: ''))
+    read_association(:followed_users, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('User'), source: '') })
   end
 
   def followed_users=(val)
@@ -161,7 +161,7 @@ class UserMock < ActiveMocker::Mock::Base
   end
 
   def reverse_relationships
-    read_association(:reverse_relationships, ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('Relationship'), source: ''))
+    read_association(:reverse_relationships, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('Relationship'), source: '') })
   end
 
   def reverse_relationships=(val)
@@ -169,7 +169,7 @@ class UserMock < ActiveMocker::Mock::Base
   end
 
   def followers
-    read_association(:followers, ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('User'), source: ''))
+    read_association(:followers, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('User'), source: '') })
   end
 
   def followers=(val)

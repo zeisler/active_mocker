@@ -283,7 +283,8 @@ class Base
 
     # @api private
     def read_association(attr, assign_if_value_nil=nil)
-      @associations[attr.to_sym] ||= assign_if_value_nil
+      # TODO make assign if value lazy
+      @associations[attr.to_sym] ||= assign_if_value_nil.try(:call)
     end
 
     # @api private

@@ -5,7 +5,7 @@
 [![Dependency Status](https://gemnasium.com/zeisler/active_mocker.svg)](https://gemnasium.com/zeisler/active_mocker)
 [![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.png)](https://gitter.im/zeisler/active_mocker)
 
-ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an Unimplemented error when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.
+ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an NotImplementedError when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.
 
 Examples from a real apps
 
@@ -128,9 +128,9 @@ end
 ```       
 ----------
 
-* Assigning the tag `active_mocker:true` will stub any ActiveRecord model Constants for Mock classes in `it` or `before/after(:each)`. This removes any need for dependency injection. Write tests and code like you would normally.
+* Assigning the tag `active_mocker:true` will stub any ActiveRecord model Constants for Mock classes in an `it` or a `before/after(:each)`. This removes any need for dependency injection. Write tests and code like you would normally.
 * To stub any Constants in `before(:all)`, `after(:all)` use `mock_class('ClassName')`.
-* Will call `ActiveMocker::LoadedMocks.delete_all` in `after(:all)` block to clean up mock state for other tests.
+* Mock state will be cleaned up for you in an `after(:all)`. To clean state your self use `ActiveMocker::LoadedMocks.delete_all`.
 
 ---------
     
@@ -179,7 +179,7 @@ Person.new(first_name: "Dustin", last_name: "Zeisler")
 
 ```ruby
 Person.bar('baz')
-  => RuntimeError : :: bar is not Implemented for Class :PersonMock
+  => NotImplementedError: ::bar is not Implemented for Class :PersonMock. To continue stub the method.
 
 # Rspec 3 Mocks
 
@@ -246,7 +246,7 @@ allow(person).to receive(:bar) do |name, type=nil|
 end
 => NoMethodError : undefined method `bar' for class ` PersonMock '
  ```     
-### Constants and Modules are Available.
+### Constants and Modules
 
 * Any locally defined modules will not be included or extended.
 
@@ -263,7 +263,7 @@ PersonMock::CONSTANT_VALUE
 ```
 
 ### Scoped Methods 
-* As long the mock file that holds the scope method is required it will be available but raise an `unimplemented error` when called.
+* Any chained scoped methods will be available when the mock file that defines it is required. When called it raises a `NotImplementedError`, stub the method with a value to continue.
 
 ### Managing Mocks  
 
@@ -349,10 +349,8 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
-* Whatever associations are setup in one mock object will not be reflected in any other objects. 
-    * There's partial support for it to work more like ActiveRecord in v1.6 when `ActiveMocker::Mock.config.experimental = true` is set. When v1.7 comes out these features will be moved out of experimantal.
-
-* Validation/Callbacks are not present in mocks. A Work around is putting the method into a module with required ActiveSupport/ActiveModel dependencies and make sure the code is supported by the mock. 
+* When an association is set in one object it may not always be reflective in other objects, especialy when it is a non standard/custom assocation. See [test_rails_4_app/spec/active_record_shared_example.rb](https://github.com/zeisler/active_mocker/blob/master/test_rails_4_app/spec/active_record_shared_example.rb) for a complete list of supported associations. 
+* Validation/Callbacks are not present in mocks.
 * Sql queries, joins, etc will never be supported.
 
 ## Inspiration

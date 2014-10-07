@@ -61,7 +61,7 @@ Or install it yourself as:
 
 ## Dependencies
 * Tested with Rails 4.1 may work with older versions but not supported.
-* Requires Ruby MRI =< 2.1.
+* Requires Ruby MRI >= 2.1.
 
 
 ## Setup

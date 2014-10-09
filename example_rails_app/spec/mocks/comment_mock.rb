@@ -1,20 +1,23 @@
 require 'active_mocker/mock'
-Object.send(:remove_const, "CommentMock") if Object.const_defined?("CommentMock")
 
 class CommentMock < ActiveMocker::Mock::Base
 
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "user_id"=>nil, "text"=>nil, "votes"=>nil, "created_at"=>nil, "updated_at"=>nil})
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "user_id"=>nil, "text"=>nil, "votes"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, user_id: Fixnum, text: String, votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, user_id: Fixnum, text: String, votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= {:user=>nil}
+      @associations ||= {:user=>nil}.merge(super)
+    end
+
+    def associations_by_class
+      @associations_by_class ||= {"User"=>{:belongs_to=>[:user]}}.merge(super)
     end
 
     def mocked_class
@@ -24,11 +27,15 @@ class CommentMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "user_id", "text", "votes", "created_at", "updated_at"]
+      @attribute_names ||= ["id", "user_id", "text", "votes", "created_at", "updated_at"] | super
     end
 
     def primary_key
       "id"
+    end
+
+    def abstract_class?
+      false
     end
 
   end
@@ -93,17 +100,12 @@ class CommentMock < ActiveMocker::Mock::Base
 
 # belongs_to
   def user
-    @associations[:user]
+    read_association(:user)
   end
 
   def user=(val)
-    @associations[:user] = val
-    write_attribute(:user_id, val.id) if val.respond_to?(:persisted?) && val.persisted?
-    if ActiveMocker::Mock.config.experimental
-      val.comments << self if val.respond_to?(:comments=)
-      val.comment = self if val.respond_to?(:comment=)
-    end
-    val
+    write_association(:user, val)
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id, foreign_id: val.try(:id)).item
   end
 
   def build_user(attributes={}, &block)
@@ -119,6 +121,7 @@ class CommentMock < ActiveMocker::Mock::Base
 
 
   module Scopes
+    include ActiveMocker::Mock::Base::Scopes
 
   end
 
@@ -140,11 +143,5 @@ class CommentMock < ActiveMocker::Mock::Base
   #        Model Methods           #
   ##################################
 
-
-  private
-
-  def self.reload
-    load __FILE__
-  end
 
 end

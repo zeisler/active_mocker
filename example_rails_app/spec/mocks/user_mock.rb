@@ -1,20 +1,23 @@
 require 'active_mocker/mock'
-Object.send(:remove_const, "UserMock") if Object.const_defined?("UserMock")
 
 class UserMock < ActiveMocker::Mock::Base
 
   class << self
 
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "age"=>nil, "admin"=>nil, "created_at"=>nil, "updated_at"=>nil})
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "age"=>nil, "admin"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, age: Fixnum, admin: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type))
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, age: Fixnum, admin: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
-      @associations ||= {:comments=>nil, :subscriptions=>nil}
+      @associations ||= {:comments=>nil, :subscriptions=>nil}.merge(super)
+    end
+
+    def associations_by_class
+      @associations_by_class ||= {"Comment"=>{:has_many=>[:comments]}, "Subscription"=>{:has_many=>[:subscriptions]}}.merge(super)
     end
 
     def mocked_class
@@ -24,11 +27,15 @@ class UserMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "name", "age", "admin", "created_at", "updated_at"]
+      @attribute_names ||= ["id", "name", "age", "admin", "created_at", "updated_at"] | super
     end
 
     def primary_key
       "id"
+    end
+
+    def abstract_class?
+      false
     end
 
   end
@@ -92,22 +99,23 @@ class UserMock < ActiveMocker::Mock::Base
 
 # has_many
   def comments
-    @associations[:comments] ||= ActiveMocker::Mock::HasMany.new([],'user_id', @attributes['id'], classes('Comment'))
+    read_association(:comments, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: '') })
   end
 
   def comments=(val)
-    @associations[:comments] ||= ActiveMocker::Mock::HasMany.new(val,'user_id', @attributes['id'], classes('Comment'))
+    write_association(:comments, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: ''))
   end
 
   def subscriptions
-    @associations[:subscriptions] ||= ActiveMocker::Mock::HasMany.new([],'user_id', @attributes['id'], classes('Subscription'))
+    read_association(:subscriptions, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: '') })
   end
 
   def subscriptions=(val)
-    @associations[:subscriptions] ||= ActiveMocker::Mock::HasMany.new(val,'user_id', @attributes['id'], classes('Subscription'))
+    write_association(:subscriptions, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: ''))
   end
 
   module Scopes
+    include ActiveMocker::Mock::Base::Scopes
 
   end
 
@@ -129,11 +137,5 @@ class UserMock < ActiveMocker::Mock::Base
   #        Model Methods           #
   ##################################
 
-
-  private
-
-  def self.reload
-    load __FILE__
-  end
 
 end

@@ -21,7 +21,7 @@ class UserMock < ActiveMocker::Mock::Base
     end
 
     def mocked_class
-      'User'
+      "User"
     end
 
     private :mocked_class
@@ -36,6 +36,10 @@ class UserMock < ActiveMocker::Mock::Base
 
     def abstract_class?
       false
+    end
+
+    def table_name
+      "users"
     end
 
   end

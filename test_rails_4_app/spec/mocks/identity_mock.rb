@@ -21,7 +21,7 @@ class IdentityMock < ActiveMocker::Mock::Base
     end
 
     def mocked_class
-      'Identity'
+      "Identity"
     end
 
     private :mocked_class
@@ -36,6 +36,10 @@ class IdentityMock < ActiveMocker::Mock::Base
 
     def abstract_class?
       false
+    end
+
+    def table_name
+      "identities"
     end
 
   end

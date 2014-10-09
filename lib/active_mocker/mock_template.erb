@@ -30,7 +30,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
     end
 
     def mocked_class
-      '<%= class_name %>'
+      <%= class_name.inspect %>
     end
 
     private :mocked_class
@@ -45,6 +45,10 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
     def abstract_class?
       <%= abstract_class.inspect %>
+    end
+
+    def table_name
+      <%= table_name.inspect %>
     end
 
   end

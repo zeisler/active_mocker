@@ -21,7 +21,7 @@ class ChildModelMock < UserMock
     end
 
     def mocked_class
-      'ChildModel'
+      "ChildModel"
     end
 
     private :mocked_class
@@ -36,6 +36,10 @@ class ChildModelMock < UserMock
 
     def abstract_class?
       false
+    end
+
+    def table_name
+      nil
     end
 
   end

@@ -21,7 +21,7 @@ class AccountMock < ActiveMocker::Mock::Base
     end
 
     def mocked_class
-      'Account'
+      "Account"
     end
 
     private :mocked_class
@@ -36,6 +36,10 @@ class AccountMock < ActiveMocker::Mock::Base
 
     def abstract_class?
       false
+    end
+
+    def table_name
+      "accounts"
     end
 
   end

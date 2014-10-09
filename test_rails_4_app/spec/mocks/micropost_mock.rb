@@ -25,7 +25,7 @@ class MicropostMock < ActiveMocker::Mock::Base
     end
 
     def mocked_class
-      'Micropost'
+      "Micropost"
     end
 
     private :mocked_class
@@ -40,6 +40,10 @@ class MicropostMock < ActiveMocker::Mock::Base
 
     def abstract_class?
       false
+    end
+
+    def table_name
+      "microposts"
     end
 
   end

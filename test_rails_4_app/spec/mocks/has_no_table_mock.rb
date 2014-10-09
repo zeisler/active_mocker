@@ -21,7 +21,7 @@ class HasNoTableMock < ActiveMocker::Mock::Base
     end
 
     def mocked_class
-      'HasNoTable'
+      "HasNoTable"
     end
 
     private :mocked_class
@@ -36,6 +36,10 @@ class HasNoTableMock < ActiveMocker::Mock::Base
 
     def abstract_class?
       true
+    end
+
+    def table_name
+      nil
     end
 
   end

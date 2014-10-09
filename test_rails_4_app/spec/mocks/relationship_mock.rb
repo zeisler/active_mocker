@@ -21,7 +21,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
     end
 
     def mocked_class
-      'Relationship'
+      "Relationship"
     end
 
     private :mocked_class
@@ -36,6 +36,10 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
     def abstract_class?
       false
+    end
+
+    def table_name
+      "relationships"
     end
 
   end

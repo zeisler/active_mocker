@@ -349,8 +349,8 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 
 ### Known Limitations
 * Model names and table names must follow the default ActiveRecord naming pattern.
-* When an association is set in one object it may not always be reflective in other objects, especialy when it is a non standard/custom assocation. See [test_rails_4_app/spec/active_record_shared_example.rb](https://github.com/zeisler/active_mocker/blob/master/test_rails_4_app/spec/active_record_shared_example.rb) for a complete list of supported associations. 
-* Validation/Callbacks are not present in mocks.
+* When an association is set in one object it may not always be reflective in other objects, especially when it is a non standard/custom association. See [test_rails_4_app/spec/active_record_compatible_api.rb](https://github.com/zeisler/active_mocker/blob/master/test_rails_4_app/spec/active_record_compatible_api.rb) for a complete list of supported associations. 
+* Validation/Callbacks are not supported.
 * Sql queries, joins, etc will never be supported.
 
 ## Inspiration

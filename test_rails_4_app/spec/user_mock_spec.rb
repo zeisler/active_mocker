@@ -8,7 +8,7 @@ require_relative 'mocks/user_mock.rb'
 require_relative 'mocks/relationship_mock'
 require_relative 'mocks/account_mock'
 
-require_relative 'active_record_shared_example'
+require_relative 'active_record_compatible_api'
 
 describe UserMock do
 

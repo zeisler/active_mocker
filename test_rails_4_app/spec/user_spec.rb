@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative 'active_record_shared_example'
+require_relative 'active_record_compatible_api'
 
 describe User do
 

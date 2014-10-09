@@ -1,6 +1,7 @@
 require 'active_mocker/mock'
 
 class <%= class_name + @mock_append_name %> < <%= parent_class %>
+  created_with('<%= ActiveMocker::VERSION %>')
 <% constants.each do |constant| -%>
   <%= constant.first %> = <%= constant.last.inspect %>
 <% end -%>

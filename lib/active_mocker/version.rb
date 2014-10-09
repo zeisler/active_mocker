@@ -1,3 +1,3 @@
 module ActiveMocker
-  VERSION = "1.7.beta3"
+  VERSION = "1.7"
 end

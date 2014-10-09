@@ -129,6 +129,12 @@ class Base
       associations_by_class[klass_name.to_s]
     end
 
+    def created_with(version)
+      raise UpdateMocksError.new(self.name, version, ActiveMocker::VERSION) if version != ActiveMocker::VERSION
+    end
+
+    private :created_with
+
   end
 
   def classes(klass)

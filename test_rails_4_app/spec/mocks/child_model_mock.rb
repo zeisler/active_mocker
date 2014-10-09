@@ -1,6 +1,7 @@
 require 'active_mocker/mock'
 
 class ChildModelMock < UserMock
+  created_with('1.7rc1')
 
   class << self
 

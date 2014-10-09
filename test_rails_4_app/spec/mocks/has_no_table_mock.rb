@@ -1,6 +1,7 @@
 require 'active_mocker/mock'
 
 class HasNoTableMock < ActiveMocker::Mock::Base
+  created_with('1.7rc1')
 
   class << self
 

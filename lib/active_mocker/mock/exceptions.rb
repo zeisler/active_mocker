@@ -25,6 +25,14 @@ module Mock
 
   end
 
+  class UpdateMocksError < Exception
+
+    def initialize(name, mock_version, gem_version)
+      super("#{name} was built with #{mock_version} but the gem version is #{gem_version}. Run `rake active_mocker:build` to update.")
+    end
+
+  end
+
   class NotImplementedError < Exception
   end
 

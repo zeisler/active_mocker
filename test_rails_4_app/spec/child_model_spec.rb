@@ -8,6 +8,10 @@ describe ChildModel do
     expect(ChildModelMock.column_names).to eq ChildModel.column_names
   end
 
+  it 'table_name' do
+    expect(ChildModelMock.table_name).to eq ChildModel.table_name
+  end
+
   it 'associations' do
     expect(ChildModelMock.associations).to eq UserMock.associations.merge({accounts: nil})
   end

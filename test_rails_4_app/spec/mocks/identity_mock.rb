@@ -40,7 +40,7 @@ class IdentityMock < ActiveMocker::Mock::Base
     end
 
     def table_name
-      "identities"
+      "identities" || super
     end
 
   end

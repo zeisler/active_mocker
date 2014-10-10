@@ -40,7 +40,7 @@ class AccountMock < ActiveMocker::Mock::Base
     end
 
     def table_name
-      "accounts"
+      "accounts" || super
     end
 
   end

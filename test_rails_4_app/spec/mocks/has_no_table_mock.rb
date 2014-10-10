@@ -40,7 +40,7 @@ class HasNoTableMock < ActiveMocker::Mock::Base
     end
 
     def table_name
-      nil
+      nil || super
     end
 
   end

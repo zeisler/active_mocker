@@ -44,7 +44,7 @@ class MicropostMock < ActiveMocker::Mock::Base
     end
 
     def table_name
-      "microposts"
+      "microposts" || super
     end
 
   end

@@ -40,7 +40,7 @@ class UserMock < ActiveMocker::Mock::Base
     end
 
     def table_name
-      "users"
+      "users" || super
     end
 
   end

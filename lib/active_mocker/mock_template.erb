@@ -49,7 +49,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
     end
 
     def table_name
-      <%= table_name.inspect %>
+      <%= table_name.inspect %> || super
     end
 
   end

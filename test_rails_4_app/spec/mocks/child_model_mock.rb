@@ -40,7 +40,7 @@ class ChildModelMock < UserMock
     end
 
     def table_name
-      nil
+      nil || super
     end
 
   end

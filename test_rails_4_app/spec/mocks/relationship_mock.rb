@@ -40,7 +40,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
     end
 
     def table_name
-      "relationships"
+      "relationships" || super
     end
 
   end

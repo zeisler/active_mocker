@@ -245,7 +245,6 @@ end
  ```   
 --------------
 ```ruby
-# Rspec 3 Mocks
 allow(person).to receive(:bar) do |name, type=nil|
   "Now implemented with #{name} and #{type}"
 end
@@ -280,7 +279,7 @@ ActiveMocker::LoadedMocks.delete_all
 
 See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker) for a complete list of methods and usage.
 
-**class methods**
+**Class Methods** - [docs](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker/Mock/Base)
 
   * new
   * create/create!
@@ -288,7 +287,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * delete_all/destroy_all
   * table_name
   
-**Query Methods**
+**Query Methods** - [docs](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker/Mock/Queries)
 
   * all
   * find
@@ -314,7 +313,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * reverse_order
   * limit
   
-**Relation Methods**
+**Relation Methods** - [docs](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker/Mock/Collection)
   * concat
   * include
   * push
@@ -325,7 +324,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * any?
   * many?
 
-**instance methods**
+**instance methods** - [docs](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker/Mock/Queries)
   
   * attributes
   * update

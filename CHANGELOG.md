@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 1.7rc1 - 2014-10-10
+## 1.7rc2 - 2014-10-10
 
 ### Enhancement
 - Now will regenerate mock after `rake db:rollback`.

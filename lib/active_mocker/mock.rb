@@ -5,6 +5,7 @@ require 'active_support/inflector'
 require 'active_support/core_ext'
 require 'virtus'
 
+require 'active_mocker/version'
 require 'active_mocker/logger'
 require 'active_mocker/loaded_mocks'
 require 'active_mocker/mock/hash_process'

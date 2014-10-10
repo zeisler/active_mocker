@@ -3,7 +3,7 @@ gem 'rails', '~>4.1'
 gem 'sqlite3'
 
 group :development, :test do
-  # gem 'active_mocker', '~>1.6'
+  # gem 'active_mocker', '~>1.7'
   gem 'active_mocker', :path => "../../active_mocker"
   gem 'rspec-rails', '~> 3.0'
 end

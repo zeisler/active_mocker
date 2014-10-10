@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class IdentityMock < ActiveMocker::Mock::Base
-  created_with('1.7rc1')
+  created_with('1.7rc2')
 
   class << self
 

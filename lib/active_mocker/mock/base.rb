@@ -316,13 +316,5 @@ class Base
 
 end
 
-def self.config
-  @config ||= Config.new
-end
-
-class Config
-  attr_accessor :experimental
-end
-
 end
 end

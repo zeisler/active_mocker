@@ -17,7 +17,7 @@ namespace :active_mocker do
 
 end
 
-['db:migrate'].each do |task|
+['db:migrate', 'db:rollback'].each do |task|
   Rake::Task[task].enhance do
     Rake::Task['active_mocker:build'].invoke
   end

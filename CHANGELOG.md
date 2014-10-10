@@ -1,9 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## 1.7rc1 - 2014-10-10
+
+### Enhancement
+- Now will regenerate mock after `rake db:rollback`.
+- Check added to see if mock was created with same running gem version of ActiveMocker. If they are not the same it will raise an error informing you to run `rake active_mocker:build`.
+- belong_to and has_one relationships when assigned will in most cases assign it's self to the corresponding has_many or like association. See `test_rails_4_app/spec/active_record_compatible_api.rb` for supported detail of supported ActiveRecord features.
+
+### Removed
+- `ActiveMocker::Mock::Config.experimental` flag has been removed, these are now on by default.
+
+## Added
+- Class method `table_name`.
+
 ## 1.7.beta3 - 2014-09-25
 
 ### Fix
-- Last beta introduced a breaking regression where after assigning some associations they could not be read. Solution was to never access @associations directly inside mock. 
+- Last beta introduced a bug where after assigning some associations they could not be read. Solution was to never access @associations directly inside mock. 
 
 ## 1.7.beta2 - 2014-09-18
 
@@ -18,14 +32,18 @@ All notable changes to this project will be documented in this file.
 - A class that Inherits a model now has the table of the parent.
 - Use this option if you need to modify where the mock generation hooks into. `ActiveMocker::Config.model_base_classes = %w[ ActiveRecord::Base ]`
 - When running `rake active_mocker:build` it will display the number of mocks that failed.
-- Remove deprecated option `ActiveMocker.mock`
 - Exceptions in mock generation no longer halt the rest of the mocks from generating.
 - Add explicit message of what to do when a method is unimplemented.
 - Will create own log file `log/active_mocker.log` it will be cleared on each generation.
 - Attributes, associations, and scopes will now inherit from their parent class.
-- Initialization of an abstract class will raise an error.
+
+###Removed
+- Remove deprecated option `ActiveMocker.mock`
 - Remove Experimental feature reload
 - Remove experimental flag for set foreign_key on collection for has_many, belongs_to, and has_one.
+
+### Added
+- Initialization of an abstract class will raise an error.
 - `record._create_caller_locations` for debugging obj’s creation location.
 
 ### Fix

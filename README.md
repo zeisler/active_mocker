@@ -48,9 +48,12 @@ Ask a question in the [chat room](https://gitter.im/zeisler/active_mocker).
 ## Installation
 
 Add this line to your application's Gemfile:
-
-    gem 'active_mocker'
-
+```ruby
+    group :development, :test do
+      gem 'active_mocker'
+    end
+```
+It needs to be in development as well as test because development is where mocks will be generated.
 And then execute:
 
     $ bundle
@@ -281,6 +284,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * create/create!
   * column_names/attribute_names
   * delete_all/destroy_all
+  * table_name
   
 **Query Methods**
 

@@ -49,9 +49,9 @@ Ask a question in the [chat room](https://gitter.im/zeisler/active_mocker).
 
 Add this line to your application's Gemfile:
 ```ruby
-    group :development, :test do
-      gem 'active_mocker'
-    end
+group :development, :test do
+  gem 'active_mocker'
+end
 ```
 It needs to be in development as well as test because development is where mocks will be generated.
 And then execute:
@@ -177,15 +177,12 @@ Person.new(first_name: "Dustin", last_name: "Zeisler")
 
 ## Mocking Methods
 
-
-### Class Methods
-
+#### Rspec 3 Mocks - verify double
+Verifying doubles are a stricter alternative to normal doubles that provide guarantees about
+what is being verified. When using verifying doubles, RSpec will check that the methods
+being stubbed are actually present on the underlying object if it is available.
+[rspec-mocks/docs/verifying-doubles](https://relishapp.com/rspec/rspec-mocks/docs/verifying-doubles)
 ```ruby
-Person.bar('baz')
-  => NotImplementedError: ::bar is not Implemented for Class :PersonMock. To continue stub the method.
-
-# Rspec 3 Mocks
-
 RSpec.configure do |config|
   config.mock_framework = :rspec
   config.mock_with :rspec do |mocks|
@@ -193,6 +190,11 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 end
+```
+
+```ruby
+Person.bar('baz')
+  => NotImplementedError: ::bar is not Implemented for Class :PersonMock. To continue stub the method.
 
 allow(Person).to receive(:bar) do |name, type=nil|
   "Now implemented with #{name} and #{type}"

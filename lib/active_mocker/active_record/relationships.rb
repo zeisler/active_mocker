@@ -34,7 +34,6 @@ module ActiveMocker
 
         def initialize(name, options={})
           @name = name
-          @options = options.reduce(HashWithIndifferentAccess.new, :merge)
         end
 
         def options

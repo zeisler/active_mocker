@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class AccountMock < ActiveMocker::Mock::Base
-  created_with('1.7rc2')
+  created_with('1.7')
 
   class << self
 

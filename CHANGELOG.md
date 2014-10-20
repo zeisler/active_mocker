@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 1.7.1rc - 2014-10-19
+## 1.7.1 - 2014-10-20
 
 ### Enhancement
 - Now works with Rails versions: 4.0, 4.1, 4.2beta2.

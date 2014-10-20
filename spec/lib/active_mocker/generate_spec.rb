@@ -11,7 +11,7 @@ describe ActiveMocker::Generate do
   describe 'rake active_mocker:build' do
 
     before(:each) do
-      `cd test_rails_4_app && bundle exec rake active_mocker:build`
+      `cd test_rails_4_app && bundle exec appraisal rake active_mocker:build`
     end
 
     it 'generates all mocks files' do

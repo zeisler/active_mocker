@@ -16,7 +16,7 @@ task :specs do
     end
   end
   sh "bundle exec rspec --seed #{random_seed}"
-  sh "cd test_rails_4_app && bundle && bundle exec rspec --seed #{random_seed}"
+  sh "cd test_rails_4_app && bundle exec appraisal bundle && bundle exec appraisal rspec --seed #{random_seed}"
 end
 
 def random_seed

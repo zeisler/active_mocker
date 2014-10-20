@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ActiveMocker::VERSION
   spec.authors       = ["Dustin Zeisler"]
   spec.email         = ["dustin@zive.me"]
-  spec.summary       = %q{Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or hooking to a database.}
-  spec.description   = %q{ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or hooking to a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an Unimplemented error when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.}
+  spec.summary       = %q{Creates mocks from Active Record models. Allows your test suite to run very fast by not loading Rails or a database.}
+  spec.description   = %q{ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an NotImplementedError when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.}
   spec.homepage      = "https://github.com/zeisler/active_mocker"
   spec.license       = "MIT"
 

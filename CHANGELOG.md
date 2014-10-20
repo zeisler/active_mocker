@@ -1,34 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 1.7rc2 - 2014-10-10
+## 1.7.1rc - 2014-10-19
+
+### Enhancement
+- Now works with Rails versions: 4.0, 4.1, 4.2beta2.
+
+### Fix
+- Issue when a relation had a scope defined by proc it would fail.
+
+## 1.7 - 2014-10-14
 
 ### Enhancement
 - Now will regenerate mock after `rake db:rollback`.
 - Check added to see if mock was created with same running gem version of ActiveMocker. If they are not the same it will raise an error informing you to run `rake active_mocker:build`.
 - belong_to and has_one relationships when assigned will in most cases assign it's self to the corresponding has_many or like association. See `test_rails_4_app/spec/active_record_compatible_api.rb` for supported detail of supported ActiveRecord features.
-
-### Removed
-- `ActiveMocker::Mock::Config.experimental` flag has been removed, these are now on by default.
-
-## Added
-- Class method `table_name`.
-
-## 1.7.beta3 - 2014-09-25
-
-### Fix
-- Last beta introduced a bug where after assigning some associations they could not be read. Solution was to never access @associations directly inside mock. 
-
-## 1.7.beta2 - 2014-09-18
-
-### Fix 
-- Bug where creating record with an id could cause a duplicate id error.
-- Issue whenever an ActiveRecord Model has no schema behind it.
-- Issue assigning association would fail, added guard to @associations to only read and write symbols.
-
-## 1.7.beta1 - 2014-09-06
-
-### Enhancement
 - A class that Inherits a model now has the table of the parent.
 - Use this option if you need to modify where the mock generation hooks into. `ActiveMocker::Config.model_base_classes = %w[ ActiveRecord::Base ]`
 - When running `rake active_mocker:build` it will display the number of mocks that failed.
@@ -37,16 +23,22 @@ All notable changes to this project will be documented in this file.
 - Will create own log file `log/active_mocker.log` it will be cleared on each generation.
 - Attributes, associations, and scopes will now inherit from their parent class.
 
-###Removed
+### Removed
+- `ActiveMocker::Mock::Config.experimental` flag has been removed, these are now on by default.
 - Remove deprecated option `ActiveMocker.mock`
 - Remove Experimental feature reload
 - Remove experimental flag for set foreign_key on collection for has_many, belongs_to, and has_one.
 
-### Added
+## Added
+- Class method `table_name`.
 - Initialization of an abstract class will raise an error.
 - `record._create_caller_locations` for debugging obj’s creation location.
 
 ### Fix
+- Last beta introduced a bug where after assigning some associations they could not be read. Solution was to never access @associations directly inside mock. 
+- Bug where creating record with an id could cause a duplicate id error.
+- Issue whenever an ActiveRecord Model has no schema behind it.
+- Issue assigning association would fail, added guard to @associations to only read and write symbols.
 - Issue where using table names as the model file would replace a parent class with a child class that had the same table.
 
 ## 1.6.3 - 2014-08-14

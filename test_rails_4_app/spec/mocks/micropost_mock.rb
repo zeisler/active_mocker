@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class MicropostMock < ActiveMocker::Mock::Base
-  created_with('1.7')
+  created_with('1.7.1')
   MAGIC_ID_NUMBER = 90
   MAGIC_ID_STRING = "F-1"
   prepend PostMethods

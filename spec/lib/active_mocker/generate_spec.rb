@@ -43,8 +43,8 @@ describe ActiveMocker::Generate do
     end
 
     after do
-      FileUtils.rm(test_model_path)
-      FileUtils.rm(test_mock_path)
+      FileUtils.rm(test_model_path) if File.exist?(test_model_path)
+      FileUtils.rm(test_mock_path)  if File.exist?(test_mock_path)
     end
 
   end

@@ -185,7 +185,9 @@ module ActiveMocker
       public
 
       def models
-        Dir["#{Config.model_dir}/*.rb"].map do |file|
+        models = '*'
+        models = ENV['MODEL'].underscore if ENV['MODEL']
+        Dir["#{Config.model_dir}/#{models}.rb"].map do |file|
           Pathname.new(file).basename.to_s.sub('.rb', '')
         end
       end

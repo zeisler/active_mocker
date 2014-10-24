@@ -38,7 +38,7 @@ class Generate
     Config.build_in_progress = true
     mocks_created = 0
     not_valid_models = 0
-    FileUtils.rm_rf("#{Config.mock_dir}/", secure: true)
+    FileUtils.rm_rf("#{Config.mock_dir}/", secure: true) unless ENV['MODEL']
     FileUtils::mkdir_p Config.mock_dir unless File.directory? Config.mock_dir
     generate_model_schema.each do |model|
       if model.class.ancestors.include?(Exception)

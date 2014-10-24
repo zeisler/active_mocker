@@ -22,6 +22,33 @@ describe ActiveMocker::Generate do
 
   end
 
+  describe 'rake active_mocker:build MODEL=ModelName' do
+    let(:test_model_path){ File.join(app_root, 'test_rails_4_app/app/models/test_model.rb')}
+    let(:test_mock_path){ File.join(mock_dir, 'test_model_mock.rb')}
+
+    it 'it will generate by model name and it will not delete other mocks' do
+
+      File.open(test_model_path, 'w+') do |file|
+        file.write(<<-RUBY)
+        class TestModel < ActiveRecord::Base
+          self.table_name = 'users'
+        end
+        RUBY
+      end
+      `cd test_rails_4_app && bundle exec appraisal rake active_mocker:build MODEL=TestModel`
+      expect(File.exist? test_mock_path).to eq true
+      `cd test_rails_4_app && bundle exec appraisal rake active_mocker:build MODEL=user`
+      expect(File.exist? test_mock_path).to eq true
+      expect(File.exist? File.join(mock_dir, 'user_mock.rb')).to eq true
+    end
+
+    after do
+      FileUtils.rm(test_model_path)
+      FileUtils.rm(test_mock_path)
+    end
+
+  end
+
   describe 'print number of failures' do
 
     let(:failing_model) do

@@ -58,4 +58,16 @@ describe ActiveMocker::Mock::Collection do
 
   end
 
+  describe '[]' do
+
+    it 'can get an item from the array' do
+      expect(described_class.new([1, 2])[0]).to eq 1
+    end
+
+    it 'can get a range of items from the array' do
+      expect(described_class.new([1, 2])[0..1]).to eq [1, 2]
+    end
+
+  end
+
 end

@@ -640,4 +640,20 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
   end
 
+  describe 'all[]' do
+
+    let!(:sample_records){[micropost_class.create(id: 4),
+                          micropost_class.create(id: 5)]}
+
+    # Order that comes back from ActiveRecord is database dependant and may not always return in the same order
+    it 'get a record at an index' do
+      expect(micropost_class.all[1].class).to eq micropost_class
+    end
+
+    it 'get a range of records at an index' do
+      expect(micropost_class.all[0..1]).to include *sample_records
+    end
+
+  end
+
 end

@@ -16,7 +16,7 @@ module Mock
     end
 
     extend ::Forwardable
-    def_delegators :@collection, :take, :push, :clear, :first, :last, :concat, :replace, :uniq, :count, :size, :length, :empty?, :any?, :many?, :include?, :delete
+    def_delegators :@collection, :[], :take, :push, :clear, :first, :last, :concat, :replace, :uniq, :count, :size, :length, :empty?, :any?, :many?, :include?, :delete
     alias_method :distinct, :uniq
 
     def select(&block)

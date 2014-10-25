@@ -11,7 +11,7 @@ describe ActiveMocker::Generate do
   describe 'rake active_mocker:build' do
 
     before(:each) do
-      `cd test_rails_4_app && bundle exec appraisal rake active_mocker:build`
+      system "cd test_rails_4_app && bundle exec appraisal rake active_mocker:build"
     end
 
     it 'generates all mocks files' do
@@ -31,13 +31,13 @@ describe ActiveMocker::Generate do
       FileUtils.rm(File.join(mock_dir, 'micropost_mock.rb'))
       expect(File.exist?(File.join(mock_dir, 'user_mock.rb'))).to eq false
       expect(File.exist?(File.join(mock_dir, 'micropost_mock.rb'))).to eq false
-      `cd test_rails_4_app && bundle exec appraisal rake active_mocker:build MODEL=user`
+      system "cd test_rails_4_app && bundle exec appraisal rake active_mocker:build MODEL=user"
       expect(File.exist? File.join(mock_dir, 'user_mock.rb')).to eq true
       expect(File.exist?(File.join(mock_dir, 'micropost_mock.rb'))).to eq false
     end
 
     after do
-      `cd test_rails_4_app && bundle exec appraisal rake active_mocker:build MODEL=Micropost`
+      system "cd test_rails_4_app && bundle exec appraisal rake active_mocker:build MODEL=Micropost"
     end
 
   end

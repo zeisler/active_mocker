@@ -118,10 +118,10 @@ module Mock
     #   Person.find([7, 17])    # returns an array for objects with IDs in (7, 17)
     #   Person.find([1])        # returns an array for the object with ID = 1
     #
-    # <tt>ActiveRecord::RecordNotFound</tt> will be raised if one or more ids are not found.
+    # <tt>ActiveMocker::Mock::RecordNotFound</tt> will be raised if one or more ids are not found.
     def find(ids)
       results = [*ids].map do |id|
-        find_by!(id: id)
+        find_by!(id: id.to_i)
       end
       return new_relation(results) if ids.class == Array
       results.first

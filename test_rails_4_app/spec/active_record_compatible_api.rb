@@ -303,10 +303,22 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
       expect(user.microposts.find(microposts.first.id)).to eq microposts.first
     end
 
+    it 'single string id passed' do
+      microposts = [micropost_class.create, micropost_class.create]
+      user = described_class.create!(email: '1', name: 'fred', microposts: microposts)
+      expect(user.microposts.find(microposts.first.id.to_s)).to eq microposts.first
+    end
+
     it 'multiple ids passed' do
       microposts = [micropost_class.create(id: 1), micropost_class.create(id: 2)]
       user = described_class.create!(email: '1', name: 'fred', microposts: microposts)
       expect(user.microposts.find([microposts.first.id, microposts.last.id])).to include *microposts.first, microposts.last
+    end
+
+    it 'multiple string ids passed' do
+      microposts = [micropost_class.create(id: 1), micropost_class.create(id: 2)]
+      user = described_class.create!(email: '1', name: 'fred', microposts: microposts)
+      expect(user.microposts.find([microposts.first.id.to_s, microposts.last.id.to_s])).to include *microposts.first, microposts.last
     end
 
   end

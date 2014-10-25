@@ -17,14 +17,17 @@ module ActiveMocker
 
     def sandbox_model
       source = RubyParse.new(read_file)
-      if source.has_parent_class? && !Config.model_base_classes.include?(source.parent_class_name)
-        @parent_class = source.parent_class_name
-      end
-
-      unless source.has_parent_class?
-        raise ModelLoadError::HasNoParentClass.new("#{model_name}")
-      end
+      has_no_parent_class!(source)
+      get_non_active_record_parent_class(source)
       source.modify_parent_class('ActiveMocker::ActiveRecord::Base')
+    end
+
+    def get_non_active_record_parent_class(source)
+      @parent_class = source.parent_class_name unless Config.model_base_classes.include?(source.parent_class_name)
+    end
+
+    def has_no_parent_class!(source)
+      raise ModelLoadError::HasNoParentClass.new("#{model_name}") unless source.has_parent_class?
     end
 
     def module_namespace

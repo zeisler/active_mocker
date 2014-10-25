@@ -28,8 +28,6 @@ module ActiveMocker
     end
   end
 
-
-
   class ModelSchema
 
     class Assemble

@@ -61,4 +61,34 @@ describe ActiveMocker::Generate do
 
   end
 
+  describe 'HasNoParentClass' do
+
+    let(:failing_model) do
+      <<-RUBY
+      class Model
+      end
+      RUBY
+    end
+
+    let(:string_log) { StringIO.new }
+
+    before do
+      ActiveMocker.configure do |config|
+        config.schema_file = ''
+        config.model_dir   = ''
+        config.mock_dir    = File.join(mock_dir, 'spec/mocks')
+        config.file_reader = ActiveMocker::StringReader.new(failing_model)
+      end
+      allow(ActiveMocker::Config).to receive(:logger) { Logger.new(string_log) }
+    end
+
+    it do
+      allow_any_instance_of(ActiveMocker::ModelSchema::Assemble).to receive(:models) { ['model'] }
+      output = capture(:stdout) { described_class.new(silence: true) }
+      expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
+      expect(string_log.string).to match /HasNoParentClass/
+    end
+
+  end
+
 end

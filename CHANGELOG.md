@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.7.2 - 2014-10-27
+
+### Enhancement
+- Build command can take aa Environment variable of model to just generate a mock for a specific model. `rake active_mocker:build MODEL=user` 
+- Add Method #freeze, see Doc for limitation.
+- Method `find` can take a string number or an array of string numbers
+- Query #all can take take method []
+
 ## 1.7.1 - 2014-10-20
 
 ### Enhancement

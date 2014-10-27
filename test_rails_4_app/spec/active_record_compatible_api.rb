@@ -55,6 +55,16 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
     end
 
+    describe '#freeze' do
+
+      it 'will freeze the attributes hash' do
+        record = described_class.create(name: 'Dustin')
+        record.freeze
+        expect{record.name = 'Justin'}.to raise_error(RuntimeError, /can't modify frozen/)
+      end
+
+    end
+
   end
 
   describe '::create' do

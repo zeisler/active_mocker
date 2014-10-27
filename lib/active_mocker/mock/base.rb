@@ -275,6 +275,15 @@ class Base
     ObjectInspect.new(self.class.name, attributes).to_s
   end
 
+  # Will not allow attributes to be changed
+  #
+  # Will freeze attributes forever. Querying for the record again will not unfreeze it because records exist in memory
+  # and are not initialized upon a query. This behaviour differs from ActiveRecord, beware of any side effect this may
+  # have when using this method.
+  def freeze
+    @attributes.freeze; self
+  end
+
   module PropertiesGetterAndSetter
 
     # Returns the value of the attribute identified by <tt>attr_name</tt> after

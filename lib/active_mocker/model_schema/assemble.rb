@@ -184,7 +184,7 @@ module ActiveMocker
 
       def models
         models = '*'
-        models = ENV['MODEL'].underscore if ENV['MODEL']
+        models = Config.generate_for_mock.underscore if Config.generate_for_mock
         Dir["#{Config.model_dir}/#{models}.rb"].map do |file|
           Pathname.new(file).basename.to_s.sub('.rb', '')
         end
@@ -192,7 +192,7 @@ module ActiveMocker
 
       def get_model(model_file_name)
         model = ModelReader.new.parse(model_file_name)
-        raise ModelLoadError::General.new(model_file_name) unless model unless model
+        raise ModelLoadError::General.new(model_file_name) unless model
         model
       end
 

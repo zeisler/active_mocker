@@ -101,7 +101,7 @@ class Generate
   end
 
   def clean_up
-    FileUtils.rm_rf("#{Config.mock_dir}/", secure: true) unless ENV['MODEL']
+    FileUtils.rm_rf("#{Config.mock_dir}/", secure: true) unless Config.generate_for_mock
     FileUtils::mkdir_p Config.mock_dir unless File.directory? Config.mock_dir
   end
 

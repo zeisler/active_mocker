@@ -6,7 +6,11 @@ module ActiveMocker
     end
 
     def read(path)
-      @read
+      if @read.is_a?(Hash)
+        @read[path.sub('/','').sub('.rb','')]
+      else
+        @read
+      end
     end
   end
 

@@ -6,7 +6,8 @@ require 'active_mocker/string_reader'
 describe ActiveMocker::Generate do
 
   let(:app_root){ File.expand_path('../../../../', __FILE__)}
-  let(:mock_dir){ File.join(app_root, 'test_rails_4_app/spec/mocks')}
+  let(:mock_dir){ File.join(test_app_dir, 'spec/mocks')}
+  let(:test_app_dir){ File.join(app_root, 'test_rails_4_app')}
 
   describe 'rake active_mocker:build' do
 
@@ -87,6 +88,28 @@ describe ActiveMocker::Generate do
       output = capture(:stdout) { described_class.new(silence: true) }
       expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
       expect(string_log.string).to match /HasNoParentClass/
+    end
+
+  end
+
+  describe "ENV['MODEL']" do
+
+    let(:string_log) { StringIO.new }
+
+    before do
+      ActiveMocker.configure do |config|
+        config.schema_file = File.join(test_app_dir, 'db/schema.rb')
+        config.model_dir   = File.join(test_app_dir, 'app/models')
+        config.mock_dir    = File.join(test_app_dir, 'spec/mocks')
+        config.generate_for_mock = 'user'
+      end
+      allow(ActiveMocker::Config).to receive(:logger) { Logger.new(string_log) }
+    end
+
+    it 'it will not render mock because of rails dependence, but will limit the model count to 1' do
+      output = capture(:stdout) { described_class.new(silence: true) }
+      expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
+      expect(subject.send(:model_count)).to eq 1
     end
 
   end

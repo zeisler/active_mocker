@@ -10,7 +10,8 @@ module ActiveMocker
                     :file_reader,
                     :build_in_progress,
                     :log_location,
-                    :clear_log_on_build
+                    :clear_log_on_build,
+                    :generate_for_mock
 
       def model_base_classes=(val)
         @model_base_classes = val
@@ -29,6 +30,7 @@ module ActiveMocker
         @file_reader        = FileReader     unless @file_reader
         @log_location       = 'log/active_mocker.log' unless @log_location
         @clear_log_on_build = true
+        @generate_for_mock  = ENV['MODEL']
         rails_defaults if Object.const_defined?('Rails')
       end
 

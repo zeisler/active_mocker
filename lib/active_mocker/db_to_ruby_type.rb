@@ -20,6 +20,8 @@ module ActiveMocker
           String
         when :boolean
           Axiom::Types::Boolean
+        when :hstore
+          Hash
       end
     end
 

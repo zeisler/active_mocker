@@ -331,6 +331,14 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
       expect(user.microposts.find([microposts.first.id.to_s, microposts.last.id.to_s])).to include *microposts.first, microposts.last
     end
 
+    it 'will raise an error if not found from id' do
+      expect{micropost_class.find(104)}.to raise_error(/Couldn't find Micropost(Mock)? with 'id'=104/)
+    end
+
+    it 'will raise an error if argument is nil' do
+      expect { described_class.find(nil) }.to raise_error(/Couldn't find User(Mock)? with.*id/i)
+    end
+
   end
 
   it '#sum' do
@@ -521,6 +529,10 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
     it 'will find one record by conditions' do
       user = described_class.create!(email: '1', name: 'fred')
       expect(described_class.find_by!(name: 'fred')).to eq user
+    end
+
+    it 'will raise error if no record found' do
+      expect{described_class.find_by!(name: 'noFound')}.to raise_error
     end
 
   end

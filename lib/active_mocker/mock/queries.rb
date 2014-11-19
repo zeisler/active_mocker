@@ -120,6 +120,7 @@ module Mock
     #
     # <tt>ActiveMocker::Mock::RecordNotFound</tt> will be raised if one or more ids are not found.
     def find(ids)
+      raise RecordNotFound.new("Couldn't find #{self.name} without an ID") if ids.nil?
       results = [*ids].map do |id|
         find_by!(id: id.to_i)
       end
@@ -188,7 +189,9 @@ module Mock
     # an <tt>ActiveRecord::RecordNotFound</tt> error.
     def find_by!(conditions={})
       result = find_by(conditions)
-      raise RecordNotFound if result.nil?
+      if result.nil?
+        raise RecordNotFound.new("Couldn't find #{self.name} with '#{conditions.keys.first}'=#{conditions.values.first}")
+      end
       result
     end
 

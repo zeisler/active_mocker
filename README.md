@@ -357,6 +357,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 * When an association is set in one object it may not always be reflective in other objects, especially when it is a non standard/custom association. See [test_rails_4_app/spec/active_record_compatible_api.rb](https://github.com/zeisler/active_mocker/blob/master/test_rails_4_app/spec/active_record_compatible_api.rb) for a complete list of supported associations. 
 * Validation/Callbacks are not supported.
 * Sql queries, joins, etc will never be supported.
+* A record that has been created and then is modified will persist changes without using calling `#save`, beware of this difference.
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class RelationshipMock < ActiveMocker::Mock::Base
-  created_with('1.7.2')
+  created_with('1.7.3')
 
   class << self
 

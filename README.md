@@ -358,6 +358,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 * Validation/Callbacks are not supported.
 * Sql queries, joins, etc will never be supported.
 * A record that has been created and then is modified will persist changes without calling `#save`, beware of this difference.
+* This is not a full replacement for ActiveRecord. It has been simplified, having only the most essential parts, so that the is code easier to maintain. I have done my best to make it work correctly, but it is up to you to know how ActiveRecord works and know it's limitations. I aim to make the code easy to read so that it can be understood and modified by it's users.
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

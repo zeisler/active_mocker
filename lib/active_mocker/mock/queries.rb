@@ -11,9 +11,14 @@ module Mock
 
       def is_of(conditions={})
         conditions.all? do |col, match|
-          next match.any? { |m| @record.send(col) == m } if match.is_a? Enumerable
-          @record.send(col) == match
+          [*match].any? { |m| compare(col, m) }
         end
+      end
+
+      private
+
+      def compare(col, match)
+        @record.send(col) == match
       end
 
     end

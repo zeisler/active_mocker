@@ -182,7 +182,9 @@ module Mock
     #
     #   Post.find_by name: 'Spartacus', rating: 4
     def find_by(conditions = {})
-      send(:where, conditions).first
+      to_a.detect do |record|
+        Find.new(record).is_of(conditions)
+      end
     end
 
     # Like <tt>find_by</tt>, except that if no record is found, raises

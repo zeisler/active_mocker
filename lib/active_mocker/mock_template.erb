@@ -182,12 +182,12 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
 <% instance_methods.each do |method| %>
   def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
-    call_mock_method :<%= method.name %><%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
+    call_mock_method :<%= method.name %>, Kernel.caller<%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
   end
 <% end -%>
 <% class_methods.each do |method| %>
   def self.<%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
-    call_mock_method :<%= method.name %><%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
+    call_mock_method :<%= method.name %>, Kernel.caller<%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
   end
 <% end -%>
 

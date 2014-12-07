@@ -100,7 +100,7 @@ class ChildModelMock < UserMock
 
 
   def child_method
-    call_mock_method :child_method
+    call_mock_method :child_method, Kernel.caller
   end
 
 end

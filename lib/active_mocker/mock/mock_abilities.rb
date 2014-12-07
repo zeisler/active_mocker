@@ -26,8 +26,8 @@ module ActiveMocker
         self.class
       end
 
-      def is_implemented(val, method, type)
-        raise NotImplementedError, "#{type}#{method} for Class: #{class_name}. To continue stub the method." if val.nil?
+      def is_implemented(val, method, type, call_stack)
+        raise NotImplementedError, "#{type}#{method} for Class: #{class_name}. To continue stub the method.", call_stack  if val.nil?
       end
 
       def execute_block(method)
@@ -55,9 +55,9 @@ module ActiveMocker
 
       alias_method :stub_class_method, :mock_class_method
 
-      def call_mock_method(method, *arguments)
+      def call_mock_method(method, caller, *arguments)
         mock_method = mockable_class_methods[method.to_sym]
-        is_implemented(mock_method, method, '::')
+        is_implemented(mock_method, method, '::', caller)
         mock_method.arguments = arguments
         execute_block(mock_method)
       end
@@ -68,10 +68,10 @@ module ActiveMocker
 
     include InstanceAndClassMethods
 
-    def call_mock_method(method, *arguments)
+    def call_mock_method(method, caller, *arguments)
       mock_method = mockable_instance_methods[method.to_sym]
       mock_method = self.class.send(:mockable_instance_methods)[method.to_sym] if mock_method.nil?
-      is_implemented(mock_method, method, '#')
+      is_implemented(mock_method, method, '#', caller)
       mock_method.arguments = arguments
       execute_block mock_method
     end

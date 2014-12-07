@@ -154,15 +154,15 @@ class MicropostMock < ActiveMocker::Mock::Base
 
 
   def display_name
-    call_mock_method :display_name
+    call_mock_method :display_name, Kernel.caller
   end
 
   def post_id
-    call_mock_method :post_id
+    call_mock_method :post_id, Kernel.caller
   end
 
   def self.from_users_followed_by(user=nil)
-    call_mock_method :from_users_followed_by, user
+    call_mock_method :from_users_followed_by, Kernel.caller, user
   end
 
 end

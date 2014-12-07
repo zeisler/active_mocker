@@ -13,7 +13,7 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def self.buz
-          call_mock_method(__method__, [])
+          call_mock_method(__method__, caller, [])
         end
 
         def pop
@@ -41,11 +41,11 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__)
+          call_mock_method(__method__, caller)
         end
 
         def self.baz
-          call_mock_method(__method__)
+          call_mock_method(__method__, caller)
         end
 
         def self.pop
@@ -125,7 +125,7 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__)
+          call_mock_method(__method__, caller)
         end
 
         def pop
@@ -159,11 +159,11 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def zip
-          call_mock_method(__method__)
+          call_mock_method(__method__, caller)
         end
 
         def self.wiz
-          call_mock_method(__method__)
+          call_mock_method(__method__, caller)
         end
 
       end
@@ -187,7 +187,7 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def foo(stuff, other = nil)
-          call_mock_method(__method__, stuff, other)
+          call_mock_method(__method__, caller, stuff, other)
         end
 
         def pop
@@ -196,7 +196,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
 
           def self.fiz(buz)
-            call_mock_method(__method__, buz)
+            call_mock_method(__method__, caller, buz)
         end
 
       end
@@ -243,7 +243,7 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__, [])
+          call_mock_method(__method__, caller, [])
         end
 
       end
@@ -266,11 +266,11 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__, [])
+          call_mock_method(__method__, caller, [])
         end
 
         def self.pop
-          call_mock_method(__method__, [])
+          call_mock_method(__method__, caller, [])
         end
 
       end
@@ -294,18 +294,27 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__, [])
+          call_mock_method(__method__, caller, [])
         end
 
         def self.pop
-          call_mock_method(__method__, [])
+          call_mock_method(__method__, caller, [],)
         end
 
       end
     end
 
     it 'will raise if unmocked class method is called' do
+
       expect{ TestRaise.pop}.to raise_error(ActiveMocker::Mock::NotImplementedError, '::pop for Class: TestRaise. To continue stub the method.')
+    end
+
+    it 'will start the backtrace at the point where the method was called' do
+      begin
+        TestRaise.pop
+      rescue ActiveMocker::Mock::NotImplementedError => e
+          expect(e.backtrace.first).to match(/active_mocker\/mock\/mockablies_spec.rb/)
+      end
     end
 
     it 'will raise if unmocked instance method is called' do

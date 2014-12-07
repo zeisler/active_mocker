@@ -218,27 +218,27 @@ class UserMock < ActiveMocker::Mock::Base
 
 
   def feed
-    call_mock_method :feed
+    call_mock_method :feed, Kernel.caller
   end
 
   def following?(other_user)
-    call_mock_method :following?, other_user
+    call_mock_method :following?, Kernel.caller, other_user
   end
 
   def follow!(other_user)
-    call_mock_method :follow!, other_user
+    call_mock_method :follow!, Kernel.caller, other_user
   end
 
   def unfollow!(other_user)
-    call_mock_method :unfollow!, other_user
+    call_mock_method :unfollow!, Kernel.caller, other_user
   end
 
   def self.new_remember_token
-    call_mock_method :new_remember_token
+    call_mock_method :new_remember_token, Kernel.caller
   end
 
   def self.digest(token)
-    call_mock_method :digest, token
+    call_mock_method :digest, Kernel.caller, token
   end
 
 end

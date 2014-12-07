@@ -150,8 +150,8 @@ module Mock
     #
     #   # Update all books that match conditions, but limit it to 5 ordered by date
     #   BookMock.where(title: 'Rails').order(:created_at).limit(5).update_all(author: 'David')
-    def update_all(conditions)
-      all.each { |i| i.update(conditions) }
+    def update_all(attributes)
+      all.each { |i| i.update(attributes) }
     end
 
     # Updates an object (or multiple objects) and saves it.

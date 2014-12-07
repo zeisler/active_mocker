@@ -11,11 +11,19 @@ module Mock
 
       def is_of(conditions={})
         conditions.all? do |col, match|
-          [*match].any? { |m| compare(col, m) }
+          if match.is_a? Enumerable
+            any_match(col, match)
+          else
+            compare(col, match)
+          end
         end
       end
 
       private
+
+      def any_match(col, match)
+        match.any? { |m| compare(col, m) }
+      end
 
       def compare(col, match)
         @record.send(col) == match

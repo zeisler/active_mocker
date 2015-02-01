@@ -1,6 +1,7 @@
 require 'active_mocker/mock'
 
 class CommentMock < ActiveMocker::Mock::Base
+  created_with('1.7.3')
 
   class << self
 
@@ -21,7 +22,7 @@ class CommentMock < ActiveMocker::Mock::Base
     end
 
     def mocked_class
-      'Comment'
+      "Comment"
     end
 
     private :mocked_class
@@ -36,6 +37,10 @@ class CommentMock < ActiveMocker::Mock::Base
 
     def abstract_class?
       false
+    end
+
+    def table_name
+      "comments" || super
     end
 
   end
@@ -58,8 +63,6 @@ class CommentMock < ActiveMocker::Mock::Base
 
   def user_id=(val)
     write_attribute(:user_id, val)
-    association = classes('User').try(:find_by, id: user_id)
-    write_association(:user,association) unless association.nil?
   end
 
   def text
@@ -100,12 +103,12 @@ class CommentMock < ActiveMocker::Mock::Base
 
 # belongs_to
   def user
-    read_association(:user)
+    read_association(:user) || write_association(:user, classes('User').try{ |k| k.find_by(id: user_id)})
   end
 
   def user=(val)
     write_association(:user, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id, foreign_id: val.try(:id)).item
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
   end
 
   def build_user(attributes={}, &block)

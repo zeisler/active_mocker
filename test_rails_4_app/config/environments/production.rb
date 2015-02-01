@@ -19,7 +19,6 @@ SampleApp::Application.configure do
   # For large-scale production use, consider using a caching reverse proxy like nginx, varnish or squid.
   # config.action_dispatch.rack_cache = true
 
-  config.serve_static_assets = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor  = :uglifier

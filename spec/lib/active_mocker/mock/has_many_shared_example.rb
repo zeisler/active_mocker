@@ -50,7 +50,7 @@ shared_examples_for 'HasMany' do
     subject { described_class.new([], foreign_key: 'foreign_key', foreign_id: 1, relation_class: RelationClass) }
 
     it 'makes a new object from relation_class' do
-      allow(RelationClass).to receive(:new)
+      allow(RelationClass).to receive(:new){ OpenStruct.new }
       subject.build(name: 'Name')
       expect(RelationClass).to have_received(:new).with({'foreign_key' => 1, name: 'Name'})
     end

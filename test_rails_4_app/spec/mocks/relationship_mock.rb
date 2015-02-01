@@ -63,8 +63,6 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def follower_id=(val)
     write_attribute(:follower_id, val)
-    association = classes('User').try(:find_by, id: follower_id)
-    write_association(:follower,association) unless association.nil?
   end
 
   def followed_id
@@ -73,8 +71,6 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
   def followed_id=(val)
     write_attribute(:followed_id, val)
-    association = classes('User').try(:find_by, id: followed_id)
-    write_association(:followed,association) unless association.nil?
   end
 
   def created_at
@@ -99,7 +95,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
 # belongs_to
   def follower
-    read_association(:follower)
+    read_association(:follower) || write_association(:follower, classes('User').try{ |k| k.find_by(id: follower_id)})
   end
 
   def follower=(val)
@@ -119,7 +115,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
   alias_method :create_follower!, :create_follower
 
   def followed
-    read_association(:followed)
+    read_association(:followed) || write_association(:followed, classes('User').try{ |k| k.find_by(id: followed_id)})
   end
 
   def followed=(val)

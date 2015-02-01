@@ -63,12 +63,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
   end
 
   def <%= meth.name %>=(val)
-<% association = belongs_to_foreign_key(meth.name) -%>
     write_attribute(:<%= meth.name %>, val)
-<% if association -%>
-    association = classes('<%= association.class_name %>').try(:find_by, id: <%= meth.name %>)
-    write_association(:<%= association.name %>,association) unless association.nil?
-<% end -%>
   end
 <% end %>
   ##################################
@@ -78,7 +73,8 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 <%= '# belongs_to' unless belongs_to.empty? -%>
 <% belongs_to.each do |meth| %>
   def <%= meth.name %>
-    read_association(:<%= meth.name %>)
+<% association = relation_find(:name, meth.name).first -%>
+    read_association(:<%= meth.name %>) || write_association(:<%= meth.name %>, classes('<%= association.class_name %>').try{ |k| k.find_by(id: <%= association.foreign_key %>)})
   end
 
   def <%= meth.name %>=(val)

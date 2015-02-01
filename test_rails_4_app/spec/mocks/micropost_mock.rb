@@ -75,8 +75,6 @@ class MicropostMock < ActiveMocker::Mock::Base
 
   def user_id=(val)
     write_attribute(:user_id, val)
-    association = classes('User').try(:find_by, id: user_id)
-    write_association(:user,association) unless association.nil?
   end
 
   def up_votes
@@ -109,7 +107,7 @@ class MicropostMock < ActiveMocker::Mock::Base
 
 # belongs_to
   def user
-    read_association(:user)
+    read_association(:user) || write_association(:user, classes('User').try{ |k| k.find_by(id: user_id)})
   end
 
   def user=(val)

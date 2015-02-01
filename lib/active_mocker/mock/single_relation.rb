@@ -5,7 +5,7 @@ module ActiveMocker
 
       attr_reader :item
 
-      def initialize(item, child_self:, foreign_key:, foreign_id:)
+      def initialize(item, child_self:, foreign_key:)
         @item = item
         assign_associations(child_self, item) if item.class <= Base
       end

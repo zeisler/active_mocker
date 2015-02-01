@@ -570,10 +570,17 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
   describe 'belongs_to association' do
 
-    it 'when setting association by object it will set id if object is persisted' do
+    it 'will also set the foreign key ' do
       user = user_class.create
       post = micropost_class.create(user: user)
       expect(post.user_id).to eq user.id
+    end
+
+    it 'will persist the association and set the foreign key' do
+      user = user_class.new
+      post = micropost_class.create(user: user)
+      expect(post.user_id).to eq user.id
+      expect(user.reload.persisted?).to eq true
     end
 
     it 'when setting association by object it will set the child association' do

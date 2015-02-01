@@ -15,12 +15,6 @@ describe MicropostMock do
       expect(post.user_id).to eq user.id
     end
 
-    it 'setting user will not assign its foreign key if the object does not respond to persisted?' do
-      user = {}
-      post = MicropostMock.create(user: user)
-      expect(post.user_id).to eq nil
-    end
-
   end
 
   describe '::MAGIC_ID_NUMBER' do

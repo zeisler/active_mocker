@@ -114,7 +114,7 @@ class MicropostMock < ActiveMocker::Mock::Base
 
   def user=(val)
     write_association(:user, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id, foreign_id: val.try(:id)).item
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
   end
 
   def build_user(attributes={}, &block)

@@ -83,7 +83,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
   def <%= meth.name %>=(val)
     write_association(:<%= meth.name %>, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :<%= meth.foreign_key %>, foreign_id: val.try(:id)).item
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :<%= meth.foreign_key %>).item
   end
 
   def build_<%= meth.name %>(attributes={}, &block)
@@ -111,7 +111,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
   def <%= meth.name %>=(val)
     write_association(:<%= meth.name %>, val)
-    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id).item
+    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: '<%= meth.foreign_key %>').item
   end
 
   def build_<%= meth.name %>(attributes={}, &block)

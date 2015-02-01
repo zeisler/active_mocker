@@ -132,7 +132,7 @@ class UserMock < ActiveMocker::Mock::Base
 
   def account=(val)
     write_association(:account, val)
-    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: 'user_id', foreign_id: self.id).item
+    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: 'user_id').item
   end
 
   def build_account(attributes={}, &block)

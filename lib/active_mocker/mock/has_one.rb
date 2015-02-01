@@ -5,8 +5,8 @@ module ActiveMocker
 
       attr_reader :item
 
-      def initialize(item, child_self:, foreign_key:, foreign_id:)
-        item.send(:write_attribute, foreign_key, foreign_id) if item.respond_to?("#{foreign_key}=") && !foreign_id.nil?
+      def initialize(item, child_self:, foreign_key:)
+        item.send(:write_attribute, foreign_key, item.try(:id)) if !item.try(:id).nil?
         super
       end
 

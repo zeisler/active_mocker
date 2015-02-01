@@ -321,6 +321,34 @@ module Mock
       new_relation(to_a || [])
     end
 
+    # Returns a chainable relation with zero records.
+    #
+    # Any subsequent condition chained to the returned relation will continue
+    # generating an empty relation.
+    #
+    # Used in cases where a method or scope could return zero records but the
+    # result needs to be chainable.
+    #
+    # For example:
+    #
+    #   @posts = current_user.visible_posts.where(name: params[:name])
+    #   # => the visible_posts method is expected to return a chainable Relation
+    #
+    #   def visible_posts
+    #     case role
+    #     when 'Country Manager'
+    #       Post.where(country: country)
+    #     when 'Reviewer'
+    #       Post.published
+    #     when 'Bad User'
+    #       Post.none # It can't be chained if [] is returned.
+    #     end
+    #   end
+    #
+    def none
+      new_relation([])
+    end
+
     private
 
     def values_by_key(key)

@@ -319,6 +319,30 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
         expect(user.microposts.methods).to include *support_array_methods
     end
 
+    describe '#none' do
+
+      it 'will be equal to an empty array' do
+        expect(micropost_class.none).to eq []
+      end
+
+      context 'can call query methods' do
+
+        it 'where' do
+          expect(user_class.none.where(name: "No one")).to eq []
+        end
+
+        it 'count' do
+          expect(user_class.none.count).to eq 0
+        end
+
+      end
+
+      it 'can call scoped methods' do
+        expect(user_class.none.respond_to?(:find_by_name)).to eq true
+      end
+
+    end
+
   end
 
   describe '#find' do

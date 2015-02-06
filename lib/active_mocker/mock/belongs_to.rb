@@ -19,7 +19,7 @@ module ActiveMocker
 
       def save_item(item, child_self)
         return if item.nil?
-        item.save if child_self.persisted?
+        item.try(:save) if child_self.persisted?
       end
 
     end

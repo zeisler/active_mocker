@@ -1,6 +1,4 @@
-require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
-APP_ROOT = File.expand_path('../../', __FILE__) unless defined? APP_ROOT
+require 'spec_helper'
 require 'lib/post_methods'
 require_relative 'mocks/micropost_mock.rb'
 require_relative 'mocks/user_mock.rb'

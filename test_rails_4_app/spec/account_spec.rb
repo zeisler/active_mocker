@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require_relative 'mocks/user_mock.rb'
 require_relative 'mocks/account_mock'
 

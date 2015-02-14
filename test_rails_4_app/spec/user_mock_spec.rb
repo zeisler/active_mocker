@@ -1,13 +1,8 @@
-require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
-APP_ROOT =  File.expand_path('../../', __FILE__) unless defined? APP_ROOT
-require 'lib/post_methods'
-
+require 'spec_helper'
 require_relative 'mocks/micropost_mock.rb'
 require_relative 'mocks/user_mock.rb'
 require_relative 'mocks/relationship_mock'
 require_relative 'mocks/account_mock'
-
 require_relative 'active_record_compatible_api'
 
 describe UserMock do
@@ -226,22 +221,18 @@ describe UserMock do
     it 'can save to class and then find instance by attribute' do
       record = UserMock.create(name: "Sam")
       expect(UserMock.find_by(name:"Sam")).to eq record
-
     end
 
     it '#update' do
-
       person = UserMock.create(name: 'Justin')
       expect(UserMock.first.name).to eq 'Justin'
       person.update(name: 'Dustin')
       expect(UserMock.first.name).to eq 'Dustin'
 
       expect(person.name).to eq 'Dustin'
-
     end
 
     it '::destroy_all' do
-
       UserMock.create
 
       expect(UserMock.count).to eq 1
@@ -249,7 +240,6 @@ describe UserMock do
       UserMock.destroy_all
 
       expect(UserMock.count).to eq 0
-
     end
 
     it '::find_by' do

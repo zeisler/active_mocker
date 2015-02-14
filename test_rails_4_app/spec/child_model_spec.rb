@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'mocks/user_mock'
 require 'mocks/child_model_mock'
 

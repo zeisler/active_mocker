@@ -312,6 +312,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * order(:field_name)
   * reverse_order
   * limit
+  * none
   
 **Relation Methods** - [docs](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker/Mock/Collection)
   * concat

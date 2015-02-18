@@ -1,7 +1,7 @@
 PATH
   remote: ../../
   specs:
-    active_mocker (1.8)
+    active_mocker (1.8.1)
       activesupport (~> 4.0)
       attr_permit (~> 0.0)
       parser (~> 2.2)

@@ -1,5 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## 1.8 - 2015-02-17
+
+### Notes
+This release has minor speed improvements. You may find that some records where an attribute was nil it will now have an a value. Next release will most likely be 2.0 where I will focus on removing deprecated features and performance of the mocks runtime.
+
+### Enhancement
+- Improve accuracy and speed in some cases, for finding associations by not assigning them at creation time but finding them when called.
+- Hide the internals stack trace when calling method that will raising `NotImplementedError`.
+- Add spec documentation for method #new_relation
+
+### Added
+- Support for ruby 2.2.0 and rails 4.2
+- new method #none does what it does for ActiveRecord
+
 ## 1.7.3 - 2014-12-01
 
 ### Fix

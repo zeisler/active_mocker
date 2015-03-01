@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'active_mocker/rspec_helper'
 require 'lib/post_methods'
 require_relative 'mocks/micropost_mock.rb'
 require_relative 'mocks/user_mock.rb'

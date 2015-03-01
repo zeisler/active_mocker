@@ -16,6 +16,7 @@ describe ActiveMocker::Generate do
     end
 
     it 'generates all mocks files' do
+      expect(File.exist? mock_dir                                   ).to eq true
       expect(File.exist? File.join(mock_dir, 'user_mock.rb')        ).to eq true
       expect(File.exist? File.join(mock_dir, 'micropost_mock.rb')   ).to eq true
       expect(File.exist? File.join(mock_dir, 'relationship_mock.rb')).to eq true

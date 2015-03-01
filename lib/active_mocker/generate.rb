@@ -101,8 +101,25 @@ class Generate
   end
 
   def clean_up
-    FileUtils.rm_rf("#{Config.mock_dir}/", secure: true) unless Config.generate_for_mock
-    FileUtils::mkdir_p Config.mock_dir unless File.directory? Config.mock_dir
+    delete_mocks if delete_mocks?
+    create_mock_dir
+  end
+
+  def delete_mocks
+    FileUtils.rm Dir.glob(File.join(mock_dir, '*.rb'))
+  end
+
+  def mock_dir
+    raise 'ActiveMocker::Config.mock_dir is set to nil!' if Config.mock_dir.nil? || Config.mock_dir.empty?
+    Config.mock_dir
+  end
+
+  def delete_mocks?
+    !Config.generate_for_mock && File.directory?(mock_dir)
+  end
+
+  def create_mock_dir
+    FileUtils::mkdir_p(mock_dir) unless File.directory?(mock_dir)
   end
 
   def mock_append_name

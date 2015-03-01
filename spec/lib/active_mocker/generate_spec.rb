@@ -45,7 +45,7 @@ describe ActiveMocker::Generate do
       ActiveMocker.configure do |config|
         config.schema_file        = ''
         config.model_dir          = ''
-        config.mock_dir           = File.join(mock_dir, 'spec/mocks')
+        config.mock_dir           = mock_dir
         config.file_reader        = ActiveMocker::StringReader.new(failing_model)
       end
       allow(ActiveMocker::Config).to receive(:logger){Logger.new(string_log)}
@@ -77,7 +77,7 @@ describe ActiveMocker::Generate do
       ActiveMocker.configure do |config|
         config.schema_file = ''
         config.model_dir   = ''
-        config.mock_dir    = File.join(mock_dir, 'spec/mocks')
+        config.mock_dir    = mock_dir
         config.file_reader = ActiveMocker::StringReader.new(failing_model)
       end
       allow(ActiveMocker::Config).to receive(:logger) { Logger.new(string_log) }
@@ -100,7 +100,7 @@ describe ActiveMocker::Generate do
       ActiveMocker.configure do |config|
         config.schema_file = File.join(test_app_dir, 'db/schema.rb')
         config.model_dir   = File.join(test_app_dir, 'app/models')
-        config.mock_dir    = File.join(test_app_dir, 'spec/mocks')
+        config.mock_dir    = mock_dir
         config.generate_for_mock = 'user'
       end
       allow(ActiveMocker::Config).to receive(:logger) { Logger.new(string_log) }
@@ -110,6 +110,25 @@ describe ActiveMocker::Generate do
       output = capture(:stdout) { described_class.new(silence: true) }
       expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
       expect(subject.send(:model_count)).to eq 1
+    end
+
+  end
+
+  describe "Will raise error if mock_dir = nil" do
+
+    let(:string_log) { StringIO.new }
+
+    before do
+      ActiveMocker.configure do |config|
+        config.schema_file = nil
+        config.model_dir   = nil
+        config.mock_dir    = nil
+        config.generate_for_mock = 'user'
+      end
+    end
+
+    it do
+      expect{ described_class.new(silence: true) }.to raise_error('ActiveMocker::Config.mock_dir is set to nil!')
     end
 
   end

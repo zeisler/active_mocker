@@ -111,15 +111,15 @@ class Generate
 
   def mock_dir
     raise 'ActiveMocker::Config.mock_dir is set to nil!' if Config.mock_dir.nil? || Config.mock_dir.empty?
-    Config.mock_dir
+    File.expand_path(Config.mock_dir)
   end
 
   def delete_mocks?
-    !Config.generate_for_mock && File.directory?(mock_dir)
+    !Config.generate_for_mock && Dir.exists?(mock_dir)
   end
 
   def create_mock_dir
-    FileUtils::mkdir_p(mock_dir) unless File.directory?(mock_dir)
+    FileUtils::mkdir_p(mock_dir) unless Dir.exists?(mock_dir)
   end
 
   def mock_append_name

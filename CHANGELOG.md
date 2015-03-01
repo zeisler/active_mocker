@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.8.2 - 2015-03-01
+### Fix
+- **Very critical issue**. In rare cases running `rake active_mocker:build` could delete you entire hard drive. When mock_dir is nil or “” it would rm_rf the entire drive. This has been fixed by raising an error if mock_dir is not set. Also, it will never delete any directories, only files that match `*_mock.rb`. Highly recommended that everyone update.
+
+## 1.8.1
+### Enhancement
+- Reduce Ruby version requirement from 2.1.5 to => 2.1
+
 ## 1.8 - 2015-02-17
 
 ### Notes

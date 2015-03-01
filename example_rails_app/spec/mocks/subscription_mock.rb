@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class SubscriptionMock < ActiveMocker::Mock::Base
-  created_with('1.7.3')
+  created_with('1.8.1')
 
   class << self
 

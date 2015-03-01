@@ -106,7 +106,7 @@ class Generate
   end
 
   def delete_mocks
-    FileUtils.rm Dir.glob(File.join(mock_dir, '*.rb'))
+    FileUtils.rm Dir.glob(File.join(mock_dir, "*_#{mock_append_name.underscore}.rb")) 
   end
 
   def mock_dir

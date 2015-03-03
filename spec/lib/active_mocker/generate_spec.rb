@@ -20,6 +20,7 @@ describe ActiveMocker::Generate do
       expect(File.exist? File.join(mock_dir, 'user_mock.rb')        ).to eq true
       expect(File.exist? File.join(mock_dir, 'micropost_mock.rb')   ).to eq true
       expect(File.exist? File.join(mock_dir, 'relationship_mock.rb')).to eq true
+      expect(File.exist? File.join(mock_dir, 'nacis_mock.rb')).to eq true
     end
 
   end

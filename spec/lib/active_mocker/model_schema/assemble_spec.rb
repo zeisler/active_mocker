@@ -29,7 +29,7 @@ describe ActiveMocker::ModelSchema::Assemble do
 
   it 'test' do
     result = described_class.new.run
-    expect(result.count).to eq 8
+    expect(result.count).to eq 9
   end
 
   it 'methods' do

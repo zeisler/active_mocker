@@ -93,7 +93,7 @@ class Generate
   end
 
   def save_mock_file(klass_str, model)
-    File.open(File.join(Config.mock_dir, "#{model.class_name.tableize.singularize}_mock.rb"), 'w').write(klass_str)
+    File.open(File.join(Config.mock_dir, "#{model.class_name.underscore}_mock.rb"), 'w').write(klass_str)
   end
 
   def generate_mock_string(model)

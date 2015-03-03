@@ -83,7 +83,7 @@ module ActiveMocker
 
       def rails_version
         begin
-          @rails_version ||= model_name.classify.constantize
+          @rails_version ||= model_name.camelize.constantize
         rescue
           raise ModelLoadError::LoadingModelInRails.new($!, model_name)
         end

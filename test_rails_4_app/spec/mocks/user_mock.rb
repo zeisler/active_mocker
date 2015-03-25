@@ -189,11 +189,11 @@ class UserMock < ActiveMocker::Mock::Base
     include ActiveMocker::Mock::Base::Scopes
 
     def find_by_name(name)
-      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'find_by_name', name)
+      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'find_by_name', Kernel.caller, name)
     end
 
     def by_name(name)
-      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'by_name', name)
+      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'by_name', Kernel.caller, name)
     end
 
   end

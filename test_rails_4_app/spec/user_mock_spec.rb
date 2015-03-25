@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../lib/post_methods'
 require_relative 'mocks/micropost_mock.rb'
 require_relative 'mocks/user_mock.rb'
 require_relative 'mocks/relationship_mock'
@@ -12,6 +13,22 @@ describe UserMock do
   before(:each){
     UserMock.clear_mock
   }
+
+  describe '::find_by_name' do
+
+    it 'will start the backtrace at the point where the method was called' do
+      begin
+        UserMock.find_by_name('name')
+      rescue ActiveMocker::Mock::NotImplementedError => e
+        expect(e.backtrace.first).to match(/active_mocker\/.*\/spec\/user_mock_spec.rb/)
+      end
+    end
+
+    it 'raise descriptive error if not stubbed' do
+      expect{ UserMock.find_by_name('name') }.to raise_error('::find_by_name for Class: UserMock. To continue stub the method.')
+    end
+
+  end
 
   describe 'has_many microposts' do
 

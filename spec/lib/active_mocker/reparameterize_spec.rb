@@ -1,197 +1,183 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 require 'active_mocker/reparameterize'
 
 describe ActiveMocker::Reparameterize do
 
-  describe '::call' do
+  describe '::method_arguments' do
 
     describe 'create parameter arguments' do
 
+      let(:subject) { described_class.method_arguments(parameters) }
+      let(:parameters) { method(:example).parameters }
+
       context 'keyreq' do
 
-        let(:parameters) { [[:keyreq, 'named_param']] }
+        def example(named_param:)
+        end
 
-        let(:call) { described_class.call(parameters) }
-
-        it {expect(call).to eq('named_param:')}
+        it { expect(subject).to eq('named_param:') }
 
       end
 
       context 'key' do
 
-        let(:parameters) { [[:key, 'named_param']] }
+        def example(named_param: nil)
+        end
 
-        let (:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('named_param: nil') }
+        it { expect(subject).to eq('named_param: nil') }
 
       end
 
       context 'req' do
 
-        let(:parameters) { [[:req, 'req_param']] }
+        def example(req_param)
+        end
 
-        let (:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('req_param') }
+        it { expect(subject).to eq('req_param') }
 
       end
 
       context 'rest' do
 
-        let(:parameters) { [[:rest, 'rest_param']] }
+        def example(*rest_param)
+        end
 
-        let (:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('*rest_param') }
+        it { expect(subject).to eq('*rest_param') }
 
       end
 
-
       context 'opt' do
 
-        let(:parameters) { [[:opt, 'opt_param']] }
+        def example(opt_param=nil)
+        end
 
-        let(:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('opt_param=nil') }
+        it { expect(subject).to eq('opt_param=nil') }
 
       end
 
       context 'req, rest' do
 
-        let(:parameters) { [[:req, 'req_param'], [:rest, 'rest_param']] }
+        def example(req_param, *rest_param)
+        end
 
-        let(:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('req_param, *rest_param') }
+        it { expect(subject).to eq('req_param, *rest_param') }
 
       end
 
       context 'req, opt' do
 
-        let(:parameters) { [[:req, 'req_param'], [:opt, 'opt_param']] }
+        def example(req_param, opt_param=nil)
+        end
 
-        let(:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('req_param, opt_param=nil') }
+        it { expect(subject).to eq('req_param, opt_param=nil') }
 
       end
 
       context 'key, keyreq' do
 
-        let(:parameters) { [[:key, 'named_param'], [:keyreq, 'named_param']] }
+        def example(named_param_req: nil, named_param:)
+        end
 
-        let(:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('named_param: nil, named_param:') }
+        it { expect(subject).to eq('named_param:, named_param_req: nil') }
 
       end
 
       context 'rep, key' do
 
-        let(:parameters) { [[:key, 'key_param'], [:req, 'req_param']] }
+        def example(req_param, key_param: nil)
+        end
 
-        let (:call) { described_class.call(parameters) }
-
-        it { expect(call).to eq('key_param: nil, req_param') }
+        it { expect(subject).to eq('req_param, key_param: nil') }
 
       end
 
     end
 
-    context 'create a parameter passable list' do
+  end
 
-      context 'keyreq' do
+  describe '::method_parameters' do
 
-        let(:parameters) { [[:keyreq, 'named_param']] }
+    subject { described_class.method_parameters(parameters) }
+    let(:parameters) { method(:example).parameters }
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'keyreq' do
 
-        it { expect(call).to eq('named_param: named_param') }
-
+      def example(named_param:)
       end
 
-      context 'key' do
+      it { expect(subject).to eq('named_param: named_param') }
 
-        let(:parameters) { [[:key, 'named_param']] }
+    end
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'key' do
 
-        it { expect(call).to eq('named_param: named_param') }
-
+      def example(named_param: nil)
       end
 
-      context 'req' do
+      it { expect(subject).to eq('named_param: named_param') }
 
-        let(:parameters) { [[:req, 'req_param']] }
+    end
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'req' do
 
-        it { expect(call).to eq('req_param') }
-
+      def example(req_param)
       end
 
-      context 'rest' do
+      it { expect(subject).to eq('req_param') }
 
-        let(:parameters) { [[:rest, 'rest_param']] }
+    end
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'rest' do
 
-        it { expect(call).to eq('rest_param') }
-
+      def example(*rest_param)
       end
 
+      it { expect(subject).to eq('rest_param') }
 
-      context 'opt' do
+    end
 
-        let(:parameters) { [[:opt, 'opt_param']] }
+    context 'opt' do
 
-        let (:call) { described_class.call(parameters, param_list: true) }
-
-        it { expect(call).to eq('opt_param') }
-
+      def example(opt_param=nil)
       end
 
-      context 'req, rest' do
+      it { expect(subject).to eq('opt_param') }
 
-        let(:parameters) { [[:req, 'req_param'], [:rest, 'rest_param']] }
+    end
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'req, rest' do
 
-        it { expect(call).to eq('req_param, rest_param') }
-
+      def example(req_param, *rest_param)
       end
 
-      context 'req, opt' do
+      it { expect(subject).to eq('req_param, rest_param') }
 
-        let(:parameters) { [[:req, 'req_param'], [:opt, 'opt_param']] }
+    end
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'req, opt' do
 
-        it { expect(call).to eq('req_param, opt_param') }
-
+      def example(req_param, opt_param=nil)
       end
 
-      context 'key, keyreq' do
+      it { expect(subject).to eq('req_param, opt_param') }
 
-        let(:parameters) { [[:key, 'key_param'], [:keyreq, 'keyreq_param']] }
+    end
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'key, keyreq' do
 
-        it { expect(call).to eq('key_param: key_param, keyreq_param: keyreq_param') }
-
+      def example(named_param_req: nil, named_param:)
       end
 
-      context 'rep, key' do
+      it { expect(subject).to eq('named_param: named_param, named_param_req: named_param_req') }
 
-        let(:parameters) { [[:key, 'key_param'], [:req, 'req_param']] }
+    end
 
-        let (:call) { described_class.call(parameters, param_list: true) }
+    context 'rep, key' do
 
-        it { expect(call).to eq('key_param: key_param, req_param') }
-
+      def example(req_param, key_param: nil)
       end
+
+      it { expect(subject).to eq('req_param, key_param: key_param') }
 
     end
 

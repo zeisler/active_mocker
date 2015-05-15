@@ -269,11 +269,11 @@ module ActiveMocker
         end
 
         def to_s
-          Reparameterize.call(arguments)
+          Reparameterize.method_arguments(arguments)
         end
 
         def passable
-          Reparameterize.call(arguments, param_list: true)
+          Reparameterize.method_parameters(arguments)
         end
 
       end

@@ -233,6 +233,14 @@ class UserMock < ActiveMocker::Mock::Base
     call_mock_method :unfollow!, Kernel.caller, other_user
   end
 
+  def key_arg_reg(key:)
+    call_mock_method :key_arg_reg, Kernel.caller, key: key
+  end
+
+  def key_arg_opt(key: nil)
+    call_mock_method :key_arg_opt, Kernel.caller, key: key
+  end
+
   def self.new_remember_token
     call_mock_method :new_remember_token, Kernel.caller
   end

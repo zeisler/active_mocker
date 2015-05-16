@@ -55,7 +55,7 @@ module ActiveMocker
 
       alias_method :stub_class_method, :mock_class_method
 
-      def call_mock_method(method, caller, *arguments)
+      def call_mock_method(method:, caller:, arguments: [])
         mock_method = mockable_class_methods[method.to_sym]
         is_implemented(mock_method, method, '::', caller)
         mock_method.arguments = arguments
@@ -68,7 +68,7 @@ module ActiveMocker
 
     include InstanceAndClassMethods
 
-    def call_mock_method(method, caller, *arguments)
+    def call_mock_method(method:, caller:, arguments: [])
       mock_method = mockable_instance_methods[method.to_sym]
       mock_method = self.class.send(:mockable_instance_methods)[method.to_sym] if mock_method.nil?
       is_implemented(mock_method, method, '#', caller)

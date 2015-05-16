@@ -13,7 +13,7 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def self.buz
-          call_mock_method(__method__, caller, [])
+          call_mock_method(method: __method__, caller: caller, arguments: [])
         end
 
         def pop
@@ -41,11 +41,11 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__, caller)
+          call_mock_method(method: __method__, caller: caller)
         end
 
         def self.baz
-          call_mock_method(__method__, caller)
+          call_mock_method(method: __method__, caller: caller)
         end
 
         def self.pop
@@ -125,7 +125,7 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__, caller)
+          call_mock_method(method: __method__, caller: caller)
         end
 
         def pop
@@ -159,11 +159,11 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def zip
-          call_mock_method(__method__, caller)
+          call_mock_method(method: __method__, caller: caller)
         end
 
         def self.wiz
-          call_mock_method(__method__, caller)
+          call_mock_method(method: __method__, caller: caller)
         end
 
       end
@@ -187,7 +187,7 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def foo(stuff, other = nil)
-          call_mock_method(__method__, caller, stuff, other)
+          call_mock_method(method: __method__, caller: caller, arguments: [stuff, other])
         end
 
         def pop
@@ -196,7 +196,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
 
           def self.fiz(buz)
-            call_mock_method(__method__, caller, buz)
+            call_mock_method(method: __method__, caller: caller, arguments: [buz])
         end
 
       end
@@ -294,11 +294,11 @@ describe ActiveMocker::Mock::MockAbilities do
         include ActiveMocker::Mock::MockAbilities
 
         def buz
-          call_mock_method(__method__, caller, [])
+          call_mock_method(method: __method__, caller: caller, arguments: [])
         end
 
         def self.pop
-          call_mock_method(__method__, caller, [],)
+          call_mock_method(method: __method__, caller: caller, arguments: [],)
         end
 
       end

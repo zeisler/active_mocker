@@ -75,7 +75,7 @@ class ChildModelMock < UserMock
     include UserMock::Scopes
 
     def by_credits(credits)
-      ActiveMocker::LoadedMocks.find('ChildModel').send(:call_mock_method, 'by_credits', Kernel.caller, credits)
+      ActiveMocker::LoadedMocks.find('ChildModel').send(:call_mock_method, method: 'by_credits', caller: Kernel.caller, arguments: [credits])
     end
 
   end
@@ -100,7 +100,7 @@ class ChildModelMock < UserMock
 
 
   def child_method
-    call_mock_method :child_method, Kernel.caller
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
   end
 
 end

@@ -152,7 +152,7 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
 <% scope_methods.each do |method| -%>
     def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
-      ActiveMocker::LoadedMocks.find('<%= class_name %>').send(:call_mock_method, '<%= method.name %>', Kernel.caller, <%= method.arguments.passable %>)
+      ActiveMocker::LoadedMocks.find('<%= class_name %>').send(:call_mock_method, method: '<%= method.name %>', caller: Kernel.caller, arguments: [<%= method.arguments.passable %>])
     end
 
 <% end -%>
@@ -178,12 +178,12 @@ class <%= class_name + @mock_append_name %> < <%= parent_class %>
 
 <% instance_methods.each do |method| %>
   def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
-    call_mock_method :<%= method.name %>, Kernel.caller<%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [<%= method.arguments.passable %>])
   end
 <% end -%>
 <% class_methods.each do |method| %>
   def self.<%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
-    call_mock_method :<%= method.name %>, Kernel.caller<%= ', ' unless method.arguments.empty? %><%= method.arguments.passable %>
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [<%= method.arguments.passable %>])
   end
 <% end -%>
 

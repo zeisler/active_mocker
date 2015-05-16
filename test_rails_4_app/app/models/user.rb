@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_one :account
   scope :find_by_name, -> (name) { where(name: name) }
   scope :by_name, -> (name) { where(name: name) }
+  scope :no_arg_scope, -> { where(name: 'name') }
 
   def User.new_remember_token
     SecureRandom.urlsafe_base64

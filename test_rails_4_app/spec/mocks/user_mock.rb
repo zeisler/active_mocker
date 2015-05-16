@@ -189,11 +189,15 @@ class UserMock < ActiveMocker::Mock::Base
     include ActiveMocker::Mock::Base::Scopes
 
     def find_by_name(name)
-      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'find_by_name', Kernel.caller, name)
+      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, method: 'find_by_name', caller: Kernel.caller, arguments: [name])
     end
 
     def by_name(name)
-      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, 'by_name', Kernel.caller, name)
+      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, method: 'by_name', caller: Kernel.caller, arguments: [name])
+    end
+
+    def no_arg_scope
+      ActiveMocker::LoadedMocks.find('User').send(:call_mock_method, method: 'no_arg_scope', caller: Kernel.caller, arguments: [])
     end
 
   end
@@ -218,35 +222,35 @@ class UserMock < ActiveMocker::Mock::Base
 
 
   def feed
-    call_mock_method :feed, Kernel.caller
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
   end
 
   def following?(other_user)
-    call_mock_method :following?, Kernel.caller, other_user
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [other_user])
   end
 
   def follow!(other_user)
-    call_mock_method :follow!, Kernel.caller, other_user
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [other_user])
   end
 
   def unfollow!(other_user)
-    call_mock_method :unfollow!, Kernel.caller, other_user
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [other_user])
   end
 
   def key_arg_reg(key:)
-    call_mock_method :key_arg_reg, Kernel.caller, key: key
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [key: key])
   end
 
   def key_arg_opt(key: nil)
-    call_mock_method :key_arg_opt, Kernel.caller, key: key
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [key: key])
   end
 
   def self.new_remember_token
-    call_mock_method :new_remember_token, Kernel.caller
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
   end
 
   def self.digest(token)
-    call_mock_method :digest, Kernel.caller, token
+    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [token])
   end
 
 end

@@ -36,6 +36,7 @@ describe ActiveMocker::ModelSchema::Assemble do
     expect(run[-2]._methods.map { |r| r.to_hash(all_values_as_string: true) })
         .to eq([{ :name => "find_by_name", :arguments => "[[:req, :name]]", :type => "scope" },
                 { :name => "by_name", :arguments => "[[:req, :name]]", :type => "scope" },
+                { :name => "no_arg_scope", :arguments => "[]", :type => "scope" },
                 { :name => "feed", :arguments => "[]", :type => "instance" },
                 { :name => "following?", :arguments => "[[:req, :other_user]]", :type => "instance" },
                 { :name => "follow!", :arguments => "[[:req, :other_user]]", :type => "instance" },

@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'active_mocker'
 require 'spec/unit_logger'
 require 'active_mocker/string_reader'
+require 'active_mocker/output_capture'
 
 describe ActiveMocker::Generate do
 
@@ -12,7 +13,7 @@ describe ActiveMocker::Generate do
   describe 'rake active_mocker:build' do
 
     before(:each) do
-      expect(system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build')).to eq true
+      expect(system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build &> /dev/null ')).to eq true
     end
 
     it 'generates all mocks files' do
@@ -55,7 +56,7 @@ describe ActiveMocker::Generate do
 
     it do
       allow_any_instance_of(ActiveMocker::ModelSchema::Assemble).to receive(:models){['model']}
-      output = capture(:stdout) {described_class.new(silence: true)}
+      output = ActiveMocker::OutputCapture.capture(:stdout) {described_class.new(silence: true)}
       expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
       expect(string_log.string).to match /Error loading Model: model/
       expect(string_log.string).to match /uninitialized constant/
@@ -87,7 +88,7 @@ describe ActiveMocker::Generate do
 
     it do
       allow_any_instance_of(ActiveMocker::ModelSchema::Assemble).to receive(:models) { ['model'] }
-      output = capture(:stdout) { described_class.new(silence: true) }
+      output = ActiveMocker::OutputCapture.capture(:stdout) { described_class.new(silence: true) }
       expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
       expect(string_log.string).to match /HasNoParentClass/
     end
@@ -109,9 +110,8 @@ describe ActiveMocker::Generate do
     end
 
     it 'it will not render mock because of rails dependence, but will limit the model count to 1' do
-      output = capture(:stdout) { described_class.new(silence: true) }
+      output = ActiveMocker::OutputCapture.capture(:stdout) { described_class.new(silence: true) }
       expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
-      expect(subject.send(:model_count)).to eq 1
     end
 
   end

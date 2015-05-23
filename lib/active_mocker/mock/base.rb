@@ -107,8 +107,8 @@ class Base
       @@built_types[type] ||= Virtus::Attribute.build(type)
     end
 
-    def classes(klass)
-      ActiveMocker::LoadedMocks.find(klass)
+    def classes(klass)``
+      ActiveMocker::LoadedMocks.scoped_set(self.try(:_uniq_key_for_record_context)).find(klass)
     end
 
     def new_relation(collection)

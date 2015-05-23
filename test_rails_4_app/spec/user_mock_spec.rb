@@ -278,7 +278,6 @@ describe UserMock do
       expect(person.persisted?).to eq true
     end
 
-
     after(:each) do
       UserMock.delete_all
     end

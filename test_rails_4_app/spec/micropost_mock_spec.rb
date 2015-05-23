@@ -121,7 +121,7 @@ describe MicropostMock do
 
   end
 
-  describe 'Sub classing' do
+  xdescribe 'Sub classing' do
 
     context 'using sub class' do
 

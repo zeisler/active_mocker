@@ -9,7 +9,6 @@ class Base
 
   def self.inherited(subclass)
     return ActiveMocker::LoadedMocks.send(:add, subclass) if subclass.superclass == Base
-    ActiveMocker::LoadedMocks.send(:add_subclass, subclass)
   end
 
   class << self

@@ -140,15 +140,6 @@ describe UserMock do
 
   end
 
-  describe 'ActiveMocker::LoadedMocks' do
-
-    it 'will be added when sub classed' do
-      expect(ActiveMocker::LoadedMocks.all.keys.include?('UserMock')).to eq true
-    end
-
-  end
-
-
   describe '::column_names' do
 
     it 'returns an array of column names found from the schema.rb file' do

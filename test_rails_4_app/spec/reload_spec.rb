@@ -14,7 +14,7 @@ $:.unshift File.expand_path('../../', __FILE__)
 APP_ROOT = File.expand_path('../../', __FILE__) unless defined? APP_ROOT
 load 'mocks/user_mock.rb'
 
-describe 'Should change state of mock'do
+xdescribe 'Should change state of mock'do
 
     before(:each) do
       UserMock.create
@@ -35,10 +35,6 @@ describe 'should have fresh mock' do
 
   it 'should have record count of zero' do
     expect(UserMock.count).to eq 0
-  end
-
-  it 'should raise error when calling digest' do
-    expect{UserMock.digest(nil)}.to raise_error(ActiveMocker::Mock::NotImplementedError, '::digest for Class: UserMock. To continue stub the method.')
   end
 
 end

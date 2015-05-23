@@ -18,13 +18,7 @@ module ActiveMocker
         mocks
       end
 
-      # Calls clear_all for all mocks, which deletes all saved records and removes mock_class/instance_method.
-      #   It will also clear any sub classed mocks from the list
-      #   Method will be deprecated in v2 because mocking is deprecated
-      def clear_all
-        all_mocks.each { |m| m.clear_mock }
-        clear_subclasses
-      end
+      alias_method :clear_all, :delete_all
 
       # Calls delete_all for all mocks, which deletes all saved records.
       #
@@ -67,21 +61,21 @@ module ActiveMocker
         mocks.keys + subclasses.keys
       end
 
-      def subclasses
-        @subclasses ||= {}
+      def mocks
+        @mocks ||= {}
       end
 
-      def clear_subclasses
-        subclasses.clear
+      def scoped_set_hash
+        @scoped_set ||= {}
       end
 
       def internal_clear
-        clear_subclasses
         mocks.clear
+        scoped_set_hash.clear
       end
 
       def all_mocks
-        mocks.values + subclasses.values
+        (mocks.values + scoped_set_hash.try { values.try { compact.map(&:mocks) }.flatten }).compact
       end
       
     end

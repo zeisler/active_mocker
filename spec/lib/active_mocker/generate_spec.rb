@@ -13,7 +13,7 @@ describe ActiveMocker::Generate do
   describe 'rake active_mocker:build' do
 
     before(:each) do
-      expect(system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build &> /dev/null ')).to eq true
+      expect(system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build 2>&1 >/dev/null')).to eq true
     end
 
     it 'generates all mocks files' do

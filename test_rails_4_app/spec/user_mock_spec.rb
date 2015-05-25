@@ -20,7 +20,7 @@ describe UserMock do
       begin
         UserMock.find_by_name('name')
       rescue ActiveMocker::Mock::NotImplementedError => e
-        expect(e.backtrace.first).to match(/active_mocker\/.*\/spec\/user_mock_spec.rb/)
+        expect(e.backtrace.first).to match(/\/.*\/spec\/user_mock_spec.rb/)
       end
     end
 

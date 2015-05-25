@@ -6,7 +6,7 @@ require 'active_support/core_ext/hash'
 describe ActiveMocker::LoadedMocks do
 
   before(:each) do
-
+    ActiveMocker::LoadedMocks.disable_global_state = true
     class MockClass
 
       def self.mocked_class

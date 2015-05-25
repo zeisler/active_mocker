@@ -1,11 +1,8 @@
 module ActiveMocker
   class LoadedMocks
     class << self
-      attr_writer :disable_global_state
+      attr_accessor :disable_global_state
 
-      def disable_global_state
-        @@disable_global_state ||= true
-      end
       # Input ActiveRecord Model Name as String or Symbol returns ActiveMock equivalent class.
       #   +find('User')+ => UserMock
       def find(klass)

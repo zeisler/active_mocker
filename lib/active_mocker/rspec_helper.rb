@@ -1,6 +1,7 @@
 require 'active_mocker/loaded_mocks'
 require 'active_mocker/rspec'
 
+ActiveMocker::LoadedMocks.disable_global_state = true
 
 RSpec.configure do |config|
 

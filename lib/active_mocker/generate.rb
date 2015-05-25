@@ -85,7 +85,7 @@ class Generate
   def log_failed_mock(exception, model)
     Config.logger.debug $!.backtrace
     Config.logger.debug exception
-    Config.logger.info "Failed to load #{model.class_name} model."
+    Config.logger.info "Failed to load #{model.class_name} model." if model.respond_to? :class_name
   end
 
   def log_save(model)

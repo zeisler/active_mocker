@@ -21,3 +21,4 @@ test_rails_4_app/db/development.sqlite3
 test_rails_4_app/log/*
 test_rails_4_app/.idea/*
 example_rails_app/.idea/*
+.idea/*

@@ -6,28 +6,13 @@ require 'active_support/core_ext/hash'
 describe ActiveMocker::LoadedMocks do
 
   before(:each) do
-    ActiveMocker::LoadedMocks.disable_global_state = true
     class MockClass
 
       def self.mocked_class
         'MockClass'
       end
 
-      def self.clear_mock
-      end
-
       def self.delete_all
-      end
-
-      def self.reload
-      end
-
-      def self.inspect
-        if self.respond_to? :_uniq_key_for_record_context
-          "#{mocked_class}#{_uniq_key_for_record_context.camelcase}"
-        else
-          super
-        end
       end
 
       def self.to_s
@@ -43,13 +28,14 @@ describe ActiveMocker::LoadedMocks do
       end
 
     end
+    ActiveMocker::LoadedMocks
   end
 
   after(:each) do
-    described_class.send(:internal_clear)
+    described_class.send(:mocks_store).send(:clear)
   end
 
-  describe '::class_name_to_mock' do
+  describe '::class_name_to_mock deprecated removed in 2.1' do
 
     subject { described_class.class_name_to_mock }
 
@@ -60,29 +46,24 @@ describe ActiveMocker::LoadedMocks do
 
   end
 
-  xdescribe '::clear_all' do
+  describe '::all deprecated removed in 2.1' do
 
-    before do
-      described_class.send(:add, MockClass)
-      described_class.send(:add_subclass, MockClass2)
+    subject { described_class.all }
+
+    it 'returns key of mocked_class and a constant of the mock class' do
+      described_class.send :add, MockClass
+      expect(subject.to_hash).to eq({ 'MockClass' => MockClass })
     end
 
-    it 'will call clear_mock on each loaded mock' do
-      expect(MockClass).to receive(:clear_mock)
-      expect(MockClass2).to receive(:clear_mock)
-      described_class.clear_all
-    end
+  end
 
-    it 'will empty the sub classes' do
-      described_class.clear_all
-      expect(ActiveMocker::LoadedMocks.send(:subclasses).empty?).to eq true
-    end
+  describe '::mocks' do
 
-    it 'will call clear_mock on scoped_set' do
-      described_class.scoped_set('ab3a9z').mocks.each do |mock|
-        expect(mock).to receive(:clear_mock)
-      end
-      described_class.clear_all
+    subject { described_class.mocks }
+
+    it 'returns key of mocked_class and a constant of the mock class' do
+      described_class.send :add, MockClass
+      expect(subject.to_hash).to eq({ 'MockClass' => MockClass })
     end
 
   end
@@ -100,13 +81,6 @@ describe ActiveMocker::LoadedMocks do
       described_class.delete_all
     end
 
-    it 'will call delete_all on scoped_set' do
-      described_class.scoped_set('ab3aarsta2').mocks.each do |mock|
-        expect(mock).to receive(:delete_all)
-      end
-      described_class.delete_all
-    end
-
   end
 
   describe '::all' do
@@ -119,86 +93,73 @@ describe ActiveMocker::LoadedMocks do
 
   end
 
-  describe '::scoped_set' do
+  describe '::find' do
 
-    it 'Given a unique hash key it creates a unique set of mocks from the mocks that are loaded' do
+    before do
       described_class.send :add, MockClass
       described_class.send :add, MockClass2
-      expect(described_class.scoped_set('ab3a9z').to_h.transform_values(&:to_s)).to eq({ "MockClass" => "MockClassAb3a9z", "MockClass2" => "MockClass2Ab3a9z" })
-      expect(described_class.scoped_set('ab3a9z').to_h).to eq({
-                                                                  "MockClass"  => described_class.scoped_set('ab3a9z').find(:MockClass),
-                                                                  "MockClass2" => described_class.scoped_set('ab3a9z').find(:MockClass2)
-                                                              })
     end
 
-    it 'will return default set if key is nil' do
-      described_class.send :add, MockClass
-      described_class.send :add, MockClass2
-      expect(described_class.scoped_set(nil).to_h).to eq({ "MockClass" => MockClass, "MockClass2" => MockClass2 })
+    it 'returns mocks by string' do
+      expect(described_class.find('MockClass2')).to eq MockClass2
     end
 
-    describe 'Returned Object' do
+    it 'returns mocks by symbol' do
+      expect(described_class.find(:MockClass2)).to eq MockClass2
+    end
 
-      subject { described_class.scoped_set('ast90asTQ') }
+    it 'returns mocks by CONST' do
+      expect(described_class.find(MockClass2)).to eq MockClass2
+    end
+
+  end
+
+  describe '::all' do
+
+    describe '#except' do
 
       before do
         described_class.send :add, MockClass
         described_class.send :add, MockClass2
-        subject
       end
 
-      after do
-        described_class.deallocate_scoped_set('ast90asTQ')
-      end
-
-      describe '#except.delete_all' do
-
-        it 'takes symbol of the original model name' do
-          expect(subject.slice(MockClass2).mocks.first).to receive(:delete_all)
-          expect(MockClass2).to_not receive(:delete_all)
-          expect(subject.slice(MockClass).mocks.first).to_not receive(:delete_all)
-          subject.except(:MockClass).delete_all
-        end
-
-        it 'takes the original class' do
-          expect(subject.slice(MockClass2).mocks.first).to receive(:delete_all)
-          expect(MockClass2).to_not receive(:delete_all)
-          expect(subject.slice(MockClass).mocks.first).to_not receive(:delete_all)
-          subject.except(MockClass).delete_all
-        end
-
-        it 'takes the scoped mock class' do
-          expect(MockClass2).to receive(:delete_all)
-          expect(MockClass).to_not receive(:delete_all)
-          subject.except(subject.slice(MockClass).mocks.first).delete_all
-        end
-
-      end
-
-      it '#delete_all' do
-        expect(MockClass2).to receive(:delete_all)
+      it 'returns mocks by string' do
         expect(MockClass).to receive(:delete_all)
-        subject.delete_all
+        described_class.all.except('MockClass2').delete_all
       end
 
-      describe '#find' do
+      it 'returns mocks by symbol' do
+        expect(MockClass).to receive(:delete_all)
+        described_class.all.except(:MockClass2).delete_all
+      end
 
-        it 'takes symbol of the original model name and returns the mock class' do
-          expect(subject.find(:MockClass)).to eq(subject.slice(MockClass).mocks.first)
-        end
+      it 'returns mocks by CONST' do
+        expect(MockClass).to receive(:delete_all)
+        described_class.all.except(MockClass2).delete_all
+      end
 
-        it 'takes the original class and returns the mock class' do
-          expect(subject.find(MockClass)).to eq(subject.slice(MockClass).mocks.first)
-        end
+    end
 
-        it 'takes the scoped mock class and returns the mock class' do
-          expect(subject.find(subject.slice(MockClass2).mocks.first)).to eq(subject.slice(MockClass2).mocks.first)
-        end
+    describe '#slice' do
 
-        it 'with a blank scope' do
-          expect(described_class.scoped_set(nil).find(:MockClass)).to eq MockClass
-        end
+      before do
+        described_class.send :add, MockClass
+        described_class.send :add, MockClass2
+      end
 
+      it 'returns mocks by string' do
+        expect(MockClass).to receive(:delete_all)
+        described_class.all.slice('MockClass').delete_all
+      end
+
+      it 'returns mocks by symbol' do
+        expect(MockClass2).to receive(:delete_all)
+        described_class.all.slice(:MockClass2).delete_all
+      end
+
+      it 'returns mocks by CONST' do
+        expect(MockClass2).to receive(:delete_all)
+        described_class.all.slice(MockClass2).delete_all
       end
 
     end

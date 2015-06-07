@@ -32,12 +32,14 @@ module Mock
     def build(options={}, &block)
       new_record = relation_class.new(init_options.merge!(options), &block)
 
+      # @private
       def new_record._belongs_to(collection)
         @belongs_to_collection = collection
       end
 
       new_record._belongs_to(self)
 
+      # @private
       def new_record.save
         @belongs_to_collection << self
         super

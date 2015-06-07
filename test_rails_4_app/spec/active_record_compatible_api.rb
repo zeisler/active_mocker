@@ -246,7 +246,7 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
      user_class.create!(email: '2', name: 'fred'),
      user_class.create!(email: '3', name: 'Sam')]
     user_class.update_all(name: 'John')
-    expect(user_class.all.map { |a| a.name }).to eq(['John', 'John', 'John'])
+    expect(user_class.all.map { |a| a.name }).to eq(%w(John John John))
   end
 
   describe '::update' do
@@ -264,7 +264,7 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
       users = {user_records.first.id => {name: 'Fred'}, user_records.last.id => { name: 'Dave'}}
       user_class.update(users.keys, users.values)
       user_records.map(&:reload)
-      expect(user_records.map(&:name)).to eq ['Fred', 'Dave']
+      expect(user_records.map(&:name)).to eq %w(Fred Dave)
     end
 
   end
@@ -314,7 +314,7 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
       context 'can call query methods' do
 
         it 'where' do
-          expect(user_class.none.where(name: "No one")).to eq []
+          expect(user_class.none.where(name: 'No one')).to eq []
         end
 
         it 'count' do
@@ -445,13 +445,13 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
     it 'where.update_all' do
       [user_class.create!(email: '1', name: 'fred'), user_class.create!(email: '2', name: 'fred'), user_class.create!(email: '3', name: 'Sam')]
       user_class.where(name: 'fred').update_all(name: 'John')
-      expect(user_class.all.map { |a| a.name }).to eq(['John', 'John', 'Sam'])
+      expect(user_class.all.map { |a| a.name }).to eq(%w(John John Sam))
     end
 
     it 'all.update_all' do
       [user_class.create!(email: '1', name: 'fred'), user_class.create!(email: '2', name: 'fred'), user_class.create!(email: '3', name: 'Sam')]
       user_class.all.update_all(name: 'John')
-      expect(user_class.all.map { |a| a.name }).to eq(['John', 'John', 'John'])
+      expect(user_class.all.map { |a| a.name }).to eq(%w(John John John))
     end
 
   end
@@ -460,7 +460,7 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
     it 'default value of empty string' do
       user = user_class.new
-      expect(user.email).to eq ""
+      expect(user.email).to eq ''
     end
 
     it 'default value of false' do
@@ -540,7 +540,7 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
   context 'limit(10).delete_all' do
 
-    it "If a limit scope is supplied, delete_all raises an ActiveRecord error:" do
+    it 'If a limit scope is supplied, delete_all raises an ActiveRecord error:' do
       expect{user_class.limit(10).delete_all}.to raise_error(/delete_all doesn't support limit/)
     end
 

@@ -15,4 +15,8 @@ RSpec.configure do |config|
     ActiveMocker::LoadedMocks.delete_all
   end
 
+  config.before(:all, active_mocker: true) do
+    ActiveMocker::LoadedMocks.delete_all
+  end
+
 end

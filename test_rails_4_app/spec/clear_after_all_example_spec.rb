@@ -17,7 +17,6 @@ end
 describe '2) State Not Shared between outer examples', active_mocker: true do
   context 'state in one example will not leak to another' do
 
-
     it 'count records' do
       expect(MicropostMock.all.to_a).to eq([])
       expect(MicropostMock.count).to eq 0

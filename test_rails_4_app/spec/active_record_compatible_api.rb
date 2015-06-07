@@ -232,20 +232,6 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
     end
 
-    xcontext 'coerce' do
-
-      it 'string to integer' do
-         record = micropost_class.create!(up_votes: 1)
-         expect(micropost_class.where(up_votes: '1')).to eq [record]
-      end
-
-      it 'symbol to string' do
-        record = user_class.create!(email: 'MyEmail')
-        expect(user_class.where(email: :MyEmail)).to eq [record]
-      end
-
-    end
-
   end
 
   it '::where.not' do

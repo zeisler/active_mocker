@@ -12,6 +12,8 @@ Examples from a real apps
 		Finished in 1 seconds
 		374 examples, 0 failures
 
+## Around the web
+["Mocking ActiveRecord with ActiveMocker" by Envy](http://madewithenvy.com/ecosystem/articles/2015/mocking-activerecord-with-activemocker/)
 
 ------------------------------------------
 

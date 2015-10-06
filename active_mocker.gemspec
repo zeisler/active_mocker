@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.1') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.2')
     spec.add_runtime_dependency "parser", '~> 2.1'
   end
+  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.2')
     spec.add_runtime_dependency "parser", '~> 2.2'
   end
   spec.add_runtime_dependency "unparser", '~> 0.1'

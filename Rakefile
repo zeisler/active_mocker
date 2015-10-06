@@ -16,7 +16,7 @@ task :specs do
     end
   end
   sh "bundle exec bundle install"
-  sh "cd test_rails_4_app && bundle exec appraisal bundle"
+  sh "cd test_rails_4_app && bundle install && bundle exec appraisal bundle"
   sh "bundle exec rspec --seed #{random_seed}"
   sh "cd test_rails_4_app &&
         bundle exec appraisal rake active_mocker:build &&

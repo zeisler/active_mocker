@@ -549,7 +549,7 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
   describe '::find_by!' do
 
     it 'will raise exception if not found' do
-      expect { user_class.find_by!(name: 'Matz') }.to raise_error
+      expect { user_class.find_by!(name: 'Matz') }.to raise_error(/Couldn't find User/)
     end
 
     it 'will find one record by conditions' do
@@ -558,7 +558,7 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
     end
 
     it 'will raise error if no record found' do
-      expect{user_class.find_by!(name: 'noFound')}.to raise_error
+      expect{user_class.find_by!(name: 'noFound')}.to raise_error(/Couldn't find User/)
     end
 
   end

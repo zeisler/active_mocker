@@ -1,0 +1,77 @@
+# _assocations.erb
+
+<%= '# belongs_to' unless belongs_to.empty? -%>
+<% belongs_to.each do |meth| -%>
+  def <%= meth.name %>
+    <% association = relation_find(:name, meth.name).first -%>
+    read_association(:<%= meth.name %>) || write_association(:<%= meth.name %>, classes('<%= association.class_name %>').try{ |k| k.find_by(id: <%= association.foreign_key %>)})
+  end
+  def <%= meth.name %>=(val)
+    write_association(:<%= meth.name %>, val)
+    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :<%= meth.foreign_key %>).item
+  end
+
+  def build_<%= meth.name %>(attributes={}, &block)
+  <% association = relation_find(:name, meth.name).first -%>
+  <% if association -%>
+    association = classes('<%= association.class_name %>').try(:new, attributes, &block)
+    write_association(:<%= meth.name %>, association) unless association.nil?
+  <% end -%>
+  end
+
+  def create_<%= meth.name %>(attributes={}, &block)
+  <% association = relation_find(:name, meth.name).first -%>
+  <% if association -%>
+    association = classes('<%= association.class_name %>').try(:create,attributes, &block)
+    write_association(:<%= meth.name %>, association) unless association.nil?
+  <% end -%>
+  end
+  alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>
+<% end -%>
+<%= '# has_one' unless has_one.empty? -%>
+<% has_one.each do |meth| -%>
+  def <%= meth.name %>
+    read_association(:<%= meth.name %>)
+  end
+
+  def <%= meth.name %>=(val)
+    write_association(:<%= meth.name %>, val)
+    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: '<%= meth.foreign_key %>').item
+  end
+
+  def build_<%= meth.name %>(attributes={}, &block)
+  <% association = relation_find(:name, meth.name).first -%>
+  <% if association -%>
+    write_association(:<%= meth.name %>, classes('<%= association.class_name %>').new(attributes, &block)) if classes('<%= association.class_name %>')
+  <% end -%>
+  end
+
+  def create_<%= meth.name %>(attributes={}, &block)
+  <% association = relation_find(:name, meth.name).first -%>
+  <% if association -%>
+    write_association(:<%= meth.name %>, classes('<%= association.class_name %>').new(attributes, &block)) if classes('<%= association.class_name %>')
+  <% end -%>
+  end
+  alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>
+<% end -%>
+
+<%= '# has_many' unless has_many.empty? -%>
+<% has_many.each do |meth| -%>
+  def <%= meth.name %>
+    read_association(:<%= meth.name %>, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>') })
+  end
+
+  def <%= meth.name %>=(val)
+    write_association(:<%= meth.name %>, ActiveMocker::Mock::HasMany.new(val, foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>'))
+  end
+<% end -%>
+<%= '# has_and_belongs_to_many' unless has_and_belongs_to_many.empty? -%>
+<% has_and_belongs_to_many.each do |meth| -%>
+  def <%= meth.name %>
+    read_association(:<%= meth.name %>, ->{ ActiveMocker::Mock::HasAndBelongsToMany.new([]) })
+  end
+
+  def <%= meth.name %>=(val)
+    write_association(:<%= meth.name %>, ActiveMocker::Mock::HasAndBelongsToMany.new(val))
+  end
+<% end -%>

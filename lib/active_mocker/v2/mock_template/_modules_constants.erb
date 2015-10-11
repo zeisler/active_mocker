@@ -1,0 +1,10 @@
+# _modules_constants.erb
+<% constants.each do |constant| -%>
+  <%= constant.first %> = <%= constant.last.inspect %>
+<% end -%>
+<% modules[:included].each do |constant| -%>
+  prepend <%= constant %>
+<% end -%>
+<% modules[:extended].each do |constant| -%>
+  extend  <%= constant %>
+<% end -%>

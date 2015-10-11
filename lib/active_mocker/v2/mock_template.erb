@@ -1,0 +1,10 @@
+require 'active_mocker/mock'
+
+class <%= class_name + mock_append_name %> < <%= parent_class %>
+  created_with('<%= ActiveMocker::VERSION %>')
+<%= partials.modules_constants %>
+<%= partials.class_methods %>
+<%= partials.attributes %>
+<%= partials.scopes %>
+<%= partials.defined_methods %>
+end

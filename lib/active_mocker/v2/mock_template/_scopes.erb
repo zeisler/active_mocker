@@ -1,0 +1,24 @@
+# _scopes.erb
+  module Scopes
+    include <%= parent_class %>::Scopes
+
+  <% scope_methods.each do |method| -%>
+    def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.empty? %>
+      ActiveMocker::LoadedMocks.find('<%= class_name %>').send(:call_mock_method, method: '<%= method.name %>', caller: Kernel.caller, arguments: [<%= method.arguments.passable %>])
+    end
+  <% end -%>
+  end
+
+  extend Scopes
+
+  class ScopeRelation < ActiveMocker::Mock::Association
+    include <%= class_name + mock_append_name %>::Scopes
+  end
+
+  private
+
+  def self.new_relation(collection)
+    <%= class_name + mock_append_name %>::ScopeRelation.new(collection)
+  end
+
+  public

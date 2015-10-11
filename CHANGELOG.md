@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.8.4 - 2015-10-06
+### Fix
+- Calling scoped method that has not been stubbed raises incorrect error. https://github.com/zeisler/active_mocker/issues/22
+- Not closing file stream while writing mocks. https://github.com/zeisler/active_mocker/pull/29
+
 ## 1.8.3 - 2015-03-03
 ### Fix
 - When AR model ended in 's' it would result in failing to create the mock file.

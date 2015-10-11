@@ -3,16 +3,12 @@
 source "https://rubygems.org"
 
 gem "rails", "~>4.1"
-gem "ruby-prof"
 gem "appraisal"
 
 group :development, :test do
   gem "sqlite3", "~>1.3"
-  gem "rspec-rails", "3"
-   gem "active_mocker", :path => "../../"
+  gem "rspec-rails", "3.3"
+  gem "rspec"
+  gem "active_mocker", :path => "../../"
   gem "omniauth-identity"
-end
-
-group :test do
-  gem "fuubar", "2.0.0"
 end

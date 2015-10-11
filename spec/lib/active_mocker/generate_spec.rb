@@ -10,15 +10,13 @@ describe ActiveMocker::Generate do
   let(:mock_dir){ File.join(test_app_dir, 'spec/mocks')}
   let(:test_app_dir){ File.join(app_root, 'test_rails_4_app')}
 
-  after(:all) do
-    system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build 2>&1 >/dev/null')
-  end
-
   describe 'rake active_mocker:build' do
 
+    before(:each) do
+      expect(system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build')).to eq true
+    end
+
     it 'generates all mocks files' do
-      FileUtils.rm_rf mock_dir
-      system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build 2>&1 >/dev/null')
       expect(File.exist? mock_dir                                   ).to eq true
       expect(File.exist? File.join(mock_dir, 'user_mock.rb')        ).to eq true
       expect(File.exist? File.join(mock_dir, 'micropost_mock.rb')   ).to eq true

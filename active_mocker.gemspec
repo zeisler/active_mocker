@@ -23,13 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "virtus", '~> 1.0'
   spec.add_runtime_dependency "ruby-progressbar", '~> 1.4'
 
-  # TODO remove for version 2.0. Should only use parser 2.2, this does not do what it looks like.
-  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.1') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.2')
-    spec.add_runtime_dependency "parser", '~> 2.1'
-  end
-  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.2')
-    spec.add_runtime_dependency "parser", '~> 2.2'
-  end
+  spec.add_runtime_dependency "parser", '~> 2.2'
   spec.add_runtime_dependency "unparser", '~> 0.1'
   spec.add_runtime_dependency "attr_permit", '~> 0.0'
   spec.add_runtime_dependency "rake", "~> 10.0"

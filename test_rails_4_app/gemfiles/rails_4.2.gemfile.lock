@@ -4,7 +4,7 @@ PATH
     active_mocker (2.0.0.pre.alpha.0)
       activesupport (~> 4.0)
       attr_permit (~> 0.0)
-      parser (~> 2.1)
+      parser (~> 2.2)
       rake (~> 10.0)
       ruby-progressbar (~> 1.4)
       unparser (~> 0.1)

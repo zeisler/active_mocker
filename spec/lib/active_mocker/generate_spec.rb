@@ -10,7 +10,7 @@ describe ActiveMocker::Generate do
   let(:mock_dir){ File.join(test_app_dir, 'spec/mocks')}
   let(:test_app_dir){ File.join(app_root, 'test_rails_4_app')}
 
-  describe 'rake active_mocker:build' do
+  describe 'rake active_mocker:build', skip_travis:true do
 
     before(:each) do
       expect(system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build')).to eq true

@@ -1,0 +1,33 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    apt (2.8.2)
+    build-essential (2.2.4)
+    chef_handler (1.2.0)
+    dmg (2.2.2)
+    git (4.3.4)
+      build-essential (>= 0.0.0)
+      dmg (>= 0.0.0)
+      windows (>= 0.0.0)
+      yum-epel (>= 0.0.0)
+    sqlite (1.1.2)
+    windows (1.38.2)
+      chef_handler (>= 0.0.0)
+    yum (3.8.1)
+    yum-epel (0.6.3)
+      yum (~> 3.2)
+
+GIT
+  remote: https://github.com/fnichol/chef-rvm
+  ref: v0.9.0
+  sha: 4a408e5d6c5a52c37388a799c516430263339849
+  specs:
+    rvm (0.9.0)
+
+DEPENDENCIES
+  apt (>= 0)
+  build-essential (>= 0)
+  git (>= 0)
+  rvm (>= 0)
+  sqlite (>= 0)
+

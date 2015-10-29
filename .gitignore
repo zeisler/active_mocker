@@ -22,3 +22,5 @@ test_rails_4_app/log/*
 test_rails_4_app/.idea/*
 example_rails_app/.idea/*
 .idea/*
+cookbooks/*
+.vagrant/*

@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
-gem 'rails', '~>4.1'
+gem 'rails', '~>4.2'
 gem 'sqlite3'
 
 group :development, :test do
   # gem 'active_mocker', '~>1.7'
-  gem 'active_mocker', :path => "../../active_mocker"
+  gem 'active_mocker', :path => "../"
   gem 'rspec-rails', '~> 3.0'
 end
 

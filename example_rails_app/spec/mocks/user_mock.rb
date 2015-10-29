@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class UserMock < ActiveMocker::Mock::Base
-  created_with('1.8.1')
+  created_with('2.0.0-alpha.0')
 
   class << self
 

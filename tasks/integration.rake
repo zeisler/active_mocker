@@ -1,5 +1,9 @@
 task :integration do
-  sh "cd test_rails_4_app &&
-        bundle exec appraisal rake active_mocker:build 2>&1 >/dev/null &&
-        bundle exec appraisal rspec"
+  Dir.chdir("test_rails_4_app") do
+    Bundler.with_clean_env do
+      rails_test_gemfile = File.expand_path(File.dirname(__FILE__)+ "/../test_rails_4_app/Gemfile")
+      sh "BUNDLE_GEMFILE=#{rails_test_gemfile} bundle exec appraisal rake active_mocker:build"
+      sh "BUNDLE_GEMFILE=#{rails_test_gemfile} bundle exec appraisal rspec"
+    end
+  end
 end

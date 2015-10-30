@@ -10,22 +10,6 @@ describe ActiveMocker::Generate do
   let(:mock_dir){ File.join(test_app_dir, 'spec/mocks')}
   let(:test_app_dir){ File.join(app_root, 'test_rails_4_app')}
 
-  describe 'rake active_mocker:build', skip_travis:true do
-
-    before(:each) do
-      expect(system('cd test_rails_4_app && bundle exec appraisal rake active_mocker:build')).to eq true
-    end
-
-    it 'generates all mocks files' do
-      expect(File.exist? mock_dir                                   ).to eq true
-      expect(File.exist? File.join(mock_dir, 'user_mock.rb')        ).to eq true
-      expect(File.exist? File.join(mock_dir, 'micropost_mock.rb')   ).to eq true
-      expect(File.exist? File.join(mock_dir, 'relationship_mock.rb')).to eq true
-      expect(File.exist? File.join(mock_dir, 'nacis_mock.rb')).to eq true
-    end
-
-  end
-
   describe 'print number of failures' do
 
     let(:failing_model) do

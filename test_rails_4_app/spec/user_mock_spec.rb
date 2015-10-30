@@ -209,13 +209,10 @@ describe UserMock do
     end
 
     it 'can be implemented as follows' do
-
       allow(UserMock).to receive(:new_remember_token) do
         "Now implemented"
       end
-      expect{UserMock.new_remember_token}.to_not raise_error
       expect(UserMock.new_remember_token).to eq("Now implemented")
-
     end
 
   end

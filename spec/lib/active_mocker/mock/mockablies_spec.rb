@@ -253,7 +253,7 @@ describe ActiveMocker::Mock::MockAbilities do
       test_clear = TestClearInstance.new
       test_clear.mock_instance_method(:buz) {}
       test_clear.clear_mocked_methods
-      expect{test_clear.buz}.to raise_error
+      expect{test_clear.buz}.to raise_error(ArgumentError)
     end
 
   end
@@ -281,8 +281,8 @@ describe ActiveMocker::Mock::MockAbilities do
       TestClearInstance.mock_instance_method(:buz) {}
       TestClearInstance.mock_class_method(:pop) {}
       TestClearInstance.clear_mocked_methods
-      expect { test_clear.buz }.to raise_error
-      expect { TestClearInstance.pop }.to raise_error
+      expect { test_clear.buz }.to raise_error(ArgumentError)
+      expect { TestClearInstance.pop }.to raise_error(ArgumentError)
     end
 
   end

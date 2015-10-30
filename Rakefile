@@ -1,3 +1,5 @@
+require "rubygems"
+require "bundler/setup"
 require "bundler/gem_tasks"
 Dir.glob('tasks/*.rake').each { |r| import r }
 

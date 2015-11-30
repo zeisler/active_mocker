@@ -6,11 +6,8 @@
 [![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.png)](https://gitter.im/zeisler/active_mocker)
 [![Gittip](http://img.shields.io/gittip/zeisler.svg)](https://www.gittip.com/zeisler/)
 
-## Version 2.0 Notice
-I am working very hard to bring out the next version, that brings the long awaited decoupling from schema.rb. To make this feature possible I've been rewriting a lot of the mock generation code, it's been a lot of work and there is still more to do. If you gain benefit from this project and would like to speed up the release consider [donating some money](https://www.gittip.com/zeisler/). Just think of how much time this gem has or could save you by having faster tests.
-
 ## Description
-ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an NotImplementedError when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.
+ActiveMocker creates mock classes from ActiveRecord models, allowing your test suite to run at breakneck speed. This can be done by not loading Rails or hitting a database. The models are read dynamically and statically so that ActiveMocker can generate a Ruby file to require within a test. The mock file can be run by itself and comes with a partial implementation of ActiveRecord. Attributes and associations can be used the same as in ActiveRecord. Methods have the same argument signature but raise a NotImplementedError when called, allowing you to stub it with a mocking framework, like RSpec. Mocks are regenerated when the schema is modified so your mocks won't go stale, preventing the case where your units tests pass but production code fails.
 
 Examples from a real apps
 

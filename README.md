@@ -4,7 +4,12 @@
 [![Code Climate](https://codeclimate.com/github/zeisler/active_mocker.png)](https://codeclimate.com/github/zeisler/active_mocker)
 [![Dependency Status](https://gemnasium.com/zeisler/active_mocker.svg)](https://gemnasium.com/zeisler/active_mocker)
 [![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.png)](https://gitter.im/zeisler/active_mocker)
+[![Gittip](http://img.shields.io/gittip/zeisler.svg)](https://www.gittip.com/zeisler/)
 
+## Version 2.0 Notice
+I am working very hard to bring out the next version, that brings the long awaited decoupling from schema.rb. To make this feature possible I've been rewriting a lot of the mock generation code, it's been a lot of work and there is still more to do. If you gain benefit from this project and would like to speed up the release consider [donating some money](https://www.gittip.com/zeisler/). Just think of how much time this gem has or could save you by having faster tests.
+
+## Description
 ActiveMocker creates mocks classes from ActiveRecord models. Allowing your test suite to run very fast by not loading Rails or a database. It parses the schema.rb and the defined methods on a model then generates a ruby file that can be included within a test. The mock file can be run by themselves and come with a partial implementation of ActiveRecord. Attributes and associations can be used just the same as in ActiveRecord. Methods will have the correct arguments but raise an NotImplementedError when called. Mocks are regenerated when the schema is modified so your mocks will not go stale; preventing the case where your units tests pass but production code fails.
 
 Examples from a real apps

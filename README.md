@@ -254,7 +254,7 @@ end
  ```     
 ### Constants and Modules
 
-* Any locally defined modules will not be included or extended.
+* Any locally defined modules will not be included or extended. It can be disabled by `ActiveMocker::Config.disable_modules_and_constants = true`
 
 ---------------
 ```ruby

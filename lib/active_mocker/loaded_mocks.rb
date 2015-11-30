@@ -5,8 +5,7 @@ module ActiveMocker
       extend Forwardable
       def_delegators :mocks, :find, :delete_all
 
-      # Returns an Enumerable of all currently loaded mocks. The key is a string of the active_record class name and
-      # the value being the mocked class.
+      # Returns an Enumerable of all currently loaded mocks.
       #
       #   ActiveMocker::LoadedMocks.mocks
       #       => <Collection @hash: {'Person' => PersonMock}>
@@ -17,13 +16,13 @@ module ActiveMocker
                        end)
       end
 
-      # @deprecated Use {#mocks} instead of this method because
+      # @deprecated Use {#mocks} instead of this method.
       alias_method :class_name_to_mock, :mocks
 
-      # @deprecated Use {#mocks} instead of this method because
+      # @deprecated Use {#mocks} instead of this method.
       alias_method :all, :mocks
 
-      # @deprecated Use {#delete_all} instead of this method because
+      # @deprecated Use {#delete_all} instead of this method.
       alias_method :clear_all, :delete_all
 
       class Collection
@@ -44,8 +43,9 @@ module ActiveMocker
           mocks.each(&__method__)
         end
 
-        # @param [Array<Symbol, String, ActiveMocker::Mock>] args representation of a ActiveRecord model name
-        # @return [ActiveMocker::LoadedMocks::Collection]
+        # @param [Array<Symbol, String, ActiveMocker::Mock>] args an array of ActiveRecord Model Names as Strings or Symbols
+        # or of mock object.
+        # @return [ActiveMocker::LoadedMocks::Collection] returns ActiveMock equivalent class.
         def slice(*args)
           self.class.new(select { |k, v| get_item(args, k, v) })
         end

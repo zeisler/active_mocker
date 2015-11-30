@@ -1,14 +1,15 @@
 require 'active_mocker/mock'
 
 class MicropostMock < ActiveMocker::Mock::Base
-  created_with('2.0.0-alpha.0')
+  created_with('2.0.0-beta1')
+
+# _modules_constants.erb
   MAGIC_ID_NUMBER = 90
   MAGIC_ID_STRING = "F-1"
   prepend PostMethods
-  extend  PostMethods
-
+  extend PostMethods
+#_class_methods.erb
   class << self
-
     def attributes
       @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "content"=>nil, "user_id"=>nil, "up_votes"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
     end
@@ -48,11 +49,7 @@ class MicropostMock < ActiveMocker::Mock::Base
     end
 
   end
-
-  ##################################
-  #   Attributes getter/setters    #
-  ##################################
-
+# _attributes.erb
   def id
     read_attribute(:id)
   end
@@ -60,7 +57,6 @@ class MicropostMock < ActiveMocker::Mock::Base
   def id=(val)
     write_attribute(:id, val)
   end
-
   def content
     read_attribute(:content)
   end
@@ -68,7 +64,6 @@ class MicropostMock < ActiveMocker::Mock::Base
   def content=(val)
     write_attribute(:content, val)
   end
-
   def user_id
     read_attribute(:user_id)
   end
@@ -76,7 +71,6 @@ class MicropostMock < ActiveMocker::Mock::Base
   def user_id=(val)
     write_attribute(:user_id, val)
   end
-
   def up_votes
     read_attribute(:up_votes)
   end
@@ -84,7 +78,6 @@ class MicropostMock < ActiveMocker::Mock::Base
   def up_votes=(val)
     write_attribute(:up_votes, val)
   end
-
   def created_at
     read_attribute(:created_at)
   end
@@ -92,7 +85,6 @@ class MicropostMock < ActiveMocker::Mock::Base
   def created_at=(val)
     write_attribute(:created_at, val)
   end
-
   def updated_at
     read_attribute(:updated_at)
   end
@@ -100,16 +92,12 @@ class MicropostMock < ActiveMocker::Mock::Base
   def updated_at=(val)
     write_attribute(:updated_at, val)
   end
-
-  ##################################
-  #         Associations           #
-  ##################################
+# _associations.erb
 
 # belongs_to
   def user
     read_association(:user) || write_association(:user, classes('User').try{ |k| k.find_by(id: user_id)})
   end
-
   def user=(val)
     write_association(:user, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
@@ -127,6 +115,7 @@ class MicropostMock < ActiveMocker::Mock::Base
   alias_method :create_user!, :create_user
 
 
+# _scopes.erb
   module Scopes
     include ActiveMocker::Mock::Base::Scopes
 
@@ -138,29 +127,18 @@ class MicropostMock < ActiveMocker::Mock::Base
     include MicropostMock::Scopes
   end
 
-  private
-
   def self.new_relation(collection)
     MicropostMock::ScopeRelation.new(collection)
   end
 
-  public
-
-  ##################################
-  #        Model Methods           #
-  ##################################
-
-
+  private_class_method :new_relation
   def display_name
     call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
   end
-
   def post_id
     call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
   end
-
   def self.from_users_followed_by(user=nil)
     call_mock_method(method: __method__, caller: Kernel.caller, arguments: [user])
   end
-
 end

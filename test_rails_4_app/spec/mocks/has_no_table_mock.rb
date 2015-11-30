@@ -1,16 +1,17 @@
 require 'active_mocker/mock'
 
 class HasNoTableMock < ActiveMocker::Mock::Base
-  created_with('2.0.0-alpha.0')
+  created_with('2.0.0-beta1')
 
+# _modules_constants.erb
+#_class_methods.erb
   class << self
-
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({}).merge(super)
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({  }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -28,7 +29,7 @@ class HasNoTableMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= [] | super
+      @attribute_names ||= ["id"] | super
     end
 
     def primary_key
@@ -44,11 +45,7 @@ class HasNoTableMock < ActiveMocker::Mock::Base
     end
 
   end
-
-  ##################################
-  #   Attributes getter/setters    #
-  ##################################
-
+# _attributes.erb
   def id
     read_attribute(:id)
   end
@@ -56,13 +53,11 @@ class HasNoTableMock < ActiveMocker::Mock::Base
   def id=(val)
     write_attribute(:id, val)
   end
-
-  ##################################
-  #         Associations           #
-  ##################################
+# _associations.erb
 
 
 
+# _scopes.erb
   module Scopes
     include ActiveMocker::Mock::Base::Scopes
 
@@ -74,17 +69,9 @@ class HasNoTableMock < ActiveMocker::Mock::Base
     include HasNoTableMock::Scopes
   end
 
-  private
-
   def self.new_relation(collection)
     HasNoTableMock::ScopeRelation.new(collection)
   end
 
-  public
-
-  ##################################
-  #        Model Methods           #
-  ##################################
-
-
+  private_class_method :new_relation
 end

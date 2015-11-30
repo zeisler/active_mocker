@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140731144123) do
   end
 
   create_table "subscriptions", force: true do |t|
-    t.string   "type"
+    t.string   "kind"
     t.integer  "user_id"
     t.boolean  "active"
     t.datetime "created_at"

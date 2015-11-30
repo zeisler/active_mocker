@@ -1,122 +1,65 @@
-require 'spec_helper'
-require 'active_mocker'
-require 'spec/unit_logger'
-require 'active_mocker/string_reader'
-require 'active_mocker/output_capture'
+require "spec_helper"
+require "active_mocker/generate"
+require "active_mocker/config"
 
-describe ActiveMocker::Generate do
+RSpec.describe ActiveMocker::Generate do
 
-  let(:app_root){ File.expand_path('../../../../', __FILE__)}
-  let(:mock_dir){ File.join(test_app_dir, 'spec/mocks')}
-  let(:test_app_dir){ File.join(app_root, 'test_rails_4_app')}
+  describe ".new" do
 
-  describe 'print number of failures' do
+    before do
+      ActiveMocker::Config.set do |config|
+        config.model_dir = File.join(File.expand_path('../', __FILE__))
+        config.mock_dir  = "mock_dir"
+      end
+    end
 
-    let(:failing_model) do
-      <<-RUBY
-      class Model < ActiveRecord::Base
+    context "model_dir" do
+      it "ActiveMocker::Config.model_dir is valid and will not raise" do
+        described_class.new
+      end
 
-        module BlowUp
-          include SomeThing
+      it "when ActiveMocker::Config.model_dir is nil" do
+        expect(ActiveMocker::Config).to receive(:model_dir).and_return(nil)
+        expect { described_class.new }.to raise_error(ArgumentError, "model_dir is missing a valued value!")
+      end
+
+      it "when ActiveMocker::Config.model_dir is empty string" do
+        expect(ActiveMocker::Config).to receive(:model_dir).at_least(:once).and_return("")
+        expect { described_class.new }.to raise_error(ArgumentError, "model_dir is missing a valued value!")
+      end
+
+      it "when ActiveMocker::Config.model_dir cannot be found" do
+        expect(ActiveMocker::Config).to receive(:model_dir).at_least(:once).and_return("path")
+        expect { described_class.new }.to raise_error(ArgumentError, "model_dir is missing a valued value!")
+      end
+    end
+
+    context "mock_dir" do
+      it "when ActiveMocker::Config.mock_dir is nil" do
+        expect(ActiveMocker::Config).to receive(:mock_dir).and_return(nil)
+        expect { described_class.new }.to raise_error(ArgumentError, "mock_dir is missing a valued value!")
+      end
+
+      it "when ActiveMocker::Config.mock_dir is empty string" do
+        expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return("")
+        expect { described_class.new }.to raise_error(ArgumentError, "mock_dir is missing a valued value!")
+      end
+
+
+      context "when ActiveMocker::Config.mock_dir cannot be found it will be created" do
+        let(:not_found_dir) { File.join(File.expand_path('../test_mock_dir', __FILE__)) }
+
+        it do
+          expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return(not_found_dir)
+          expect(Dir.exists?(not_found_dir)).to eq false
+          described_class.new
+          expect(Dir.exists?(not_found_dir)).to eq true
         end
 
-        Include BlowUp
-
+        after do
+          FileUtils.rmdir not_found_dir
+        end
       end
-      RUBY
     end
-
-    let(:string_log) { StringIO.new }
-
-    before do
-      ActiveMocker.configure do |config|
-        config.schema_file        = ''
-        config.model_dir          = ''
-        config.mock_dir           = mock_dir
-        config.file_reader        = ActiveMocker::StringReader.new(failing_model)
-      end
-      allow(ActiveMocker::Config).to receive(:logger){Logger.new(string_log)}
-    end
-
-    it do
-      allow_any_instance_of(ActiveMocker::ModelSchema::Assemble).to receive(:models){['model']}
-      output = ActiveMocker::OutputCapture.capture(:stdout) {described_class.new(silence: true)}
-      expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
-      expect(string_log.string).to match /Error loading Model: model/
-      expect(string_log.string).to match /uninitialized constant/
-      expect(string_log.string).to match /model.rb:3:in `<module:BlowUp>'/
-    end
-
   end
-
-  describe 'HasNoParentClass' do
-
-    let(:failing_model) do
-      <<-RUBY
-      class Model
-      end
-      RUBY
-    end
-
-    let(:string_log) { StringIO.new }
-
-    before do
-      ActiveMocker.configure do |config|
-        config.schema_file = ''
-        config.model_dir   = ''
-        config.mock_dir    = mock_dir
-        config.file_reader = ActiveMocker::StringReader.new(failing_model)
-      end
-      allow(ActiveMocker::Config).to receive(:logger) { Logger.new(string_log) }
-    end
-
-    it do
-      allow_any_instance_of(ActiveMocker::ModelSchema::Assemble).to receive(:models) { ['model'] }
-      output = ActiveMocker::OutputCapture.capture(:stdout) { described_class.new(silence: true) }
-      expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
-      expect(string_log.string).to match /HasNoParentClass/
-    end
-
-  end
-
-  describe "ENV['MODEL']" do
-
-    let(:string_log) { StringIO.new }
-
-    before do
-      ActiveMocker.configure do |config|
-        config.schema_file = File.join(test_app_dir, 'db/schema.rb')
-        config.model_dir   = File.join(test_app_dir, 'app/models')
-        config.mock_dir    = mock_dir
-        config.generate_for_mock = 'user'
-      end
-      allow(ActiveMocker::Config).to receive(:logger) { Logger.new(string_log) }
-    end
-
-    it 'it will not render mock because of rails dependence, but will limit the model count to 1' do
-      output = ActiveMocker::OutputCapture.capture(:stdout) { described_class.new(silence: true) }
-      expect(output).to eq "1 mock(s) out of 1 failed. See `log/active_mocker.log` for more info.\n"
-    end
-
-  end
-
-  describe "Will raise error if mock_dir = nil" do
-
-    let(:string_log) { StringIO.new }
-
-    before do
-      ActiveMocker.configure do |config|
-        config.schema_file = nil
-        config.model_dir   = nil
-        config.mock_dir    = nil
-        config.generate_for_mock = 'user'
-      end
-    end
-
-    it do
-      expect{ described_class.new(silence: true) }.to raise_error('ActiveMocker::Config.mock_dir is set to nil!')
-    end
-
-  end
-
 end

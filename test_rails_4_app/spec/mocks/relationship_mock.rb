@@ -1,10 +1,11 @@
 require 'active_mocker/mock'
 
 class RelationshipMock < ActiveMocker::Mock::Base
-  created_with('2.0.0-alpha.0')
+  created_with('2.0.0-beta1')
 
+# _modules_constants.erb
+#_class_methods.erb
   class << self
-
     def attributes
       @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "follower_id"=>nil, "followed_id"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
     end
@@ -44,11 +45,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
     end
 
   end
-
-  ##################################
-  #   Attributes getter/setters    #
-  ##################################
-
+# _attributes.erb
   def id
     read_attribute(:id)
   end
@@ -56,7 +53,6 @@ class RelationshipMock < ActiveMocker::Mock::Base
   def id=(val)
     write_attribute(:id, val)
   end
-
   def follower_id
     read_attribute(:follower_id)
   end
@@ -64,7 +60,6 @@ class RelationshipMock < ActiveMocker::Mock::Base
   def follower_id=(val)
     write_attribute(:follower_id, val)
   end
-
   def followed_id
     read_attribute(:followed_id)
   end
@@ -72,7 +67,6 @@ class RelationshipMock < ActiveMocker::Mock::Base
   def followed_id=(val)
     write_attribute(:followed_id, val)
   end
-
   def created_at
     read_attribute(:created_at)
   end
@@ -80,7 +74,6 @@ class RelationshipMock < ActiveMocker::Mock::Base
   def created_at=(val)
     write_attribute(:created_at, val)
   end
-
   def updated_at
     read_attribute(:updated_at)
   end
@@ -88,16 +81,12 @@ class RelationshipMock < ActiveMocker::Mock::Base
   def updated_at=(val)
     write_attribute(:updated_at, val)
   end
-
-  ##################################
-  #         Associations           #
-  ##################################
+# _associations.erb
 
 # belongs_to
   def follower
     read_association(:follower) || write_association(:follower, classes('User').try{ |k| k.find_by(id: follower_id)})
   end
-
   def follower=(val)
     write_association(:follower, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :follower_id).item
@@ -113,11 +102,9 @@ class RelationshipMock < ActiveMocker::Mock::Base
     write_association(:follower, association) unless association.nil?
   end
   alias_method :create_follower!, :create_follower
-
   def followed
     read_association(:followed) || write_association(:followed, classes('User').try{ |k| k.find_by(id: followed_id)})
   end
-
   def followed=(val)
     write_association(:followed, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :followed_id).item
@@ -135,6 +122,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
   alias_method :create_followed!, :create_followed
 
 
+# _scopes.erb
   module Scopes
     include ActiveMocker::Mock::Base::Scopes
 
@@ -146,17 +134,9 @@ class RelationshipMock < ActiveMocker::Mock::Base
     include RelationshipMock::Scopes
   end
 
-  private
-
   def self.new_relation(collection)
     RelationshipMock::ScopeRelation.new(collection)
   end
 
-  public
-
-  ##################################
-  #        Model Methods           #
-  ##################################
-
-
+  private_class_method :new_relation
 end

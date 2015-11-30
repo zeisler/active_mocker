@@ -2,9 +2,10 @@ require 'active_mocker/mock'
 
 class UserMock < ActiveMocker::Mock::Base
   created_with('2.0.0-alpha.0')
+# _modules_constants.erb
 
+#_class_methods.erb
   class << self
-
     def attributes
       @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "age"=>nil, "admin"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
     end
@@ -18,7 +19,7 @@ class UserMock < ActiveMocker::Mock::Base
     end
 
     def associations_by_class
-      @associations_by_class ||= {"Comment"=>{:has_many=>[:comments]}, "Subscription"=>{:has_many=>[:subscriptions]}}.merge(super)
+      @associations_by_class ||= {:Comment=>{:has_many=>[:comments]}, :Subscription=>{:has_many=>[:subscriptions]}}.merge(super)
     end
 
     def mocked_class
@@ -42,13 +43,8 @@ class UserMock < ActiveMocker::Mock::Base
     def table_name
       "users" || super
     end
-
   end
-
-  ##################################
-  #   Attributes getter/setters    #
-  ##################################
-
+# _attributes.erb
   def id
     read_attribute(:id)
   end
@@ -56,7 +52,6 @@ class UserMock < ActiveMocker::Mock::Base
   def id=(val)
     write_attribute(:id, val)
   end
-
   def name
     read_attribute(:name)
   end
@@ -64,7 +59,6 @@ class UserMock < ActiveMocker::Mock::Base
   def name=(val)
     write_attribute(:name, val)
   end
-
   def age
     read_attribute(:age)
   end
@@ -72,7 +66,6 @@ class UserMock < ActiveMocker::Mock::Base
   def age=(val)
     write_attribute(:age, val)
   end
-
   def admin
     read_attribute(:admin)
   end
@@ -80,7 +73,6 @@ class UserMock < ActiveMocker::Mock::Base
   def admin=(val)
     write_attribute(:admin, val)
   end
-
   def created_at
     read_attribute(:created_at)
   end
@@ -88,7 +80,6 @@ class UserMock < ActiveMocker::Mock::Base
   def created_at=(val)
     write_attribute(:created_at, val)
   end
-
   def updated_at
     read_attribute(:updated_at)
   end
@@ -97,9 +88,7 @@ class UserMock < ActiveMocker::Mock::Base
     write_attribute(:updated_at, val)
   end
 
-  ##################################
-  #         Associations           #
-  ##################################
+# _associations.erb
 
 
 # has_many
@@ -110,7 +99,6 @@ class UserMock < ActiveMocker::Mock::Base
   def comments=(val)
     write_association(:comments, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: ''))
   end
-
   def subscriptions
     read_association(:subscriptions, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: '') })
   end
@@ -119,6 +107,7 @@ class UserMock < ActiveMocker::Mock::Base
     write_association(:subscriptions, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: ''))
   end
 
+# _scopes.erb
   module Scopes
     include ActiveMocker::Mock::Base::Scopes
 
@@ -130,17 +119,10 @@ class UserMock < ActiveMocker::Mock::Base
     include UserMock::Scopes
   end
 
-  private
-
   def self.new_relation(collection)
     UserMock::ScopeRelation.new(collection)
   end
 
-  public
-
-  ##################################
-  #        Model Methods           #
-  ##################################
-
+  private_class_method :new_relation
 
 end

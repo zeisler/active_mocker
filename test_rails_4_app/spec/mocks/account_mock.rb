@@ -1,10 +1,11 @@
 require 'active_mocker/mock'
 
 class AccountMock < ActiveMocker::Mock::Base
-  created_with('2.0.0-alpha.0')
+  created_with('2.0.0-beta1')
 
+# _modules_constants.erb
+#_class_methods.erb
   class << self
-
     def attributes
       @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "user_id"=>nil, "balance"=>nil}).merge(super)
     end
@@ -44,11 +45,7 @@ class AccountMock < ActiveMocker::Mock::Base
     end
 
   end
-
-  ##################################
-  #   Attributes getter/setters    #
-  ##################################
-
+# _attributes.erb
   def id
     read_attribute(:id)
   end
@@ -56,7 +53,6 @@ class AccountMock < ActiveMocker::Mock::Base
   def id=(val)
     write_attribute(:id, val)
   end
-
   def user_id
     read_attribute(:user_id)
   end
@@ -64,7 +60,6 @@ class AccountMock < ActiveMocker::Mock::Base
   def user_id=(val)
     write_attribute(:user_id, val)
   end
-
   def balance
     read_attribute(:balance)
   end
@@ -72,16 +67,12 @@ class AccountMock < ActiveMocker::Mock::Base
   def balance=(val)
     write_attribute(:balance, val)
   end
-
-  ##################################
-  #         Associations           #
-  ##################################
+# _associations.erb
 
 # belongs_to
   def user
     read_association(:user) || write_association(:user, classes('User').try{ |k| k.find_by(id: user_id)})
   end
-
   def user=(val)
     write_association(:user, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
@@ -99,6 +90,7 @@ class AccountMock < ActiveMocker::Mock::Base
   alias_method :create_user!, :create_user
 
 
+# _scopes.erb
   module Scopes
     include ActiveMocker::Mock::Base::Scopes
 
@@ -110,17 +102,9 @@ class AccountMock < ActiveMocker::Mock::Base
     include AccountMock::Scopes
   end
 
-  private
-
   def self.new_relation(collection)
     AccountMock::ScopeRelation.new(collection)
   end
 
-  public
-
-  ##################################
-  #        Model Methods           #
-  ##################################
-
-
+  private_class_method :new_relation
 end

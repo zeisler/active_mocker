@@ -2,7 +2,12 @@ namespace :active_mocker do
 
   desc('Rebuild mocks.')
   task :build => :environment do
-    ActiveMocker::Generate.new
+    ActiveMocker.configure do |c|
+      c.single_model_path = ENV["MODEL"] if ENV["MODEL"]
+      c.progress_bar     = false if ENV["MUTE_PROGRESS_BAR"]
+      c.error_verbosity  = ENV["ERROR_VERBOSITY"].to_i if ENV["ERROR_VERBOSITY"]
+      c.disable_modules_and_constants = false
+    end.create_mocks
   end
 
   desc('Run all tests tagged   active_mocker')

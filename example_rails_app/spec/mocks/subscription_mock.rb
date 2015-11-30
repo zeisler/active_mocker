@@ -2,15 +2,16 @@ require 'active_mocker/mock'
 
 class SubscriptionMock < ActiveMocker::Mock::Base
   created_with('2.0.0-alpha.0')
+# _modules_constants.erb
 
+#_class_methods.erb
   class << self
-
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "type"=>nil, "user_id"=>nil, "active"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
+      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "kind"=>nil, "user_id"=>nil, "active"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, type: String, user_id: Fixnum, active: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, kind: String, user_id: Fixnum, active: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -18,7 +19,7 @@ class SubscriptionMock < ActiveMocker::Mock::Base
     end
 
     def associations_by_class
-      @associations_by_class ||= {"User"=>{:belongs_to=>[:user]}}.merge(super)
+      @associations_by_class ||= {:User=>{:belongs_to=>[:user]}}.merge(super)
     end
 
     def mocked_class
@@ -28,7 +29,7 @@ class SubscriptionMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "type", "user_id", "active", "created_at", "updated_at"] | super
+      @attribute_names ||= ["id", "kind", "user_id", "active", "created_at", "updated_at"] | super
     end
 
     def primary_key
@@ -42,13 +43,8 @@ class SubscriptionMock < ActiveMocker::Mock::Base
     def table_name
       "subscriptions" || super
     end
-
   end
-
-  ##################################
-  #   Attributes getter/setters    #
-  ##################################
-
+# _attributes.erb
   def id
     read_attribute(:id)
   end
@@ -56,15 +52,13 @@ class SubscriptionMock < ActiveMocker::Mock::Base
   def id=(val)
     write_attribute(:id, val)
   end
-
-  def type
-    read_attribute(:type)
+  def kind
+    read_attribute(:kind)
   end
 
-  def type=(val)
-    write_attribute(:type, val)
+  def kind=(val)
+    write_attribute(:kind, val)
   end
-
   def user_id
     read_attribute(:user_id)
   end
@@ -72,7 +66,6 @@ class SubscriptionMock < ActiveMocker::Mock::Base
   def user_id=(val)
     write_attribute(:user_id, val)
   end
-
   def active
     read_attribute(:active)
   end
@@ -80,7 +73,6 @@ class SubscriptionMock < ActiveMocker::Mock::Base
   def active=(val)
     write_attribute(:active, val)
   end
-
   def created_at
     read_attribute(:created_at)
   end
@@ -88,7 +80,6 @@ class SubscriptionMock < ActiveMocker::Mock::Base
   def created_at=(val)
     write_attribute(:created_at, val)
   end
-
   def updated_at
     read_attribute(:updated_at)
   end
@@ -97,15 +88,12 @@ class SubscriptionMock < ActiveMocker::Mock::Base
     write_attribute(:updated_at, val)
   end
 
-  ##################################
-  #         Associations           #
-  ##################################
+# _associations.erb
 
 # belongs_to
   def user
     read_association(:user) || write_association(:user, classes('User').try{ |k| k.find_by(id: user_id)})
   end
-
   def user=(val)
     write_association(:user, val)
     ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
@@ -123,6 +111,8 @@ class SubscriptionMock < ActiveMocker::Mock::Base
   alias_method :create_user!, :create_user
 
 
+
+# _scopes.erb
   module Scopes
     include ActiveMocker::Mock::Base::Scopes
 
@@ -134,17 +124,10 @@ class SubscriptionMock < ActiveMocker::Mock::Base
     include SubscriptionMock::Scopes
   end
 
-  private
-
   def self.new_relation(collection)
     SubscriptionMock::ScopeRelation.new(collection)
   end
 
-  public
-
-  ##################################
-  #        Model Methods           #
-  ##################################
-
+  private_class_method :new_relation
 
 end

@@ -1,3 +1,4 @@
+$VERBOSE=nil # This removes ruby warnings
 require 'active_mocker/rspec_helper'
 $:.unshift File.join(File.expand_path('../../', __FILE__)) # add root of app to path
 RSpec.configure do |config|

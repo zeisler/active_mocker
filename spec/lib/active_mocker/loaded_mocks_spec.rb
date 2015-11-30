@@ -1,4 +1,3 @@
-require 'active_mocker/db_to_ruby_type'
 require 'active_mocker/loaded_mocks'
 require 'active_support/core_ext/string'
 require 'active_support/core_ext/hash'

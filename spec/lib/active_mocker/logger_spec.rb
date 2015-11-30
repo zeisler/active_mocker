@@ -1,13 +1,10 @@
-require 'active_mocker/db_to_ruby_type'
 require 'active_mocker/logger'
 
 describe ActiveMocker::Logger do
-
   describe '::set' do
-
     let(:logger){double()}
 
-    around do
+    before do
       described_class.class_variable_set(:@@logger, nil)
     end
 
@@ -25,7 +22,5 @@ describe ActiveMocker::Logger do
     it 'will return nil if no logger is set' do
       expect(described_class.any_method).to eq nil
     end
-
   end
-
 end

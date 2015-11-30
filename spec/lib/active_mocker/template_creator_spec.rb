@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'spec/support/strip_heredoc'
-require 'active_mocker/v2/template_creator'
+require 'active_mocker/template_creator'
 require 'active_record_schema_scrapper/attribute'
 require 'active_record_schema_scrapper/attributes'
 require 'tempfile'
 
-describe ActiveMocker::V2::TemplateCreator do
+describe ActiveMocker::TemplateCreator do
   using StripHeredoc
 
   describe 'render' do
@@ -35,6 +35,7 @@ describe ActiveMocker::V2::TemplateCreator do
       template = Tempfile.new('Template')
       template.write <<-ERB
       class <%= model_name %>
+
       end
       ERB
       template.rewind

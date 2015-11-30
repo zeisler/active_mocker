@@ -21,7 +21,7 @@ describe ChildModel do
   end
 
   it 'has its methods' do
-    expect(ChildModelMock.instance_methods(false)).to eq [:id, :id=, :accounts, :accounts=, :child_method]
+    expect(ChildModelMock.public_instance_methods.sort - Object.public_instance_methods).to eq ([:accounts, :accounts=, :child_method] + ChildModelMock.public_instance_methods.sort - Object.public_instance_methods).uniq.sort
   end
 
   it 'has a parent method' do

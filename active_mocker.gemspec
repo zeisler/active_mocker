@@ -21,22 +21,14 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "activesupport", "~>4.0"
   spec.add_runtime_dependency "virtus", '~> 1.0'
-  spec.add_runtime_dependency "ruby-progressbar", '~> 1.4'
-
+  spec.add_runtime_dependency "ruby-progressbar", '~> 1.7'
   spec.add_runtime_dependency "parser", '~> 2.2'
-  spec.add_runtime_dependency "unparser", '~> 0.1'
-  spec.add_runtime_dependency "attr_permit", '~> 0.0'
+  spec.add_runtime_dependency "unparser", '~> 0.2'
   spec.add_runtime_dependency "rake", "~> 10.0"
+  spec.add_runtime_dependency "reverse_parameters", "0.3.0"
+  spec.add_runtime_dependency "active_record_schema_scrapper", "0.2.1"
+  spec.add_runtime_dependency "dissociated_introspection", "0.1.5"
 
   spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_development_dependency "rspec", "3.3"
-
-  spec.add_development_dependency "rspec-given", "~>3.5"
-
-
-  if ENV['DEBUG'] == '1'
-    spec.add_development_dependency "debase", "~>0.0"
-    spec.add_development_dependency "ruby-debug-ide", "~>0.4"
-  end
-
+  spec.add_development_dependency "rspec", "~> 3.4"
 end

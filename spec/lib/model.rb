@@ -1,8 +1,12 @@
 class Model < ActiveRecord::Base
-  include FooBar
-  extend Baz
+  MY_CONSTANT_VALUE = 3
+  module FooBar
+  end
 
-  include ModelCore::PlanService::Dah
+  # include FooBar
+  # extend Baz
+  include PostMethods
+  # include ModelCore::PlanService::Dah
 
   belongs_to :company, class_name: 'PlanServiceCategory', foreign_key: 'category_id'
   belongs_to :person, through: 'customer'
@@ -17,6 +21,7 @@ class Model < ActiveRecord::Base
   end
 
   scope :named, ->(name, value=nil, options={}) { }
+  scope :other_named, -> { }
 
   def foo(foobar, value)
 
@@ -26,7 +31,7 @@ class Model < ActiveRecord::Base
 
   end
 
-  def super
+  def superman
 
   end
 

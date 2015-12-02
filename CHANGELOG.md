@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## 2.0.0.beta1 - 2015-12-01
 ### Enhancement
 - db/schema.rb is no longer required to generate mocks.
+- Much better support for Single Table Inheritance.
 - `ActiveMocker::Config.disable_modules_and_constants=` Non locally defineded Modules are included/extended by default as well as constant declaration. To Disable to feature set to `true`.
 - `MODEL=User rake active_mocker:build` no longer takes a model name to generate just that mock. It now takes a path to a model file. `MODEL=[path-to-model] rake active_mocker:build`
 

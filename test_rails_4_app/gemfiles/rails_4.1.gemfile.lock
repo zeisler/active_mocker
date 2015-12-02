@@ -5,12 +5,10 @@ PATH
       active_record_schema_scrapper (= 0.2.1)
       activesupport (~> 4.0)
       dissociated_introspection (= 0.1.5)
-      parser (~> 2.2)
       rake (~> 10.0)
       reverse_parameters (= 0.3.0)
       ruby-progressbar (~> 1.7)
-      unparser (~> 0.2)
-      virtus (~> 1.0)
+      virtus (~> 1.0.5)
 
 GEM
   remote: https://rubygems.org/

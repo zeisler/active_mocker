@@ -1,3 +1,5 @@
+require "rubygems"
+
 require 'active_mocker/version'
 require 'active_mocker/railtie' if defined?(Rails)
 require 'ruby-progressbar'

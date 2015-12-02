@@ -8,7 +8,7 @@ PATH
       rake (~> 10.0)
       reverse_parameters (= 0.3.0)
       ruby-progressbar (~> 1.7)
-      virtus (~> 1.0.5)
+      virtus (~> 1.0)
 
 GEM
   remote: https://rubygems.org/

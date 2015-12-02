@@ -83,7 +83,6 @@ module ActiveMocker
           puts e.original_error.message if e.respond_to? :original_error
           puts e.original_error.backtrace if e.respond_to? :original_error
           puts e.original_error.class.name if e.respond_to? :original_error
-          raise e.original_error if e.respond_to? :original_error
         elsif config.error_verbosity == 1
           puts e.message
         end

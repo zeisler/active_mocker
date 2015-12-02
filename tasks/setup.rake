@@ -7,4 +7,7 @@ task :setup do
       end
     end
   end
+  Dir.chdir("test_rails_4_app") do
+    sh "rake db:setup"
+  end
 end

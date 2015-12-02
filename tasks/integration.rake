@@ -1,7 +1,7 @@
 task :integration do
   Dir.chdir("test_rails_4_app") do
     if ENV["TRAVIS"]
-      sh "MUTE_PROGRESS_BAR=true ERROR_VERBOSITY=0 rake active_mocker:build"
+      sh "MUTE_PROGRESS_BAR=true ERROR_VERBOSITY=2 rake active_mocker:build"
       sh "rspec"
     else
       Bundler.with_clean_env do

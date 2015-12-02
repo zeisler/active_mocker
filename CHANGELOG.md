@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.0.0.beta1 - 2015-12-01
+### Enhancement
+- db/schema.rb is no longer required to generate mocks.
+- `ActiveMocker::Config.disable_modules_and_constants=` Non locally defineded Modules are included/extended by default as well as constant declaration. To Disable to feature set to `true`.
+- `MODEL=User rake active_mocker:build` no longer takes a model name to generate just that mock. It now takes a path to a model file. `MODEL=[path-to-model] rake active_mocker:build`
+
+### Removed
+- `log/active_mocker.log` is replaced env `ERROR_VERBOSITY=[0,1,2] rake active_mocker:build` or in Ruby `ActiveMocker::Config.error_verbosity=`
+- Removing undocumented feature of treating children of mocks differently. Remove the ability to sub class a mock and have it for use in that context when creating/finding association.
+
+### Depracating
+- `mock_class` for rspec_helper, use `instead active_mocker.mocks.find('ClassName')`. Will be removed in v2.1
+
 ## 1.8.4 - 2015-10-06
 ### Fix
 - Calling scoped method that has not been stubbed raises incorrect error. https://github.com/zeisler/active_mocker/issues/22

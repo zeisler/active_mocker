@@ -189,6 +189,7 @@ PLATFORMS
 DEPENDENCIES
   active_mocker!
   appraisal
+  bundler (~> 1.10)
   omniauth-identity
   rails (~> 4.1)
   rspec (~> 3.4)

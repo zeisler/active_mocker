@@ -8,11 +8,8 @@ module ActiveMocker
                     :single_model_path,
                     :progress_bar,
                     :error_verbosity,
-                    :disable_modules_and_constants
-      #TODO add disable include/extend of modules
-      #TODO disable scope methods
-      #disable instance methods, class methods
-      # can't disable attribute as of yet
+                    :disable_modules_and_constants,
+                    :mock_append_name
 
       def model_base_classes=(val)
         @model_base_classes = val
@@ -29,6 +26,7 @@ module ActiveMocker
         @disable_modules_and_constants = false
         @model_dir                     = nil unless @model_dir
         @mock_dir                      = nil unless @mock_dir
+        @mock_append_name              = "Mock"
         rails_defaults if Object.const_defined?('Rails')
       end
 
@@ -38,7 +36,8 @@ module ActiveMocker
          :log_location,
          :single_model_path,
          :progress_bar,
-         :error_verbosity
+         :error_verbosity,
+         :mock_append_name
         ].each { |ivar| instance_variable_set("@#{ivar}", nil) }
       end
 

@@ -6,23 +6,23 @@ module ActiveMocker
       create_mock_dir
       raise ArgumentError, "model_dir is missing a valued value!" if config.model_dir.nil? || config.model_dir.empty? || !Dir.exists?(config.model_dir)
       @success_count = 0
-      @errors = []
+      @errors        = []
     end
 
     # @returns self
     def call
       progress_init
       models_paths.each do |file|
-        model_name     = model_name(file)
-        model          = model_name.constantize
-        mock_file_name = "#{model_name.underscore}_#{mock_append_name.underscore}.rb"
-        mock_file_path = File.join(Config.mock_dir, mock_file_name)
-        schema_scrapper = schema_scrapper(model)
+        model_name      = model_name(file)
+        model           = get_model_const(model_name)
+        mock_file_name  = "#{model_name.underscore}_#{config.mock_append_name.underscore}.rb"
+        mock_file_path  = File.join(Config.mock_dir, mock_file_name)
+        schema_scrapper = ActiveRecordSchemaScrapper.new(model: model)
         File.open(mock_file_path, 'w') do |file_out|
           begin
-            r = create_mock(file, file_out, schema_scrapper)
-            collect_errors(mock_file_path, r, schema_scrapper)
-            @success_count += 1 if r.completed?
+            result = create_mock(file, file_out, schema_scrapper)
+            collect_errors(mock_file_path, result.errors, schema_scrapper, model_name)
+            @success_count += 1 if result.completed?
           rescue => e
             rescue_clean_up(e, file_out, model_name)
           end
@@ -34,6 +34,12 @@ module ActiveMocker
       self
     end
 
+    def get_model_const(model_name)
+      model_name.constantize
+    rescue => e
+      errors << wrap_an_exception(e, model_name)
+    end
+
     private
 
     attr_reader :success_count, :errors
@@ -43,46 +49,45 @@ module ActiveMocker
                       file_out:             file_out,
                       schema_scrapper:      schema_scrapper,
                       klasses_to_be_mocked: model_names,
-                      enabled_partials:     enabled_partials).create
+                      enabled_partials:     enabled_partials,
+                      mock_append_name:     config.mock_append_name).create
     end
 
-    def collect_errors(mock_file_path, r, schema_scrapper)
-      unless r.errors.empty?
-        File.delete(mock_file_path)
-        errors.concat(r.errors)
+    def collect_errors(mock_file_path, create_mock_errors, schema_scrapper, model_name)
+      unless create_mock_errors.empty?
+        File.delete(mock_file_path) if File.exists?(mock_file_path)
+        errors.concat(create_mock_errors)
       end
-      unless schema_scrapper.associations.errors.empty?
-        errors.concat(schema_scrapper.associations.errors.uniq(&:message))
-      end
-      unless schema_scrapper.attributes.errors.empty?
-        errors.concat(schema_scrapper.attributes.errors.uniq(&:message))
-      end
+      wrap_schema_scrapper_errors(model_name, schema_scrapper)
+    end
+
+    def wrap_schema_scrapper_errors(model_name, schema_scrapper)
+      errors.concat(schema_scrapper.associations.errors.map do |e|
+        ErrorObject.build_from(object: e, class_name: model_name, type: :association)
+      end)
+      errors.concat(schema_scrapper.attributes.errors.map do |e|
+        ErrorObject.build_from(object: e, class_name: model_name, type: :attributes)
+      end)
     end
 
     def rescue_clean_up(e, file_out, model_name)
-      file_out.close
-      File.delete(file_out.path)
-      e = OpenStruct.new(message: e.message, class_name: model_name, original_error: e) if e.class <= Exception
-      errors << e
+      file_out.close unless file_out.closed?
+      File.delete(file_out.path) if File.exists?(file_out.path)
+      errors << wrap_an_exception(e, model_name)
     end
 
-    def schema_scrapper(model)
-      # if model.respond_to?(:abstract_class?) && model.abstract_class?
-      #   null_collection = OpenStruct.new(to_a: [], errors: [])
-      #   OpenStruct.new(associations: null_collection, attributes: null_collection, abstract_class?: true)
-      # else
-        ActiveRecordSchemaScrapper.new(model: model)
-      # end
+    def wrap_an_exception(e, model_name)
+      ErrorObject.build_from(exception: e, class_name: model_name)
     end
 
     def display_errors
-      errors.flatten.each do |e|
+      errors.flatten.compact.uniq.sort_by(&:class_name).each do |e|
         if config.error_verbosity == 2
           puts "#{e.class_name} has failed:"
           puts e.message
-          puts e.original_error.message if e.respond_to? :original_error
-          puts e.original_error.backtrace if e.respond_to? :original_error
-          puts e.original_error.class.name if e.respond_to? :original_error
+          puts e.original_error.message if e.original_error?
+          puts e.original_error.backtrace if e.original_error?
+          puts e.original_error.class.name if e.original_error?
         elsif config.error_verbosity == 1
           puts e.message
         end
@@ -122,10 +127,6 @@ module ActiveMocker
 
     def create_mock_dir
       FileUtils::mkdir_p(config.mock_dir) unless Dir.exists?(config.mock_dir)
-    end
-
-    def mock_append_name
-      'Mock'
     end
 
     def enabled_partials

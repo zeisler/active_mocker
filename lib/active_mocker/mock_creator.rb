@@ -7,6 +7,7 @@ module ActiveMocker
                    class_introspector: nil,
                    enabled_partials: nil,
                    klasses_to_be_mocked:,
+                   mock_append_name:,
                    active_record_base_klass: ActiveRecord::Base)
       @file                     = file
       @file_out                 = file_out
@@ -16,6 +17,7 @@ module ActiveMocker
       @enabled_partials         = enabled_partials || self.class.enabled_partials_default
       @klasses_to_be_mocked     = klasses_to_be_mocked
       @active_record_base_klass = active_record_base_klass
+      @mock_append_name         = mock_append_name
       @errors                   = []
       @completed                = false
     end
@@ -45,7 +47,8 @@ module ActiveMocker
                 :class_introspector,
                 :enabled_partials,
                 :klasses_to_be_mocked,
-                :active_record_base_klass
+                :active_record_base_klass,
+                :mock_append_name
 
     # -- Defaults -- #
     private
@@ -94,10 +97,6 @@ module ActiveMocker
 
     def class_name
       class_introspector.parsed_source.class_name
-    end
-
-    def mock_append_name
-      'Mock'
     end
 
     def parent_class

@@ -21,11 +21,12 @@ describe ActiveMocker::MockCreator do
   describe "#create" do
 
     subject { ->(partials) {
-      described_class.new(file:                     file_in,
-                          file_out:                 file_out,
-                          schema_scrapper:          stub_schema_scrapper,
-                          enabled_partials:         partials,
-                          klasses_to_be_mocked:      []).create
+      described_class.new(file:                 file_in,
+                          file_out:             file_out,
+                          schema_scrapper:      stub_schema_scrapper,
+                          enabled_partials:     partials,
+                          klasses_to_be_mocked: [],
+                          mock_append_name:     "Mock").create
       File.open(file_out.path).read
     } }
 
@@ -59,11 +60,11 @@ describe ActiveMocker::MockCreator do
     let(:sample_associations) {
       a = ActiveRecordSchemaScrapper::Associations.new(model: rails_model)
       allow(a).to receive(:to_a) { [
-                      ActiveRecordSchemaScrapper::Association.new(name: :user, class_name: :User, type: :belongs_to, through: nil, source: nil, foreign_key: :user_id, join_table: nil, dependent: nil),
-                      ActiveRecordSchemaScrapper::Association.new(name: :account, class_name: :Account, type: :has_one, through: nil, source: nil, foreign_key: :account_id, join_table: nil, dependent: nil),
-                      ActiveRecordSchemaScrapper::Association.new(name: :person, class_name: :Person, type: :has_many, through: nil, source: nil, foreign_key: :person_id, join_table: nil, dependent: nil),
-                      ActiveRecordSchemaScrapper::Association.new(name: :other, class_name: :Other, type: :has_and_belongs_to_many, through: nil, source: nil, foreign_key: :other_id, join_table: nil, dependent: nil),
-                  ] }
+        ActiveRecordSchemaScrapper::Association.new(name: :user, class_name: :User, type: :belongs_to, through: nil, source: nil, foreign_key: :user_id, join_table: nil, dependent: nil),
+        ActiveRecordSchemaScrapper::Association.new(name: :account, class_name: :Account, type: :has_one, through: nil, source: nil, foreign_key: :account_id, join_table: nil, dependent: nil),
+        ActiveRecordSchemaScrapper::Association.new(name: :person, class_name: :Person, type: :has_many, through: nil, source: nil, foreign_key: :person_id, join_table: nil, dependent: nil),
+        ActiveRecordSchemaScrapper::Association.new(name: :other, class_name: :Other, type: :has_and_belongs_to_many, through: nil, source: nil, foreign_key: :other_id, join_table: nil, dependent: nil),
+      ] }
       a
     }
 
@@ -79,7 +80,8 @@ describe ActiveMocker::MockCreator do
                             file_out:             file_out,
                             schema_scrapper:      stub_schema_scrapper,
                             enabled_partials:     [],
-                            klasses_to_be_mocked:   []).create
+                            klasses_to_be_mocked: [],
+                            mock_append_name:     "Mock").create
       }
       describe 'has no parent class' do
         let(:model_string) {
@@ -98,11 +100,12 @@ describe ActiveMocker::MockCreator do
 
       describe 'adding to valid parent classes' do
         subject {
-          described_class.new(file:                     file_in,
-                              file_out:                 file_out,
-                              schema_scrapper:          stub_schema_scrapper,
-                              enabled_partials:         [],
-                              klasses_to_be_mocked:     []
+          described_class.new(file:                 file_in,
+                              file_out:             file_out,
+                              schema_scrapper:      stub_schema_scrapper,
+                              enabled_partials:     [],
+                              klasses_to_be_mocked: [],
+                              mock_append_name:     "Mock"
           ).create
         }
         let(:model_string) {

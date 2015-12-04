@@ -11,7 +11,7 @@ class ChildModelMock < UserMock
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -118,7 +118,7 @@ class ChildModelMock < UserMock
 
   def account=(val)
     write_association(:account, val)
-    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: 'user_id').item
+    ActiveMocker::HasOne.new(val, child_self: self, foreign_key: 'user_id').item
   end
 
   def build_account(attributes={}, &block)
@@ -132,46 +132,46 @@ class ChildModelMock < UserMock
 
 # has_many
   def microposts
-    read_association(:microposts, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Micropost'), source: '') })
+    read_association(:microposts, -> { ActiveMocker::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Micropost'), source: '') })
   end
 
   def microposts=(val)
-    write_association(:microposts, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Micropost'), source: ''))
+    write_association(:microposts, ActiveMocker::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Micropost'), source: ''))
   end
   def relationships
-    read_association(:relationships, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('Relationship'), source: '') })
+    read_association(:relationships, -> { ActiveMocker::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('Relationship'), source: '') })
   end
 
   def relationships=(val)
-    write_association(:relationships, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('Relationship'), source: ''))
+    write_association(:relationships, ActiveMocker::HasMany.new(val, foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('Relationship'), source: ''))
   end
   def followed_users
-    read_association(:followed_users, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('User'), source: 'followed') })
+    read_association(:followed_users, -> { ActiveMocker::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('User'), source: 'followed') })
   end
 
   def followed_users=(val)
-    write_association(:followed_users, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('User'), source: 'followed'))
+    write_association(:followed_users, ActiveMocker::HasMany.new(val, foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('User'), source: 'followed'))
   end
   def reverse_relationships
-    read_association(:reverse_relationships, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('Relationship'), source: '') })
+    read_association(:reverse_relationships, -> { ActiveMocker::HasMany.new([],foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('Relationship'), source: '') })
   end
 
   def reverse_relationships=(val)
-    write_association(:reverse_relationships, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('Relationship'), source: ''))
+    write_association(:reverse_relationships, ActiveMocker::HasMany.new(val, foreign_key: 'followed_id', foreign_id: self.id, relation_class: classes('Relationship'), source: ''))
   end
   def followers
-    read_association(:followers, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('User'), source: 'follower') })
+    read_association(:followers, -> { ActiveMocker::HasMany.new([],foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('User'), source: 'follower') })
   end
 
   def followers=(val)
-    write_association(:followers, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('User'), source: 'follower'))
+    write_association(:followers, ActiveMocker::HasMany.new(val, foreign_key: 'follower_id', foreign_id: self.id, relation_class: classes('User'), source: 'follower'))
   end
   def accounts
-    read_association(:accounts, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'child_model_id', foreign_id: self.id, relation_class: classes('Account'), source: '') })
+    read_association(:accounts, -> { ActiveMocker::HasMany.new([],foreign_key: 'child_model_id', foreign_id: self.id, relation_class: classes('Account'), source: '') })
   end
 
   def accounts=(val)
-    write_association(:accounts, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'child_model_id', foreign_id: self.id, relation_class: classes('Account'), source: ''))
+    write_association(:accounts, ActiveMocker::HasMany.new(val, foreign_key: 'child_model_id', foreign_id: self.id, relation_class: classes('Account'), source: ''))
   end
 
 # _scopes.erb
@@ -186,7 +186,7 @@ class ChildModelMock < UserMock
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include ChildModelMock::Scopes
   end
 

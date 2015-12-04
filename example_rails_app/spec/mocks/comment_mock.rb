@@ -11,7 +11,7 @@ class CommentMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, user_id: Fixnum, text: String, votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, user_id: Fixnum, text: String, votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -96,7 +96,7 @@ class CommentMock < ActiveMocker::Mock::Base
   end
   def user=(val)
     write_association(:user, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
+    ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
   end
 
   def build_user(attributes={}, &block)
@@ -114,13 +114,13 @@ class CommentMock < ActiveMocker::Mock::Base
 
 # _scopes.erb
   module Scopes
-    include ActiveMocker::Mock::Base::Scopes
+    include ActiveMocker::Base::Scopes
 
   end
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include CommentMock::Scopes
   end
 

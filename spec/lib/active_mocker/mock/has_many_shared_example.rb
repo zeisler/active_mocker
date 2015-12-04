@@ -20,12 +20,12 @@ shared_examples_for 'HasMany' do
     it 'will create an association if no relation class is passed' do
 
       subject = described_class.new(collection)
-      expect(subject.class).to eq ActiveMocker::Mock::Relation
+      expect(subject.class).to eq ActiveMocker::Relation
       expect(subject.to_a).to eq collection
     end
 
     it 'will create self object if has relation class' do
-      expect(described_class.new(collection, relation_class: relation_class)).to be_a_kind_of ActiveMocker::Mock::HasMany
+      expect(described_class.new(collection, relation_class: relation_class)).to be_a_kind_of ActiveMocker::HasMany
     end
 
     it 'passes all attributes to super' do

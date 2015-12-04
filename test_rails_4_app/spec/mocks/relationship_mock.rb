@@ -1,6 +1,6 @@
 require 'active_mocker/mock'
 
-class RelationshipMock < ActiveMocker::Mock::Base
+class RelationshipMock < ActiveMocker::Base
   created_with('2.0.0.beta1')
 
 # _modules_constants.erb
@@ -11,7 +11,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, follower_id: Fixnum, followed_id: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, follower_id: Fixnum, followed_id: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -89,7 +89,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
   end
   def follower=(val)
     write_association(:follower, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :follower_id).item
+    ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :follower_id).item
   end
 
   def build_follower(attributes={}, &block)
@@ -107,7 +107,7 @@ class RelationshipMock < ActiveMocker::Mock::Base
   end
   def followed=(val)
     write_association(:followed, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :followed_id).item
+    ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :followed_id).item
   end
 
   def build_followed(attributes={}, &block)
@@ -124,13 +124,13 @@ class RelationshipMock < ActiveMocker::Mock::Base
 
 # _scopes.erb
   module Scopes
-    include ActiveMocker::Mock::Base::Scopes
+    include ActiveMocker::Base::Scopes
 
   end
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include RelationshipMock::Scopes
   end
 

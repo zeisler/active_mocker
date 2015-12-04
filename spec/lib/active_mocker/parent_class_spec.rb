@@ -23,7 +23,7 @@ RSpec.describe ActiveMocker::ParentClass do
 
       describe "#parent_mock_name" do
         it "returns the default parent class" do
-          expect(subject.parent_mock_name).to eq "ActiveMocker::Mock::Base"
+          expect(subject.parent_mock_name).to eq "ActiveMocker::Base"
         end
       end
 
@@ -43,7 +43,7 @@ RSpec.describe ActiveMocker::ParentClass do
 
       describe "#parent_mock_name" do
         it "returns the default parent class" do
-          expect(subject.parent_mock_name).to eq "ActiveMocker::Mock::Base"
+          expect(subject.parent_mock_name).to eq "ActiveMocker::Base"
         end
       end
 
@@ -63,7 +63,7 @@ RSpec.describe ActiveMocker::ParentClass do
 
       describe "#parent_mock_name" do
         it "returns the default parent class" do
-          expect(subject.parent_mock_name).to eq "ActiveMocker::Mock::Base"
+          expect(subject.parent_mock_name).to eq "ActiveMocker::Base"
         end
       end
 

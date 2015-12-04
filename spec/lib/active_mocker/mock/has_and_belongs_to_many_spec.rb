@@ -11,7 +11,7 @@ require 'active_support/inflector'
 require_relative 'has_many_shared_example'
 require_relative 'queriable_shared_example'
 
-describe ActiveMocker::Mock::HasAndBelongsToMany do
+describe ActiveMocker::HasAndBelongsToMany do
 
   it_behaves_like 'HasMany'
   it_behaves_like 'Queriable', -> (*args) { described_class.new(args.flatten) }

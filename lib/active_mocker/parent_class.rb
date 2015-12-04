@@ -22,7 +22,7 @@ module ActiveMocker
       if @parent_mock_name
         "#{@parent_mock_name}#{mock_append_name}"
       else
-        'ActiveMocker::Mock::Base'
+        'ActiveMocker::Base'
       end
     end
 

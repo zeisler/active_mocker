@@ -1,6 +1,6 @@
 require 'active_mocker/mock'
 
-class IdentityMock < ActiveMocker::Mock::Base
+class IdentityMock < ActiveMocker::Base
   created_with('2.0.0.beta1')
 
 # _modules_constants.erb
@@ -11,7 +11,7 @@ class IdentityMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, name: String, email: String, credits: BigDecimal, created_at: DateTime, updated_at: DateTime, password_digest: String, remember_token: Axiom::Types::Boolean, admin: Axiom::Types::Boolean }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -115,13 +115,13 @@ class IdentityMock < ActiveMocker::Mock::Base
 
 # _scopes.erb
   module Scopes
-    include ActiveMocker::Mock::Base::Scopes
+    include ActiveMocker::Base::Scopes
 
   end
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include IdentityMock::Scopes
   end
 

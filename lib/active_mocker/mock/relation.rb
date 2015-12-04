@@ -1,7 +1,5 @@
 module ActiveMocker
-module Mock
   class Relation < Collection
-
     include Queries
 
     def initialize(collection=[])
@@ -10,7 +8,7 @@ module Mock
     end
 
     def inspect
-      entries = to_a.take(11).map!(&:inspect)
+      entries     = to_a.take(11).map!(&:inspect)
       entries[10] = '...' if entries.size == 11
       "#<#{self.class.name} [#{entries.join(', ')}]>"
     end
@@ -26,5 +24,4 @@ module Mock
     end
 
   end
-end
 end

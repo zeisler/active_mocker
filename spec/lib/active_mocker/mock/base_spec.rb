@@ -2,9 +2,9 @@ require 'spec_helper'
 require 'logger'
 require 'active_mocker/mock'
 require_relative 'queriable_shared_example'
-describe ActiveMocker::Mock::Base do
+describe ActiveMocker::Base do
 
-  class ActiveMocker::Mock::Base
+  class ActiveMocker::Base
     class << self
 
       def abstract_class?
@@ -27,9 +27,9 @@ describe ActiveMocker::Mock::Base do
   end
 
   it_behaves_like 'Queriable', -> (*args) {
-      ActiveMocker::Mock::Base.clear_mock
-      ActiveMocker::Mock::Base.send(:records=, ActiveMocker::Mock::Records.new(args.flatten))
-      ActiveMocker::Mock::Base
+      ActiveMocker::Base.clear_mock
+      ActiveMocker::Base.send(:records=, ActiveMocker::Records.new(args.flatten))
+      ActiveMocker::Base
   }
 
   describe 'destroy' do
@@ -46,7 +46,7 @@ describe ActiveMocker::Mock::Base do
   describe '::_find_associations_by_class' do
 
     it do
-      allow(ActiveMocker::Mock::Base).to receive(:associations_by_class){ {'User' => [:customers]}}
+      allow(ActiveMocker::Base).to receive(:associations_by_class){ {'User' => [:customers]}}
       result = described_class._find_associations_by_class('User')
       expect(result).to eq [:customers]
     end

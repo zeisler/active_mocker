@@ -1,6 +1,6 @@
 require 'active_mocker/mock'
 
-class SubscriptionMock < ActiveMocker::Mock::Base
+class SubscriptionMock < ActiveMocker::Base
   created_with('2.0.0-alpha.0')
 # _modules_constants.erb
 
@@ -11,7 +11,7 @@ class SubscriptionMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, kind: String, user_id: Fixnum, active: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, kind: String, user_id: Fixnum, active: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -96,7 +96,7 @@ class SubscriptionMock < ActiveMocker::Mock::Base
   end
   def user=(val)
     write_association(:user, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
+    ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
   end
 
   def build_user(attributes={}, &block)
@@ -114,13 +114,13 @@ class SubscriptionMock < ActiveMocker::Mock::Base
 
 # _scopes.erb
   module Scopes
-    include ActiveMocker::Mock::Base::Scopes
+    include ActiveMocker::Base::Scopes
 
   end
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include SubscriptionMock::Scopes
   end
 

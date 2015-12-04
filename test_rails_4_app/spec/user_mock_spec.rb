@@ -19,7 +19,7 @@ describe UserMock do
     it 'will start the backtrace at the point where the method was called' do
       begin
         UserMock.find_by_name('name')
-      rescue ActiveMocker::Mock::NotImplementedError => e
+      rescue ActiveMocker::NotImplementedError => e
         expect(e.backtrace.first).to match(/\/.*\/spec\/user_mock_spec.rb/)
       end
     end
@@ -35,7 +35,7 @@ describe UserMock do
     subject{described_class.create}
 
     it do
-      expect(subject.microposts.class).to eq ActiveMocker::Mock::HasMany
+      expect(subject.microposts.class).to eq ActiveMocker::HasMany
     end
 
     it do
@@ -62,7 +62,7 @@ describe UserMock do
     subject { described_class.create }
 
     it do
-      expect(subject.relationships.class).to eq ActiveMocker::Mock::HasMany
+      expect(subject.relationships.class).to eq ActiveMocker::HasMany
     end
 
     it do
@@ -84,7 +84,7 @@ describe UserMock do
     subject { described_class.create }
 
     it do
-      expect(subject.followed_users.class).to eq ActiveMocker::Mock::HasMany
+      expect(subject.followed_users.class).to eq ActiveMocker::HasMany
     end
 
     it do
@@ -106,7 +106,7 @@ describe UserMock do
     subject { described_class.create }
 
     it do
-      expect(subject.reverse_relationships.class).to eq ActiveMocker::Mock::HasMany
+      expect(subject.reverse_relationships.class).to eq ActiveMocker::HasMany
     end
 
     it do
@@ -157,7 +157,7 @@ describe UserMock do
     end
 
     it 'will raise error if not an attribute or association' do
-      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMocker::Mock::UnknownAttributeError, 'unknown attribute: baz')
+      expect{UserMock.new(baz: "Hello")}.to raise_error(ActiveMocker::UnknownAttributeError, 'unknown attribute: baz')
     end
 
   end
@@ -186,7 +186,7 @@ describe UserMock do
     it 'will raise exception for Not Implemented methods' do
       expect(UserMock.new.method(:following?).parameters).to eq  [[:req, :other_user]]
       expect{UserMock.new.following?}.to raise_error ArgumentError
-      expect{UserMock.new.following?('foo')}.to raise_error(ActiveMocker::Mock::NotImplementedError, '#following? for Class: UserMock. To continue stub the method.')
+      expect{UserMock.new.following?('foo')}.to raise_error(ActiveMocker::NotImplementedError, '#following? for Class: UserMock. To continue stub the method.')
     end
 
     it 'can be implemented dynamically' do
@@ -205,7 +205,7 @@ describe UserMock do
   describe 'class methods' do
 
     it 'will raise exception for Not Implemented methods' do
-      expect{UserMock.new_remember_token}.to raise_error(ActiveMocker::Mock::NotImplementedError, '::new_remember_token for Class: UserMock. To continue stub the method.')
+      expect{UserMock.new_remember_token}.to raise_error(ActiveMocker::NotImplementedError, '::new_remember_token for Class: UserMock. To continue stub the method.')
     end
 
     it 'can be implemented as follows' do
@@ -220,7 +220,7 @@ describe UserMock do
   context 'mock' do
 
     it 'uses mock::base as superclass' do
-      expect(UserMock.superclass.name).to eq 'ActiveMocker::Mock::Base'
+      expect(UserMock.superclass.name).to eq 'ActiveMocker::Base'
     end
 
     it 'can save to class and then find instance by attribute' do

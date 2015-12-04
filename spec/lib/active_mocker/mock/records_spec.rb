@@ -4,7 +4,7 @@ require 'active_mocker/mock/exceptions'
 require 'active_support/hash_with_indifferent_access'
 require 'active_support/core_ext/object/try'
 
-describe ActiveMocker::Mock::Records do
+describe ActiveMocker::Records do
 
   subject { described_class.new }
 
@@ -39,7 +39,7 @@ describe ActiveMocker::Mock::Records do
     it 'validate unique id' do
       new_record    = RecordBase.new
       new_record.id = 1
-      expect { subject.insert(new_record) }.to raise_exception(ActiveMocker::Mock::IdError, 'Duplicate ID found for record {:id=>1}')
+      expect { subject.insert(new_record) }.to raise_exception(ActiveMocker::IdError, 'Duplicate ID found for record {:id=>1}')
     end
 
   end
@@ -56,7 +56,7 @@ describe ActiveMocker::Mock::Records do
     end
 
     it 'raises if record is not in array' do
-      expect { described_class.new.delete(record) }.to raise_error(ActiveMocker::Mock::RecordNotFound, 'Record has not been created.')
+      expect { described_class.new.delete(record) }.to raise_error(ActiveMocker::RecordNotFound, 'Record has not been created.')
     end
 
   end

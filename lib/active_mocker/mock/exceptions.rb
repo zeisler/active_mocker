@@ -1,5 +1,4 @@
 module ActiveMocker
-module Mock
   class RecordNotFound < StandardError
   end
 
@@ -18,7 +17,7 @@ module Mock
     attr_reader :record, :attribute
 
     def initialize(record, attribute)
-      @record = record
+      @record    = record
       @attribute = attribute.to_s
       super("unknown attribute: #{attribute}")
     end
@@ -41,6 +40,4 @@ module Mock
 
   class Error < Exception
   end
-
-end
 end

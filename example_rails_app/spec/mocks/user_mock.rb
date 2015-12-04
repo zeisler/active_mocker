@@ -1,6 +1,6 @@
 require 'active_mocker/mock'
 
-class UserMock < ActiveMocker::Mock::Base
+class UserMock < ActiveMocker::Base
   created_with('2.0.0-alpha.0')
 # _modules_constants.erb
 
@@ -11,7 +11,7 @@ class UserMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, name: String, age: Fixnum, admin: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, name: String, age: Fixnum, admin: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -93,29 +93,29 @@ class UserMock < ActiveMocker::Mock::Base
 
 # has_many
   def comments
-    read_association(:comments, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: '') })
+    read_association(:comments, -> { ActiveMocker::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: '') })
   end
 
   def comments=(val)
-    write_association(:comments, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: ''))
+    write_association(:comments, ActiveMocker::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: ''))
   end
   def subscriptions
-    read_association(:subscriptions, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: '') })
+    read_association(:subscriptions, -> { ActiveMocker::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: '') })
   end
 
   def subscriptions=(val)
-    write_association(:subscriptions, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: ''))
+    write_association(:subscriptions, ActiveMocker::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: ''))
   end
 
 # _scopes.erb
   module Scopes
-    include ActiveMocker::Mock::Base::Scopes
+    include ActiveMocker::Base::Scopes
 
   end
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include UserMock::Scopes
   end
 

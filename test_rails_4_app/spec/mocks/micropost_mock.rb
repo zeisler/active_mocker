@@ -1,6 +1,6 @@
 require 'active_mocker/mock'
 
-class MicropostMock < ActiveMocker::Mock::Base
+class MicropostMock < ActiveMocker::Base
   created_with('2.0.0.beta1')
 
 # _modules_constants.erb
@@ -15,7 +15,7 @@ class MicropostMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= ActiveMocker::Mock::HashProcess.new({ id: Fixnum, content: String, user_id: Fixnum, up_votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, content: String, user_id: Fixnum, up_votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -100,7 +100,7 @@ class MicropostMock < ActiveMocker::Mock::Base
   end
   def user=(val)
     write_association(:user, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
+    ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
   end
 
   def build_user(attributes={}, &block)
@@ -117,13 +117,13 @@ class MicropostMock < ActiveMocker::Mock::Base
 
 # _scopes.erb
   module Scopes
-    include ActiveMocker::Mock::Base::Scopes
+    include ActiveMocker::Base::Scopes
 
   end
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include MicropostMock::Scopes
   end
 

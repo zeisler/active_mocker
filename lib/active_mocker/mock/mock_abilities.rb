@@ -1,7 +1,5 @@
 module ActiveMocker
-  module Mock
   module MockAbilities
-
     module InstanceAndClassMethods
 
       def mock_instance_method(method, exe_bind=false, &block)
@@ -27,7 +25,7 @@ module ActiveMocker
       end
 
       def is_implemented(val, method, type, call_stack)
-        raise NotImplementedError, "#{type}#{method} for Class: #{class_name}. To continue stub the method.", call_stack  if val.nil?
+        raise NotImplementedError, "#{type}#{method} for Class: #{class_name}. To continue stub the method.", call_stack if val.nil?
       end
 
       def execute_block(method)
@@ -87,12 +85,9 @@ module ActiveMocker
       attr_accessor :block, :arguments, :exe_bind
 
       def initialize(block, exe_bind)
-        @block     = block
-        @exe_bind  = exe_bind
+        @block    = block
+        @exe_bind = exe_bind
       end
-
     end
-
-  end
   end
 end

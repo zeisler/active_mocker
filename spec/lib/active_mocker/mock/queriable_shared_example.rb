@@ -93,7 +93,7 @@ shared_examples_for 'Queriable' do |klass|
     end
 
     it 'returns an instance of the class' do
-      expect(subject.all).to be_a_kind_of ActiveMocker::Mock::Relation
+      expect(subject.all).to be_a_kind_of ActiveMocker::Relation
     end
 
   end
@@ -113,7 +113,7 @@ shared_examples_for 'Queriable' do |klass|
       end
 
       it 'returns an instance of the class' do
-        expect(subject.where(value: 1)).to be_a_kind_of(ActiveMocker::Mock::Relation)
+        expect(subject.where(value: 1)).to be_a_kind_of(ActiveMocker::Relation)
       end
 
     end
@@ -123,7 +123,7 @@ shared_examples_for 'Queriable' do |klass|
       subject { new_class.call(given_collection) }
 
       it 'return a WhereNotChain' do
-        expect(subject.where).to be_a_kind_of(ActiveMocker::Mock::Queries::WhereNotChain)
+        expect(subject.where).to be_a_kind_of(ActiveMocker::Queries::WhereNotChain)
       end
 
       let(:given_collection) { [OpenStruct.new(value: 1),
@@ -135,7 +135,7 @@ shared_examples_for 'Queriable' do |klass|
       end
 
       it '.not(condition) return the class' do
-        expect(subject.where.not(value: 1)).to be_a_kind_of(ActiveMocker::Mock::Relation)
+        expect(subject.where.not(value: 1)).to be_a_kind_of(ActiveMocker::Relation)
       end
 
     end

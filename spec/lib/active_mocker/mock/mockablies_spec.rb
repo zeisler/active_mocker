@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'active_mocker/mock/exceptions'
 require 'active_mocker/mock/mock_abilities'
 
-describe ActiveMocker::Mock::MockAbilities do
+describe ActiveMocker::MockAbilities do
 
   subject{ described_class}
 
@@ -10,7 +10,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
     before do
       class TestClass
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def self.buz
           call_mock_method(method: __method__, caller: caller, arguments: [])
@@ -38,7 +38,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
     before do
       class TestableBinding
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def buz
           call_mock_method(method: __method__, caller: caller)
@@ -122,7 +122,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
     before do
       class TestHierarchy
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def buz
           call_mock_method(method: __method__, caller: caller)
@@ -156,7 +156,7 @@ describe ActiveMocker::Mock::MockAbilities do
     before do
 
       class TestBoth
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def zip
           call_mock_method(method: __method__, caller: caller)
@@ -184,7 +184,7 @@ describe ActiveMocker::Mock::MockAbilities do
     before do
 
       class WithArgs
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def foo(stuff, other = nil)
           call_mock_method(method: __method__, caller: caller, arguments: [stuff, other])
@@ -240,7 +240,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
     before do
       class TestClearInstance
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def buz
           call_mock_method(__method__, caller, [])
@@ -263,7 +263,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
     before do
       class TestClearInstance
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def buz
           call_mock_method(__method__, caller, [])
@@ -291,7 +291,7 @@ describe ActiveMocker::Mock::MockAbilities do
 
     before do
       class TestRaise
-        include ActiveMocker::Mock::MockAbilities
+        include ActiveMocker::MockAbilities
 
         def buz
           call_mock_method(method: __method__, caller: caller, arguments: [])
@@ -306,19 +306,19 @@ describe ActiveMocker::Mock::MockAbilities do
 
     it 'will raise if unmocked class method is called' do
 
-      expect{ TestRaise.pop}.to raise_error(ActiveMocker::Mock::NotImplementedError, '::pop for Class: TestRaise. To continue stub the method.')
+      expect{ TestRaise.pop}.to raise_error(ActiveMocker::NotImplementedError, '::pop for Class: TestRaise. To continue stub the method.')
     end
 
     it 'will start the backtrace at the point where the method was called' do
       begin
         TestRaise.pop
-      rescue ActiveMocker::Mock::NotImplementedError => e
+      rescue ActiveMocker::NotImplementedError => e
           expect(e.backtrace.first).to match(/active_mocker\/mock\/mockablies_spec.rb/)
       end
     end
 
     it 'will raise if unmocked instance method is called' do
-      expect{ TestRaise.new.buz}.to raise_error(ActiveMocker::Mock::NotImplementedError, '#buz for Class: TestRaise. To continue stub the method.')
+      expect{ TestRaise.new.buz}.to raise_error(ActiveMocker::NotImplementedError, '#buz for Class: TestRaise. To continue stub the method.')
     end
 
   end

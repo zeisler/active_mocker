@@ -1,6 +1,4 @@
 module ActiveMocker
-module Mock
-
   module Queries
 
     class Find
@@ -61,9 +59,9 @@ module Mock
     # If a limit scope is supplied, +delete_all+ raises an ActiveMocker error:
     #
     #   Post.limit(100).delete_all
-    #   # => ActiveMocker::Mock::Error: delete_all doesn't support limit scope
+    #   # => ActiveMocker::Error: delete_all doesn't support limit scope
     def delete_all(conditions=nil)
-      raise ActiveMocker::Mock::Error.new("delete_all doesn't support limit scope") if from_limit?
+      raise ActiveMocker::Error.new("delete_all doesn't support limit scope") if from_limit?
       if conditions.nil?
         to_a.map(&:delete)
         return to_a.clear
@@ -131,7 +129,7 @@ module Mock
     #   Person.find([7, 17])    # returns an array for objects with IDs in (7, 17)
     #   Person.find([1])        # returns an array for the object with ID = 1
     #
-    # <tt>ActiveMocker::Mock::RecordNotFound</tt> will be raised if one or more ids are not found.
+    # <tt>ActiveMocker::RecordNotFound</tt> will be raised if one or more ids are not found.
     def find(ids)
       raise RecordNotFound.new("Couldn't find #{self.name} without an ID") if ids.nil?
       results = [*ids].map do |id|
@@ -281,7 +279,7 @@ module Mock
     #   PersonMock.average(:age) # => 35.8
     def average(key)
       values = values_by_key(key)
-      total = values.inject { |sum, n| sum + n }
+      total  = values.inject { |sum, n| sum + n }
       BigDecimal.new(total) / BigDecimal.new(values.count)
     end
 
@@ -356,12 +354,10 @@ module Mock
     end
 
     def __new_relation__(collection)
-      duped = self.dup
+      duped            = self.dup
       duped.collection = collection
       duped
     end
 
   end
-
-end
 end

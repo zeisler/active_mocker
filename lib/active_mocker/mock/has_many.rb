@@ -1,8 +1,5 @@
 module ActiveMocker
-module Mock
-
   class HasMany < Association
-
     include Queries
 
     def self.new(collection, options = {})
@@ -62,7 +59,5 @@ module Mock
     end
 
   end
-
-end
 end
 

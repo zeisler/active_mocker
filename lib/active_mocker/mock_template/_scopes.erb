@@ -12,7 +12,7 @@ end
 
   extend Scopes
 
-  class ScopeRelation < ActiveMocker::Mock::Association
+  class ScopeRelation < ActiveMocker::Association
     include <%= class_name + mock_append_name %>::Scopes
   end
 

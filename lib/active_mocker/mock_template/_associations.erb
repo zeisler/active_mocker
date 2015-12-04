@@ -9,7 +9,7 @@ read_association(:<%= meth.name %>) || write_association(:<%= meth.name %>, clas
   end
   def <%= meth.name %>=(val)
     write_association(:<%= meth.name %>, val)
-    ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :<%= meth.foreign_key %>).item
+    ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :<%= meth.foreign_key %>).item
   end
 
   def build_<%= meth.name %>(attributes={}, &block)
@@ -39,7 +39,7 @@ end
 
   def <%= meth.name %>=(val)
     write_association(:<%= meth.name %>, val)
-    ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: '<%= meth.foreign_key %>').item
+    ActiveMocker::HasOne.new(val, child_self: self, foreign_key: '<%= meth.foreign_key %>').item
   end
 
   def build_<%= meth.name %>(attributes={}, &block)
@@ -62,21 +62,21 @@ end
 
 <% has_many.each do |meth| -%>
   def <%= meth.name %>
-    read_association(:<%= meth.name %>, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>') })
+    read_association(:<%= meth.name %>, -> { ActiveMocker::HasMany.new([],foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>') })
   end
 
   def <%= meth.name %>=(val)
-    write_association(:<%= meth.name %>, ActiveMocker::Mock::HasMany.new(val, foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>'))
+    write_association(:<%= meth.name %>, ActiveMocker::HasMany.new(val, foreign_key: '<%= meth.foreign_key %>', foreign_id: self.id, relation_class: classes('<%= meth.class_name %>'), source: '<%= meth.source %>'))
   end
 <% end -%>
 <%= '# has_and_belongs_to_many' unless has_and_belongs_to_many.empty? -%>
 
 <% has_and_belongs_to_many.each do |meth| -%>
   def <%= meth.name %>
-    read_association(:<%= meth.name %>, ->{ ActiveMocker::Mock::HasAndBelongsToMany.new([]) })
+    read_association(:<%= meth.name %>, ->{ ActiveMocker::HasAndBelongsToMany.new([]) })
   end
 
   def <%= meth.name %>=(val)
-    write_association(:<%= meth.name %>, ActiveMocker::Mock::HasAndBelongsToMany.new(val))
+    write_association(:<%= meth.name %>, ActiveMocker::HasAndBelongsToMany.new(val))
   end
 <% end -%>

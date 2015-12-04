@@ -1,10 +1,7 @@
 require 'forwardable'
 
 module ActiveMocker
-module Mock
-
   class Collection
-
     include Enumerable
     extend ::Forwardable
     def_delegators :@collection, :[], :take, :push, :clear, :first, :last, :concat, :replace, :uniq, :count, :size, :length, :empty?, :any?, :many?, :include?, :delete
@@ -48,8 +45,5 @@ module Mock
     protected
 
     attr_accessor :collection
-
   end
-
-end
 end

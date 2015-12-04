@@ -1,5 +1,4 @@
 module ActiveMocker
-module Mock
   module TemplateMethods
 
     def self.included(base)
@@ -13,7 +12,7 @@ module Mock
       end
 
       def types
-        ActiveMocker::Mock::HashProcess.new({}, method(:build_type))
+        HashProcess.new({}, method(:build_type))
       end
 
       def associations
@@ -37,7 +36,5 @@ module Mock
       end
 
     end
-
   end
-end
 end

@@ -130,7 +130,7 @@ describe ActiveMocker::MockCreator do
       expect(subject.call([:attributes])).to eq <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
-        class ModelMock < ActiveMocker::Mock::Base
+        class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
 
         # _attributes.erb
@@ -156,7 +156,7 @@ describe ActiveMocker::MockCreator do
       expect(subject.call([:class_methods])).to eq <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
-        class ModelMock < ActiveMocker::Mock::Base
+        class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
 
         #_class_methods.erb
@@ -166,7 +166,7 @@ describe ActiveMocker::MockCreator do
             end
 
             def types
-              @types ||= ActiveMocker::Mock::HashProcess.new({ example_attribute: String, id: Fixnum }, method(:build_type)).merge(super)
+              @types ||= ActiveMocker::HashProcess.new({ example_attribute: String, id: Fixnum }, method(:build_type)).merge(super)
             end
 
             def associations
@@ -208,7 +208,7 @@ describe ActiveMocker::MockCreator do
       expect(subject.call([:modules_constants])).to eq <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
-        class ModelMock < ActiveMocker::Mock::Base
+        class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
 
         # _modules_constants.erb
@@ -223,12 +223,12 @@ describe ActiveMocker::MockCreator do
       expect(results).to eq <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
-        class ModelMock < ActiveMocker::Mock::Base
+        class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
 
         # _scopes.erb
           module Scopes
-            include ActiveMocker::Mock::Base::Scopes
+            include ActiveMocker::Base::Scopes
 
             def named(name, value=nil, options=nil)
               ActiveMocker::LoadedMocks.find('Model').send(:call_mock_method, method: 'named', caller: Kernel.caller, arguments: [name, value, options])
@@ -242,7 +242,7 @@ describe ActiveMocker::MockCreator do
 
           extend Scopes
 
-          class ScopeRelation < ActiveMocker::Mock::Association
+          class ScopeRelation < ActiveMocker::Association
             include ModelMock::Scopes
           end
 
@@ -259,7 +259,7 @@ describe ActiveMocker::MockCreator do
       expect(subject.call([:defined_methods])).to eq <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
-        class ModelMock < ActiveMocker::Mock::Base
+        class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
 
           def foo(foobar, value)
@@ -285,7 +285,7 @@ describe ActiveMocker::MockCreator do
       expect(subject.call([:associations])).to eq <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
-        class ModelMock < ActiveMocker::Mock::Base
+        class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
 
         # _associations.erb
@@ -296,7 +296,7 @@ describe ActiveMocker::MockCreator do
           end
           def user=(val)
             write_association(:user, val)
-            ActiveMocker::Mock::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
+            ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
           end
 
           def build_user(attributes={}, &block)
@@ -317,7 +317,7 @@ describe ActiveMocker::MockCreator do
 
           def account=(val)
             write_association(:account, val)
-            ActiveMocker::Mock::HasOne.new(val, child_self: self, foreign_key: 'account_id').item
+            ActiveMocker::HasOne.new(val, child_self: self, foreign_key: 'account_id').item
           end
 
           def build_account(attributes={}, &block)
@@ -331,19 +331,19 @@ describe ActiveMocker::MockCreator do
 
         # has_many
           def person
-            read_association(:person, -> { ActiveMocker::Mock::HasMany.new([],foreign_key: 'person_id', foreign_id: self.id, relation_class: classes('Person'), source: '') })
+            read_association(:person, -> { ActiveMocker::HasMany.new([],foreign_key: 'person_id', foreign_id: self.id, relation_class: classes('Person'), source: '') })
           end
 
           def person=(val)
-            write_association(:person, ActiveMocker::Mock::HasMany.new(val, foreign_key: 'person_id', foreign_id: self.id, relation_class: classes('Person'), source: ''))
+            write_association(:person, ActiveMocker::HasMany.new(val, foreign_key: 'person_id', foreign_id: self.id, relation_class: classes('Person'), source: ''))
           end
         # has_and_belongs_to_many
           def other
-            read_association(:other, ->{ ActiveMocker::Mock::HasAndBelongsToMany.new([]) })
+            read_association(:other, ->{ ActiveMocker::HasAndBelongsToMany.new([]) })
           end
 
           def other=(val)
-            write_association(:other, ActiveMocker::Mock::HasAndBelongsToMany.new(val))
+            write_association(:other, ActiveMocker::HasAndBelongsToMany.new(val))
           end
         end
       RUBY

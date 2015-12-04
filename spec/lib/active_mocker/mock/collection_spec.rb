@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'active_mocker/mock/collection'
 
-describe ActiveMocker::Mock::Collection do
+describe ActiveMocker::Collection do
 
   describe '#<<' do
 

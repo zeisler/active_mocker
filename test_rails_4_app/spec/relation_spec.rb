@@ -3,10 +3,10 @@ require_relative 'mocks/user_mock.rb'
 require_relative "../../spec/lib/active_mocker/mock/queriable_shared_example"
 
 describe UserMock do
-  describe "ActiveMocker::Mock::MockRelation" do
-    it_behaves_like 'Queriable', -> (*args) { ActiveMocker::Mock::MockRelation.new(UserMock, args.flatten) }
+  describe "ActiveMocker::MockRelation" do
+    it_behaves_like 'Queriable', -> (*args) { ActiveMocker::MockRelation.new(UserMock, args.flatten) }
 
-    subject { ActiveMocker::Mock::MockRelation.new(UserMock, collection) }
+    subject { ActiveMocker::MockRelation.new(UserMock, collection) }
     let(:collection) { [UserMock.new, UserMock.new] }
 
     it "call a private method on class" do

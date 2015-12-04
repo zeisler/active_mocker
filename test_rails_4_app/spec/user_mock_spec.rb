@@ -12,6 +12,7 @@ describe UserMock do
 
   before(:each){
     UserMock.clear_mock
+    AccountMock.clear_mock
   }
 
   describe '::find_by_name' do

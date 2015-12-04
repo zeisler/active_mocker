@@ -246,11 +246,11 @@ describe ActiveMocker::MockCreator do
             include ModelMock::Scopes
           end
 
-          def self.new_relation(collection)
+          def self.__new_relation__(collection)
             ModelMock::ScopeRelation.new(collection)
           end
 
-          private_class_method :new_relation
+          private_class_method :__new_relation__
         end
       RUBY
     end

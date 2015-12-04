@@ -190,11 +190,11 @@ class ChildModelMock < UserMock
     include ChildModelMock::Scopes
   end
 
-  def self.new_relation(collection)
+  def self.__new_relation__(collection)
     ChildModelMock::ScopeRelation.new(collection)
   end
 
-  private_class_method :new_relation
+  private_class_method :__new_relation__
   def child_method
     call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
   end

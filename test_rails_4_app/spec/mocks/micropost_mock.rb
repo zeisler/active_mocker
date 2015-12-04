@@ -127,11 +127,11 @@ class MicropostMock < ActiveMocker::Mock::Base
     include MicropostMock::Scopes
   end
 
-  def self.new_relation(collection)
+  def self.__new_relation__(collection)
     MicropostMock::ScopeRelation.new(collection)
   end
 
-  private_class_method :new_relation
+  private_class_method :__new_relation__
   def display_name
     call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
   end

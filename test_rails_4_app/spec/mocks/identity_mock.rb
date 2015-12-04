@@ -125,9 +125,9 @@ class IdentityMock < ActiveMocker::Mock::Base
     include IdentityMock::Scopes
   end
 
-  def self.new_relation(collection)
+  def self.__new_relation__(collection)
     IdentityMock::ScopeRelation.new(collection)
   end
 
-  private_class_method :new_relation
+  private_class_method :__new_relation__
 end

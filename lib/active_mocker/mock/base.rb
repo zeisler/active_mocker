@@ -110,15 +110,18 @@ module ActiveMocker
         def classes(klass)
           ActiveMocker::LoadedMocks.find(klass)
         end
-
-        def new_relation(collection)
+        
+        # @param [Array<ActiveMocker::Mock::Base>] collection, an array of mock instances
+        # @return [ScopeRelation] for the given mock so that it will include any scoped methods
+        def __new_relation__(collection)
           ScopeRelation.new(collection)
         end
 
-        private :classes, :build_type, :new_relation
+        private :classes, :build_type, :__new_relation__
 
         public
 
+        # TODO deprecate method
         def clear_mock
           clear_mocked_methods
           delete_all

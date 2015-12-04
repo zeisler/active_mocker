@@ -116,8 +116,8 @@ module Mock
     #
     # See WhereChain for more details on #not.
     def where(conditions=nil)
-      return WhereNotChain.new(all, method(:new_relation)) if conditions.nil?
-      new_relation(to_a.select do |record|
+      return WhereNotChain.new(all, method(:__new_relation__)) if conditions.nil?
+      __new_relation__(to_a.select do |record|
         Find.new(record).is_of(conditions)
       end)
     end
@@ -137,7 +137,7 @@ module Mock
       results = [*ids].map do |id|
         find_by!(id: id.to_i)
       end
-      return new_relation(results) if ids.class == Array
+      return __new_relation__(results) if ids.class == Array
       results.first
     end
 
@@ -259,7 +259,7 @@ module Mock
     #
     #   User.limit(10)
     def limit(num)
-      relation = new_relation(all.take(num))
+      relation = __new_relation__(all.take(num))
       relation.send(:set_from_limit)
       relation
     end
@@ -307,18 +307,18 @@ module Mock
     #
     #   User.order(:name)
     def order(key)
-      new_relation(all.sort_by { |item| item.send(key) })
+      __new_relation__(all.sort_by { |item| item.send(key) })
     end
 
     # Reverse the existing order clause on the relation.
     #
     #   User.order('name').reverse_order
     def reverse_order
-      new_relation(to_a.reverse)
+      __new_relation__(to_a.reverse)
     end
 
     def all
-      new_relation(to_a || [])
+      __new_relation__(to_a || [])
     end
 
     # Returns a chainable relation with zero records.
@@ -346,7 +346,7 @@ module Mock
     #   end
     #
     def none
-      new_relation([])
+      __new_relation__([])
     end
 
     private
@@ -355,7 +355,7 @@ module Mock
       all.map { |obj| obj.send(key) }
     end
 
-    def new_relation(collection)
+    def __new_relation__(collection)
       duped = self.dup
       duped.collection = collection
       duped

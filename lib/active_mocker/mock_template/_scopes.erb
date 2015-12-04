@@ -16,8 +16,8 @@ end
     include <%= class_name + mock_append_name %>::Scopes
   end
 
-  def self.new_relation(collection)
+  def self.__new_relation__(collection)
     <%= class_name + mock_append_name %>::ScopeRelation.new(collection)
   end
 
-  private_class_method :new_relation
+  private_class_method :__new_relation__

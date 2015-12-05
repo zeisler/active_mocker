@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'active_mocker/mock/exceptions'
-require 'active_mocker/mock/mock_abilities'
+require 'active_mocker/deprecated_components/mock_abilities'
 
 describe ActiveMocker::MockAbilities do
 
@@ -320,7 +320,5 @@ describe ActiveMocker::MockAbilities do
     it 'will raise if unmocked instance method is called' do
       expect{ TestRaise.new.buz}.to raise_error(ActiveMocker::NotImplementedError, '#buz for Class: TestRaise. To continue stub the method.')
     end
-
   end
-
 end

@@ -2,7 +2,6 @@ require 'active_mocker/loaded_mocks'
 require 'active_mocker/rspec'
 
 RSpec.configure do |config|
-
   config.include ActiveMocker::Rspec
 
   config.before(:each, active_mocker: true) do
@@ -18,5 +17,4 @@ RSpec.configure do |config|
   config.before(:all, active_mocker: true) do
     ActiveMocker::LoadedMocks.delete_all
   end
-
 end

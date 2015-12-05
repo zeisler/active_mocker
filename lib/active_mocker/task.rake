@@ -27,5 +27,3 @@ end
     Rake::Task['active_mocker:build'].invoke
   end
 end
-
-

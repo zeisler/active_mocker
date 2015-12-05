@@ -1,7 +1,6 @@
 module ActiveMocker
   class Base
     include DoNothingActiveRecordMethods
-    include MockAbilities
     include TemplateMethods
     extend Queries
 
@@ -119,9 +118,8 @@ module ActiveMocker
 
       public
 
-      # TODO deprecate method
+      # @deprecated
       def clear_mock
-        clear_mocked_methods
         delete_all
       end
 
@@ -129,13 +127,29 @@ module ActiveMocker
         associations_by_class[klass_name.to_s]
       end
 
+      private
+
       def created_with(version)
         raise UpdateMocksError.new(self.name, version, ActiveMocker::VERSION) if version != ActiveMocker::VERSION
       end
 
-      private :created_with
+      # @deprecated
+      def call_mock_method(method:, caller:, arguments: [])
+        is_implemented(method, '::', caller)
+      end
 
+      # @deprecated
+      def is_implemented(method, type, call_stack)
+        raise NotImplementedError, "#{type}#{method} for Class: #{name}. To continue stub the method.", call_stack
+      end
     end
+
+    # @deprecated
+    def call_mock_method(method:, caller:, arguments: [])
+      self.class.send(:is_implemented, method, '#', caller)
+    end
+
+    private :call_mock_method
 
     def classes(klass)
       self.class.send(:classes, klass)

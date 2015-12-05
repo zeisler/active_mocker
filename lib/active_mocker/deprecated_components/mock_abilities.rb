@@ -1,4 +1,5 @@
 module ActiveMocker
+  # @deprecated to keep using until removal, require this file.
   module MockAbilities
     module InstanceAndClassMethods
 
@@ -88,6 +89,16 @@ module ActiveMocker
         @block    = block
         @exe_bind = exe_bind
       end
+    end
+  end
+
+  class Base
+    include MockAbilities
+
+    # @deprecated
+    def clear_mock
+      clear_mocked_methods
+      delete_all
     end
   end
 end

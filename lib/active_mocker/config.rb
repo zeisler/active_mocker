@@ -1,5 +1,4 @@
 module ActiveMocker
-
   class Config
     class << self
 
@@ -15,7 +14,7 @@ module ActiveMocker
         @model_base_classes = val
       end
 
-      def set(&block)
+      def set
         load_defaults
         yield self
       end

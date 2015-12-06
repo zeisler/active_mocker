@@ -136,8 +136,8 @@ end
 ----------
 
 * Assigning the tag `active_mocker:true` will stub any ActiveRecord model Constants for Mock classes in an `it` or a `before/after(:each)`. This removes any need for dependency injection. Write tests and code like you would normally.
-* To stub any Constants in `before(:all)`, `after(:all)` use `mock_class('ClassName')`.
-* Mock state will be cleaned up for you in an `after(:all)`. To clean state your self use `ActiveMocker::LoadedMocks.delete_all`.
+* To stub any Constants in `before(:all)`, `after(:all)` use `active_mocker.find('ClassName')`.
+* Mock state will be cleaned up for you in an `after(:all)`. To clean state your self use `active_mocker.delete_all`.
 
 ---------
     
@@ -206,11 +206,6 @@ end
 
 Person.bar('foo', 'type')
 => "Now implemented with foo and type"
-
-# Rspec 3 mock class method
-allow_any_instance_of(Person).to receive(:bar) do
-  "Now implemented"
-end
 ```
 
 #### When the model changes, the mock fails
@@ -353,17 +348,18 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   
 
 ### Schema/Migration Option Support
+* A db/schema.rb is not required.
 * All schema types are supported and coerced by [Virtus](https://github.com/solnic/virtus). If coercion fails the passed value will be retained.
 * Default value is supported.
 * Scale and Precision are not supported.
 
 ### Known Limitations
-* Model names and table names must follow the default ActiveRecord naming pattern.
+* Namespaced modules are not currently supported.
 * When an association is set in one object it may not always be reflective in other objects, especially when it is a non standard/custom association. See [test_rails_4_app/spec/active_record_compatible_api.rb](https://github.com/zeisler/active_mocker/blob/master/test_rails_4_app/spec/active_record_compatible_api.rb) for a complete list of supported associations. 
 * Validation/Callbacks are not supported.
 * Sql queries, joins, etc will never be supported.
 * A record that has been created and then is modified will persist changes without calling `#save`, beware of this difference.
-* This is not a full replacement for ActiveRecord. It has been simplified, having only the most essential parts, so that the is code easier to maintain. I have done my best to make it work correctly, but it is up to you to know how ActiveRecord works and know it's limitations. I aim to make the code easy to read so that it can be understood and modified by it's users.
+* This is not a full replacement for ActiveRecord. It's simplified, with only the most essential parts. There are many tests to verify that is works the same as ActiveRecord, but's yours responsibility to know how ActiveRecord works.
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

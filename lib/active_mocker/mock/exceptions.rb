@@ -7,13 +7,7 @@ module ActiveMocker
     RecordNotFound = ActiveMocker::RecordNotFound
   end
 
-  class ReservedFieldError < StandardError
-  end
-
   class IdError < StandardError
-  end
-
-  class FileTypeMismatchError < StandardError
   end
 
   # Raised when unknown attributes are supplied via mass assignment.
@@ -38,9 +32,6 @@ module ActiveMocker
   end
 
   class NotImplementedError < Exception
-  end
-
-  class IdNotNumber < Exception
   end
 
   class Error < Exception

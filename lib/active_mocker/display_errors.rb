@@ -2,6 +2,7 @@ module ActiveMocker
   class DisplayErrors
     attr_reader :errors, :model_count
     attr_accessor :success_count
+
     def initialize(model_count)
       @errors        = []
       @success_count = 0
@@ -38,12 +39,24 @@ module ActiveMocker
         end
       end
       if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
+        STDERR.puts "Error Summary"
+        error_summary
+      end
+      failure_count_message
+      if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
         STDERR.puts "To see more/less detail set error_verbosity = 0, 1, 2, 3"
       end
     end
 
+    def error_summary
+      error_count = uniq_errors.count { |e| [:red].include?(e.level_color) }
+      warn        = uniq_errors.count { |e| [:yellow].include?(e.level_color) }
+      info        = uniq_errors.count { |e| [:default].include?(e.level_color) }
+      STDERR.puts "errors: #{error_count}, warn: #{warn}, info: #{info}"
+    end
+
     def failure_count_message
-      if ActiveMocker::Config.error_verbosity > 0 && success_count < model_count
+      if ActiveMocker::Config.error_verbosity > 0 && (success_count < model_count || uniq_errors.count > 0)
         STDERR.puts "#{ model_count - success_count } mock(s) out of #{model_count} failed."
       end
     end

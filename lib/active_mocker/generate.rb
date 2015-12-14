@@ -29,7 +29,6 @@ module ActiveMocker
         progress.increment
       end
       display_errors.display_errors
-      display_errors.failure_count_message
       self
     end
 

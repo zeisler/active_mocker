@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class MicropostMock < ActiveMocker::Base
-  created_with('2.0.0.beta1')
+  created_with('2.0.0.pre1')
 
 # _modules_constants.erb
   MAGIC_ID_NUMBER = 90

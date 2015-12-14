@@ -1,8 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
-## 2.0.0.beta2
+
+## 2.0.0.pre1 - 2015-12-13
+### Enhancement
+- The mock append name is now changeable using `ActiveMocker::Config.mock_append_name=`. The default still being `Mock`.
+- `ActiveMocker::Mock::MockRelation(mock, collection)` to create separate independent mock collections.
+- Change `ActiveMocker::Mock::Base` to `ActiveMocker::Base`
+- Provide more control over error when running `rake active_mocker:build`, error_verbosity now has setting for 0 to 3.
+
 ### Fix
 - Reduce restriction on Virtus gem to 1.0.any
+- When id is not a fixnum and make it match ActiveRecord behavior of calling `#to_i`.
+
+### Depracated
+- Moved `ActiveMocker::MockAbilities` into "active_mocker/deprecated_components/mock_abilities" if a project is still dependent on it this file it can be required and used at least until version 2.1. The alternative is to use `RSpec` verified doubles.
+- `#mock_class("Mock")` method has been moved to "active_mocker/deprecated_components/rspec_helper" if a project is still dependent on it this file it can be required and used at least until version 2.1. The alternative is to use the new api that is accessible by `#active_mocker`.
 
 ## 2.0.0.beta1 - 2015-12-01
 ### Enhancement

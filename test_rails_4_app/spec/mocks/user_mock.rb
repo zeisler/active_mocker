@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class UserMock < ActiveMocker::Base
-  created_with('2.0.0.beta1')
+  created_with('2.0.0.pre1')
 
 # _modules_constants.erb
 #_class_methods.erb

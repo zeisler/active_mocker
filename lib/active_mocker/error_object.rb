@@ -1,13 +1,14 @@
 module ActiveMocker
   class ErrorObject
-    attr_reader :message, :original_error, :level, :type, :class_name
 
-    def initialize(level: :warn, message:, class_name:, original_error: nil, type:)
+    attr_reader :message, :level, :original_error, :type, :class_name
+
+    def initialize(level: :warn, message:, class_name:, type:, original_error: nil)
+      @level          = level
       @message        = message
       @class_name     = class_name
-      @original_error = original_error
-      @level          = level
       @type           = type
+      @original_error = original_error
     end
 
     def self.build_from(object: nil, exception: nil, class_name: nil, type: nil)
@@ -31,10 +32,15 @@ module ActiveMocker
       original_error.present?
     end
 
-    private
-
-    def self.levels
-      [:info, :warn, :fatal]
+    def level_color
+      case level
+        when :standard_error, :fatal, :error
+          :red
+        when :warn
+          :yellow
+        when :info
+          :default
+      end
     end
   end
 end

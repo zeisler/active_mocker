@@ -5,11 +5,10 @@ module ActiveMocker
       raise ArgumentError, "mock_dir is missing a valued value!" if config.mock_dir.nil? || config.mock_dir.empty?
       create_mock_dir
       raise ArgumentError, "model_dir is missing a valued value!" if config.model_dir.nil? || config.model_dir.empty? || !Dir.exists?(config.model_dir)
-      @success_count = 0
-      @errors        = []
+      @display_errors = DisplayErrors.new(models_paths.count)
     end
 
-    # @returns self
+    # @return self
     def call
       progress_init
       models_paths.each do |file|
@@ -22,27 +21,27 @@ module ActiveMocker
           begin
             result = create_mock(file, file_out, schema_scrapper)
             collect_errors(mock_file_path, result.errors, schema_scrapper, model_name)
-            @success_count += 1 if result.completed?
+            display_errors.success_count += 1 if result.completed?
           rescue => e
             rescue_clean_up(e, file_out, model_name)
           end
         end
         progress.increment
       end
-      display_errors
-      failure_count_message
+      display_errors.display_errors
+      display_errors.failure_count_message
       self
     end
 
     def get_model_const(model_name)
       model_name.constantize
     rescue => e
-      errors << wrap_an_exception(e, model_name)
+      display_errors.wrap_an_exception(e, model_name)
     end
 
     private
 
-    attr_reader :success_count, :errors
+    attr_reader :display_errors
 
     def create_mock(file, file_out, schema_scrapper)
       MockCreator.new(file:                 File.open(file),
@@ -56,49 +55,16 @@ module ActiveMocker
     def collect_errors(mock_file_path, create_mock_errors, schema_scrapper, model_name)
       unless create_mock_errors.empty?
         File.delete(mock_file_path) if File.exists?(mock_file_path)
-        errors.concat(create_mock_errors)
+        display_errors.add(create_mock_errors)
       end
-      wrap_schema_scrapper_errors(model_name, schema_scrapper)
-    end
-
-    def wrap_schema_scrapper_errors(model_name, schema_scrapper)
-      errors.concat(schema_scrapper.associations.errors.map do |e|
-        ErrorObject.build_from(object: e, class_name: model_name, type: :association)
-      end)
-      errors.concat(schema_scrapper.attributes.errors.map do |e|
-        ErrorObject.build_from(object: e, class_name: model_name, type: :attributes)
-      end)
+      display_errors.wrap_errors(schema_scrapper.associations.errors, model_name, type: :associations)
+      display_errors.wrap_errors(schema_scrapper.attributes.errors, model_name, type: :attributes)
     end
 
     def rescue_clean_up(e, file_out, model_name)
       file_out.close unless file_out.closed?
       File.delete(file_out.path) if File.exists?(file_out.path)
-      errors << wrap_an_exception(e, model_name)
-    end
-
-    def wrap_an_exception(e, model_name)
-      ErrorObject.build_from(exception: e, class_name: model_name)
-    end
-
-    def display_errors
-      errors.flatten.compact.uniq.sort_by(&:class_name).each do |e|
-        if config.error_verbosity == 2
-          puts "#{e.class_name} has failed:"
-          puts e.message
-          puts e.original_error.message if e.original_error?
-          puts e.original_error.backtrace if e.original_error?
-          puts e.original_error.class.name if e.original_error?
-        elsif config.error_verbosity == 1
-          puts e.message
-        end
-      end
-    end
-
-    def failure_count_message
-      if config.error_verbosity > 0 && success_count < models_paths.count
-        "#{ models_paths.count - success_count } mock(s) out of #{models_paths.count} failed."\
-        "To see more detail set error_verbosity = 2 or to mute this error set error_verbosity = 0."
-      end
+      display_errors.wrap_an_exception(e, model_name)
     end
 
     def model_name(file)

@@ -10,6 +10,7 @@ require 'active_mocker/config'
 require "reverse_parameters"
 require "active_record_schema_scrapper"
 require "dissociated_introspection"
+require "colorize"
 require "active_mocker/null_progress"
 require "active_mocker/progress"
 require "active_mocker/parent_class"

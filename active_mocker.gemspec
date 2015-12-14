@@ -22,10 +22,11 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "activesupport", "~>4.0"
   spec.add_runtime_dependency "virtus", '~> 1.0'
   spec.add_runtime_dependency "ruby-progressbar", '~> 1.7'
+  spec.add_runtime_dependency "colorize", "~> 0.7"
   spec.add_runtime_dependency "rake", "~> 10.0"
   spec.add_runtime_dependency "reverse_parameters", "0.3.0"
   spec.add_runtime_dependency "active_record_schema_scrapper", "0.2.1"
-  spec.add_runtime_dependency "dissociated_introspection", "0.1.5"
+  spec.add_runtime_dependency "dissociated_introspection", "0.1.6"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rspec", "~> 3.4"

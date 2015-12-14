@@ -14,6 +14,7 @@ module ActiveMocker
         @model_base_classes = val
       end
 
+      # @see ActiveMocker#configure
       def set
         load_defaults
         yield self

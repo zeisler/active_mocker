@@ -158,6 +158,7 @@ module ActiveMocker
     private :classes
 
     attr_reader :associations, :types, :attributes
+    # @private
     attr_accessor :_create_caller_locations
     # New objects can be instantiated as either empty (pass no construction parameter) or pre-set with
     # attributes but not yet saved (pass a hash with key names matching the associated table column names).

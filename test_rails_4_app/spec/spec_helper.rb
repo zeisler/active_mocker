@@ -10,4 +10,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.mock_with :rspec do |mocks|
+    mocks.verify_doubled_constant_names = true
+    mocks.verify_partial_doubles = true
+  end
+
 end

@@ -106,11 +106,8 @@ end
 class Person < ActiveRecord::Base
   belongs_to :account
 
-  def bar(name, type=nil)
+  def self.bar(name, type=nil)
 	puts name
-  end
-
-  def self.bar
   end
 
 end
@@ -217,7 +214,7 @@ Person.bar('foo', 'type')
 class Person < ActiveRecord::Base
   belongs_to :account
 
-  def bar(name)
+  def self.bar(name)
     puts name
   end
 
@@ -226,7 +223,7 @@ end
 
 --------------
 ```ruby
-Person.new.bar('foo', 'type')
+Person.bar('foo', 'type')
   => ArgumentError: wrong number of arguments (2 for 1)
 ```
 ----------------
@@ -236,7 +233,7 @@ Person.new.bar('foo', 'type')
 class Person < ActiveRecord::Base
   belongs_to :account
 
-  def foo(name, type=nil)
+  def self.foo(name, type=nil)
     puts name
   end
 
@@ -244,10 +241,10 @@ end
  ```   
 --------------
 ```ruby
-allow(person).to receive(:bar) do |name, type=nil|
+allow(Person).to receive(:bar) do |name, type=nil|
   "Now implemented with #{name} and #{type}"
 end
-=> NoMethodError : undefined method `bar' for class ` PersonMock '
+=> RSpec::Mocks::MockExpectationError: PersonMock does not implement: bar
  ```     
 ### Constants and Modules
 

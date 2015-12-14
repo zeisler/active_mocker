@@ -12,7 +12,7 @@ module ActiveMocker
     end
 
     def insert(record)
-      records << validate_unique_id((record.id ||= next_id), record)
+      records << validate_id((record.id ||= next_id), record)
     end
 
     def delete(record)
@@ -49,6 +49,11 @@ module ActiveMocker
 
     def max_record
       ids.max
+    end
+
+    def validate_id(id, record)
+      record.id = id.to_i
+      validate_unique_id(id, record)
     end
 
     def validate_unique_id(id, record)

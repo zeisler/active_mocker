@@ -73,6 +73,10 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
     let(:create_attributes) { attributes }
 
+    it 'id with a strings values' do
+      expect(user_class.create(id: 'a').id).to eq 0
+    end
+
     it 'mock will take all attributes that AR takes' do
       user_class.create(create_attributes)
     end

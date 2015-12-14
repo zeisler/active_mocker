@@ -24,24 +24,37 @@ describe ActiveMocker::Records do
 
   describe '#insert' do
 
-    before do
-      subject.insert(record)
-    end
-
     it 'adds to records' do
-      expect(subject.to_a).to include(record)
+      expect(subject.insert(record).to_a).to include(record)
     end
 
     it 'gets next id' do
+      subject.insert(record)
       expect(record.id).to eq 1
     end
 
     it 'validate unique id' do
+      subject.insert(record)
       new_record    = RecordBase.new
       new_record.id = 1
       expect { subject.insert(new_record) }.to raise_exception(ActiveMocker::IdError, 'Duplicate ID found for record {:id=>1}')
     end
 
+    context 'id#to_i called' do
+      it 'validate string' do
+        new_record    = RecordBase.new
+        new_record.id = 'aa'
+        subject.insert(new_record)
+        expect(new_record.id).to eq(0)
+      end
+
+      it 'validate float' do
+        new_record    = RecordBase.new
+        new_record.id = 1.1
+        subject.insert(new_record)
+        expect(new_record.id).to eq(1)
+      end
+    end
   end
 
   describe '#delete' do

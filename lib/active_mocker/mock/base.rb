@@ -35,7 +35,7 @@ module ActiveMocker
         if attributes.is_a?(Array)
           attributes.collect { |attr| create(attr, &block) }
         else
-          record = new(id: attributes[:id] || attributes['id'])
+          record = new(id: attributes.delete(:id) || attributes.delete("id"))
           record.save
           record.assign_attributes(attributes, &block)
           record._create_caller_locations = caller_locations

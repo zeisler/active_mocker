@@ -14,6 +14,12 @@ module ActiveMocker
         mockable_class_methods.clear
       end
 
+      # @deprecated
+      def clear_mock
+        clear_mocked_methods
+        delete_all
+      end
+
       private
 
       def mockable_instance_methods
@@ -38,6 +44,12 @@ module ActiveMocker
 
     def self.included(base)
       base.extend(ClassMethods)
+    end
+
+    def self.prepended(base)
+      class << base
+        prepend(ClassMethods)
+      end
     end
 
     module ClassMethods
@@ -93,12 +105,6 @@ module ActiveMocker
   end
 
   class Base
-    include MockAbilities
-
-    # @deprecated
-    def clear_mock
-      clear_mocked_methods
-      delete_all
-    end
+    prepend MockAbilities
   end
 end

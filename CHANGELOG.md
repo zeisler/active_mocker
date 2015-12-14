@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## 2.0.0.pre1 - 2015-12-13
 ### Enhancement
 - The mock append name is now changeable using `ActiveMocker::Config.mock_append_name=`. The default still being `Mock`.
-- `ActiveMocker::Mock::MockRelation(mock, collection)` to create separate independent mock collections.
+- `ActiveMocker::MockRelation(mock, collection)` to create separate independent mock collections.
 - Change `ActiveMocker::Mock::Base` to `ActiveMocker::Base`
 - Provide more control over error when running `rake active_mocker:build`, error_verbosity now has setting for 0 to 3.
 

@@ -59,5 +59,9 @@ module ActiveMocker
     end
 
   end
+  module Mock
+    # @deprecated
+    HasMany = ActiveMocker::HasMany
+  end
 end
 

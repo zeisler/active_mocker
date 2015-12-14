@@ -2,6 +2,11 @@ module ActiveMocker
   class RecordNotFound < StandardError
   end
 
+  module Mock
+    # @deprecated
+    RecordNotFound = ActiveMocker::RecordNotFound
+  end
+
   class ReservedFieldError < StandardError
   end
 

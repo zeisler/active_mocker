@@ -10,3 +10,8 @@ task :specs do
   Rake::Task["unit"].invoke
   Rake::Task["integration"].invoke
 end
+
+task :test do
+  Rake::Task["unit"].invoke
+  Rake::Task["integration"].invoke
+end

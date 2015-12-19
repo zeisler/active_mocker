@@ -37,6 +37,7 @@ module ActiveMocker
           out.puts e.original_error.backtrace if e.original_error?
           out.puts e.original_error.class.name.colorize(e.level_color) if e.original_error?
         elsif ActiveMocker::Config.error_verbosity == 2
+          out.puts "#{e.class_name} has the following errors:"
           out.puts e.message.colorize(e.level_color)
         end
       end

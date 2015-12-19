@@ -19,9 +19,9 @@ module ActiveMocker
         schema_scrapper = ActiveRecordSchemaScrapper.new(model: model)
         File.open(mock_file_path, 'w') do |file_out|
           begin
-            result = create_mock(file, file_out, schema_scrapper)
-            collect_errors(mock_file_path, result.errors, schema_scrapper, model_name)
-            display_errors.success_count += 1 if result.completed?
+            result                       = create_mock(file, file_out, schema_scrapper)
+            status                       = collect_errors(mock_file_path, result.errors, schema_scrapper, model_name)
+            display_errors.success_count += 1 if result.completed? && status.successful?
           rescue => e
             rescue_clean_up(e, file_out, model_name)
           end
@@ -51,13 +51,18 @@ module ActiveMocker
                       mock_append_name:     config.mock_append_name).create
     end
 
+    OtherErrors = Struct.new(:successful?)
     def collect_errors(mock_file_path, create_mock_errors, schema_scrapper, model_name)
-      unless create_mock_errors.empty?
-        File.delete(mock_file_path) if File.exists?(mock_file_path)
-        display_errors.add(create_mock_errors)
-      end
       display_errors.wrap_errors(schema_scrapper.associations.errors, model_name, type: :associations)
       display_errors.wrap_errors(schema_scrapper.attributes.errors, model_name, type: :attributes)
+      if create_mock_errors.present? || schema_scrapper.attributes.errors.any? { |e| e.level == :error }
+        display_errors.failed_models << model_name
+        File.delete(mock_file_path) if File.exists?(mock_file_path)
+        display_errors.add(create_mock_errors)
+        OtherErrors.new(false)
+      else
+        OtherErrors.new(true)
+      end
     end
 
     def rescue_clean_up(e, file_out, model_name)

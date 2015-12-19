@@ -64,7 +64,8 @@ RSpec.describe ActiveMocker::DisplayErrors do
                                                     original_error: OpenStruct.new(backtrace: ["this this the backtrace"],
                                                                                    message:   "Original Error message")))
           subject.display_errors
-          expect(string_io.to_a).to eq ["\e[0;31;49mThis is the Message\e[0m",
+          expect(string_io.to_a).to eq ["Buggy has the following errors:",
+                                        "\e[0;31;49mThis is the Message\e[0m",
                                         "Error Summary",
                                         "errors: 1, warn: 0, info: 0", "1 mock(s) out of 1 failed.",
                                         "To see more/less detail set error_verbosity = 0, 1, 2, 3"]

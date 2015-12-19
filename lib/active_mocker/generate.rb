@@ -61,6 +61,7 @@ module ActiveMocker
     end
 
     def rescue_clean_up(e, file_out, model_name)
+      display_errors.failed_models << model_name
       file_out.close unless file_out.closed?
       File.delete(file_out.path) if File.exists?(file_out.path)
       display_errors.wrap_an_exception(e, model_name)

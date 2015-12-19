@@ -1,12 +1,14 @@
 module ActiveMocker
   class DisplayErrors
-    attr_reader :errors, :model_count
-    attr_accessor :success_count
+    attr_reader :errors, :model_count, :out
+    attr_accessor :success_count, :failed_models
 
-    def initialize(model_count)
+    def initialize(model_count, out: STDERR)
       @errors        = []
       @success_count = 0
       @model_count   = model_count
+      @failed_models = []
+      @out           = out
     end
 
     def add(errors)
@@ -28,23 +30,23 @@ module ActiveMocker
     def display_errors
       uniq_errors.each do |e|
         if ActiveMocker::Config.error_verbosity == 3
-          STDERR.puts "#{e.class_name} has the following errors:"
-          STDERR.puts e.message.colorize(e.level_color)
-          STDERR.puts e.level
-          STDERR.puts e.original_error.message.colorize(e.level_color) if e.original_error?
-          STDERR.puts e.original_error.backtrace if e.original_error?
-          STDERR.puts e.original_error.class.name.colorize(e.level_color) if e.original_error?
+          out.puts "#{e.class_name} has the following errors:"
+          out.puts e.message.colorize(e.level_color)
+          out.puts e.level
+          out.puts e.original_error.message.colorize(e.level_color) if e.original_error?
+          out.puts e.original_error.backtrace if e.original_error?
+          out.puts e.original_error.class.name.colorize(e.level_color) if e.original_error?
         elsif ActiveMocker::Config.error_verbosity == 2
-          STDERR.puts e.message.colorize(e.level_color)
+          out.puts e.message.colorize(e.level_color)
         end
       end
       if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
-        STDERR.puts "Error Summary"
+        out.puts "Error Summary"
         error_summary
       end
       failure_count_message
       if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
-        STDERR.puts "To see more/less detail set error_verbosity = 0, 1, 2, 3"
+        out.puts "To see more/less detail set error_verbosity = 0, 1, 2, 3"
       end
     end
 
@@ -52,12 +54,13 @@ module ActiveMocker
       error_count = uniq_errors.count { |e| [:red].include?(e.level_color) }
       warn        = uniq_errors.count { |e| [:yellow].include?(e.level_color) }
       info        = uniq_errors.count { |e| [:default].include?(e.level_color) }
-      STDERR.puts "errors: #{error_count}, warn: #{warn}, info: #{info}"
+      out.puts "errors: #{error_count}, warn: #{warn}, info: #{info}"
+      out.puts "Failed models: #{failed_models.join(", ")}" if failed_models.count > 0
     end
 
     def failure_count_message
       if ActiveMocker::Config.error_verbosity > 0 && (success_count < model_count || uniq_errors.count > 0)
-        STDERR.puts "#{ model_count - success_count } mock(s) out of #{model_count} failed."
+        out.puts "#{ model_count - success_count } mock(s) out of #{model_count} failed."
       end
     end
   end

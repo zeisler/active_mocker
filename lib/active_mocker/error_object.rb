@@ -29,7 +29,7 @@ module ActiveMocker
     end
 
     def original_error?
-      original_error.present?
+      !original_error.nil?
     end
 
     def level_color

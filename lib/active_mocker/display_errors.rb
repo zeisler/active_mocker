@@ -31,24 +31,13 @@ module ActiveMocker
       uniq_errors.each do |e|
         next if e.level == :debug unless ENV["DEBUG"]
         if ActiveMocker::Config.error_verbosity == 3
-          out.puts "#{e.class_name} has the following errors:"
-          out.puts e.message.colorize(e.level_color)
-          out.puts e.level
-          out.puts e.original_error.message.colorize(e.level_color) if e.original_error?
-          out.puts e.original_error.backtrace if e.original_error?
-          out.puts e.original_error.class.name.colorize(e.level_color) if e.original_error?
+          level_three_errors(e)
         elsif ActiveMocker::Config.error_verbosity == 2
-          out.puts "#{e.class_name} has the following errors:"
-          out.puts e.message.colorize(e.level_color)
+          level_two_errors(e)
         end
       end
       if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
-        out.puts "Error Summary"
-        error_summary
-      end
-      failure_count_message
-      if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
-        out.puts "To see more/less detail set error_verbosity = 0, 1, 2, 3"
+        minimal_errors
       end
     end
 
@@ -56,6 +45,7 @@ module ActiveMocker
       error_count = uniq_errors.count { |e| [:red].include?(e.level_color) }
       warn        = uniq_errors.count { |e| [:yellow].include?(e.level_color) }
       info        = uniq_errors.count { |e| [:default].include?(e.level_color) }
+      out.puts "Error Summary"
       out.puts "errors: #{error_count}, warn: #{warn}, info: #{info}"
       out.puts "Failed models: #{failed_models.join(", ")}" if failed_models.count > 0
     end
@@ -64,6 +54,26 @@ module ActiveMocker
       if ActiveMocker::Config.error_verbosity > 0 && (success_count < model_count || uniq_errors.count > 0)
         out.puts "#{ model_count - success_count } mock(s) out of #{model_count} failed."
       end
+    end
+
+    def level_three_errors(e)
+      out.puts "#{e.class_name} has the following errors:"
+      out.puts e.message.colorize(e.level_color)
+      out.puts e.level
+      out.puts e.original_error.message.colorize(e.level_color) if e.original_error?
+      out.puts e.original_error.backtrace if e.original_error?
+      out.puts e.original_error.class.name.colorize(e.level_color) if e.original_error?
+    end
+
+    def level_two_errors(e)
+      out.puts "#{e.class_name} has the following errors:"
+      out.puts e.message.colorize(e.level_color)
+    end
+
+    def minimal_errors
+      error_summary
+      failure_count_message
+      out.puts "To see more/less detail set error_verbosity = 0, 1, 2, 3"
     end
   end
 end

@@ -25,7 +25,11 @@ module ActiveMocker
     def create
       verify_class
       if errors.empty?
-        template_creator.render
+        begin
+          template_creator.render
+        rescue => e
+          raise e unless error_already_collected?(e)
+        end
         file_out.close
         @completed = true
       end
@@ -50,8 +54,11 @@ module ActiveMocker
                 :active_record_base_klass,
                 :mock_append_name
 
+    def error_already_collected?(e)
+      errors.any? { |eo| eo.original_error == e }
+    end
+
     # -- Defaults -- #
-    private
     def template_creator_default(file_out)
       TemplateCreator.new(file_out:     file_out,
                           erb_template: File.new(File.join(File.dirname(__FILE__), "mock_template.erb"), 'r'),
@@ -89,7 +96,8 @@ module ActiveMocker
           self.extend("ActiveMocker::MockCreator::#{p.to_s.camelize}".constantize)
           hash[p] = ERB.new(file.read, nil, '-', "_sub#{p}").result(binding)
         rescue => e
-          print "#{file.inspect}"
+          errors << ErrorObject.new(class_name: class_name, original_error: e, type: :generation, level: :error, message: e.message)
+          errors << ErrorObject.new(class_name: class_name, original_error: e, type: :erb, level: :debug, message: "Erb template: #{p} failed.\n#{file.path}")
           raise e
         end
       end)
@@ -109,26 +117,26 @@ module ActiveMocker
 
     module ModulesConstants
       def constants
-        const = {}
-        class_introspector.get_class.constants.each { |c| const[c] = class_introspector.get_class.const_get(c) }
-        const = const.reject do |c, v|
-          v.class == Module || v.class == Class
+        class_introspector.get_class.constants.each_with_object({}) do |v, const|
+          c        = class_introspector.get_class.const_get(v)
+          const[v] = c unless c.class == Module || c.class == Class
         end
-        const
       end
 
       def modules
         @modules ||= begin
           {
-            included: reject_local_const(class_introspector.included_modules)
-                        .map(&:referenced_name),
-            extended: reject_local_const(class_introspector.extended_modules)
-                        .map(&:referenced_name)
+            included: get_module_by_reference(:included_modules),
+            extended: get_module_by_reference(:extended_modules)
           }
         end
       end
 
       private
+
+      def get_module_by_reference(type)
+        reject_local_const(class_introspector.public_send(type)).map(&:referenced_name)
+      end
 
       def reject_local_const(source)
         source.reject do |n|
@@ -153,23 +161,15 @@ module ActiveMocker
       include Attributes
 
       def attributes_with_defaults
-        hash = {}
-        attributes.each do |attr|
+        attributes.each_with_object({}) do |attr, hash|
           hash[attr.name] = Virtus::Attribute.build(attr.type).coerce(attr.default)
         end
-        hash
       end
 
       def types_hash
-        types = {}
-        attributes.each do |attr|
+        attributes.each_with_object(HashNewStyle.new) do |attr, types|
           types[attr.name] = "#{attr.type}"
-        end
-
-        type_array = types.map do |name, type|
-          "#{name}: #{type}"
-        end
-        '{ ' + type_array.join(', ') + ' }'
+        end.inspect
       end
 
       def associations
@@ -199,54 +199,55 @@ module ActiveMocker
       end
     end
 
+    Method = Struct.new(:name, :arguments)
+
     module Scopes
       def scope_methods
         class_introspector.class_macros.select { |h| h.keys.first == :scope }.map do |h|
           a = h.values.first.first
-          OpenStruct.new(name: a[0], arguments: ReverseParameters.new(a[1]))
+          Method.new(a[0], ReverseParameters.new(a[1]))
         end
       end
     end
 
     module DefinedMethods
-      def get_instance_methods
-        methods = class_introspector.get_class.public_instance_methods(false)
-        methods << class_introspector.get_class.superclass.public_instance_methods(false) if class_introspector.get_class.superclass != ActiveRecord::Base
-        methods.flatten
-      end
 
       def instance_methods
-        get_instance_methods.map do |m|
-          OpenStruct.new(name: m, arguments: ReverseParameters.new(class_introspector.get_class.instance_method(m).parameters))
-        end
-      end
-
-      def get_class_methods
-        class_introspector.get_class.methods(false)
+        class_introspector
+          .get_class
+          .public_instance_methods(false)
+          .map { |m| create_method(m, :instance_method) }
       end
 
       def class_methods
-        get_class_methods.map do |m|
-          OpenStruct.new(name: m, arguments: ReverseParameters.new(class_introspector.get_class.method(m).parameters))
-        end
+        class_introspector
+          .get_class
+          .methods(false)
+          .map { |m| create_method(m, :method) }
+      end
+
+      private
+
+      def create_method(m, type)
+        Method.new(m, ReverseParameters.new(class_introspector.get_class.send(type, m).parameters))
       end
     end
 
     module Associations
       def has_many
-        association_collection.select { |a| a.type == :has_many }
+        relation_find(:type, __method__)
       end
 
       def has_one
-        association_collection.select { |a| a.type == :has_one }
+        relation_find(:type, __method__)
       end
 
       def belongs_to
-        association_collection.select { |a| a.type == :belongs_to }
+        relation_find(:type, __method__)
       end
 
       def has_and_belongs_to_many
-        association_collection.select { |a| a.type == :has_and_belongs_to_many }
+        relation_find(:type, __method__)
       end
 
       def relation_find(key, value)

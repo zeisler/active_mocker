@@ -29,6 +29,7 @@ module ActiveMocker
 
     def display_errors
       uniq_errors.each do |e|
+        next if e.level == :debug unless ENV["DEBUG"]
         if ActiveMocker::Config.error_verbosity == 3
           out.puts "#{e.class_name} has the following errors:"
           out.puts e.message.colorize(e.level_color)

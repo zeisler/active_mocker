@@ -357,6 +357,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 * Sql queries, joins, etc will never be supported.
 * A record that has been created and then is modified will persist changes without calling `#save`, beware of this difference.
 * This is not a full replacement for ActiveRecord. It's simplified, with only the most essential parts. There are many tests to verify that is works the same as ActiveRecord, but's yours responsibility to know how ActiveRecord works.
+* Primary key will always default to `id`. If this is an causes a problem open an issue. 
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.

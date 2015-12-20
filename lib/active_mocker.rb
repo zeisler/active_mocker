@@ -1,5 +1,13 @@
-require "rubygems"
+#                   _   _           __  __            _
+#         /\       | | (_)         |  \/  |          | |
+#        /  \   ___| |_ ___   _____| \  / | ___   ___| | _____ _ __
+#       / /\ \ / __| __| \ \ / / _ \ |\/| |/ _ \ / __| |/ / _ \ '__|
+#      / ____ \ (__| |_| |\ V /  __/ |  | | (_) | (__|   <  __/ |
+#     /_/    \_\___|\__|_| \_/ \___|_|  |_|\___/ \___|_|\_\___|_|
+#
+#     By Dustin Zeisler
 
+require "rubygems"
 require 'active_mocker/version'
 require 'active_mocker/railtie' if defined?(Rails)
 require 'ruby-progressbar'

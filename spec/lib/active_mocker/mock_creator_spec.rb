@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'lib/post_methods'
 require 'active_support/core_ext/string'
 require 'spec/support/strip_heredoc'
+require 'active_mocker/error_object'
+require 'active_mocker/hash_new_style'
 require 'active_mocker/parent_class'
 require 'active_mocker/template_creator'
 require 'active_mocker/mock_creator'
@@ -21,12 +23,13 @@ describe ActiveMocker::MockCreator do
   describe "#create" do
 
     subject { ->(partials) {
-      described_class.new(file:                 file_in,
+      s = described_class.new(file:                 file_in,
                           file_out:             file_out,
                           schema_scrapper:      stub_schema_scrapper,
                           enabled_partials:     partials,
                           klasses_to_be_mocked: [],
                           mock_append_name:     "Mock").create
+      expect(s.errors).to eq []
       File.open(file_out.path).read
     } }
 

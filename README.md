@@ -267,9 +267,15 @@ PersonMock::CONSTANT_VALUE
 
 ### Managing Mocks  
 
-Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)
 ```ruby    
-ActiveMocker::LoadedMocks.delete_all
+require "active_mocker/rspec_helper"
+
+active_mocker.delete_all # Delete all records from loaded mocks
+
+active_mocker.find("User") # Find a mock by model name. Useful in before(:all)/after(:all) where automatic constant stubbing is unavailable.
+
+active_mocker.mocks.except("User").delete_all # Delete all loaded mock expect the User mock.
+
 ```
 ### ActiveRecord supported methods
 
@@ -356,7 +362,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 * Validation/Callbacks are not supported.
 * Sql queries, joins, etc will never be supported.
 * A record that has been created and then is modified will persist changes without calling `#save`, beware of this difference.
-* This is not a full replacement for ActiveRecord. It's simplified, with only the most essential parts. There are many tests to verify that is works the same as ActiveRecord, but's yours responsibility to know how ActiveRecord works.
+* This is not a full replacement for ActiveRecord.
 * Primary key will always default to `id`. If this is an causes a problem open an issue. 
 
 ## Inspiration

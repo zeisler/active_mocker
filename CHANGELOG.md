@@ -1,12 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.0.0.pre1 - 2015-12-13
+## 2.0.0 - 2015-12-22
 ### Enhancement
 - The mock append name is now changeable using `ActiveMocker::Config.mock_append_name=`. The default still being `Mock`.
 - `ActiveMocker::MockRelation(mock, collection)` to create separate independent mock collections.
 - Change `ActiveMocker::Mock::Base` to `ActiveMocker::Base`
 - Provide more control over error when running `rake active_mocker:build`, error_verbosity now has setting for 0 to 3.
+- `db/schema.rb` is no longer required to generate mocks.
+- Much better support for Single Table Inheritance and gems that add functionality by being the parent class of model.
+- New DB types can be registered with this API. `ActiveRecordSchemaScrapper::Attribute.register_type(name: :array, klass: Array)`
+- `ActiveMocker::Config.disable_modules_and_constants=` Non locally defined Modules are included/extended by default as well as constant declarations. To Disable to feature set to `true`.
+- `MODEL=User rake active_mocker:build` no longer takes a model name to generate just that mock. It now takes a path to a model file. `MODEL=[path-to-model] rake active_mocker:build`
+- When running `rake active_mocker:build` failed will be listed.
 
 ### Fix
 - Reduce restriction on Virtus gem to 1.0.any
@@ -14,22 +20,11 @@ All notable changes to this project will be documented in this file.
 
 ### Depracated
 - Moved `ActiveMocker::MockAbilities` into "active_mocker/deprecated_components/mock_abilities" if a project is still dependent on it this file it can be required and used at least until version 2.1. The alternative is to use `RSpec` verified doubles.
-- `#mock_class("Mock")` method has been moved to "active_mocker/deprecated_components/rspec_helper" if a project is still dependent on it this file it can be required and used at least until version 2.1. The alternative is to use the new api that is accessible by `#active_mocker`.
-
-## 2.0.0.beta1 - 2015-12-01
-### Enhancement
-- db/schema.rb is no longer required to generate mocks.
-- Much better support for Single Table Inheritance and gems that add functionality by being the parent class of model.
-- New DB types can be registered with this API. `ActiveRecordSchemaScrapper::Attribute.register_type(name: :array, klass: Array)`
-- `ActiveMocker::Config.disable_modules_and_constants=` Non locally defined Modules are included/extended by default as well as constant declaration. To Disable to feature set to `true`.
-- `MODEL=User rake active_mocker:build` no longer takes a model name to generate just that mock. It now takes a path to a model file. `MODEL=[path-to-model] rake active_mocker:build`
+- `#mock_class("Mock")` method has been moved to "active_mocker/deprecated_components/rspec_helper" if a project is still dependent on it this file it can be required and used at least until version 2.1. The alternative is to use the new api that is accessible by `instead active_mocker.mocks.find('ClassName')`.
 
 ### Removed
-- `log/active_mocker.log` is replaced env `ERROR_VERBOSITY=[0,1,2] rake active_mocker:build` or in Ruby `ActiveMocker::Config.error_verbosity=`
+- `log/active_mocker.log` is replaced env `ERROR_VERBOSITY=[0,1,2,3] rake active_mocker:build` or in Ruby `ActiveMocker::Config.error_verbosity=`
 - Removing undocumented feature of treating children of mocks differently. Remove the ability to sub class a mock and have it for use in that context when creating/finding association.
-
-### Depracating
-- `mock_class` for rspec_helper, use `instead active_mocker.mocks.find('ClassName')`. Will be removed in v2.1
 
 ## 1.8.4 - 2015-10-06
 ### Fix

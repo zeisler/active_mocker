@@ -67,3 +67,12 @@ module ActiveMocker
     end
   end
 end
+
+class String
+  def colorize(*args)
+    require "colorize"
+    super(*args)
+  rescue LoadError
+    self
+  end
+end

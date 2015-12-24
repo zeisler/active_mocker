@@ -1,8 +1,13 @@
 module ActiveMocker
   class NullProgress
-    def initialize(*)
 
+    def self.create(*)
+      self.new
     end
+
+    def initialize(*)
+    end
+
     def increment
     end
   end

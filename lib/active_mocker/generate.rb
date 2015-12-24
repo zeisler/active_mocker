@@ -85,7 +85,7 @@ module ActiveMocker
     end
 
     def progress_init
-      @progress = config.progress_class.new(models_paths.count)
+      @progress = config.progress_class.create(models_paths.count)
     end
 
     def models_paths

@@ -1,7 +1,7 @@
 require 'active_mocker/mock'
 
 class ChildModelMock < UserMock
-  created_with('2.0.0.rc1')
+  created_with('2.0.0')
 
 # _modules_constants.erb
 #_class_methods.erb

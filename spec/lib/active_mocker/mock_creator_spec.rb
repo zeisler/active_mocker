@@ -20,17 +20,21 @@ describe ActiveMocker::MockCreator do
 
   let(:active_record_stub_class) { Class.new }
 
+  def format_code(code)
+    DissociatedIntrospection::RubyCode.build_from_source(code).source_from_ast
+  end
+
   describe "#create" do
 
     subject { ->(partials) {
       s = described_class.new(file:                 file_in,
-                          file_out:             file_out,
-                          schema_scrapper:      stub_schema_scrapper,
-                          enabled_partials:     partials,
-                          klasses_to_be_mocked: [],
-                          mock_append_name:     "Mock").create
+                              file_out:             file_out,
+                              schema_scrapper:      stub_schema_scrapper,
+                              enabled_partials:     partials,
+                              klasses_to_be_mocked: [],
+                              mock_append_name:     "Mock").create
       expect(s.errors).to eq []
-      File.open(file_out.path).read
+      format_code(File.open(file_out.path).read)
     } }
 
     let(:file_out) {
@@ -130,13 +134,11 @@ describe ActiveMocker::MockCreator do
     end
 
     it 'partial :attributes' do
-      expect(subject.call([:attributes])).to eq <<-RUBY.strip_heredoc
+      expect(subject.call([:attributes])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
-
-        # _attributes.erb
           def example_attribute
             read_attribute(:example_attribute)
           end
@@ -144,6 +146,7 @@ describe ActiveMocker::MockCreator do
           def example_attribute=(val)
             write_attribute(:example_attribute, val)
           end
+
           def id
             read_attribute(:id)
           end
@@ -151,18 +154,17 @@ describe ActiveMocker::MockCreator do
           def id=(val)
             write_attribute(:id, val)
           end
+
         end
       RUBY
     end
 
     it 'partial :class_methods' do
-      expect(subject.call([:class_methods])).to eq <<-RUBY.strip_heredoc
+      expect(subject.call([:class_methods])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
-
-        #_class_methods.erb
           class << self
             def attributes
               @attributes ||= HashWithIndifferentAccess.new({"example_attribute"=>nil, "id"=>nil}).merge(super)
@@ -208,13 +210,11 @@ describe ActiveMocker::MockCreator do
     end
 
     it 'partial :modules_constants' do
-      expect(subject.call([:modules_constants])).to eq <<-RUBY.strip_heredoc
+      expect(subject.call([:modules_constants])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
-
-        # _modules_constants.erb
           MY_CONSTANT_VALUE = 3
           prepend PostMethods
         end
@@ -223,13 +223,11 @@ describe ActiveMocker::MockCreator do
 
     it 'partial :scopes' do
       results = subject.call([:scopes])
-      expect(results).to eq <<-RUBY.strip_heredoc
+      expect(results).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
-
-        # _scopes.erb
           module Scopes
             include ActiveMocker::Base::Scopes
 
@@ -259,12 +257,11 @@ describe ActiveMocker::MockCreator do
     end
 
     it 'partial :defined_methods' do
-      expect(subject.call([:defined_methods])).to eq <<-RUBY.strip_heredoc
+      expect(subject.call([:defined_methods])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
-
           def foo(foobar, value)
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [foobar, value])
           end
@@ -285,18 +282,17 @@ describe ActiveMocker::MockCreator do
     end
 
     it 'partial :associations' do
-      expect(subject.call([:associations])).to eq <<-RUBY.strip_heredoc
+      expect(subject.call([:associations])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
-
-        # _associations.erb
-
-        # belongs_to
           def user
-            read_association(:user) || write_association(:user, classes('User').try{ |k| k.find_by(id: user_id)})
+            read_association(:user) || write_association(:user, classes("User").try do |k|
+              k.find_by(id: user_id)
+            end)
           end
+
           def user=(val)
             write_association(:user, val)
             ActiveMocker::BelongsTo.new(val, child_self: self, foreign_key: :user_id).item
@@ -311,9 +307,8 @@ describe ActiveMocker::MockCreator do
             association = classes('User').try(:create,attributes, &block)
             write_association(:user, association) unless association.nil?
           end
-          alias_method :create_user!, :create_user
 
-        # has_one
+          alias_method :create_user!, :create_user
           def account
             read_association(:account)
           end
@@ -332,7 +327,6 @@ describe ActiveMocker::MockCreator do
           end
           alias_method :create_account!, :create_account
 
-        # has_many
           def person
             read_association(:person, -> { ActiveMocker::HasMany.new([],foreign_key: 'person_id', foreign_id: self.id, relation_class: classes('Person'), source: '') })
           end
@@ -340,7 +334,7 @@ describe ActiveMocker::MockCreator do
           def person=(val)
             write_association(:person, ActiveMocker::HasMany.new(val, foreign_key: 'person_id', foreign_id: self.id, relation_class: classes('Person'), source: ''))
           end
-        # has_and_belongs_to_many
+
           def other
             read_association(:other, ->{ ActiveMocker::HasAndBelongsToMany.new([]) })
           end

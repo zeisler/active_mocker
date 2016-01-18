@@ -2,6 +2,7 @@ language: ruby
 rvm:
   - 2.1.7
   - 2.2.3
+  - 2.3.0
 gemfile:
   - test_rails_4_app/gemfiles/rails_4.0.gemfile
   - test_rails_4_app/gemfiles/rails_4.1.gemfile

@@ -24,3 +24,4 @@ example_rails_app/.idea/*
 .idea/*
 cookbooks/*
 .vagrant/*
+test_rails_4_app/spec/mocks/*

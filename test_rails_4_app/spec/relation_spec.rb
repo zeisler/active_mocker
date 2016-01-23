@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative 'mocks/user_mock.rb'
+require_mock 'user_mock'
 require_relative "../../spec/lib/active_mocker/mock/queriable_shared_example"
 
 describe UserMock do

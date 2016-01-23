@@ -1,8 +1,8 @@
 require 'spec_helper'
 require 'active_mocker/rspec_helper'
 require 'lib/post_methods'
-require_relative 'mocks/micropost_mock.rb'
-require_relative 'mocks/user_mock.rb'
+require_mock 'micropost_mock'
+require_mock 'user_mock'
 
 describe 'Another Example', active_mocker: true do
   context '#mock_class' do

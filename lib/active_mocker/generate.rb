@@ -16,6 +16,7 @@ module ActiveMocker
         model           = get_model_const(model_name)
         mock_file_name  = "#{model_name.underscore}_#{config.mock_append_name.underscore}.rb"
         mock_file_path  = File.join(Config.mock_dir, mock_file_name)
+        assure_dir_path_exists(mock_file_path)
         schema_scrapper = ActiveRecordSchemaScrapper.new(model: model)
         File.open(mock_file_path, 'w') do |file_out|
           begin
@@ -34,7 +35,7 @@ module ActiveMocker
 
     def get_model_const(model_name)
       model_name.constantize
-    rescue => e
+    rescue StandardError, LoadError => e
       display_errors.wrap_an_exception(e, model_name)
     end
 
@@ -73,7 +74,7 @@ module ActiveMocker
     end
 
     def model_name(file)
-      File.basename(file, '.rb').camelize
+      FilePathToRubyClass.new(base_path: config.model_dir, class_path: file).to_s
     end
 
     def model_names
@@ -89,7 +90,13 @@ module ActiveMocker
     end
 
     def models_paths
-      @models_paths ||= Dir.glob(config.single_model_path || File.join(config.model_dir, "*.rb"))
+      @models_paths ||= Dir.glob(config.single_model_path || File.join(config.model_dir, "**/*.rb"))
+    end
+
+    def assure_dir_path_exists(file)
+      unless File.exists?(File.dirname(file))
+        FileUtils::mkdir_p(File.dirname(file))
+      end
     end
 
     def config

@@ -1,6 +1,6 @@
 require 'rails_helper'
-require_relative 'mocks/user_mock.rb'
-require_relative 'mocks/account_mock'
+require_mock 'user_mock'
+require_mock 'account_mock'
 
 describe AccountMock do
 

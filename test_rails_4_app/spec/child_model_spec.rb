@@ -1,6 +1,6 @@
 require 'rails_helper'
-require 'mocks/user_mock'
-require 'mocks/child_model_mock'
+require_mock 'user_mock'
+require_mock 'child_model_mock'
 
 describe ChildModel do
 

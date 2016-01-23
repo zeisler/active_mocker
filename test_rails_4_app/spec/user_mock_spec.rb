@@ -1,9 +1,9 @@
 require 'spec_helper'
 require_relative '../lib/post_methods'
-require_relative 'mocks/micropost_mock.rb'
-require_relative 'mocks/user_mock.rb'
-require_relative 'mocks/relationship_mock'
-require_relative 'mocks/account_mock'
+require_mock 'micropost_mock'
+require_mock 'user_mock'
+require_mock 'relationship_mock'
+require_mock 'account_mock'
 require_relative 'active_record_compatible_api'
 
 describe UserMock do

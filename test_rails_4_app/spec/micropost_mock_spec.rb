@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'lib/post_methods'
-require_relative 'mocks/micropost_mock.rb'
-require_relative 'mocks/user_mock.rb'
+require_mock 'micropost_mock'
+require_mock 'user_mock'
 
 describe MicropostMock do
 

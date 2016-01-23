@@ -161,13 +161,12 @@ module ActiveMocker
     # @private
     attr_accessor :_create_caller_locations
     # New objects can be instantiated as either empty (pass no construction parameter) or pre-set with
-    # attributes but not yet saved (pass a hash with key names matching the associated table column names).
-    # In both instances, valid attribute keys are determined by the column names of the associated table --
-    # hence you can't have attributes that aren't part of the table columns.
+    # attributes.
     #
     # ==== Example:
     #   # Instantiates a single new object
     #   UserMock.new(first_name: 'Jamie')
+
     def initialize(attributes = {}, &block)
       if self.class.abstract_class?
         raise NotImplementedError, "#{self.class.name} is an abstract class and cannot be instantiated."

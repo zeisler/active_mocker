@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'mocks/has_no_table_mock'
+require_mock 'has_no_table_mock'
 
 describe HasNoTableMock do
 

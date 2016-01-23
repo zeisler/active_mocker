@@ -1,11 +1,11 @@
 PATH
   remote: ../../
   specs:
-    active_mocker (2.0.0)
+    active_mocker (2.1.0)
       active_record_schema_scrapper (= 0.2.1)
       activesupport (~> 4.0)
       colorize (~> 0.7)
-      dissociated_introspection (= 0.1.6)
+      dissociated_introspection (= 0.4.1)
       rake (~> 10.0)
       reverse_parameters (= 0.3.0)
       ruby-progressbar (~> 1.7)
@@ -78,7 +78,7 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
-    dissociated_introspection (0.1.6)
+    dissociated_introspection (0.4.1)
       parser (~> 2.2)
       unparser (~> 0.2)
     equalizer (0.0.11)
@@ -95,7 +95,7 @@ GEM
       mime-types (>= 1.16, < 3)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
-    mime-types (2.6.2)
+    mime-types (2.99)
     mini_portile (0.6.2)
     minitest (5.8.2)
     nokogiri (1.6.6.2)

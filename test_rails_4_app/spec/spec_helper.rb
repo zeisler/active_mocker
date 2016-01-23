@@ -12,7 +12,23 @@ RSpec.configure do |config|
 
   config.mock_with :rspec do |mocks|
     mocks.verify_doubled_constant_names = true
-    mocks.verify_partial_doubles = true
+    mocks.verify_partial_doubles        = true
   end
 
 end
+
+def require_mock(name)
+  require "#{mock_path}/#{name}"
+end
+
+def mock_path
+  rails_version = if ENV["RAILS_VERSION"]
+                    ENV["RAILS_VERSION"]
+                  elsif defined? Rails
+                    "rails_#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+                  else
+                    raise "Can't find mock path"
+                  end
+  File.join(APP_ROOT, "spec/mocks/#{rails_version}")
+end
+

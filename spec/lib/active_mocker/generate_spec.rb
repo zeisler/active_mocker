@@ -15,6 +15,10 @@ RSpec.describe ActiveMocker::Generate do
       end
     end
 
+    before do
+      FileUtils.rmdir Dir[ "#{File.join(File.expand_path('../test_mock_dir', __FILE__))}/**/*"]
+    end
+
     after do
       FileUtils.rmdir not_found_dir
       ActiveMocker::Config.load_defaults
@@ -53,7 +57,6 @@ RSpec.describe ActiveMocker::Generate do
       end
 
       context "when ActiveMocker::Config.mock_dir cannot be found it will be created" do
-        let(:not_found_dir) { File.join(File.expand_path('../test_mock_dir', __FILE__)) }
 
         it do
           expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return(not_found_dir)

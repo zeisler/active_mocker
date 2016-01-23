@@ -62,7 +62,13 @@ module ActiveMocker
     def template_creator_default(file_out)
       TemplateCreator.new(file_out:     file_out,
                           erb_template: File.new(File.join(File.dirname(__FILE__), "mock_template.erb"), 'r'),
-                          binding:      binding)
+                          binding:      binding,
+                          post_process: -> (str) {
+                            ruby_code = DissociatedIntrospection::RubyCode.build_from_source(str, parse_with_comments: true)
+                            DissociatedIntrospection::WrapInModules.new(ruby_code: ruby_code)
+                              .call(modules: nested_modules)
+                              .source_from_ast.gsub(/end\n/, "end\n\n")
+                          })
     end
 
     def class_introspector_default
@@ -104,7 +110,13 @@ module ActiveMocker
     end
 
     def class_name
-      class_introspector.parsed_source.class_name
+      @class_name ||= class_introspector.parsed_source.class_name.split("::").last
+    end
+
+    def nested_modules
+      @nested_modules ||= begin
+        class_introspector.parsed_source.module_nesting.join("::")
+      end
     end
 
     def parent_class

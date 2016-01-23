@@ -17,6 +17,7 @@ require 'active_mocker/config'
 require "reverse_parameters"
 require "active_record_schema_scrapper"
 require "dissociated_introspection"
+require "active_mocker/file_path_to_ruby_class"
 require "active_mocker/hash_new_style"
 require "active_mocker/null_progress"
 require "active_mocker/progress"

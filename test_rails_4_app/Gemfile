@@ -9,5 +9,4 @@ group :development, :test do
   gem 'active_mocker', path: '../'
   gem 'omniauth-identity'
 end
-
 gemspec :path => "../"

@@ -3,9 +3,11 @@ namespace :active_mocker do
   desc('Rebuild mocks.')
   task :build => :environment do
     ActiveMocker.configure do |c|
-      c.single_model_path = ENV["MODEL"] if ENV["MODEL"]
-      c.progress_bar     = false if ENV["MUTE_PROGRESS_BAR"]
-      c.error_verbosity  = ENV["ERROR_VERBOSITY"].to_i if ENV["ERROR_VERBOSITY"]
+      c.single_model_path             = ENV["MODEL"] if ENV["MODEL"]
+      c.model_dir                     = ENV["MODEL_DIR"] if ENV["MODEL_DIR"]
+      c.mock_dir                      = ENV["MOCK_DIR"] if ENV["MOCK_DIR"]
+      c.progress_bar                  = false if ENV["MUTE_PROGRESS_BAR"]
+      c.error_verbosity               = ENV["ERROR_VERBOSITY"].to_i if ENV["ERROR_VERBOSITY"]
       c.disable_modules_and_constants = false
     end.create_mocks
   end

@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.1.0 - 2106-01-18
+### Enhancement
+- Support for module nested models.
+
 ## 2.0.0 - 2015-12-22
 ### Enhancement
 - The mock append name is now changeable using `ActiveMocker::Config.mock_append_name=`. The default still being `Mock`.
@@ -18,9 +22,9 @@ All notable changes to this project will be documented in this file.
 - Reduce restriction on Virtus gem to 1.0.any
 - When id is not a fixnum and make it match ActiveRecord behavior of calling `#to_i`.
 
-### Depracated
-- Moved `ActiveMocker::MockAbilities` into "active_mocker/deprecated_components/mock_abilities" if a project is still dependent on it this file it can be required and used at least until version 2.1. The alternative is to use `RSpec` verified doubles.
-- `#mock_class("Mock")` method has been moved to "active_mocker/deprecated_components/rspec_helper" if a project is still dependent on it this file it can be required and used at least until version 2.1. The alternative is to use the new api that is accessible by `instead active_mocker.mocks.find('ClassName')`.
+### Deprecated
+- Moved `ActiveMocker::MockAbilities` into "active_mocker/deprecated_components/mock_abilities" if a project is still dependent on it this file it can be required and used at least until version 3.0. The alternative is to use `RSpec` verified doubles.
+- `#mock_class("Mock")` method has been moved to "active_mocker/deprecated_components/rspec_helper" if a project is still dependent on it this file it can be required and used at least until version 3.0. The alternative is to use the new api that is accessible by instead `active_mocker.mocks.find('ClassName')`.
 
 ### Removed
 - `log/active_mocker.log` is replaced env `ERROR_VERBOSITY=[0,1,2,3] rake active_mocker:build` or in Ruby `ActiveMocker::Config.error_verbosity=`

@@ -199,7 +199,7 @@ module ActiveMocker
     end
 
     # Like <tt>find_by</tt>, except that if no record is found, raises
-    # an <tt>ActiveRecord::RecordNotFound</tt> error.
+    # an <tt>ActiveMocker::RecordNotFound</tt> error.
     def find_by!(conditions={})
       result = find_by(conditions)
       if result.nil?

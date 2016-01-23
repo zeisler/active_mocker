@@ -20,8 +20,8 @@ class Model < ActiveRecord::Base
 
   end
 
-  scope :named, ->(name, value=nil, options={}) { }
-  scope :other_named, -> { }
+  scope :named, ->(name, value=nil, options={}) {}
+  scope :other_named, -> {}
 
   def foo(foobar, value)
 

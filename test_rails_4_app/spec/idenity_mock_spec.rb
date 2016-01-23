@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'mocks/identity_mock'
+require_mock 'identity_mock'
 
 describe IdentityMock do
 

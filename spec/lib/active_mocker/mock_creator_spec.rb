@@ -133,6 +133,38 @@ describe ActiveMocker::MockCreator do
       expect(subject.call(nil).class).to eq String
     end
 
+    context "when it mock is in modules" do
+      let(:file_in) {
+        File.new(File.join(File.dirname(__FILE__), "../model.rb"))
+      }
+
+      it 'partial :attributes' do
+        expect(subject.call([:attributes])).to eq format_code <<-RUBY.strip_heredoc
+        require 'active_mocker/mock'
+
+        class ModelMock < ActiveMocker::Base
+          created_with('#{ActiveMocker::VERSION}')
+          def example_attribute
+            read_attribute(:example_attribute)
+          end
+
+          def example_attribute=(val)
+            write_attribute(:example_attribute, val)
+          end
+
+          def id
+            read_attribute(:id)
+          end
+
+          def id=(val)
+            write_attribute(:id, val)
+          end
+
+        end
+        RUBY
+      end
+    end
+
     it 'partial :attributes' do
       expect(subject.call([:attributes])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'

@@ -2,9 +2,9 @@ task :integration do
   Dir.chdir("test_rails_4_app") do
     root = File.expand_path('../../', __FILE__)
     if ENV["TRAVIS"]
-      rails_version = File.open(File.join(root, "Gemfile")).read.scan(/['|"]rails['|"].*~>\s?(\d.\d)/).first.first
+      rails_version = File.open(File.join(ENV["BUNDLE_GEMFILE"])).read.scan(/['|"]rails['|"].*~>\s?(\d.\d)/).first.first
       rails_version = "rails_#{rails_version}"
-      sh "RAILS_VERSION=#{rails_version} MUTE_PROGRESS_BAR=true ERROR_VERBOSITY=2 rake active_mocker:build"
+      sh "BUNDLE_GEMFILE=#{ENV["BUNDLE_GEMFILE"]} RAILS_VERSION=#{rails_version} MUTE_PROGRESS_BAR=true ERROR_VERBOSITY=2 rake active_mocker:build"
       sh "rspec"
     else
       Bundler.with_clean_env do

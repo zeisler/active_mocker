@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20130315230445) do
     t.boolean  "admin",           default: false
   end
 
-  create_table "cusomters", force: true do |t|
+  create_table "customers", force: true do |t|
     t.string   "name"
     t.string   "email",    default: ""
     t.decimal  "credits",  precision: 19, scale: 6

@@ -12,12 +12,14 @@ module ActiveMocker
     def call
       progress_init
       models_paths.each do |file|
-        model_name      = model_name(file)
-        model           = get_model_const(model_name)
-        mock_file_name  = "#{model_name.underscore}_#{config.mock_append_name.underscore}.rb"
-        mock_file_path  = File.join(Config.mock_dir, mock_file_name)
+        model_name     = model_name(file)
+        model          = get_model_const(model_name)
+        mock_file_name = "#{model_name.underscore}_#{config.mock_append_name.underscore}.rb"
+        mock_file_path = File.join(Config.mock_dir, mock_file_name)
         assure_dir_path_exists(mock_file_path)
         schema_scrapper = ActiveRecordSchemaScrapper.new(model: model)
+        mock_dir        = File.dirname(mock_file_path)
+        FileUtils::mkdir_p(mock_dir) unless Dir.exists?(mock_dir)
         File.open(mock_file_path, 'w') do |file_out|
           begin
             result                       = create_mock(file, file_out, schema_scrapper)
@@ -53,6 +55,7 @@ module ActiveMocker
     end
 
     OtherErrors = Struct.new(:successful?)
+
     def collect_errors(mock_file_path, create_mock_errors, schema_scrapper, model_name)
       display_errors.wrap_errors(schema_scrapper.associations.errors, model_name, type: :associations)
       display_errors.wrap_errors(schema_scrapper.attributes.errors, model_name, type: :attributes)

@@ -20,7 +20,7 @@ module ActiveMocker
         schema_scrapper = ActiveRecordSchemaScrapper.new(model: model)
         mock_dir        = File.dirname(mock_file_path)
         FileUtils::mkdir_p(mock_dir) unless Dir.exists?(mock_dir)
-        File.open(mock_file_path, 'w') do |file_out|
+        file = File.open(mock_file_path, 'w') do |file_out|
           begin
             result                       = create_mock(file, file_out, schema_scrapper)
             status                       = collect_errors(mock_file_path, result.errors, schema_scrapper, model_name)
@@ -29,6 +29,7 @@ module ActiveMocker
             rescue_clean_up(e, file_out, model_name)
           end
         end
+        raise "File has been closed but can't find in file system. #{mock_file_path}" unless file.exists?(file)
         progress.increment
       end
       display_errors.display_errors

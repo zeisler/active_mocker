@@ -300,15 +300,16 @@ describe ActiveMocker::MockCreator do
           def superman
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
           end
+          def self.bang!
+            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
+          end
           def self.duper(value, *args)
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [value, args])
           end
           def self.foo
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
           end
-          def self.bang!
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
-          end
+
         end
       RUBY
     end

@@ -228,6 +228,7 @@ module ActiveMocker
         class_introspector
           .get_class
           .public_instance_methods(false)
+          .sort
           .map { |m| create_method(m, :instance_method) }
       end
 
@@ -235,6 +236,7 @@ module ActiveMocker
         class_introspector
           .get_class
           .methods(false)
+          .sort
           .map { |m| create_method(m, :method) }
       end
 

@@ -12,6 +12,7 @@ RSpec.describe ActiveMocker::Generate do
         config.model_dir       = File.join(File.expand_path('../', __FILE__))
         config.mock_dir        = not_found_dir
         config.error_verbosity = 0
+        config.ensure_file_exists_after_close = false
       end
     end
 

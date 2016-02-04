@@ -12,6 +12,7 @@ module ActiveMocker
     def call
       progress_init
       models_paths.each do |file|
+        completed = false
         model_name     = model_name(file)
         model          = get_model_const(model_name)
         mock_file_name = "#{model_name.underscore}_#{config.mock_append_name.underscore}.rb"
@@ -25,11 +26,12 @@ module ActiveMocker
             result                       = create_mock(file, file_out, schema_scrapper)
             status                       = collect_errors(mock_file_path, result.errors, schema_scrapper, model_name)
             display_errors.success_count += 1 if result.completed? && status.successful?
+            completed = true if result.completed? && status.successful?
           rescue => e
             rescue_clean_up(e, file_out, model_name)
           end
         end
-        raise "File has been closed but can't find in file system. #{mock_file_path}" unless file.exists?(mock_file_path)
+        raise "File has been closed but can't find in file system. #{mock_file_path}" unless File.exists?(mock_file_path) if config.ensure_file_exists_after_close && completed
         progress.increment
       end
       display_errors.display_errors

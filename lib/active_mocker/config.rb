@@ -8,7 +8,8 @@ module ActiveMocker
                     :progress_bar,
                     :error_verbosity,
                     :disable_modules_and_constants,
-                    :mock_append_name
+                    :mock_append_name,
+                    :ensure_file_exists_after_close
 
       def model_base_classes=(val)
         @model_base_classes = val
@@ -27,6 +28,7 @@ module ActiveMocker
         @model_dir                     = nil unless @model_dir
         @mock_dir                      = nil unless @mock_dir
         @mock_append_name              = "Mock"
+        @ensure_file_exists_after_close = true
         rails_defaults if Object.const_defined?('Rails')
       end
 

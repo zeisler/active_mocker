@@ -32,12 +32,14 @@ module ActiveMocker
           end
         end
         if File.exists?(mock_file_path)
-          puts ""
+          puts "Finished generating: #{model_name}"
           puts mock_dir
           system "ls #{mock_dir}"
           progress.increment
         elsif config.ensure_file_exists_after_close && completed
           raise "File has been closed but can't find in file system. #{mock_file_path}"
+        else
+          progress.increment
         end
       end
       display_errors.display_errors

@@ -31,8 +31,14 @@ module ActiveMocker
             rescue_clean_up(e, file_out, model_name)
           end
         end
-        raise "File has been closed but can't find in file system. #{mock_file_path}" unless File.exists?(mock_file_path) if config.ensure_file_exists_after_close && completed
-        progress.increment
+        if File.exists?(mock_file_path)
+          puts ""
+          puts mock_dir
+          system "ls #{mock_dir}"
+          progress.increment
+        elsif config.ensure_file_exists_after_close && completed
+          raise "File has been closed but can't find in file system. #{mock_file_path}"
+        end
       end
       display_errors.display_errors
       self

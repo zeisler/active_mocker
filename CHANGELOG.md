@@ -1,9 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.1.0 - 2106-01-18
+## 2.1.0 - 2106-02-05
 ### Enhancement
 - Support for module nested models.
+- Adding support for ruby 2.3
 
 ## 2.0.0 - 2015-12-22
 ### Enhancement

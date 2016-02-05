@@ -10,3 +10,5 @@ gemfile:
 env:
   global:
     TRAVIS: true
+sudo: false
+cache: bundler

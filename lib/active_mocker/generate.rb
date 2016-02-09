@@ -10,6 +10,7 @@ module ActiveMocker
 
     # @return self
     def call
+      clean_up
       progress_init
       models_paths.each do |file|
         model_name      = model_name(file)
@@ -113,6 +114,14 @@ module ActiveMocker
       else
         MockCreator.enabled_partials_default
       end
+    end
+
+    def clean_up
+      delete_mocks unless config.single_model_path
+    end
+
+    def delete_mocks
+      FileUtils.rm Dir.glob(File.join(config.mock_dir, "/**/*_#{config.mock_append_name.underscore}.rb"))
     end
   end
 end

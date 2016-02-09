@@ -12,11 +12,12 @@ RSpec.describe ActiveMocker::Generate do
         config.model_dir       = File.join(File.expand_path('../', __FILE__))
         config.mock_dir        = not_found_dir
         config.error_verbosity = 0
+        config.progress_bar    = false
       end
     end
 
     before do
-      FileUtils.rmdir Dir[ "#{File.join(File.expand_path('../test_mock_dir', __FILE__))}/**/*"]
+      FileUtils.rmdir Dir["#{File.join(File.expand_path('../test_mock_dir', __FILE__))}/**/*"]
     end
 
     after do
@@ -63,6 +64,20 @@ RSpec.describe ActiveMocker::Generate do
           expect(Dir.exists?(not_found_dir)).to eq false
           described_class.new
           expect(Dir.exists?(not_found_dir)).to eq true
+        end
+      end
+
+      context "when old mock exist" do
+        let(:old_mock_path){File.join(not_found_dir, "old_mock_from_deleted_model_mock.rb")}
+        before do
+          FileUtils::mkdir_p(not_found_dir)
+          File.open(old_mock_path, "w"){|w| w.write ""}
+        end
+
+        it "delete all and only regenerates the ones with models" do
+          expect(File.exists? old_mock_path).to eq true
+          described_class.new.call
+          expect(File.exists? old_mock_path).to eq false
         end
       end
     end

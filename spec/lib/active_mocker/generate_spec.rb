@@ -5,11 +5,11 @@ RSpec.describe ActiveMocker::Generate do
 
   describe ".new" do
 
-    let(:not_found_dir) { File.join(File.expand_path('../test_mock_dir', __FILE__)) }
+    let(:not_found_dir) { File.join(File.expand_path("../test_mock_dir", __FILE__)) }
 
     before do
       ActiveMocker::Config.set do |config|
-        config.model_dir        = File.join(File.expand_path('../', __FILE__))
+        config.model_dir        = File.join(File.expand_path("../", __FILE__))
         config.mock_dir         = not_found_dir
         config.error_verbosity  = 0
         config.progress_bar     = false
@@ -17,7 +17,7 @@ RSpec.describe ActiveMocker::Generate do
     end
 
     before do
-      FileUtils.rm_rf Dir["#{not_found_dir}"]
+      FileUtils.rm_rf not_found_dir
     end
 
     after do
@@ -61,16 +61,16 @@ RSpec.describe ActiveMocker::Generate do
 
         it do
           expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return(not_found_dir)
-          expect(Dir.exists?(not_found_dir)).to eq false
+          expect(Dir.exist?(not_found_dir)).to eq false
           described_class.new
-          expect(Dir.exists?(not_found_dir)).to eq true
+          expect(Dir.exist?(not_found_dir)).to eq true
         end
       end
 
       context "when old mock exist" do
         let(:current_mock_path) { File.join(not_found_dir, "model_mock.rb") }
         let(:old_mock_path) { File.join(not_found_dir, "old_mock_from_deleted_model_mock.rb") }
-        let(:models_dir) { File.join(File.expand_path('../../', __FILE__), "models") }
+        let(:models_dir) { File.join(File.expand_path("../../", __FILE__), "models") }
 
         before do
           stub_const("ActiveRecord::Base", class_double("ActiveRecord::Base"))
@@ -84,13 +84,13 @@ RSpec.describe ActiveMocker::Generate do
         end
 
         it "delete all and only regenerates the ones with models" do
-          expect { described_class.new.call }.to change { File.exists? old_mock_path }.from(true).to(false)
+          expect { described_class.new.call }.to change { File.exist?(old_mock_path) }.from(true).to(false)
         end
 
         it "keeps around any mocks that have models" do
-          expect(File.exists? current_mock_path).to eq true
+          expect(File.exist?(current_mock_path)).to eq true
           described_class.new.call
-          expect(File.exists? current_mock_path).to eq true
+          expect(File.exist?(current_mock_path)).to eq true
         end
       end
     end
@@ -100,7 +100,7 @@ RSpec.describe ActiveMocker::Generate do
       before do
         ActiveMocker::Config.disable_modules_and_constants = set_to
         ActiveMocker::Config.progress_bar                  = false
-        ActiveMocker::Config.single_model_path             = File.join(File.expand_path('../../', __FILE__), "models/model.rb")
+        ActiveMocker::Config.single_model_path             = File.join(File.expand_path("../../", __FILE__), "models/model.rb")
       end
 
       context "when true" do
@@ -126,7 +126,7 @@ RSpec.describe ActiveMocker::Generate do
 
       before do
         ActiveMocker::Config.progress_bar      = false
-        ActiveMocker::Config.single_model_path = File.join(File.expand_path('../../models', __FILE__), "model.rb")
+        ActiveMocker::Config.single_model_path = File.join(File.expand_path("../../models", __FILE__), "model.rb")
       end
 
       context "defaults" do

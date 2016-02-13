@@ -1,7 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.1.0 - 2106-02-05
+## 2.1.1 - 2016-02-12
+### Fix
+- Mocks persist after model is deleted - https://github.com/zeisler/active_mocker/issues/35
+
+## 2.1.0 - 2016-02-05
 ### Enhancement
 - Support for module nested models.
 - Adding support for ruby 2.3

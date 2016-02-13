@@ -42,7 +42,7 @@ describe ActiveMocker::MockCreator do
     }
 
     let(:file_in) {
-      File.new(File.join(File.dirname(__FILE__), "../model.rb"))
+      File.new(File.join(File.dirname(__FILE__), "../models/model.rb"))
     }
 
     let(:rails_model) {
@@ -135,7 +135,7 @@ describe ActiveMocker::MockCreator do
 
     context "when it mock is in modules" do
       let(:file_in) {
-        File.new(File.join(File.dirname(__FILE__), "../model.rb"))
+        File.new(File.join(File.dirname(__FILE__), "../models/model.rb"))
       }
 
       it 'partial :attributes' do

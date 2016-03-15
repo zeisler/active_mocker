@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.1.2 - 2016-03-14
+### Fix
+-  When method or scopes defined on the model took an explicit block ie. `&block` it would cause an error.
+
 ## 2.1.1 - 2016-02-12
 ### Fix
 - Mocks persist after model is deleted - https://github.com/zeisler/active_mocker/issues/35

@@ -2,9 +2,9 @@ module ActiveMocker
   class Generate
 
     def initialize
-      raise ArgumentError, "mock_dir is missing a valued value!" if config.mock_dir.nil? || config.mock_dir.empty?
+      raise ArgumentError, "mock_dir is missing a valued value!" if config.mock_dir.nil? || config.mock_dir.to_s.empty?
       create_mock_dir
-      raise ArgumentError, "model_dir is missing a valued value!" if config.model_dir.nil? || config.model_dir.empty? || !Dir.exists?(config.model_dir)
+      raise ArgumentError, "model_dir is missing a valued value!" if config.model_dir.nil? || config.model_dir.to_s.empty? || !Dir.exists?(config.model_dir)
       @display_errors = DisplayErrors.new(models_paths.count)
     end
 

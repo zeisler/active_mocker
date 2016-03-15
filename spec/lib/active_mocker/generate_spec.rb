@@ -40,6 +40,16 @@ RSpec.describe ActiveMocker::Generate do
         expect { described_class.new }.to raise_error(ArgumentError, "model_dir is missing a valued value!")
       end
 
+      it "when ActiveMocker::Config.model_dir is a empty Pathname" do
+        expect(ActiveMocker::Config).to receive(:model_dir).at_least(:once).and_return(Pathname.new(""))
+        expect { described_class.new }.to raise_error(ArgumentError, "model_dir is missing a valued value!")
+      end
+
+      it "when ActiveMocker::Config.model_dir is a valid Pathname" do
+        expect(ActiveMocker::Config).to receive(:model_dir).at_least(:once).and_return(Pathname.new(not_found_dir))
+        expect { described_class.new }.to_not raise_error
+      end
+
       it "when ActiveMocker::Config.model_dir cannot be found" do
         expect(ActiveMocker::Config).to receive(:model_dir).at_least(:once).and_return("path")
         expect { described_class.new }.to raise_error(ArgumentError, "model_dir is missing a valued value!")
@@ -55,6 +65,16 @@ RSpec.describe ActiveMocker::Generate do
       it "when ActiveMocker::Config.mock_dir is empty string" do
         expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return("")
         expect { described_class.new }.to raise_error(ArgumentError, "mock_dir is missing a valued value!")
+      end
+
+      it "when ActiveMocker::Config.model_dir is a empty Pathname" do
+        expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return(Pathname.new(""))
+        expect { described_class.new }.to raise_error(ArgumentError, "mock_dir is missing a valued value!")
+      end
+
+      it "when ActiveMocker::Config.model_dir is a valid Pathname" do
+        expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return(Pathname.new(not_found_dir))
+        expect { described_class.new }.to_not raise_error
       end
 
       context "when ActiveMocker::Config.mock_dir cannot be found it will be created" do

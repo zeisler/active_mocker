@@ -1,7 +1,7 @@
 PATH
   remote: ../../
   specs:
-    active_mocker (2.1.1)
+    active_mocker (2.1.2)
       active_record_schema_scrapper (~> 0.2.1)
       activesupport (~> 4.0)
       colorize (~> 0.7)

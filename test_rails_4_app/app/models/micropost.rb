@@ -35,4 +35,8 @@ class Micropost < ActiveRecord::Base
     id
   end
 
+  def i_take_block(&block)
+
+  end
+
 end

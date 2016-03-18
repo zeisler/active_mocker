@@ -8,7 +8,6 @@ require 'virtus'
 
 require 'active_mocker/version'
 require 'active_mocker/loaded_mocks'
-require 'active_mocker/mock/hash_process'
 require 'active_mocker/mock/collection'
 require 'active_mocker/mock/queries'
 require 'active_mocker/mock/relation'

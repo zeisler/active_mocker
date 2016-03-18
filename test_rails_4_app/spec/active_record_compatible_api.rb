@@ -101,6 +101,19 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
       expect(user.admin).to eq true
     end
 
+    it "unsaved changes are not saved" do
+      user = user_class.create(name: "Created with name.")
+      user.name = "After Created name."
+      expect(user_class.first.name).to eq "Created with name."
+    end
+
+    it "saved changes are saved" do
+      user = user_class.create(name: "Created with name.")
+      user.name = "After Created name."
+      user.save
+      expect(user_class.first.name).to eq "After Created name."
+    end
+
   end
 
   describe '::update' do

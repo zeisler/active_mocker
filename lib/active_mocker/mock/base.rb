@@ -176,7 +176,6 @@ module ActiveMocker
     end
 
     def setup_instance_variables
-      @types        = self.class.send(:types)
       @attributes   = self.class.send(:attributes).dup
       @associations = self.class.send(:associations).dup
     end

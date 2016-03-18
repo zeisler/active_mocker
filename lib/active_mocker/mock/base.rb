@@ -307,10 +307,14 @@ module ActiveMocker
       end
 
       # Updates the attribute identified by <tt>attr_name</tt> with the
-      # specified +value+. Empty strings for fixnum and float columns are
-      # turned into +nil+.
+      # specified +value+.
       def write_attribute(attr, value)
-        @attributes[attr] = types[attr].coerce(value)
+        send("#{attr}=", value)
+      end
+
+      # @api private
+      def assign_attribute(attr, value, type:)
+        @attributes[attr] = self.class.send(:build_type, type).coerce(value)
       end
 
       # @api private
@@ -323,7 +327,7 @@ module ActiveMocker
         @associations[attr.to_sym] = value
       end
 
-      protected :read_attribute, :write_attribute, :read_association, :write_association
+      private :read_attribute, :write_attribute, :read_association, :write_association, :assign_attribute
 
     end
 

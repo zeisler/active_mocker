@@ -332,7 +332,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * attributes
   * update
   * save/save!
-  * write_attribute/read_attribute - (protected, can be used within modules)
+  * write_attribute/read_attribute - (private, can be used within modules)
   * delete
   * new_record?
   * persisted?

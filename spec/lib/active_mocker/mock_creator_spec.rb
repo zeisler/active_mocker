@@ -149,7 +149,7 @@ describe ActiveMocker::MockCreator do
           end
 
           def example_attribute=(val)
-            write_attribute(:example_attribute, val)
+            assign_attribute(:example_attribute, val, type: String)
           end
 
           def id
@@ -157,7 +157,7 @@ describe ActiveMocker::MockCreator do
           end
 
           def id=(val)
-            write_attribute(:id, val)
+            assign_attribute(:id, val, type: Fixnum)
           end
 
         end
@@ -176,7 +176,7 @@ describe ActiveMocker::MockCreator do
           end
 
           def example_attribute=(val)
-            write_attribute(:example_attribute, val)
+            assign_attribute(:example_attribute, val, type: String)
           end
 
           def id
@@ -184,7 +184,7 @@ describe ActiveMocker::MockCreator do
           end
 
           def id=(val)
-            write_attribute(:id, val)
+            assign_attribute(:id, val, type: Fixnum)
           end
 
         end
@@ -200,10 +200,6 @@ describe ActiveMocker::MockCreator do
           class << self
             def attributes
               @attributes ||= HashWithIndifferentAccess.new({"example_attribute"=>nil, "id"=>nil}).merge(super)
-            end
-
-            def types
-              @types ||= ActiveMocker::HashProcess.new({ example_attribute: String, id: Fixnum }, method(:build_type)).merge(super)
             end
 
             def associations

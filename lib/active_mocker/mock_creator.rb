@@ -209,6 +209,10 @@ module ActiveMocker
       def table_name
         schema_scrapper.table_name
       end
+
+      def mocked_class
+        [nested_modules, class_name].compact.reject(&:empty?).join("::")
+      end
     end
 
     Method = Struct.new(:name, :arguments)

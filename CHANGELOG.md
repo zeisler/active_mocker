@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Fix
+- Issue where namespaced mocks would not be auto stubbed. 
+
 ## 2.1.2 - 2016-03-14
 ### Fix
 -  When method or scopes defined on the model took an explicit block ie. `&block` it would cause an error.

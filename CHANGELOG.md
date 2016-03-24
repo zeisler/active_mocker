@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Current
+### Feature 
+- Add `ActiveMocker::Mock#slice`
+
 ## 2.1.3 - 2016-03-21
 ### Fix
 - Issue where namespaced mocks would not be auto stubbed. 

@@ -275,6 +275,11 @@ module ActiveMocker
       !value.nil? && !(value.respond_to?(:empty?) && value.empty?)
     end
 
+    # Returns a hash of the given methods with their names as keys and returned values as values.
+    def slice(*methods)
+      Hash[methods.map! { |method| [method, public_send(method)] }].with_indifferent_access
+    end
+
     # Returns an array of names for the attributes available on this object.
     #
     #   person = Person.new

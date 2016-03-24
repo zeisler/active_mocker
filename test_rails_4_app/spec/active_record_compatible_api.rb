@@ -273,6 +273,14 @@ shared_examples_for 'ActiveRecord' do |micropost_class, account_class|
 
   end
 
+  describe "::slice" do
+
+    it 'removes out wanted attributes and returns a hash' do
+      expect(user_class.create(email: "2", name: "Fred").slice(:email, :name)).to eq({"email" => "2", "name" => "Fred"})
+    end
+
+  end
+
   describe 'type coercion' do
 
     it 'will coerce string to integer' do

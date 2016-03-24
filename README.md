@@ -340,6 +340,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * attribute_names
   * attribute_present?
   * has_attribute?
+  * slice
 
 **has_one/belongs_to/has_many**
 

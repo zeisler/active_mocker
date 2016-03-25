@@ -6,6 +6,6 @@
 
 
   def <%= meth.name %>=(val)
-    write_attribute(:<%= meth.name %>, val)
+    assign_attribute(:<%= meth.name %>, val, type: <%= meth.type %>)
   end
 <% end -%>

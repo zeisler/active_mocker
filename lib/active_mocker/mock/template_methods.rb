@@ -11,10 +11,6 @@ module ActiveMocker
         HashWithIndifferentAccess.new({})
       end
 
-      def types
-        HashProcess.new({}, method(:build_type))
-      end
-
       def associations
         {}
       end

@@ -178,12 +178,6 @@ module ActiveMocker
         end
       end
 
-      def types_hash
-        attributes.each_with_object(HashNewStyle.new) do |attr, types|
-          types[attr.name] = "#{attr.type}"
-        end.inspect
-      end
-
       def associations
         @associations ||= schema_scrapper.associations.to_a.each_with_object({}) do |a, h|
           h[a.name] = nil

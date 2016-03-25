@@ -23,7 +23,7 @@ module ActiveMocker
 
   end
 
-  class UpdateMocksError < Exception
+  class UpdateMocksError < StandardError
 
     def initialize(name, mock_version, gem_version)
       super("#{name} was built with #{mock_version} but the gem version is #{gem_version}. Run `rake active_mocker:build` to update.")
@@ -31,9 +31,12 @@ module ActiveMocker
 
   end
 
-  class NotImplementedError < Exception
+  class NotImplementedError < StandardError
   end
 
-  class Error < Exception
+  class Error < StandardError
+  end
+
+  class PrivateArgument < StandardError
   end
 end

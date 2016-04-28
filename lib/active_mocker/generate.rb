@@ -14,8 +14,7 @@ module ActiveMocker
       progress_init
 
       active_record_models_with_files.each do |model, file|
-        writer = FileWriter.new(model: model, file: file, display_errors: display_errors, config: config, model_names: model_names)
-        writer.write!
+        write_file(model, file)
 
         progress.increment
       end
@@ -40,6 +39,17 @@ module ActiveMocker
     private
 
     attr_reader :display_errors, :progress
+
+    def write_file(model, file)
+      writer = FileWriter.new(
+        model: model,
+        file: file,
+        display_errors: display_errors,
+        config: config,
+        model_names: model_names)
+
+      writer.write!
+    end
 
     def progress_init
       @progress = config.progress_class.create(active_record_models.count)
@@ -103,7 +113,7 @@ module ActiveMocker
       private
 
       def safe_write
-        File.open(mock_file_path, 'w') do |file_out|
+        File.open(mock_file_path, "w") do |file_out|
           begin
             yield file_out
           rescue StandardError => e
@@ -115,7 +125,7 @@ module ActiveMocker
       def rescue_clean_up(e, file_out)
         display_errors.failed_models << model_name
         file_out.close unless file_out.closed?
-        File.delete(file_out.path) if File.exists?(file_out.path)
+        File.delete(file_out.path) if File.exist?(file_out.path)
         display_errors.wrap_an_exception(e, model_name)
       end
 
@@ -132,8 +142,8 @@ module ActiveMocker
       end
 
       def assure_dir_path_exists!
-        unless File.exists?(File.dirname(mock_file_path))
-          FileUtils::mkdir_p(File.dirname(mock_file_path))
+        unless File.exist?(File.dirname(mock_file_path))
+          FileUtils.mkdir_p(File.dirname(mock_file_path))
         end
       end
 
@@ -154,7 +164,7 @@ module ActiveMocker
 
         if create_mock_errors.present? || schema_scrapper.attributes.errors.any? { |e| e.level == :error }
           display_errors.failed_models << model_name
-          File.delete(mock_file_path) if File.exists?(mock_file_path)
+          File.delete(mock_file_path) if File.exist?(mock_file_path)
           display_errors.add(create_mock_errors)
           OtherErrors.new(false)
         else

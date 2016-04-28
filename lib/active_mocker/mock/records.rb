@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module ActiveMocker
   class Records
-
     extend Forwardable
     def_delegators :records, :<<, :count, :length, :to_a
 
@@ -16,7 +16,7 @@ module ActiveMocker
     end
 
     def delete(record)
-      raise RecordNotFound, 'Record has not been created.' unless records.delete(record)
+      raise RecordNotFound, "Record has not been created." unless records.delete(record)
     end
 
     def exists?(record)

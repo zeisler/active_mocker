@@ -1,10 +1,10 @@
+# frozen_string_literal: true
 module ActiveMocker
   class Generate
-
     def initialize
       raise ArgumentError, "mock_dir is missing a valued value!" if config.mock_dir.nil? || config.mock_dir.empty?
       create_mock_dir
-      raise ArgumentError, "model_dir is missing a valued value!" if config.model_dir.nil? || config.model_dir.empty? || !Dir.exists?(config.model_dir)
+      raise ArgumentError, "model_dir is missing a valued value!" if config.model_dir.nil? || config.model_dir.empty? || !Dir.exist?(config.model_dir)
       @display_errors = DisplayErrors.new(models_paths.count)
     end
 
@@ -19,7 +19,7 @@ module ActiveMocker
         mock_file_path  = File.join(Config.mock_dir, mock_file_name)
         assure_dir_path_exists(mock_file_path)
         schema_scrapper = ActiveRecordSchemaScrapper.new(model: model)
-        File.open(mock_file_path, 'w') do |file_out|
+        File.open(mock_file_path, "w") do |file_out|
           begin
             result                       = create_mock(file, file_out, schema_scrapper)
             status                       = collect_errors(mock_file_path, result.errors, schema_scrapper, model_name)
@@ -59,7 +59,7 @@ module ActiveMocker
       display_errors.wrap_errors(schema_scrapper.attributes.errors, model_name, type: :attributes)
       if create_mock_errors.present? || schema_scrapper.attributes.errors.any? { |e| e.level == :error }
         display_errors.failed_models << model_name
-        File.delete(mock_file_path) if File.exists?(mock_file_path)
+        File.delete(mock_file_path) if File.exist?(mock_file_path)
         display_errors.add(create_mock_errors)
         OtherErrors.new(false)
       else
@@ -70,7 +70,7 @@ module ActiveMocker
     def rescue_clean_up(e, file_out, model_name)
       display_errors.failed_models << model_name
       file_out.close unless file_out.closed?
-      File.delete(file_out.path) if File.exists?(file_out.path)
+      File.delete(file_out.path) if File.exist?(file_out.path)
       display_errors.wrap_an_exception(e, model_name)
     end
 
@@ -82,9 +82,7 @@ module ActiveMocker
       @model_names ||= models_paths.map { |p| model_name(p) }
     end
 
-    def progress
-      @progress
-    end
+    attr_reader :progress
 
     def progress_init
       @progress = config.progress_class.create(models_paths.count)
@@ -95,8 +93,8 @@ module ActiveMocker
     end
 
     def assure_dir_path_exists(file)
-      unless File.exists?(File.dirname(file))
-        FileUtils::mkdir_p(File.dirname(file))
+      unless File.exist?(File.dirname(file))
+        FileUtils.mkdir_p(File.dirname(file))
       end
     end
 
@@ -105,7 +103,7 @@ module ActiveMocker
     end
 
     def create_mock_dir
-      FileUtils::mkdir_p(config.mock_dir) unless Dir.exists?(config.mock_dir)
+      FileUtils.mkdir_p(config.mock_dir) unless Dir.exist?(config.mock_dir)
     end
 
     def enabled_partials

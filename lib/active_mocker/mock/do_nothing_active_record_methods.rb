@@ -1,12 +1,11 @@
+# frozen_string_literal: true
 module ActiveMocker
   module DoNothingActiveRecordMethods
-
     def self.included(base)
       base.extend(ClassMethods)
     end
 
     module ClassMethods
-
       def transaction
         yield
       rescue LocalJumpError => err
@@ -18,7 +17,6 @@ module ActiveMocker
       def column_names
         attribute_names
       end
-
     end
 
     def readonly?
@@ -28,11 +26,11 @@ module ActiveMocker
     def errors
       obj = Object.new
 
-      def obj.[](key)
+      def obj.[](_key)
         []
       end
 
-      def obj.full_messages()
+      def obj.full_messages
         []
       end
 
@@ -54,6 +52,5 @@ module ActiveMocker
     def reload
       self
     end
-
   end
 end

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 module Api
   class Customer < ActiveRecord::Base
-    has_many :microposts, -> { order('created_at DESC') }
+    has_many :microposts, -> { order("created_at DESC") }
 
     def User.new_remember_token
       SecureRandom.urlsafe_base64
@@ -27,11 +28,9 @@ module Api
     end
 
     def key_arg_reg(key:)
-
     end
 
     def key_arg_opt(key: nil)
-
     end
 
     private

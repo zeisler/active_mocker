@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 namespace :active_mocker do
-
-  desc('Rebuild mocks.')
-  task :build => :environment do
+  desc("Rebuild mocks.")
+  task build: :environment do
     ActiveMocker.configure do |c|
       c.single_model_path             = ENV["MODEL"] if ENV["MODEL"]
       c.model_dir                     = ENV["MODEL_DIR"] if ENV["MODEL_DIR"]
@@ -12,20 +12,19 @@ namespace :active_mocker do
     end.create_mocks
   end
 
-  desc('Run all tests tagged   active_mocker')
+  desc("Run all tests tagged   active_mocker")
   task :test do
-    sh 'rspec --tag active_mocker'
+    sh "rspec --tag active_mocker"
   end
 
-  desc('Run all tests tagged active_mocker and rails_compatible and will disable model stubbing')
+  desc("Run all tests tagged active_mocker and rails_compatible and will disable model stubbing")
   task :rails_compatible do
-    sh 'RUN_WITH_RAILS=1 rspec --tag rails_compatible'
+    sh "RUN_WITH_RAILS=1 rspec --tag rails_compatible"
   end
-
 end
 
-['db:migrate', 'db:rollback'].each do |task|
+["db:migrate", "db:rollback"].each do |task|
   Rake::Task[task].enhance do
-    Rake::Task['active_mocker:build'].invoke
+    Rake::Task["active_mocker:build"].invoke
   end
 end

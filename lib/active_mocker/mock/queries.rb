@@ -1,13 +1,12 @@
+# frozen_string_literal: true
 module ActiveMocker
   module Queries
-
     class Find
-
       def initialize(record)
         @record = record
       end
 
-      def is_of(conditions={})
+      def is_of(conditions = {})
         conditions.all? do |col, match|
           if match.is_a? Enumerable
             any_match(col, match)
@@ -26,17 +25,15 @@ module ActiveMocker
       def compare(col, match)
         @record.send(col) == match
       end
-
     end
 
     class WhereNotChain
-
       def initialize(collection, parent_class)
         @collection   = collection
         @parent_class = parent_class
       end
 
-      def not(conditions={})
+      def not(conditions = {})
         @parent_class.call(@collection.reject do |record|
           Find.new(record).is_of(conditions)
         end)
@@ -60,16 +57,16 @@ module ActiveMocker
     #
     #   Post.limit(100).delete_all
     #   # => ActiveMocker::Error: delete_all doesn't support limit scope
-    def delete_all(conditions=nil)
+    def delete_all(conditions = nil)
       raise ActiveMocker::Error.new("delete_all doesn't support limit scope") if from_limit?
       if conditions.nil?
         to_a.map(&:delete)
         return to_a.clear
       end
-      where(conditions).map { |r| r.delete }.count
+      where(conditions).map(&:delete).count
     end
 
-    alias_method :destroy_all, :delete_all
+    alias destroy_all delete_all
 
     # Returns a new relation, which is the result of filtering the current relation
     # according to the conditions in the arguments.
@@ -113,7 +110,7 @@ module ActiveMocker
     #    User.where.not(name: "Jon")
     #
     # See WhereChain for more details on #not.
-    def where(conditions=nil)
+    def where(conditions = nil)
       return WhereNotChain.new(all, method(:__new_relation__)) if conditions.nil?
       __new_relation__(to_a.select do |record|
         Find.new(record).is_of(conditions)
@@ -131,7 +128,7 @@ module ActiveMocker
     #
     # <tt>ActiveMocker::RecordNotFound</tt> will be raised if one or more ids are not found.
     def find(ids)
-      raise RecordNotFound.new("Couldn't find #{self.name} without an ID") if ids.nil?
+      raise RecordNotFound.new("Couldn't find #{name} without an ID") if ids.nil?
       results = [*ids].map do |id|
         find_by!(id: id.to_i)
       end
@@ -200,10 +197,10 @@ module ActiveMocker
 
     # Like <tt>find_by</tt>, except that if no record is found, raises
     # an <tt>ActiveMocker::RecordNotFound</tt> error.
-    def find_by!(conditions={})
+    def find_by!(conditions = {})
       result = find_by(conditions)
       if result.nil?
-        raise RecordNotFound.new("Couldn't find #{self.name} with '#{conditions.keys.first}'=#{conditions.values.first}")
+        raise RecordNotFound.new("Couldn't find #{name} with '#{conditions.keys.first}'=#{conditions.values.first}")
       end
       result
     end
@@ -234,7 +231,7 @@ module ActiveMocker
       find_by(attributes) || create(attributes, &block)
     end
 
-    alias_method :find_or_create_by!, :find_or_create_by
+    alias find_or_create_by! find_or_create_by
 
     # Like <tt>find_or_create_by</tt>, but calls <tt>new</tt> instead of <tt>create</tt>.
     def find_or_initialize_by(attributes, &block)
@@ -354,10 +351,9 @@ module ActiveMocker
     end
 
     def __new_relation__(collection)
-      duped            = self.dup
+      duped            = dup
       duped.collection = collection
       duped
     end
-
   end
 end

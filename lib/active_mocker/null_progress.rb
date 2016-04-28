@@ -1,8 +1,8 @@
+# frozen_string_literal: true
 module ActiveMocker
   class NullProgress
-
     def self.create(*)
-      self.new
+      new
     end
 
     def initialize(*)

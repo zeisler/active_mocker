@@ -1,14 +1,14 @@
-require 'spec_helper'
-require 'active_mocker/rspec_helper'
-require 'lib/post_methods'
-require_mock 'micropost_mock'
-require_mock 'user_mock'
+# frozen_string_literal: true
+require "spec_helper"
+require "active_mocker/rspec_helper"
+require "lib/post_methods"
+require_mock "micropost_mock"
+require_mock "user_mock"
 
-describe 'Another Example', active_mocker: true do
+describe "Another Example", active_mocker: true do
   context '#mock_class' do
-
     before do
-      active_mocker.mocks.find('Micropost').create!
+      active_mocker.mocks.find("Micropost").create!
       User.create
       active_mocker.mocks.except(User).delete_all
     end
@@ -17,15 +17,14 @@ describe 'Another Example', active_mocker: true do
       active_mocker.mocks.delete_all
     end
 
-    it 'will create an instance of mock' do
+    it "will create an instance of mock" do
       expect(Micropost.count).to eq 0
       expect(User.count).to eq 1
     end
 
-    it 'will create an instance of mock 2' do
+    it "will create an instance of mock 2" do
       expect(Micropost.count).to eq 0
       expect(User.count).to eq 1
     end
-
   end
 end

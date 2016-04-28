@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class BelongsTo < SingleRelation
     attr_reader :item
@@ -20,4 +21,3 @@ module ActiveMocker
     end
   end
 end
-

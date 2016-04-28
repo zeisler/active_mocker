@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #                   _   _           __  __            _
 #         /\       | | (_)         |  \/  |          | |
 #        /  \   ___| |_ ___   _____| \  / | ___   ___| | _____ _ __
@@ -8,12 +9,12 @@
 #     By Dustin Zeisler
 
 require "rubygems"
-require 'active_mocker/version'
-require 'active_mocker/railtie' if defined?(Rails)
-require 'forwardable'
-require 'active_support/all'
-require 'active_mocker/public_methods'
-require 'active_mocker/config'
+require "active_mocker/version"
+require "active_mocker/railtie" if defined?(Rails)
+require "forwardable"
+require "active_support/all"
+require "active_mocker/public_methods"
+require "active_mocker/config"
 require "reverse_parameters"
 require "active_record_schema_scrapper"
 require "dissociated_introspection"

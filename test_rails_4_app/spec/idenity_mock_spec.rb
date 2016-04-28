@@ -1,10 +1,9 @@
-require 'rails_helper'
-require_mock 'identity_mock'
+# frozen_string_literal: true
+require "rails_helper"
+require_mock "identity_mock"
 
 describe IdentityMock do
-
-  it 'has base class of Base' do
+  it "has base class of Base" do
     expect(described_class.superclass).to eq ActiveMocker::Base
   end
-
 end

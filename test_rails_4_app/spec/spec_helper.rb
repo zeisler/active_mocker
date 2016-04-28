@@ -1,9 +1,9 @@
-require 'rspec'
-$:.unshift File.expand_path('../../', __FILE__)
-APP_ROOT = File.expand_path('../../', __FILE__) unless defined? APP_ROOT
+# frozen_string_literal: true
+require "rspec"
+$LOAD_PATH.unshift File.expand_path("../../", __FILE__)
+APP_ROOT = File.expand_path("../../", __FILE__) unless defined? APP_ROOT
 
 RSpec.configure do |config|
-
   config.order = "random"
 
   config.expect_with :rspec do |c|
@@ -14,7 +14,6 @@ RSpec.configure do |config|
     mocks.verify_doubled_constant_names = true
     mocks.verify_partial_doubles        = true
   end
-
 end
 
 def require_mock(name)
@@ -31,4 +30,3 @@ def mock_path
                   end
   File.join(APP_ROOT, "spec/mocks/#{rails_version}")
 end
-

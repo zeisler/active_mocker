@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 module ActiveMocker
   # @api private
   class HashProcess
-
     attr_accessor :hash, :processor
 
     def initialize(hash, processor)

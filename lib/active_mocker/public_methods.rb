@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class << self
     # Override default Configurations
@@ -22,7 +23,7 @@ module ActiveMocker
       Config.set(&block)
       self
     end
-    alias_method :config, :configure
+    alias config configure
 
     # Generates Mocks file
     # @returns self

@@ -1,9 +1,10 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
-site 'http://community.opscode.com/api/v1'
+site "http://community.opscode.com/api/v1"
 
 cookbook "apt"
 cookbook "build-essential", {}
-cookbook "rvm", {:github=>"fnichol/chef-rvm", :ref=>"v0.9.0",  "rubies" => ["2.1.7", "2.2.3"] }
+cookbook "rvm", :github => "fnichol/chef-rvm", :ref => "v0.9.0", "rubies" => ["2.1.7", "2.2.3"]
 cookbook "sqlite", {}
 cookbook "git", {}

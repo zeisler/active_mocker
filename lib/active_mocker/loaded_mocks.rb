@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 module ActiveMocker
   class LoadedMocks
     class << self
-
       extend Forwardable
       def_delegators :mocks, :find, :delete_all
 
@@ -17,20 +17,19 @@ module ActiveMocker
       end
 
       # @deprecated Use {#mocks} instead of this method.
-      alias_method :class_name_to_mock, :mocks
+      alias class_name_to_mock mocks
 
       # @deprecated Use {#mocks} instead of this method.
-      alias_method :all, :mocks
+      alias all mocks
 
       # @deprecated Use {#delete_all} instead of this method.
-      alias_method :clear_all, :delete_all
+      alias clear_all delete_all
 
       class Collection
-
         include Enumerable
 
         # @option opts [Hash] hash
-        def initialize(hash={})
+        def initialize(hash = {})
           @hash = Hash[hash]
         end
 
@@ -70,21 +69,21 @@ module ActiveMocker
         def mocks
           hash.values
         end
-        alias_method :values, :mocks
+        alias values mocks
 
         private
+
         attr_reader :hash
 
         def get_item(args, k, v)
           args.map do |e|
-            if [:to_str, :to_sym].any?{|i| e.respond_to? i}
+            if [:to_str, :to_sym].any? { |i| e.respond_to? i }
               e.to_s == k
             else
               e == v
             end
           end.any? { |a| a }
         end
-
       end
 
       private
@@ -94,9 +93,8 @@ module ActiveMocker
       end
 
       def add(mocks_to_add)
-        mocks_store.merge!({ mocks_to_add.name => mocks_to_add })
+        mocks_store.merge!(mocks_to_add.name => mocks_to_add)
       end
-
     end
   end
 end

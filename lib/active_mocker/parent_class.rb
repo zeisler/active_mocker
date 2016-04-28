@@ -22,15 +22,16 @@ module ActiveMocker
       if @parent_mock_name
         "#{@parent_mock_name}#{mock_append_name}"
       else
-        'ActiveMocker::Base'
+        "ActiveMocker::Base"
       end
     end
 
     private
+
     attr_reader :parsed_source,
-                :klasses_to_be_mocked,
-                :active_record_base_klass,
-                :mock_append_name
+      :klasses_to_be_mocked,
+      :active_record_base_klass,
+      :mock_append_name
 
     def deal_with_parent
       if parent_class <= active_record_base_klass

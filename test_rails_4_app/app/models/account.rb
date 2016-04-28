@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Account < ActiveRecord::Base
   belongs_to :user
 end

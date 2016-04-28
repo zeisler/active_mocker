@@ -104,14 +104,20 @@ module ActiveMocker
       def write!
         assure_dir_path_exists!
 
-        safe_write do |file_out|
-          result = create_mock(file_out)
-          status = collect_errors(result.errors)
-          display_errors.success_count += 1 if result.completed? && status.successful?
-        end
+        safe_write { |f| process!(f)}
       end
 
       private
+
+      def process!(file_out)
+        result = create_mock(file_out)
+        status = collect_errors(result.errors)
+
+        ok = result.completed? && status.successful?
+        return unless ok
+
+        display_errors.success_count += 1
+      end
 
       def safe_write
         File.open(mock_file_path, "w") do |file_out|

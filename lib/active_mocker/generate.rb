@@ -7,7 +7,7 @@ module ActiveMocker
       check_directory!(:mock_dir)
       create_mock_dir
       check_directory!(:model_dir)
-      raise_missing_arg(:model_dir) if !Dir.exist?(config.model_dir)
+      raise_missing_arg(:model_dir) unless Dir.exist?(config.model_dir)
 
       @display_errors = DisplayErrors.new(models_paths.count)
     end

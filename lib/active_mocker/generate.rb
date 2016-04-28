@@ -12,9 +12,10 @@ module ActiveMocker
     def call
       clean_up
       progress_init
-      models_paths.each do |file|
-        model_name      = model_name(file)
-        model           = get_model_const(model_name)
+
+      active_record_models_with_files.each do |model, file|
+        model_name      = model.name
+
         mock_file_name  = "#{model_name.underscore}_#{config.mock_append_name.underscore}.rb"
         mock_file_path  = File.join(Config.mock_dir, mock_file_name)
         assure_dir_path_exists(mock_file_path)
@@ -28,21 +29,30 @@ module ActiveMocker
             rescue_clean_up(e, file_out, model_name)
           end
         end
+
         progress.increment
       end
+
       display_errors.display_errors
       self
     end
 
     def get_model_const(model_name)
-      model_name.constantize
+      constant = model_name.constantize
+      return unless constant.ancestors.include?(ActiveRecord::Base)
+      constant
     rescue StandardError, LoadError => e
       display_errors.wrap_an_exception(e, model_name)
+      nil
+    end
+
+    def active_record_models
+      @active_record_models ||= active_record_models_with_files.map(&:first)
     end
 
     private
 
-    attr_reader :display_errors
+    attr_reader :display_errors, :progress
 
     def create_mock(file, file_out, schema_scrapper)
       MockCreator.new(file:                 File.open(file),
@@ -54,9 +64,11 @@ module ActiveMocker
     end
 
     OtherErrors = Struct.new(:successful?)
+
     def collect_errors(mock_file_path, create_mock_errors, schema_scrapper, model_name)
       display_errors.wrap_errors(schema_scrapper.associations.errors, model_name, type: :associations)
       display_errors.wrap_errors(schema_scrapper.attributes.errors, model_name, type: :attributes)
+
       if create_mock_errors.present? || schema_scrapper.attributes.errors.any? { |e| e.level == :error }
         display_errors.failed_models << model_name
         File.delete(mock_file_path) if File.exist?(mock_file_path)
@@ -74,22 +86,27 @@ module ActiveMocker
       display_errors.wrap_an_exception(e, model_name)
     end
 
-    def model_name(file)
-      FilePathToRubyClass.new(base_path: config.model_dir, class_path: file).to_s
+    def progress_init
+      @progress = config.progress_class.create(active_record_models.count)
     end
 
     def model_names
-      @model_names ||= models_paths.map { |p| model_name(p) }
+      @model_names ||= active_record_models.map(&:name)
     end
 
-    attr_reader :progress
-
-    def progress_init
-      @progress = config.progress_class.create(models_paths.count)
+    def active_record_models_with_files
+      @active_record_models_with_files ||= models_paths.map do |file|
+        model = get_model_const(model_name_for(file))
+        [model, file] if model
+      end.compact
     end
 
     def models_paths
       @models_paths ||= Dir.glob(config.single_model_path || File.join(config.model_dir, "**/*.rb"))
+    end
+
+    def model_name_for(file)
+      FilePathToRubyClass.new(base_path: config.model_dir, class_path: file).to_s
     end
 
     def assure_dir_path_exists(file)

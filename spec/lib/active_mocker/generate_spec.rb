@@ -8,11 +8,14 @@ RSpec.describe ActiveMocker::Generate do
 
     before do
       ActiveMocker::Config.set do |config|
-        config.model_dir        = File.join(File.expand_path("../", __FILE__))
+        config.model_dir        = File.expand_path("../", __FILE__)
         config.mock_dir         = not_found_dir
         config.error_verbosity  = 0
         config.progress_bar     = false
       end
+      stub_const("ActiveRecord::Base", class_double("ActiveRecord::Base"))
+      stub_const("Model", class_double("Model", ancestors: [ActiveRecord::Base]))
+      stub_const("SomeNamespace::SomeModule", class_double("SomeNamespace::SomeModule", ancestors: [Module]))
     end
 
     before do
@@ -71,7 +74,6 @@ RSpec.describe ActiveMocker::Generate do
         let(:models_dir) { File.join(File.expand_path("../../", __FILE__), "models") }
 
         before do
-          stub_const("ActiveRecord::Base", class_double("ActiveRecord::Base"))
           FileUtils.mkdir_p(not_found_dir)
           File.open(old_mock_path, "w") { |w| w.write "" }
           File.open(current_mock_path, "w") { |w| w.write "" }
@@ -93,10 +95,30 @@ RSpec.describe ActiveMocker::Generate do
       end
     end
 
+    describe "#active_record_models" do
+      let(:models_dir) { File.join(File.expand_path("../../", __FILE__), "models") }
+
+      before do
+        ActiveMocker::Config.model_dir = models_dir
+      end
+
+      context "with some non ActiveRecord subclasses" do
+        before do
+          stub_const("NonActiveRecordModel", class_double("NonActiveRecordModel", ancestors: [Object]))
+        end
+
+        it "ignores non ActiveRecord subclasses" do
+          result = described_class.new.call
+          expect(result.active_record_models).to eq [Model]
+        end
+      end
+    end
+
     describe "ActiveMocker::Config.disable_modules_and_constants" do
       before do
         ActiveMocker::Config.disable_modules_and_constants = set_to
         ActiveMocker::Config.progress_bar                  = false
+        ActiveMocker::Config.model_dir                     = File.join(File.expand_path("../../", __FILE__), "models")
         ActiveMocker::Config.single_model_path             = File.join(File.expand_path("../../", __FILE__), "models/model.rb")
       end
 
@@ -122,6 +144,7 @@ RSpec.describe ActiveMocker::Generate do
     describe "ActiveMocker::Config.mock_append_name" do
       before do
         ActiveMocker::Config.progress_bar      = false
+        ActiveMocker::Config.model_dir         = File.join(File.expand_path("../../", __FILE__), "models")
         ActiveMocker::Config.single_model_path = File.join(File.expand_path("../../models", __FILE__), "model.rb")
       end
 

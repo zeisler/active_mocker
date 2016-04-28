@@ -23,15 +23,6 @@ module ActiveMocker
       self
     end
 
-    def get_model_const(model_name)
-      constant = model_name.constantize
-      return unless constant.ancestors.include?(ActiveRecord::Base)
-      constant
-    rescue StandardError, LoadError => e
-      display_errors.wrap_an_exception(e, model_name)
-      nil
-    end
-
     def active_record_models
       @active_record_models ||= active_record_models_with_files.map(&:first)
     end
@@ -39,6 +30,7 @@ module ActiveMocker
     private
 
     attr_reader :display_errors, :progress
+
 
     def write_file(model, file)
       writer = FileWriter.new(
@@ -61,7 +53,7 @@ module ActiveMocker
 
     def active_record_models_with_files
       @active_record_models_with_files ||= models_paths.map do |file|
-        model = get_model_const(model_name_for(file))
+        model = constant_from(model_name_from(file))
         [model, file] if model
       end.compact
     end
@@ -70,7 +62,16 @@ module ActiveMocker
       @models_paths ||= Dir.glob(config.single_model_path || File.join(config.model_dir, "**/*.rb"))
     end
 
-    def model_name_for(file)
+    def constant_from(model_name)
+      constant = model_name.constantize
+      return unless constant.ancestors.include?(ActiveRecord::Base)
+      constant
+    rescue StandardError, LoadError => e
+      display_errors.wrap_an_exception(e, model_name)
+      nil
+    end
+
+    def model_name_from(file)
       FilePathToRubyClass.new(base_path: config.model_dir, class_path: file).to_s
     end
 

@@ -2,9 +2,11 @@
 module ActiveMocker
   class Generate
     def initialize
-      raise ArgumentError, "mock_dir is missing a valued value!" if config.mock_dir.nil? || config.mock_dir.empty?
+      check_directory!(:mock_dir)
       create_mock_dir
-      raise ArgumentError, "model_dir is missing a valued value!" if config.model_dir.nil? || config.model_dir.empty? || !Dir.exist?(config.model_dir)
+      check_directory!(:model_dir)
+      raise_missing_arg(:model_dir) if !Dir.exists?(config.model_dir)
+
       @display_errors = DisplayErrors.new(models_paths.count)
     end
 
@@ -31,6 +33,17 @@ module ActiveMocker
 
     attr_reader :display_errors, :progress
 
+    def check_directory!(type)
+      value = config.send(type)
+
+      if value.nil? || value.empty?
+        raise_missing_arg(type)
+      end
+    end
+
+    def raise_missing_arg(type)
+      raise ArgumentError, "#{type} is missing a valued value!"
+    end
 
     def write_file(model, file)
       writer = FileWriter.new(

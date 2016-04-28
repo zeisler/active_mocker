@@ -1,3 +1,4 @@
+desc "run integration specs"
 task :integration do
   Dir.chdir("test_rails_4_app") do
     root     = File.expand_path('../../', __FILE__)

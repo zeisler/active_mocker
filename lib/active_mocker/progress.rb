@@ -12,9 +12,7 @@ module ActiveMocker
       @count = count
     end
 
-    def increment
-      progress.increment
-    end
+    delegate :increment, to: :progress
 
     def progress
       @progress ||= ProgressBar.create(title:  "Generating Mocks",

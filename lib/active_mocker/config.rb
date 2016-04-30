@@ -3,12 +3,12 @@ module ActiveMocker
   class Config
     class << self
       attr_accessor :model_dir,
-        :mock_dir,
-        :single_model_path,
-        :progress_bar,
-        :error_verbosity,
-        :disable_modules_and_constants,
-        :mock_append_name
+                    :mock_dir,
+                    :single_model_path,
+                    :progress_bar,
+                    :error_verbosity,
+                    :disable_modules_and_constants,
+                    :mock_append_name
 
       attr_writer :model_base_classes
 

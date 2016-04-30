@@ -2,14 +2,14 @@
 module ActiveMocker
   class MockCreator
     def initialize(file:,
-      file_out:,
-      schema_scrapper:,
-      template_creator: nil,
-      class_introspector: nil,
-      enabled_partials: nil,
-      klasses_to_be_mocked:,
-      mock_append_name:,
-      active_record_base_klass: ActiveRecord::Base)
+                   file_out:,
+                   schema_scrapper:,
+                   template_creator: nil,
+                   class_introspector: nil,
+                   enabled_partials: nil,
+                   klasses_to_be_mocked:,
+                   mock_append_name:,
+                   active_record_base_klass: ActiveRecord::Base)
       @file                     = file
       @file_out                 = file_out
       @schema_scrapper          = schema_scrapper
@@ -46,14 +46,14 @@ module ActiveMocker
     private
 
     attr_reader :file,
-      :file_out,
-      :schema_scrapper,
-      :template_creator,
-      :class_introspector,
-      :enabled_partials,
-      :klasses_to_be_mocked,
-      :active_record_base_klass,
-      :mock_append_name
+                :file_out,
+                :schema_scrapper,
+                :template_creator,
+                :class_introspector,
+                :enabled_partials,
+                :klasses_to_be_mocked,
+                :active_record_base_klass,
+                :mock_append_name
 
     def error_already_collected?(e)
       errors.any? { |eo| eo.original_error == e }
@@ -66,9 +66,9 @@ module ActiveMocker
                           binding:      binding,
                           post_process: lambda do |str|
                             ruby_code = DissociatedIntrospection::RubyCode.build_from_source(str, parse_with_comments: true)
-                            DissociatedIntrospection::WrapInModules.new(ruby_code: ruby_code).
-                              call(modules: nested_modules).
-                              source_from_ast.gsub(/end\n/, "end\n\n")
+                            DissociatedIntrospection::WrapInModules.new(ruby_code: ruby_code)
+                              .call(modules: nested_modules)
+                              .source_from_ast.gsub(/end\n/, "end\n\n")
                           end)
     end
 
@@ -225,19 +225,19 @@ module ActiveMocker
 
     module DefinedMethods
       def instance_methods
-        class_introspector.
-          get_class.
-          public_instance_methods(false).
-          sort.
-          map { |m| create_method(m, :instance_method) }
+        class_introspector
+          .get_class
+          .public_instance_methods(false)
+          .sort
+          .map { |m| create_method(m, :instance_method) }
       end
 
       def class_methods
-        class_introspector.
-          get_class.
-          methods(false).
-          sort.
-          map { |m| create_method(m, :method) }
+        class_introspector
+          .get_class
+          .methods(false)
+          .sort
+          .map { |m| create_method(m, :method) }
       end
 
       private

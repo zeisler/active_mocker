@@ -1,9 +1,10 @@
+# frozen_string_literal: true
 require "rubygems"
 require "bundler/setup"
 require "bundler/gem_tasks"
-Dir.glob('tasks/*.rake').each { |r| import r }
+Dir.glob("tasks/*.rake").each { |r| import r }
 
-task :default => 'specs'
+task default: "specs"
 
 desc "run setup and tests"
 task :specs do

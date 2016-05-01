@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class Base
     include DoNothingActiveRecordMethods
@@ -9,7 +10,6 @@ module ActiveMocker
     end
 
     class << self
-
       # Creates an object (or multiple objects) and saves it to memory.
       #
       # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
@@ -43,7 +43,7 @@ module ActiveMocker
         end
       end
 
-      alias_method :create!, :create
+      alias create! create
 
       def records
         @records ||= Records.new
@@ -51,8 +51,8 @@ module ActiveMocker
 
       private :records
 
-      delegate :insert, :exists?, :to_a, :to => :records
-      delegate :first, :last, :to => :all
+      delegate :insert, :exists?, :to_a, to: :records
+      delegate :first, :last, to: :all
 
       # Delete an object (or multiple objects) that has the given id.
       #
@@ -78,17 +78,17 @@ module ActiveMocker
         end
       end
 
-      alias_method :destroy, :delete
+      alias destroy delete
 
       # Deletes the records matching +conditions+.
       #
       #   Post.where(person_id: 5).where(category: ['Something', 'Else']).delete_all
-      def delete_all(conditions=nil)
+      def delete_all(conditions = nil)
         return records.reset if conditions.nil?
         super
       end
 
-      alias_method :destroy_all, :delete_all
+      alias destroy_all delete_all
 
       # @api private
       def from_limit?
@@ -130,12 +130,12 @@ module ActiveMocker
       private
 
       def created_with(version)
-        raise UpdateMocksError.new(self.name, version, ActiveMocker::VERSION) if version != ActiveMocker::VERSION
+        raise UpdateMocksError.new(name, version, ActiveMocker::VERSION) if version != ActiveMocker::VERSION
       end
 
       # @deprecated
       def call_mock_method(method:, caller:, arguments: [])
-        is_implemented(method, '::', caller)
+        is_implemented(method, "::", caller)
       end
 
       # @deprecated
@@ -183,12 +183,12 @@ module ActiveMocker
 
     private :setup_instance_variables
 
-    def update(attributes={})
+    def update(attributes = {})
       assign_attributes(attributes)
     end
 
     # @api private
-    def assign_attributes(new_attributes, &block)
+    def assign_attributes(new_attributes)
       yield self if block_given?
       unless new_attributes.respond_to?(:stringify_keys)
         raise ArgumentError, "When assigning attributes, you must pass a hash as an argument."
@@ -213,10 +213,8 @@ module ActiveMocker
       end
     end
 
-    def save(*args)
-      unless self.class.exists?(self)
-        self.class.send(:insert, self)
-      end
+    def save(*_args)
+      self.class.send(:insert, self) unless self.class.exists?(self)
       true
     end
 
@@ -232,7 +230,7 @@ module ActiveMocker
       records.delete(self)
     end
 
-    alias_method :destroy, :delete
+    alias destroy delete
 
     delegate :[], :[]=, to: :attributes
 
@@ -256,7 +254,7 @@ module ActiveMocker
     #   person.has_attribute?('age')    # => true
     #   person.has_attribute?(:nothing) # => false
     def has_attribute?(attr_name)
-      @attributes.has_key?(attr_name.to_s)
+      @attributes.key?(attr_name.to_s)
     end
 
     # Returns +true+ if the specified +attribute+ has been set and is neither +nil+ nor <tt>empty?</tt> (the latter only applies
@@ -303,7 +301,6 @@ module ActiveMocker
     end
 
     module PropertiesGetterAndSetter
-
       # Returns the value of the attribute identified by <tt>attr_name</tt> after
       # it has been typecast (for example, "2004-12-12" in a date column is cast
       # to a date object, like Date.new(2004, 12, 12))
@@ -319,7 +316,7 @@ module ActiveMocker
       end
 
       # @api private
-      def read_association(attr, assign_if_value_nil=nil)
+      def read_association(attr, assign_if_value_nil = nil)
         @associations[attr.to_sym] ||= assign_if_value_nil.try(:call)
       end
 
@@ -329,7 +326,6 @@ module ActiveMocker
       end
 
       protected :read_attribute, :write_attribute, :read_association, :write_association
-
     end
 
     include PropertiesGetterAndSetter

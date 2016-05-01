@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class ParentClass
     def initialize(parsed_source:, klasses_to_be_mocked:, mock_append_name:, active_record_base_klass: ::ActiveRecord::Base)
@@ -22,11 +23,12 @@ module ActiveMocker
       if @parent_mock_name
         "#{@parent_mock_name}#{mock_append_name}"
       else
-        'ActiveMocker::Base'
+        "ActiveMocker::Base"
       end
     end
 
     private
+
     attr_reader :parsed_source,
                 :klasses_to_be_mocked,
                 :active_record_base_klass,

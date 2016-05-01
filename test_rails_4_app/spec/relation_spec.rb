@@ -1,10 +1,11 @@
-require 'spec_helper'
-require_mock 'user_mock'
+# frozen_string_literal: true
+require "spec_helper"
+require_mock "user_mock"
 require_relative "../../spec/lib/active_mocker/mock/queriable_shared_example"
 
 describe UserMock do
   describe "ActiveMocker::MockRelation" do
-    it_behaves_like 'Queriable', -> (*args) { ActiveMocker::MockRelation.new(UserMock, args.flatten) }
+    it_behaves_like "Queriable", -> (*args) { ActiveMocker::MockRelation.new(UserMock, args.flatten) }
 
     subject { ActiveMocker::MockRelation.new(UserMock, collection) }
     let(:collection) { [UserMock.new, UserMock.new] }

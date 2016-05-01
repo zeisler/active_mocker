@@ -1,9 +1,9 @@
-require 'spec_helper'
-require 'logger'
-require 'active_mocker/config'
+# frozen_string_literal: true
+require "spec_helper"
+require "logger"
+require "active_mocker/config"
 
 describe ActiveMocker::Config do
-
   after do
     described_class.reset_all
     described_class.load_defaults
@@ -15,7 +15,5 @@ describe ActiveMocker::Config do
   end
 
   it do
-
   end
-
 end

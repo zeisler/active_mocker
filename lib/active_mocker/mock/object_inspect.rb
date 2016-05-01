@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module ActiveMocker
   class ObjectInspect
-
     def initialize(class_name, attributes)
       @class_name = class_name
       @attributes = attributes

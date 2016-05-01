@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "spec_helper"
 require "active_mocker/display_errors"
 require "active_mocker/error_object"
@@ -6,7 +7,6 @@ require "ostruct"
 require "colorize"
 
 RSpec.describe ActiveMocker::DisplayErrors do
-
   class StringOutPut
     def puts(str)
       to_a << str
@@ -121,7 +121,6 @@ RSpec.describe ActiveMocker::DisplayErrors do
   end
 
   describe "#error_summary" do
-
     context "with failed models" do
       it "outputs a list of failed models" do
         subject.success_count += 1
@@ -133,7 +132,6 @@ RSpec.describe ActiveMocker::DisplayErrors do
     end
 
     context "without failed models" do
-
       it "outputs only warnings" do
         subject.success_count += 1
         subject.error_summary
@@ -142,7 +140,6 @@ RSpec.describe ActiveMocker::DisplayErrors do
     end
 
     context "with an error count" do
-
       it "outputs only warnings" do
         subject.add(ActiveMocker::ErrorObject.new(level: :error, message: "none", class_name: "Buggy", type: :overload))
         subject.add(ActiveMocker::ErrorObject.new(level: :error, message: "none", class_name: "Buggy", type: :overload))
@@ -152,7 +149,6 @@ RSpec.describe ActiveMocker::DisplayErrors do
     end
 
     context "with an warn count" do
-
       it "outputs only warnings" do
         subject.add(ActiveMocker::ErrorObject.new(message: "none", class_name: "Buggy", type: :overload))
         subject.add(ActiveMocker::ErrorObject.new(message: "none", class_name: "Buggy", type: :overload))
@@ -163,7 +159,6 @@ RSpec.describe ActiveMocker::DisplayErrors do
     end
 
     context "with an info count" do
-
       it "outputs only warnings" do
         subject.add(ActiveMocker::ErrorObject.new(level: :info, message: "none", class_name: "Buggy", type: :overload))
         subject.add(ActiveMocker::ErrorObject.new(level: :info, message: "none", class_name: "Buggy", type: :overload))

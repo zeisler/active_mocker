@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 class SubscribeUser
-
   attr_accessor :user
 
   def initialize(user: user)
@@ -7,11 +7,10 @@ class SubscribeUser
   end
 
   def with_yearly
-    Subscription.create(user: user, kind: 'yearly')
+    Subscription.create(user: user, kind: "yearly")
   end
 
   def with_monthly
-    Subscription.create(user: user, kind: 'monthly')
+    Subscription.create(user: user, kind: "monthly")
   end
-
 end

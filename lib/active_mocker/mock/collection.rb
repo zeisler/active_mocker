@@ -1,14 +1,14 @@
-require 'forwardable'
+# frozen_string_literal: true
+require "forwardable"
 
 module ActiveMocker
   class Collection
     include Enumerable
     extend ::Forwardable
     def_delegators :@collection, :[], :take, :push, :clear, :first, :last, :concat, :replace, :uniq, :count, :size, :length, :empty?, :any?, :many?, :include?, :delete
-    alias_method :distinct, :uniq
+    alias distinct uniq
 
-
-    def initialize(collection=[])
+    def initialize(collection = [])
       @collection = [*collection]
     end
 
@@ -16,7 +16,7 @@ module ActiveMocker
       collection.concat(records.flatten)
     end
 
-    def each(&block)
+    def each
       collection.each do |item|
         yield(item)
       end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class MockCreator
     def initialize(file:,
@@ -61,14 +62,14 @@ module ActiveMocker
     # -- Defaults -- #
     def template_creator_default(file_out)
       TemplateCreator.new(file_out:     file_out,
-                          erb_template: File.new(File.join(File.dirname(__FILE__), "mock_template.erb"), 'r'),
+                          erb_template: File.new(File.join(File.dirname(__FILE__), "mock_template.erb"), "r"),
                           binding:      binding,
-                          post_process: -> (str) {
+                          post_process: lambda do |str|
                             ruby_code = DissociatedIntrospection::RubyCode.build_from_source(str, parse_with_comments: true)
                             DissociatedIntrospection::WrapInModules.new(ruby_code: ruby_code)
                               .call(modules: nested_modules)
                               .source_from_ast.gsub(/end\n/, "end\n\n")
-                          })
+                          end)
     end
 
     def class_introspector_default
@@ -99,8 +100,8 @@ module ActiveMocker
       OpenStruct.new(enabled_partials.each_with_object({}) do |p, hash|
         begin
           file = File.new(File.join(File.dirname(__FILE__), "mock_template/_#{p}.erb"))
-          self.extend("ActiveMocker::MockCreator::#{p.to_s.camelize}".constantize)
-          hash[p] = ERB.new(file.read, nil, '-', "_sub#{p}").result(binding)
+          extend("ActiveMocker::MockCreator::#{p.to_s.camelize}".constantize)
+          hash[p] = ERB.new(file.read, nil, "-", "_sub#{p}").result(binding)
         rescue => e
           errors << ErrorObject.new(class_name: class_name, original_error: e, type: :generation, level: :error, message: e.message)
           errors << ErrorObject.new(class_name: class_name, original_error: e, type: :erb, level: :debug, message: "Erb template: #{p} failed.\n#{file.path}")
@@ -119,12 +120,10 @@ module ActiveMocker
       end
     end
 
-    def parent_class
-      @parent_class
-    end
+    attr_reader :parent_class
 
     def primary_key
-      @primary_key ||= ActiveRecordSchemaScrapper::Attribute.new(name: 'id', type: :integer)
+      @primary_key ||= ActiveRecordSchemaScrapper::Attribute.new(name: "id", type: :integer)
     end
 
     module ModulesConstants
@@ -139,7 +138,7 @@ module ActiveMocker
         @modules ||= begin
           {
             included: get_module_by_reference(:included_modules),
-            extended: get_module_by_reference(:extended_modules)
+            extended: get_module_by_reference(:extended_modules),
           }
         end
       end
@@ -161,9 +160,7 @@ module ActiveMocker
       def attributes
         @attribute ||= begin
           a = schema_scrapper.attributes.to_a
-          unless a.any? { |aa| aa.name == "id" }
-            a << primary_key
-          end
+          a << primary_key unless a.any? { |aa| aa.name == "id" }
           a
         end
       end
@@ -180,7 +177,7 @@ module ActiveMocker
 
       def types_hash
         attributes.each_with_object(HashNewStyle.new) do |attr, types|
-          types[attr.name] = "#{attr.type}"
+          types[attr.name] = attr.type.to_s
         end.inspect
       end
 
@@ -199,7 +196,7 @@ module ActiveMocker
       end
 
       def attribute_names
-        attributes.map { |a| a.name }
+        attributes.map(&:name)
       end
 
       def abstract_class
@@ -227,7 +224,6 @@ module ActiveMocker
     end
 
     module DefinedMethods
-
       def instance_methods
         class_introspector
           .get_class

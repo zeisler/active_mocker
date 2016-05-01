@@ -1,12 +1,14 @@
+# frozen_string_literal: true
 require "spec_helper"
 require "active_mocker/file_path_to_ruby_class"
 require "active_support/core_ext/string"
 
 RSpec.describe ActiveMocker::FilePathToRubyClass do
   describe "#to_s" do
-
-    subject { described_class.new(base_path:  base_path,
-                                  class_path: class_path).to_s }
+    subject do
+      described_class.new(base_path:  base_path,
+                          class_path: class_path).to_s
+    end
 
     context "single class" do
       let(:base_path) { "user/my_app/models" }

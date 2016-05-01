@@ -1,19 +1,19 @@
-require 'spec_helper'
-require 'lib/post_methods'
-require 'active_support/core_ext/string'
-require 'spec/support/strip_heredoc'
-require 'active_mocker/error_object'
-require 'active_mocker/hash_new_style'
-require 'active_mocker/parent_class'
-require 'active_mocker/template_creator'
-require 'active_mocker/mock_creator'
-require 'active_record_schema_scrapper'
-require 'dissociated_introspection'
-require 'reverse_parameters'
-require 'tempfile'
+# frozen_string_literal: true
+require "spec_helper"
+require "lib/post_methods"
+require "active_support/core_ext/string"
+require "spec/support/strip_heredoc"
+require "active_mocker/error_object"
+require "active_mocker/hash_new_style"
+require "active_mocker/parent_class"
+require "active_mocker/template_creator"
+require "active_mocker/mock_creator"
+require "active_record_schema_scrapper"
+require "dissociated_introspection"
+require "reverse_parameters"
+require "tempfile"
 
 describe ActiveMocker::MockCreator do
-
   before do
     stub_const("ActiveRecord::Base", active_record_stub_class)
   end
@@ -25,78 +25,80 @@ describe ActiveMocker::MockCreator do
   end
 
   describe "#create" do
+    subject do
+      lambda do |partials|
+        s = described_class.new(file:                 file_in,
+                                file_out:             file_out,
+                                schema_scrapper:      stub_schema_scrapper,
+                                enabled_partials:     partials,
+                                klasses_to_be_mocked: [],
+                                mock_append_name:     "Mock").create
+        expect(s.errors).to eq []
+        format_code(File.open(file_out.path).read)
+      end end
 
-    subject { ->(partials) {
-      s = described_class.new(file:                 file_in,
-                              file_out:             file_out,
-                              schema_scrapper:      stub_schema_scrapper,
-                              enabled_partials:     partials,
-                              klasses_to_be_mocked: [],
-                              mock_append_name:     "Mock").create
-      expect(s.errors).to eq []
-      format_code(File.open(file_out.path).read)
-    } }
+    let(:file_out) do
+      Tempfile.new("fileOut")
+    end
 
-    let(:file_out) {
-      Tempfile.new('fileOut')
-    }
-
-    let(:file_in) {
+    let(:file_in) do
       File.new(File.join(File.dirname(__FILE__), "../models/model.rb"))
-    }
+    end
 
-    let(:rails_model) {
+    let(:rails_model) do
       double("RailsModel")
-    }
+    end
 
-    let(:stub_schema_scrapper) {
+    let(:stub_schema_scrapper) do
       s = ActiveRecordSchemaScrapper.new(model: rails_model)
       allow(s).to receive(:attributes) { sample_attributes }
       allow(s).to receive(:associations) { sample_associations }
       allow(s).to receive(:table_name) { "example_table" }
       allow(s).to receive(:abstract_class?) { false }
       s
-    }
+    end
 
-    let(:sample_attributes) {
+    let(:sample_attributes) do
       a = ActiveRecordSchemaScrapper::Attributes.new(model: rails_model)
       allow(a).to receive(:to_a) { [ActiveRecordSchemaScrapper::Attribute.new(name: "example_attribute", type: :string)] }
       a
-    }
+    end
 
-    let(:sample_associations) {
+    let(:sample_associations) do
       a = ActiveRecordSchemaScrapper::Associations.new(model: rails_model)
-      allow(a).to receive(:to_a) { [
-        ActiveRecordSchemaScrapper::Association.new(name: :user, class_name: :User, type: :belongs_to, through: nil, source: nil, foreign_key: :user_id, join_table: nil, dependent: nil),
-        ActiveRecordSchemaScrapper::Association.new(name: :account, class_name: :Account, type: :has_one, through: nil, source: nil, foreign_key: :account_id, join_table: nil, dependent: nil),
-        ActiveRecordSchemaScrapper::Association.new(name: :person, class_name: :Person, type: :has_many, through: nil, source: nil, foreign_key: :person_id, join_table: nil, dependent: nil),
-        ActiveRecordSchemaScrapper::Association.new(name: :other, class_name: :Other, type: :has_and_belongs_to_many, through: nil, source: nil, foreign_key: :other_id, join_table: nil, dependent: nil),
-      ] }
+      allow(a).to receive(:to_a) {
+        [
+          ActiveRecordSchemaScrapper::Association.new(name: :user, class_name: :User, type: :belongs_to, through: nil, source: nil, foreign_key: :user_id, join_table: nil, dependent: nil),
+          ActiveRecordSchemaScrapper::Association.new(name: :account, class_name: :Account, type: :has_one, through: nil, source: nil, foreign_key: :account_id, join_table: nil, dependent: nil),
+          ActiveRecordSchemaScrapper::Association.new(name: :person, class_name: :Person, type: :has_many, through: nil, source: nil, foreign_key: :person_id, join_table: nil, dependent: nil),
+          ActiveRecordSchemaScrapper::Association.new(name: :other, class_name: :Other, type: :has_and_belongs_to_many, through: nil, source: nil, foreign_key: :other_id, join_table: nil, dependent: nil),
+        ]
+      }
       a
-    }
+    end
 
     describe "error cases" do
-      let(:file_in) {
-        f = Tempfile.new('name')
+      let(:file_in) do
+        f = Tempfile.new("name")
         f.write model_string
         f.close
         File.open(f.path)
-      }
-      subject {
+      end
+      subject do
         described_class.new(file:                 file_in,
                             file_out:             file_out,
                             schema_scrapper:      stub_schema_scrapper,
                             enabled_partials:     [],
                             klasses_to_be_mocked: [],
                             mock_append_name:     "Mock").create
-      }
-      describe 'has no parent class' do
-        let(:model_string) {
+      end
+      describe "has no parent class" do
+        let(:model_string) do
           <<-RUBY.strip_heredoc
         class ParentLessChild
         end
           RUBY
-        }
+        end
 
         it do
           expect(subject.errors.first.message).to eq("ParentLessChild is missing a parent class.")
@@ -105,22 +107,22 @@ describe ActiveMocker::MockCreator do
         end
       end
 
-      describe 'adding to valid parent classes' do
-        subject {
+      describe "adding to valid parent classes" do
+        subject do
           described_class.new(file:                 file_in,
                               file_out:             file_out,
                               schema_scrapper:      stub_schema_scrapper,
                               enabled_partials:     [],
                               klasses_to_be_mocked: [],
-                              mock_append_name:     "Mock"
-          ).create
-        }
-        let(:model_string) {
+                              mock_append_name:     "Mock",
+                             ).create
+        end
+        let(:model_string) do
           <<-RUBY.strip_heredoc
         class Child < ActiveRecord::Base
         end
           RUBY
-        }
+        end
 
         it do
           expect(subject.errors.empty?).to eq true
@@ -134,11 +136,11 @@ describe ActiveMocker::MockCreator do
     end
 
     context "when it mock is in modules" do
-      let(:file_in) {
+      let(:file_in) do
         File.new(File.join(File.dirname(__FILE__), "../models/model.rb"))
-      }
+      end
 
-      it 'partial :attributes' do
+      it "partial :attributes" do
         expect(subject.call([:attributes])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
@@ -165,7 +167,7 @@ describe ActiveMocker::MockCreator do
       end
     end
 
-    it 'partial :attributes' do
+    it "partial :attributes" do
       expect(subject.call([:attributes])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
@@ -191,7 +193,7 @@ describe ActiveMocker::MockCreator do
       RUBY
     end
 
-    it 'partial :class_methods' do
+    it "partial :class_methods" do
       expect(subject.call([:class_methods])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
@@ -241,7 +243,7 @@ describe ActiveMocker::MockCreator do
       RUBY
     end
 
-    it 'partial :modules_constants' do
+    it "partial :modules_constants" do
       expect(subject.call([:modules_constants])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
@@ -253,7 +255,7 @@ describe ActiveMocker::MockCreator do
       RUBY
     end
 
-    it 'partial :scopes' do
+    it "partial :scopes" do
       results = subject.call([:scopes])
       expect(results).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
@@ -288,7 +290,7 @@ describe ActiveMocker::MockCreator do
       RUBY
     end
 
-    it 'partial :defined_methods' do
+    it "partial :defined_methods" do
       expect(subject.call([:defined_methods])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
@@ -314,7 +316,7 @@ describe ActiveMocker::MockCreator do
       RUBY
     end
 
-    it 'partial :associations' do
+    it "partial :associations" do
       expect(subject.call([:associations])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 

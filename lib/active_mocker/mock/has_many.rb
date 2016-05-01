@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class HasMany < Association
     include Queries
@@ -7,7 +8,7 @@ module ActiveMocker
       super(collection, options)
     end
 
-    def initialize(collection, options={})
+    def initialize(collection, options = {})
       @relation_class = options[:relation_class]
       @foreign_key    = options[:foreign_key]
       @foreign_id     = options[:foreign_id]
@@ -26,7 +27,7 @@ module ActiveMocker
     # @api private
     attr_reader :relation_class, :foreign_key, :foreign_id, :source
 
-    def build(options={}, &block)
+    def build(options = {}, &block)
       new_record = relation_class.new(init_options.merge!(options), &block)
 
       # @private
@@ -45,23 +46,21 @@ module ActiveMocker
       new_record
     end
 
-    def create(options={}, &block)
+    def create(options = {}, &block)
       created_record = relation_class.create(init_options.merge!(options), &block)
       collection << created_record
       created_record
     end
 
-    alias_method :create!, :create
+    alias create! create
 
     # @api private
     def init_options
-      {foreign_key => foreign_id}
+      { foreign_key => foreign_id }
     end
-
   end
   module Mock
     # @deprecated
     HasMany = ActiveMocker::HasMany
   end
 end
-

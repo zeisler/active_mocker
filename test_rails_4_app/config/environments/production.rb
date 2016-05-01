@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 SampleApp::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -19,9 +20,8 @@ SampleApp::Application.configure do
   # For large-scale production use, consider using a caching reverse proxy like nginx, varnish or squid.
   # config.action_dispatch.rack_cache = true
 
-
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor  = :uglifier
+  config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Whether to fallback to assets pipeline if a precompiled asset is missed.
@@ -31,7 +31,7 @@ SampleApp::Application.configure do
   config.assets.digest = true
 
   # Version of your assets, change this if you want to expire all your assets.
-  config.assets.version = '1.0'
+  config.assets.version = "1.0"
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache

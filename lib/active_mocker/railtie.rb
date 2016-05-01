@@ -1,8 +1,8 @@
+# frozen_string_literal: true
 module ActiveMocker
   class Railtie < Rails::Railtie
-
     rake_tasks do
-      load 'active_mocker/task.rake'
+      load "active_mocker/task.rake"
     end
 
     config.to_prepare do

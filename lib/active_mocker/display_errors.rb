@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class DisplayErrors
     attr_reader :errors, :model_count, :out
@@ -29,7 +30,7 @@ module ActiveMocker
 
     def display_errors
       uniq_errors.each do |e|
-        next if e.level == :debug unless ENV["DEBUG"]
+        next unless ENV["DEBUG"] || !(e.level == :debug)
         if ActiveMocker::Config.error_verbosity == 3
           out.puts "#{e.class_name} has the following errors:"
           out.puts e.message.colorize(e.level_color)
@@ -62,7 +63,7 @@ module ActiveMocker
 
     def failure_count_message
       if ActiveMocker::Config.error_verbosity > 0 && (success_count < model_count || uniq_errors.count > 0)
-        out.puts "#{ model_count - success_count } mock(s) out of #{model_count} failed."
+        out.puts "#{model_count - success_count} mock(s) out of #{model_count} failed."
       end
     end
   end

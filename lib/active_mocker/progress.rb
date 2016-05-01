@@ -1,9 +1,9 @@
+# frozen_string_literal: true
 module ActiveMocker
   class Progress
-
     def self.create(count)
-      require 'ruby-progressbar'
-      self.new(count)
+      require "ruby-progressbar"
+      new(count)
     rescue LoadError
       NullProgress.new
     end
@@ -12,14 +12,12 @@ module ActiveMocker
       @count = count
     end
 
-    def increment
-      progress.increment
-    end
+    delegate :increment, to: :progress
 
     def progress
-      @progress ||= ProgressBar.create(title:  'Generating Mocks',
+      @progress ||= ProgressBar.create(title:  "Generating Mocks",
                                        total:  @count,
-                                       format: '%t |%b>>%i| %p%%')
+                                       format: "%t |%b>>%i| %p%%")
     end
   end
 end

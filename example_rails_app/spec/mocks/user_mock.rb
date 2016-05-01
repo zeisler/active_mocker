@@ -1,13 +1,14 @@
-require 'active_mocker/mock'
+# frozen_string_literal: true
+require "active_mocker/mock"
 
 class UserMock < ActiveMocker::Base
-  created_with('2.0.0-alpha.0')
-# _modules_constants.erb
+  created_with("2.0.0-alpha.0")
+  # _modules_constants.erb
 
-#_class_methods.erb
+  # _class_methods.erb
   class << self
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new({"id"=>nil, "name"=>nil, "age"=>nil, "admin"=>nil, "created_at"=>nil, "updated_at"=>nil}).merge(super)
+      @attributes ||= HashWithIndifferentAccess.new("id" => nil, "name" => nil, "age" => nil, "admin" => nil, "created_at" => nil, "updated_at" => nil).merge(super)
     end
 
     def types
@@ -15,11 +16,11 @@ class UserMock < ActiveMocker::Base
     end
 
     def associations
-      @associations ||= {:comments=>nil, :subscriptions=>nil}.merge(super)
+      @associations ||= { comments: nil, subscriptions: nil }.merge(super)
     end
 
     def associations_by_class
-      @associations_by_class ||= {:Comment=>{:has_many=>[:comments]}, :Subscription=>{:has_many=>[:subscriptions]}}.merge(super)
+      @associations_by_class ||= { Comment: { has_many: [:comments] }, Subscription: { has_many: [:subscriptions] } }.merge(super)
     end
 
     def mocked_class
@@ -29,7 +30,7 @@ class UserMock < ActiveMocker::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= ["id", "name", "age", "admin", "created_at", "updated_at"] | super
+      @attribute_names ||= %w(id name age admin created_at updated_at) | super
     end
 
     def primary_key
@@ -44,7 +45,7 @@ class UserMock < ActiveMocker::Base
       "users" || super
     end
   end
-# _attributes.erb
+  # _attributes.erb
   def id
     read_attribute(:id)
   end
@@ -52,6 +53,7 @@ class UserMock < ActiveMocker::Base
   def id=(val)
     write_attribute(:id, val)
   end
+
   def name
     read_attribute(:name)
   end
@@ -59,6 +61,7 @@ class UserMock < ActiveMocker::Base
   def name=(val)
     write_attribute(:name, val)
   end
+
   def age
     read_attribute(:age)
   end
@@ -66,6 +69,7 @@ class UserMock < ActiveMocker::Base
   def age=(val)
     write_attribute(:age, val)
   end
+
   def admin
     read_attribute(:admin)
   end
@@ -73,6 +77,7 @@ class UserMock < ActiveMocker::Base
   def admin=(val)
     write_attribute(:admin, val)
   end
+
   def created_at
     read_attribute(:created_at)
   end
@@ -80,6 +85,7 @@ class UserMock < ActiveMocker::Base
   def created_at=(val)
     write_attribute(:created_at, val)
   end
+
   def updated_at
     read_attribute(:updated_at)
   end
@@ -88,29 +94,28 @@ class UserMock < ActiveMocker::Base
     write_attribute(:updated_at, val)
   end
 
-# _associations.erb
+  # _associations.erb
 
-
-# has_many
+  # has_many
   def comments
-    read_association(:comments, -> { ActiveMocker::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: '') })
+    read_association(:comments, -> { ActiveMocker::HasMany.new([], foreign_key: "user_id", foreign_id: id, relation_class: classes("Comment"), source: "") })
   end
 
   def comments=(val)
-    write_association(:comments, ActiveMocker::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Comment'), source: ''))
+    write_association(:comments, ActiveMocker::HasMany.new(val, foreign_key: "user_id", foreign_id: id, relation_class: classes("Comment"), source: ""))
   end
+
   def subscriptions
-    read_association(:subscriptions, -> { ActiveMocker::HasMany.new([],foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: '') })
+    read_association(:subscriptions, -> { ActiveMocker::HasMany.new([], foreign_key: "user_id", foreign_id: id, relation_class: classes("Subscription"), source: "") })
   end
 
   def subscriptions=(val)
-    write_association(:subscriptions, ActiveMocker::HasMany.new(val, foreign_key: 'user_id', foreign_id: self.id, relation_class: classes('Subscription'), source: ''))
+    write_association(:subscriptions, ActiveMocker::HasMany.new(val, foreign_key: "user_id", foreign_id: id, relation_class: classes("Subscription"), source: ""))
   end
 
-# _scopes.erb
+  # _scopes.erb
   module Scopes
     include ActiveMocker::Base::Scopes
-
   end
 
   extend Scopes
@@ -124,5 +129,4 @@ class UserMock < ActiveMocker::Base
   end
 
   private_class_method :__new_relation__
-
 end

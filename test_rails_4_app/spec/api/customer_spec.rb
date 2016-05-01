@@ -1,5 +1,6 @@
-require 'rails_helper'
-require_mock 'api/customer_mock'
+# frozen_string_literal: true
+require "rails_helper"
+require_mock "api/customer_mock"
 
 RSpec.describe Api::CustomerMock do
   describe "::mocked_class" do

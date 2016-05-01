@@ -1,13 +1,14 @@
+# frozen_string_literal: true
 # Be sure to restart your server when you modify this file.
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly, such as by adding
 # .secret to your .gitignore file.
 
-require 'securerandom'
+require "securerandom"
 
 def secure_token
-  token_file = Rails.root.join('.secret')
+  token_file = Rails.root.join(".secret")
   if File.exist?(token_file)
     # Use the existing token.
     File.read(token_file).chomp

@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 class User < ActiveRecord::Base
-  has_many :microposts, -> { order('created_at DESC') }
+  has_many :microposts, -> { order("created_at DESC") }
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
   has_many :reverse_relationships, foreign_key: "followed_id",
@@ -9,13 +10,13 @@ class User < ActiveRecord::Base
   has_one :account
   scope :find_by_name, -> (name) { where(name: name) }
   scope :by_name, -> (name) { where(name: name) }
-  scope :no_arg_scope, -> { where(name: 'name') }
+  scope :no_arg_scope, -> { where(name: "name") }
 
-  def User.new_remember_token
+  def self.new_remember_token
     SecureRandom.urlsafe_base64
   end
 
-  def User.digest(token)
+  def self.digest(token)
     Digest::SHA1.hexdigest(token.to_s)
   end
 
@@ -36,11 +37,9 @@ class User < ActiveRecord::Base
   end
 
   def key_arg_reg(key:)
-
   end
 
   def key_arg_opt(key:nil)
-
   end
 
   private

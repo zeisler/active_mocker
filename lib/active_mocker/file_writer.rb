@@ -12,7 +12,7 @@ module ActiveMocker
     def write!
       assure_dir_path_exists!
 
-      safe_write { |f| process!(f)}
+      safe_write { |f| process!(f) }
     end
 
     private

@@ -81,7 +81,7 @@ module ActiveMocker
       constant = model_name.constantize
       return unless constant.ancestors.include?(ActiveRecord::Base)
       constant
-    rescue StandardError, LoadError => e
+    rescue NameError, LoadError => e
       display_errors.wrap_an_exception(e, model_name)
       nil
     end

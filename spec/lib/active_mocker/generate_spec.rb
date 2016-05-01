@@ -4,7 +4,7 @@ require "lib/active_mocker"
 
 RSpec.describe ActiveMocker::Generate do
   describe ".new" do
-    let(:not_found_dir) { File.join(File.expand_path("../test_mock_dir", __FILE__)) }
+    let(:not_found_dir) { File.expand_path("../test_mock_dir", __FILE__) }
 
     before do
       ActiveMocker::Config.set do |config|
@@ -71,7 +71,7 @@ RSpec.describe ActiveMocker::Generate do
       context "when old mock exist" do
         let(:current_mock_path) { File.join(not_found_dir, "model_mock.rb") }
         let(:old_mock_path) { File.join(not_found_dir, "old_mock_from_deleted_model_mock.rb") }
-        let(:models_dir) { File.join(File.expand_path("../../", __FILE__), "models") }
+        let(:models_dir) { File.expand_path("../../models", __FILE__) }
 
         before do
           FileUtils.mkdir_p(not_found_dir)
@@ -96,7 +96,7 @@ RSpec.describe ActiveMocker::Generate do
     end
 
     describe "#active_record_models" do
-      let(:models_dir) { File.join(File.expand_path("../../", __FILE__), "models") }
+      let(:models_dir) { File.expand_path("../../models", __FILE__) }
 
       before do
         ActiveMocker::Config.model_dir = models_dir
@@ -118,8 +118,8 @@ RSpec.describe ActiveMocker::Generate do
       before do
         ActiveMocker::Config.disable_modules_and_constants = set_to
         ActiveMocker::Config.progress_bar                  = false
-        ActiveMocker::Config.model_dir                     = File.join(File.expand_path("../../", __FILE__), "models")
-        ActiveMocker::Config.single_model_path             = File.join(File.expand_path("../../", __FILE__), "models/model.rb")
+        ActiveMocker::Config.model_dir                     = File.expand_path("../../models", __FILE__)
+        ActiveMocker::Config.single_model_path             = File.expand_path("../../models/model.rb", __FILE__)
       end
 
       context "when true" do
@@ -144,8 +144,8 @@ RSpec.describe ActiveMocker::Generate do
     describe "ActiveMocker::Config.mock_append_name" do
       before do
         ActiveMocker::Config.progress_bar      = false
-        ActiveMocker::Config.model_dir         = File.join(File.expand_path("../../", __FILE__), "models")
-        ActiveMocker::Config.single_model_path = File.join(File.expand_path("../../models", __FILE__), "model.rb")
+        ActiveMocker::Config.model_dir         = File.expand_path("../../models", __FILE__)
+        ActiveMocker::Config.single_model_path = File.expand_path("../../models/model.rb", __FILE__)
       end
 
       context "defaults" do

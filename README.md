@@ -288,6 +288,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * column_names/attribute_names
   * delete_all/destroy_all
   * table_name
+  * slice
   
 **Query Methods** - [docs](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker/Mock/Queries)
 

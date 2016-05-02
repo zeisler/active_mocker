@@ -4,6 +4,8 @@ AllCops:
   Exclude:
     - spec/**/*.rb
     - test_rails_4_app/**/*.rb
+    - example_rails_app/spec/mocks/*_mock.rb
+    - example_rails_app/db/schema.rb
 Rails:
   Enabled: true
 

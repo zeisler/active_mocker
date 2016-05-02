@@ -79,17 +79,17 @@ RSpec.describe ActiveMocker::DisplayErrors do
         end
       end
     end
-  end
 
-  describe "#failure_count_message" do
     context "when error_verbosity is zero" do
       it "lists out nothing" do
         allow(ActiveMocker::Config).to receive(:error_verbosity) { 0 }
-        subject.failure_count_message
+        subject.display_errors
         expect(string_io.to_a).to eq []
       end
     end
+  end
 
+  describe "#failure_count_message" do
     context "when error_verbosity is one" do
       context "when a mock has failed" do
         it "lists out x out y failed message" do
@@ -135,7 +135,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
       it "outputs only warnings" do
         subject.success_count += 1
         subject.error_summary
-        expect(string_io.to_a).to eq ["errors: 0, warn: 0, info: 0"]
+        expect(string_io.to_a).to eq ["Error Summary", "errors: 0, warn: 0, info: 0"]
       end
     end
 
@@ -144,7 +144,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
         subject.add(ActiveMocker::ErrorObject.new(level: :error, message: "none", class_name: "Buggy", type: :overload))
         subject.add(ActiveMocker::ErrorObject.new(level: :error, message: "none", class_name: "Buggy", type: :overload))
         subject.error_summary
-        expect(string_io.to_a.first).to eq "errors: 2, warn: 0, info: 0"
+        expect(string_io.to_a.last).to eq "errors: 2, warn: 0, info: 0"
       end
     end
 
@@ -154,7 +154,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
         subject.add(ActiveMocker::ErrorObject.new(message: "none", class_name: "Buggy", type: :overload))
         subject.add(ActiveMocker::ErrorObject.new(message: "none", class_name: "Buggy", type: :overload))
         subject.error_summary
-        expect(string_io.to_a.first).to eq "errors: 0, warn: 3, info: 0"
+        expect(string_io.to_a.last).to eq "errors: 0, warn: 3, info: 0"
       end
     end
 
@@ -165,7 +165,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
         subject.add(ActiveMocker::ErrorObject.new(level: :info, message: "none", class_name: "Buggy", type: :overload))
         subject.add(ActiveMocker::ErrorObject.new(level: :info, message: "none", class_name: "Buggy", type: :overload))
         subject.error_summary
-        expect(string_io.to_a.first).to eq "errors: 0, warn: 0, info: 4"
+        expect(string_io.to_a.last).to eq "errors: 0, warn: 0, info: 4"
       end
     end
   end

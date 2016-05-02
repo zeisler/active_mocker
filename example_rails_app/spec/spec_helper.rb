@@ -2,6 +2,7 @@
 $VERBOSE = nil # This removes ruby warnings
 require "active_mocker/rspec_helper"
 $LOAD_PATH.unshift File.join(File.expand_path("../../", __FILE__)) # add root of app to path
+
 RSpec.configure do |config|
   config.order = "random"
   config.mock_framework = :rspec

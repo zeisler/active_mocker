@@ -1,11 +1,8 @@
-# frozen_string_literal: true
-require "active_mocker/mock"
-
+require("active_mocker/mock")
 class UserMock < ActiveMocker::Base
-  created_with("2.0.0-alpha.0")
+  created_with("2.1.3")
   # _modules_constants.erb
-
-  # _class_methods.erb
+  #_class_methods.erb
   class << self
     def attributes
       @attributes ||= HashWithIndifferentAccess.new("id" => nil, "name" => nil, "age" => nil, "admin" => nil, "created_at" => nil, "updated_at" => nil).merge(super)
@@ -20,17 +17,16 @@ class UserMock < ActiveMocker::Base
     end
 
     def associations_by_class
-      @associations_by_class ||= { Comment: { has_many: [:comments] }, Subscription: { has_many: [:subscriptions] } }.merge(super)
+      @associations_by_class ||= { "Comment" => { has_many: [:comments] }, "Subscription" => { has_many: [:subscriptions] } }.merge(super)
     end
 
     def mocked_class
       "User"
     end
 
-    private :mocked_class
-
+    private(:mocked_class)
     def attribute_names
-      @attribute_names ||= %w(id name age admin created_at updated_at) | super
+      @attribute_names ||= (["id", "name", "age", "admin", "created_at", "updated_at"] | super)
     end
 
     def primary_key
@@ -44,7 +40,9 @@ class UserMock < ActiveMocker::Base
     def table_name
       "users" || super
     end
+
   end
+
   # _attributes.erb
   def id
     read_attribute(:id)
@@ -95,38 +93,40 @@ class UserMock < ActiveMocker::Base
   end
 
   # _associations.erb
-
   # has_many
   def comments
-    read_association(:comments, -> { ActiveMocker::HasMany.new([], foreign_key: "user_id", foreign_id: id, relation_class: classes("Comment"), source: "") })
+    read_association(:comments, lambda do
+      ActiveMocker::HasMany.new([], foreign_key: "user_id", foreign_id: self.id, relation_class: classes("Comment"), source: "")
+    end)
   end
 
   def comments=(val)
-    write_association(:comments, ActiveMocker::HasMany.new(val, foreign_key: "user_id", foreign_id: id, relation_class: classes("Comment"), source: ""))
+    write_association(:comments, ActiveMocker::HasMany.new(val, foreign_key: "user_id", foreign_id: self.id, relation_class: classes("Comment"), source: ""))
   end
 
   def subscriptions
-    read_association(:subscriptions, -> { ActiveMocker::HasMany.new([], foreign_key: "user_id", foreign_id: id, relation_class: classes("Subscription"), source: "") })
+    read_association(:subscriptions, lambda do
+      ActiveMocker::HasMany.new([], foreign_key: "user_id", foreign_id: self.id, relation_class: classes("Subscription"), source: "")
+    end)
   end
 
   def subscriptions=(val)
-    write_association(:subscriptions, ActiveMocker::HasMany.new(val, foreign_key: "user_id", foreign_id: id, relation_class: classes("Subscription"), source: ""))
+    write_association(:subscriptions, ActiveMocker::HasMany.new(val, foreign_key: "user_id", foreign_id: self.id, relation_class: classes("Subscription"), source: ""))
   end
 
   # _scopes.erb
   module Scopes
-    include ActiveMocker::Base::Scopes
+    include(ActiveMocker::Base::Scopes)
   end
 
-  extend Scopes
-
+  extend(Scopes)
   class ScopeRelation < ActiveMocker::Association
-    include UserMock::Scopes
+    include(UserMock::Scopes)
   end
 
   def self.__new_relation__(collection)
     UserMock::ScopeRelation.new(collection)
   end
 
-  private_class_method :__new_relation__
+  private_class_method(:__new_relation__)
 end

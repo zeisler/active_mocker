@@ -12,4 +12,12 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.infer_spec_type_from_file_location!
+
+  require "nosql"
+  # ensure no database connections
+  config.around(:each, no_db: true) do |example|
+    Nosql::Connection.enable!
+    example.run
+    Nosql::Connection.disable!
+  end
 end

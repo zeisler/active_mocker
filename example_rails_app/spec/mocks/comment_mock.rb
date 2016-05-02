@@ -1,11 +1,8 @@
-# frozen_string_literal: true
-require "active_mocker/mock"
-
-class CommentMock < ActiveMocker::Mock::Base
-  created_with("2.0.0-alpha.0")
+require("active_mocker/mock")
+class CommentMock < ActiveMocker::Base
+  created_with("2.1.3")
   # _modules_constants.erb
-
-  # _class_methods.erb
+  #_class_methods.erb
   class << self
     def attributes
       @attributes ||= HashWithIndifferentAccess.new("id" => nil, "user_id" => nil, "text" => nil, "votes" => nil, "created_at" => nil, "updated_at" => nil).merge(super)
@@ -20,17 +17,16 @@ class CommentMock < ActiveMocker::Mock::Base
     end
 
     def associations_by_class
-      @associations_by_class ||= { User: { belongs_to: [:user] } }.merge(super)
+      @associations_by_class ||= { "User" => { belongs_to: [:user] } }.merge(super)
     end
 
     def mocked_class
       "Comment"
     end
 
-    private :mocked_class
-
+    private(:mocked_class)
     def attribute_names
-      @attribute_names ||= %w(id user_id text votes created_at updated_at) | super
+      @attribute_names ||= (["id", "user_id", "text", "votes", "created_at", "updated_at"] | super)
     end
 
     def primary_key
@@ -44,7 +40,9 @@ class CommentMock < ActiveMocker::Mock::Base
     def table_name
       "comments" || super
     end
+
   end
+
   # _attributes.erb
   def id
     read_attribute(:id)
@@ -95,10 +93,11 @@ class CommentMock < ActiveMocker::Mock::Base
   end
 
   # _associations.erb
-
   # belongs_to
   def user
-    read_association(:user) || write_association(:user, classes("User").try { |k| k.find_by(id: user_id) })
+    read_association(:user) || write_association(:user, classes("User").try do |k|
+      k.find_by(id: user_id)
+    end)
   end
 
   def user=(val)
@@ -108,29 +107,34 @@ class CommentMock < ActiveMocker::Mock::Base
 
   def build_user(attributes = {}, &block)
     association = classes("User").try(:new, attributes, &block)
-    write_association(:user, association) unless association.nil?
+    unless association.nil?
+      write_association(:user, association)
+    end
+
   end
 
   def create_user(attributes = {}, &block)
     association = classes("User").try(:create, attributes, &block)
-    write_association(:user, association) unless association.nil?
-  end
-  alias create_user! create_user
+    unless association.nil?
+      write_association(:user, association)
+    end
 
+  end
+
+  alias_method(:create_user!, :create_user)
   # _scopes.erb
   module Scopes
-    include ActiveMocker::Base::Scopes
+    include(ActiveMocker::Base::Scopes)
   end
 
-  extend Scopes
-
+  extend(Scopes)
   class ScopeRelation < ActiveMocker::Association
-    include CommentMock::Scopes
+    include(CommentMock::Scopes)
   end
 
   def self.__new_relation__(collection)
     CommentMock::ScopeRelation.new(collection)
   end
 
-  private_class_method :__new_relation__
+  private_class_method(:__new_relation__)
 end

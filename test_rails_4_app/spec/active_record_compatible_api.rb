@@ -670,7 +670,6 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   end
 
   describe ".attribute_alias?" do
-
     it "returns true when given a aliased attribute" do
       expect(user_class.attribute_alias?(:first_and_last_name)).to eq true
     end

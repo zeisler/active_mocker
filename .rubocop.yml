@@ -35,7 +35,6 @@ Style/DotPosition:
   EnforcedStyle: leading
   SupportedStyles:
     - leading
-    - trailing
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'

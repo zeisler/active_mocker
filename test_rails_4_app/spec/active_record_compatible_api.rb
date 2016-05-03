@@ -78,7 +78,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
 
     it "create with block" do
       user = user_class.create do |u|
-        u.name = "David"
+        u.name  = "David"
         u.admin = true
       end
 
@@ -95,8 +95,8 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     end
 
     it "Updates multiple records" do
-      users = [user_class.create!(email: "1"),
-               user_class.create!(email: "2")]
+      users  = [user_class.create!(email: "1"),
+                user_class.create!(email: "2")]
       people = { users.first.id => { "name" => "David" }, users.last.id => { "name" => "Jeremy" } }
       user_class.update(people.keys, people.values)
       expect(user_class.all.map(&:name)).to eq %w(David Jeremy)
@@ -186,7 +186,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     it { expect([record]).to eq user_class.where(attributes) }
 
     it "by association not only attribute" do
-      user = user_class.create!(email: "1")
+      user      = user_class.create!(email: "1")
       micropost = micropost_class.create(user: user)
       expect(micropost_class.where(user: user)).to eq [micropost]
     end
@@ -237,7 +237,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
 
     it "Updates multiple records" do
       user_records = [user_class.create(email: "1"), user_class.create(email: "2")]
-      users = { user_records.first.id => { name: "Fred" }, user_records.last.id => { name: "Dave" } }
+      users        = { user_records.first.id => { name: "Fred" }, user_records.last.id => { name: "Dave" } }
       user_class.update(users.keys, users.values)
       user_records.map(&:reload)
       expect(user_records.map(&:name)).to eq %w(Fred Dave)
@@ -276,8 +276,8 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     let(:support_array_methods) { [:<<, :take, :push, :clear, :first, :last, :concat, :replace, :distinct, :uniq, :count, :size, :length, :empty?, :any?, :include?] }
 
     it "supported array methods" do
-      mp1 = micropost_class.create!(content: "text")
-      mp2 = micropost_class.create!(content: "text")
+      mp1  = micropost_class.create!(content: "text")
+      mp2  = micropost_class.create!(content: "text")
       user = user_class.create(microposts: [mp1, mp2])
       expect(user.microposts.take(1).count).to eq(1)
       expect(user.microposts.methods).to include *support_array_methods
@@ -307,25 +307,25 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   describe '#find' do
     it "single id passed" do
       microposts = [micropost_class.create, micropost_class.create]
-      user = user_class.create!(email: "1", name: "fred", microposts: microposts)
+      user       = user_class.create!(email: "1", name: "fred", microposts: microposts)
       expect(user.microposts.find(microposts.first.id)).to eq microposts.first
     end
 
     it "single string id passed" do
       microposts = [micropost_class.create, micropost_class.create]
-      user = user_class.create!(email: "1", name: "fred", microposts: microposts)
+      user       = user_class.create!(email: "1", name: "fred", microposts: microposts)
       expect(user.microposts.find(microposts.first.id.to_s)).to eq microposts.first
     end
 
     it "multiple ids passed" do
       microposts = [micropost_class.create(id: 1), micropost_class.create(id: 2)]
-      user = user_class.create!(email: "1", name: "fred", microposts: microposts)
+      user       = user_class.create!(email: "1", name: "fred", microposts: microposts)
       expect(user.microposts.find([microposts.first.id, microposts.last.id])).to include *microposts.first, microposts.last
     end
 
     it "multiple string ids passed" do
       microposts = [micropost_class.create(id: 1), micropost_class.create(id: 2)]
-      user = user_class.create!(email: "1", name: "fred", microposts: microposts)
+      user       = user_class.create!(email: "1", name: "fred", microposts: microposts)
       expect(user.microposts.find([microposts.first.id.to_s, microposts.last.id.to_s])).to include *microposts.first, microposts.last
     end
 
@@ -339,8 +339,8 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   end
 
   it '#sum' do
-    mpm1 = micropost_class.create!(up_votes: 5)
-    mpm2 = micropost_class.create!(up_votes: 5)
+    mpm1      = micropost_class.create!(up_votes: 5)
+    mpm2      = micropost_class.create!(up_votes: 5)
     user_mock = user_class.create!(microposts: [mpm1, mpm2])
     expect(user_mock.microposts.sum(:up_votes)).to eq 10
   end
@@ -363,7 +363,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
       end
 
       it "deletes all records association" do
-        user = user_class.create!(email: "1", name: "fred",
+        user = user_class.create!(email:      "1", name: "fred",
                                   microposts: [micropost_class.create, micropost_class.create])
         user.microposts.delete_all
         expect(user_class.count).to eq 1
@@ -571,13 +571,13 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
 
     it "account.user will be a user if not persisted" do
       account = account_class.new
-      user = user_class.new(account: account)
+      user    = user_class.new(account: account)
       expect(account.user).to eq user
     end
 
     it "account.user will be a user if is persisted" do
       account = account_class.create
-      user = user_class.new(account: account)
+      user    = user_class.new(account: account)
       expect(account.user).to eq user
     end
   end
@@ -585,14 +585,14 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   describe "has_many association" do
     it "when passing in collection all item in collection will set its foreign key to the parent" do
       posts = [micropost_class.create, micropost_class.create, micropost_class.create]
-      user = user_class.create(microposts: posts)
+      user  = user_class.create(microposts: posts)
       expect(user.microposts.map(&:user_id)).to eq posts.map(&:user_id)
       expect(posts.map(&:user_id)).to eq [user.id, user.id, user.id]
     end
   end
 
   it "can build new object from collection" do
-    user = user_class.create
+    user     = user_class.create
     new_post = user.microposts.build
     expect(new_post.class).to eq(micropost_class)
     expect(new_post.attributes).to eq("id" => nil, "content" => nil, "user_id" => 1, "up_votes" => nil, "created_at" => nil, "updated_at" => nil)
@@ -603,7 +603,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   end
 
   it "can create new object from collection" do
-    user = user_class.create
+    user     = user_class.create
     new_post = user.microposts.create
     expect(new_post.class).to eq(micropost_class)
     expect(new_post.user_id).to eq(1)
@@ -652,6 +652,36 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
 
     it "get a range of records at an index" do
       expect(micropost_class.all[0..1]).to include *sample_records
+    end
+  end
+
+  describe ".alias_attribute" do
+    it "aliases an attribute" do
+      user = user_class.new(name: "My Name")
+      expect(user.first_and_last_name).to eq "My Name"
+      expect(user.name).to eq "My Name"
+    end
+
+    it "can be initialized with an aliased attribute" do
+      user = user_class.new(first_and_last_name: "My Name")
+      expect(user.first_and_last_name).to eq "My Name"
+      expect(user.name).to eq "My Name"
+    end
+  end
+
+  describe ".attribute_alias?" do
+    it "returns true when given a aliased attribute" do
+      expect(user_class.attribute_alias?(:first_and_last_name)).to eq true
+    end
+
+    it "returns false when given a non aliased attribute" do
+      expect(user_class.attribute_alias?(:name)).to eq false
+    end
+  end
+
+  describe ".attribute_aliases" do
+    it "return a hash of the new attribute name mapped to the old attribute name" do
+      expect(user_class.attribute_aliases).to eq({"first_and_last_name"=>"name"})
     end
   end
 end

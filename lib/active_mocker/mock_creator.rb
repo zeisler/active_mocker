@@ -65,7 +65,8 @@ module ActiveMocker
                           erb_template: File.new(File.join(File.dirname(__FILE__), "mock_template.erb"), "r"),
                           binding:      binding,
                           post_process: lambda do |str|
-                            ruby_code = DissociatedIntrospection::RubyCode.build_from_source(str, parse_with_comments: true)
+                            ruby_code = DissociatedIntrospection::RubyCode.build_from_source(str,
+                                                                                             parse_with_comments: true)
                             DissociatedIntrospection::WrapInModules.new(ruby_code: ruby_code)
                               .call(modules: nested_modules)
                               .source_from_ast.gsub(/end\n/, "end\n\n")
@@ -78,7 +79,15 @@ module ActiveMocker
 
     class << self
       def enabled_partials_default
-        [:modules_constants, :class_methods, :attributes, :scopes, :defined_methods, :associations]
+        [
+          :modules_constants,
+          :class_methods,
+          :attributes,
+          :scopes,
+          :recreate_class_method_calls,
+          :defined_methods,
+          :associations,
+        ]
       end
 
       public :enabled_partials_default
@@ -103,8 +112,15 @@ module ActiveMocker
           extend("ActiveMocker::MockCreator::#{p.to_s.camelize}".constantize)
           hash[p] = ERB.new(file.read, nil, "-", "_sub#{p}").result(binding)
         rescue => e
-          errors << ErrorObject.new(class_name: class_name, original_error: e, type: :generation, level: :error, message: e.message)
-          errors << ErrorObject.new(class_name: class_name, original_error: e, type: :erb, level: :debug, message: "Erb template: #{p} failed.\n#{file.path}")
+          errors << ErrorObject.new(class_name:     class_name,
+                                    original_error: e, type: :generation,
+                                    level:          :error,
+                                    message:        e.message)
+          errors << ErrorObject.new(class_name:     class_name,
+                                    original_error: e,
+                                    type:           :erb,
+                                    level:          :debug,
+                                    message:        "Erb template: #{p} failed.\n#{file.path}")
           raise e
         end
       end)
@@ -223,6 +239,25 @@ module ActiveMocker
       end
     end
 
+    AliasAttributeMethod = Struct.new(:new_name, :old_name)
+    module RecreateClassMethodCalls
+      def class_method_calls
+        @class_method_calls ||= class_introspector
+                                  .class_macros
+                                  .select { |h| h.keys.first == :alias_attribute }
+                                  .map do |h|
+          a = h.values.first.first
+          AliasAttributeMethod.new(a[0].to_s, a[1].to_s)
+        end
+      end
+
+      def attribute_aliases
+        class_method_calls.each_with_object({}) do |alias_attr, hash|
+          hash[alias_attr.new_name] = alias_attr.old_name
+        end
+      end
+    end
+
     module DefinedMethods
       def instance_methods
         class_introspector
@@ -243,7 +278,9 @@ module ActiveMocker
       private
 
       def create_method(m, type)
-        Method.new(m, ReverseParameters.new(class_introspector.get_class.send(type, m).parameters, blocks_as_values: true))
+        Method.new(m,
+                   ReverseParameters.new(class_introspector.get_class.send(type, m).parameters,
+                                         blocks_as_values: true))
       end
     end
 

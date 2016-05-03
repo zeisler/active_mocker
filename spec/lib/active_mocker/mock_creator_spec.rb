@@ -380,5 +380,22 @@ describe ActiveMocker::MockCreator do
         end
       RUBY
     end
+
+    it "partial :recreate_class_method_calls" do
+      expect(subject.call([:recreate_class_method_calls])).to eq format_code <<-RUBY.strip_heredoc
+        require 'active_mocker/mock'
+
+        class ModelMock < ActiveMocker::Base
+          created_with('#{ActiveMocker::VERSION}')
+          def self.attribute_aliases
+            @attribute_aliases ||= { "full_name" => "name" }.merge(super)
+          end
+
+          alias_method(:full_name, :name)
+          alias_method(:full_name=, :name=)
+
+        end
+      RUBY
+    end
   end
 end

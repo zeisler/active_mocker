@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   scope :by_name, -> (name) { where(name: name) }
   scope :no_arg_scope, -> { where(name: "name") }
 
+  alias_attribute :first_and_last_name, :name
+
   def self.new_remember_token
     SecureRandom.urlsafe_base64
   end

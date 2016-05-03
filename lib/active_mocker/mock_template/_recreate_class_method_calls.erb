@@ -5,12 +5,8 @@
   end
 
 <% class_method_calls.each do |method| -%>
-    def <%= method.new_name.to_s %>
-      <%= method.old_name.to_s %>
-    end
+    alias_method :<%= method.new_name %>, :<%= method.old_name %>
+    alias_method :<%= method.new_name %>=, :<%= method.old_name %>=
 
-    def <%= method.new_name.to_s %>=(val)
-      self.<%= method.old_name.to_s %> = val
-    end
 <% end -%>
 

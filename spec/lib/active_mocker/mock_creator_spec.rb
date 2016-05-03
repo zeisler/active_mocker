@@ -391,13 +391,9 @@ describe ActiveMocker::MockCreator do
             @attribute_aliases ||= { "full_name" => "name" }.merge(super)
           end
 
-          def full_name
-            name
-          end
+          alias_method(:full_name, :name)
+          alias_method(:full_name=, :name=)
 
-          def full_name=(val)
-            self.name = val
-          end
         end
       RUBY
     end

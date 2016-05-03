@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.2.1 - 2016-05-03
+### Fix
+- Remove hack for String#colorize that would cause the error: "NoMethodError: super: no superclass method `colorize' for #<String>"
+
 ## 2.2.0 - 2016-05-03
 ### Feature 
 - Add `ActiveMocker::Mock#slice`

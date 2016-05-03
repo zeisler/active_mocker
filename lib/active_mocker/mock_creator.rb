@@ -9,6 +9,7 @@ module ActiveMocker
                    enabled_partials: nil,
                    klasses_to_be_mocked:,
                    mock_append_name:,
+                   active_record_model:,
                    active_record_base_klass: ActiveRecord::Base)
       @file                     = file
       @file_out                 = file_out
@@ -19,6 +20,7 @@ module ActiveMocker
       @klasses_to_be_mocked     = klasses_to_be_mocked
       @active_record_base_klass = active_record_base_klass
       @mock_append_name         = mock_append_name
+      @active_record_model      = active_record_model
       @errors                   = []
       @completed                = false
     end
@@ -136,7 +138,7 @@ module ActiveMocker
       end
     end
 
-    attr_reader :parent_class
+    attr_reader :parent_class, :active_record_model
 
     def primary_key
       @primary_key ||= ActiveRecordSchemaScrapper::Attribute.new(name: "id", type: :integer)
@@ -162,12 +164,38 @@ module ActiveMocker
       private
 
       def get_module_by_reference(type)
-        reject_local_const(class_introspector.public_send(type)).map(&:referenced_name)
+        isolated_module_names = reject_local_const(class_introspector.public_send(type)).map(&:referenced_name)
+        real_module_names = get_real_module(type).map(&:name).compact
+        isolated_module_names.map do |isolated_name|
+          real_name = real_module_names.find do |rmn|
+            real_parts = rmn.split("::")
+            total_parts_count = active_record_model.name.split("::").count + isolated_name.split("::").count
+            real_parts.include?(active_record_model.name) && real_parts.include?(isolated_name) && total_parts_count == real_parts.count
+          end
+          real_name ? real_name : isolated_name
+        end
+      end
+
+      def get_real_module(type)
+        if type == :extended_modules
+          active_record_model.singleton_class.included_modules
+        else
+          active_record_model.included_modules
+        end
       end
 
       def reject_local_const(source)
         source.reject do |n|
           class_introspector.locally_defined_constants.values.include?(n)
+        end
+      end
+
+      def find_fully_specified_version(source)
+        active_record_model
+        source
+
+        active_record_model.singleton_class.included_modules do |_module|
+          _module.name.split("::").last
         end
       end
     end

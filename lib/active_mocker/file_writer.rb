@@ -18,7 +18,7 @@ module ActiveMocker
     private
 
     def process!(file_out)
-      result = create_mock(file_out)
+      result = create_mock(file_out, model)
       status = collect_errors(result.errors)
 
       ok = result.completed? && status.successful?
@@ -62,13 +62,14 @@ module ActiveMocker
       end
     end
 
-    def create_mock(file_out)
+    def create_mock(file_out, model)
       MockCreator.new(file:                 File.open(file),
                       file_out:             file_out,
                       schema_scrapper:      scrapper,
                       klasses_to_be_mocked: model_names,
                       enabled_partials:     enabled_partials,
-                      mock_append_name:     config.mock_append_name).create
+                      mock_append_name:     config.mock_append_name,
+                      active_record_model:  model).create
     end
 
     OtherErrors = Struct.new(:successful?)

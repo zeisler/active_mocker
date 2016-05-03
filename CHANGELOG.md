@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Current
+## 2.2.0 - 2016-05-03
 ### Feature 
 - Add `ActiveMocker::Mock#slice`
 - Import alias_attribute usage to mock  - With supporting methods `attribute_alias?(name)` and `attribute_alias(name)`

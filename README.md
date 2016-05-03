@@ -289,6 +289,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * delete_all/destroy_all
   * table_name
   * slice
+  * alias_attributes
   
 **Query Methods** - [docs](http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker/Mock/Queries)
 
@@ -342,6 +343,8 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * attribute_present?
   * has_attribute?
   * slice
+  * attribute_alias?
+  * alias_attributes
 
 **has_one/belongs_to/has_many**
 

@@ -22,7 +22,7 @@ class Model < ActiveRecord::Base
 
   scope :named, ->(name, value = nil, options = {}) {}
   scope :other_named, -> {}
-
+  alias_attribute :full_name, :name
   def foo(foobar, value)
   end
 

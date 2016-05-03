@@ -9,5 +9,6 @@ class <%= class_name + mock_append_name %> < <%= parent_class %>
 <%= partials.attributes %>
 <%= partials.associations %>
 <%= partials.scopes %>
+<%= partials.recreate_class_method_calls %>
 <%= partials.defined_methods %>
 end

@@ -4,6 +4,7 @@ module ActiveMocker
     include DoNothingActiveRecordMethods
     include TemplateMethods
     extend Queries
+    extend AliasAttribute
 
     def self.inherited(subclass)
       return ActiveMocker::LoadedMocks.send(:add, subclass) if subclass.superclass == Base

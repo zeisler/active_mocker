@@ -126,7 +126,7 @@ RSpec.describe ActiveMocker::Generate do
         let(:set_to) { true }
         it "#enabled_partials is missing modules_constants" do
           expect(ActiveMocker::MockCreator).
-            to receive(:new).with(hash_including(enabled_partials: [:class_methods, :attributes, :scopes, :defined_methods, :associations]))
+            to receive(:new).with(hash_including(enabled_partials: [:class_methods, :attributes, :scopes, :recreate_class_method_calls, :defined_methods, :associations]))
           described_class.new.call
         end
       end
@@ -135,7 +135,7 @@ RSpec.describe ActiveMocker::Generate do
         let(:set_to) { false }
         it "#enabled_partials is missing modules_constants" do
           expect(ActiveMocker::MockCreator).
-            to receive(:new).with(hash_including(enabled_partials: [:modules_constants, :class_methods, :attributes, :scopes, :defined_methods, :associations]))
+            to receive(:new).with(hash_including(enabled_partials: [:modules_constants, :class_methods, :attributes, :scopes, :recreate_class_method_calls, :defined_methods, :associations]))
           described_class.new.call
         end
       end

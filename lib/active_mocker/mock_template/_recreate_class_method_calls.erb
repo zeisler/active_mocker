@@ -1,0 +1,16 @@
+# _recreate_class_method_calls.erb
+
+  def self.attribute_aliases
+    @attribute_aliases ||= <%= attribute_aliases %>.merge(super)
+  end
+
+<% class_method_calls.each do |method| -%>
+    def <%= method.new_name.to_s %>
+      <%= method.old_name.to_s %>
+    end
+
+    def <%= method.new_name.to_s %>=(val)
+      self.<%= method.old_name.to_s %> = val
+    end
+<% end -%>
+

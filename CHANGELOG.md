@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 ## Current
 ### Feature 
 - Add `ActiveMocker::Mock#slice`
+- Import alias_attribute usage to mock  - With supporting methods `attribute_alias?(name)` and `attribute_alias(name)`
+
+### Fix
+- When an include/extended module is not locally defined, but defined in the same namespace as the mock it was not correctly namespaced
+- Fix issue NoMethodError in Rails 5.beta when introspection activerecord model.
+
+## Enhancement
+-  Ignore all non ActiveRecord::Base subclasses
+- Make rake dependency less strict `>= 10.0`
 
 ## 2.1.3 - 2016-03-21
 ### Fix

@@ -1,35 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Active mocker by zeisler</title>
+    <meta name="description" content="Active mocker : Create mocks from active record models without loading rails or running a database.">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Active mocker</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Active mocker</h1>
-        <p>Create mocks from active record models without loading rails or running a database.</p>
 
-        <p class="view"><a href="https://github.com/zeisler/active_mocker">View the Project on GitHub <small>zeisler/active_mocker</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/zeisler/active_mocker">View on GitHub</a>
 
+          <h1 id="project_title">Active mocker</h1>
+          <h2 id="project_tagline">Create mocks from active record models without loading rails or running a database.</h2>
 
-        <ul>
-          <li><a href="https://github.com/zeisler/active_mocker/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/zeisler/active_mocker/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/zeisler/active_mocker">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/zeisler/active_mocker/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/zeisler/active_mocker/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
-<a name="activemocker" class="anchor" href="#activemocker"><span class="octicon octicon-link"></span></a>ActiveMocker</h1>
+<a id="activemocker" class="anchor" href="#activemocker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ActiveMocker</h1>
 
 <p><a href="http://badge.fury.io/rb/active_mocker"><img src="https://badge.fury.io/rb/active_mocker.svg" alt="Gem Version"></a>
 <a href="https://travis-ci.org/zeisler/active_mocker"><img src="https://travis-ci.org/zeisler/active_mocker.png?branch=master" alt="Build Status"></a>
@@ -45,11 +48,15 @@
     190 examples, 0 failures
 </code></pre>
 
-<hr><pre><code>    Finished in 1 seconds
+<hr>
+
+<pre><code>    Finished in 1 seconds
     374 examples, 0 failures
 </code></pre>
 
-<hr><ul>
+<hr>
+
+<ul>
 <li><a href="#documentation">Documentation</a></li>
 <li><a href="#contact">Contact</a></li>
 <li><a href="#installation">Installation</a></li>
@@ -68,19 +75,27 @@
 <li><a href="#known-limitations">Known Limitations</a></li>
 <li><a href="#inspiration">Inspiration</a></li>
 <li><a href="#contributing">Contributing</a></li>
-</ul><hr><h2>
-<a name="documentation-" class="anchor" href="#documentation-"><span class="octicon octicon-link"></span></a>Documentation <a href="http://inch-ci.org/github/zeisler/active_mocker"><img src="http://inch-ci.org/github/zeisler/active_mocker.png?branch=master" alt="Inline docs"></a>
+</ul>
+
+<hr>
+
+<h2>
+<a id="documentation-" class="anchor" href="#documentation-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation <a href="http://inch-ci.org/github/zeisler/active_mocker"><img src="http://inch-ci.org/github/zeisler/active_mocker.png?branch=master" alt="Inline docs"></a>
 </h2>
 
 <p><a href="http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker">rdoc</a></p>
 
-<hr><h2>
-<a name="contact" class="anchor" href="#contact"><span class="octicon octicon-link"></span></a>Contact</h2>
+<hr>
+
+<h2>
+<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h2>
 
 <p>Ask a question in the <a href="https://gitter.im/zeisler/active_mocker">chat room</a>.</p>
 
-<hr><h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+<hr>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Add this line to your application's Gemfile:</p>
 
@@ -98,18 +113,20 @@
 </code></pre>
 
 <h2>
-<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies</h2>
 
 <ul>
 <li>Tested with Rails 4.1 may work with older versions but not supported.</li>
 <li>Requires Ruby MRI =&lt; 2.1.</li>
-</ul><h2>
-<a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>Setup</h2>
+</ul>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
 
 <p>See <a href="https://github.com/zeisler/active_mocker/tree/master/example_rails_app">example_rails_app</a> for complete setup.</p>
 
 <h3>
-<a name="generate-mocks" class="anchor" href="#generate-mocks"><span class="octicon octicon-link"></span></a>Generate Mocks</h3>
+<a id="generate-mocks" class="anchor" href="#generate-mocks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Generate Mocks</h3>
 
 <p>Running this rake task builds/rebuilds the mocks. It will be ran automatically after every schema modification. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.</p>
 
@@ -117,196 +134,208 @@
 </code></pre>
 
 <h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
-<div class="highlight highlight-ruby"><pre><span class="c1">#db/schema.rb</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c">#db/schema.rb</span>
 
-<span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Schema</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="ss">version</span><span class="p">:</span> <span class="mi">20140327205359</span><span class="p">)</span> <span class="k">do</span>
+<span class="pl-c1">ActiveRecord</span>::<span class="pl-c1">Schema</span>.define(<span class="pl-c1">version:</span> <span class="pl-c1">20140327205359</span>) <span class="pl-k">do</span>
 
-  <span class="n">create_table</span> <span class="s2">"people"</span><span class="p">,</span> <span class="ss">force</span><span class="p">:</span> <span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">integer</span>  <span class="s2">"account_id"</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"first_name"</span><span class="p">,</span>        <span class="ss">limit</span><span class="p">:</span> <span class="mi">128</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"last_name"</span><span class="p">,</span>         <span class="ss">limit</span><span class="p">:</span> <span class="mi">128</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"address"</span><span class="p">,</span>           <span class="ss">limit</span><span class="p">:</span> <span class="mi">200</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"city"</span><span class="p">,</span>              <span class="ss">limit</span><span class="p">:</span> <span class="mi">100</span>
-  <span class="k">end</span>
+  create_table <span class="pl-s"><span class="pl-pds">"</span>people<span class="pl-pds">"</span></span>, <span class="pl-c1">force:</span> <span class="pl-c1">true</span> <span class="pl-k">do </span>|<span class="pl-smi">t</span>|
+    t.integer  <span class="pl-s"><span class="pl-pds">"</span>account_id<span class="pl-pds">"</span></span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>first_name<span class="pl-pds">"</span></span>,        <span class="pl-c1">limit:</span> <span class="pl-c1">128</span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>last_name<span class="pl-pds">"</span></span>,         <span class="pl-c1">limit:</span> <span class="pl-c1">128</span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>address<span class="pl-pds">"</span></span>,           <span class="pl-c1">limit:</span> <span class="pl-c1">200</span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>city<span class="pl-pds">"</span></span>,              <span class="pl-c1">limit:</span> <span class="pl-c1">100</span>
+  <span class="pl-k">end</span>
 
-<span class="k">end</span>
-</pre></div>
+<span class="pl-k">end</span></pre></div>
 
-<hr><div class="highlight highlight-ruby"><pre><span class="c1">#app/models/person.rb</span>
+<hr>
 
-<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="n">belongs_to</span> <span class="ss">:account</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c">#app/models/person.rb</span>
 
-  <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="nb">name</span>
-  <span class="k">end</span>
+<span class="pl-k">class</span> <span class="pl-en">Person<span class="pl-e"> &lt; ActiveRecord::Base</span></span>
+  belongs_to <span class="pl-c1">:account</span>
 
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">bar</span>
-  <span class="k">end</span>
+  <span class="pl-k">def</span> <span class="pl-en">bar</span>(<span class="pl-smi">name</span>, <span class="pl-smi">type</span><span class="pl-k">=</span><span class="pl-c1">nil</span>)
+    puts name
+  <span class="pl-k">end</span>
 
-<span class="k">end</span>
-</pre></div>
+  <span class="pl-k">def</span> <span class="pl-en">self.bar</span>
+  <span class="pl-k">end</span>
 
-<hr><h3>
-<a name="using-with-rspec---tag-active_mockertrue" class="anchor" href="#using-with-rspec---tag-active_mockertrue"><span class="octicon octicon-link"></span></a>Using With Rspec, --tag active_mocker:true</h3>
+<span class="pl-k">end</span></pre></div>
 
-<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'rspec'</span>
-<span class="nb">require</span> <span class="s1">'active_mocker/rspec_helper'</span>
-<span class="nb">require</span> <span class="s1">'spec/mocks/person_mock'</span>
-<span class="nb">require</span> <span class="s1">'spec/mocks/account_mock'</span>
+<hr>
 
-<span class="n">describe</span> <span class="s1">'Example'</span><span class="p">,</span> <span class="ss">active_mocker</span><span class="p">:</span><span class="kp">true</span> <span class="k">do</span>
+<h3>
+<a id="using-with-rspec---tag-active_mockertrue" class="anchor" href="#using-with-rspec---tag-active_mockertrue" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using With Rspec, --tag active_mocker:true</h3>
 
-  <span class="n">before</span> <span class="k">do</span>
-    <span class="no">Person</span><span class="o">.</span><span class="n">create</span> <span class="c1"># stubbed for PersonMock.create</span>
-  <span class="k">end</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>rspec<span class="pl-pds">'</span></span>
+<span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>active_mocker/rspec_helper<span class="pl-pds">'</span></span>
+<span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>spec/mocks/person_mock<span class="pl-pds">'</span></span>
+<span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>spec/mocks/account_mock<span class="pl-pds">'</span></span>
 
-<span class="k">end</span>
-</pre></div>
+describe <span class="pl-s"><span class="pl-pds">'</span>Example<span class="pl-pds">'</span></span>, <span class="pl-c1">active_mocker:</span><span class="pl-c1">true</span> <span class="pl-k">do</span>
 
-<hr><ul>
+  before <span class="pl-k">do</span>
+    <span class="pl-c1">Person</span>.create <span class="pl-c"># stubbed for PersonMock.create</span>
+  <span class="pl-k">end</span>
+
+<span class="pl-k">end</span></pre></div>
+
+<hr>
+
+<ul>
 <li>Assigning the tag <code>active_mocker:true</code> will stub any ActiveRecord model Constants for Mock classes in <code>it</code> or <code>before/after(:each)</code>. This removes any need for dependency injection. Write tests and code like you would normally.</li>
 <li>To stub any Constants in <code>before(:all)</code>, <code>after(:all)</code> use <code>mock_class('ClassName')</code>.</li>
 <li>Will call <code>ActiveMocker::LoadedMocks.delete_all</code> in <code>after(:all)</code> block to clean up mock state for other tests.</li>
-</ul><hr><div class="highlight highlight-ruby"><pre><span class="no">Person</span><span class="o">.</span><span class="n">column_names</span>
-  <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"account_id"</span><span class="p">,</span> <span class="s2">"first_name"</span><span class="p">,</span> <span class="s2">"last_name"</span><span class="p">,</span> <span class="s2">"address"</span><span class="p">,</span> <span class="s2">"city"</span><span class="o">]</span>
+</ul>
 
-<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="ss">first_name</span><span class="p">:</span>  <span class="s2">"Dustin"</span><span class="p">,</span> 
-                     <span class="ss">last_name</span><span class="p">:</span>   <span class="s2">"Zeisler"</span><span class="p">,</span> 
-                     <span class="ss">account</span><span class="p">:</span>      <span class="no">Account</span><span class="o">.</span><span class="n">new</span> <span class="p">)</span>
-  <span class="o">=&gt;</span> <span class="s2">"#&lt;PersonMock id: nil, account_id: nil, first_name: "</span><span class="no">Dustin</span><span class="s2">", last_name: "</span><span class="no">Zeisler</span><span class="s2">", address: nil, city: nil&gt;"</span>
+<hr>
 
-<span class="n">person</span><span class="o">.</span><span class="n">first_name</span>
-  <span class="o">=&gt;</span> <span class="s2">"Dustin"</span>
-</pre></div>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">Person</span>.column_names
+  =&gt; [<span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>account_id<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>first_name<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>last_name<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>address<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>city<span class="pl-pds">"</span></span>]
+
+person <span class="pl-k">=</span> <span class="pl-c1">Person</span>.<span class="pl-k">new</span>( <span class="pl-c1">first_name:</span>  <span class="pl-s"><span class="pl-pds">"</span>Dustin<span class="pl-pds">"</span></span>, 
+                     <span class="pl-c1">last_name:</span>   <span class="pl-s"><span class="pl-pds">"</span>Zeisler<span class="pl-pds">"</span></span>, 
+                     <span class="pl-c1">account:</span>      <span class="pl-c1">Account</span>.<span class="pl-k">new</span> )
+  =&gt; <span class="pl-s"><span class="pl-pds">"</span>#&lt;PersonMock id: nil, account_id: nil, first_name: <span class="pl-pds">"</span></span><span class="pl-c1">Dustin</span><span class="pl-s"><span class="pl-pds">"</span>, last_name: <span class="pl-pds">"</span></span><span class="pl-c1">Zeisler</span><span class="pl-s"><span class="pl-pds">"</span>, address: nil, city: nil&gt;<span class="pl-pds">"</span></span>
+
+person.first_name
+  =&gt; <span class="pl-s"><span class="pl-pds">"</span>Dustin<span class="pl-pds">"</span></span></pre></div>
 
 <h3>
-<a name="when-schemarb-changes-the-mock-fails" class="anchor" href="#when-schemarb-changes-the-mock-fails"><span class="octicon octicon-link"></span></a>When schema.rb changes, the mock fails</h3>
+<a id="when-schemarb-changes-the-mock-fails" class="anchor" href="#when-schemarb-changes-the-mock-fails" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When schema.rb changes, the mock fails</h3>
 
 <p>(After <code>rake db:migrate</code> is called the mocks will be regenerated.)</p>
 
-<div class="highlight highlight-ruby"><pre><span class="c1">#db/schema.rb</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c">#db/schema.rb</span>
 
-<span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Schema</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="ss">version</span><span class="p">:</span> <span class="mi">20140327205359</span><span class="p">)</span> <span class="k">do</span>
+<span class="pl-c1">ActiveRecord</span>::<span class="pl-c1">Schema</span>.define(<span class="pl-c1">version:</span> <span class="pl-c1">20140327205359</span>) <span class="pl-k">do</span>
 
-  <span class="n">create_table</span> <span class="s2">"people"</span><span class="p">,</span> <span class="ss">force</span><span class="p">:</span> <span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">integer</span>  <span class="s2">"account_id"</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"f_name"</span><span class="p">,</span>        <span class="ss">limit</span><span class="p">:</span> <span class="mi">128</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"l_name"</span><span class="p">,</span>        <span class="ss">limit</span><span class="p">:</span> <span class="mi">128</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"address"</span><span class="p">,</span>       <span class="ss">limit</span><span class="p">:</span> <span class="mi">200</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="s2">"city"</span><span class="p">,</span>          <span class="ss">limit</span><span class="p">:</span> <span class="mi">100</span>
-  <span class="k">end</span>
+  create_table <span class="pl-s"><span class="pl-pds">"</span>people<span class="pl-pds">"</span></span>, <span class="pl-c1">force:</span> <span class="pl-c1">true</span> <span class="pl-k">do </span>|<span class="pl-smi">t</span>|
+    t.integer  <span class="pl-s"><span class="pl-pds">"</span>account_id<span class="pl-pds">"</span></span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>f_name<span class="pl-pds">"</span></span>,        <span class="pl-c1">limit:</span> <span class="pl-c1">128</span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>l_name<span class="pl-pds">"</span></span>,        <span class="pl-c1">limit:</span> <span class="pl-c1">128</span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>address<span class="pl-pds">"</span></span>,       <span class="pl-c1">limit:</span> <span class="pl-c1">200</span>
+    t.string   <span class="pl-s"><span class="pl-pds">"</span>city<span class="pl-pds">"</span></span>,          <span class="pl-c1">limit:</span> <span class="pl-c1">100</span>
+  <span class="pl-k">end</span>
 
-<span class="k">end</span>
-</pre></div>
+<span class="pl-k">end</span></pre></div>
 
-<hr><div class="highlight highlight-ruby"><pre><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">first_name</span><span class="p">:</span> <span class="s2">"Dustin"</span><span class="p">,</span> <span class="ss">last_name</span><span class="p">:</span> <span class="s2">"Zeisler"</span><span class="p">)</span>
-  <span class="o">=&gt;</span><span class="c1">#&lt;UnknownAttributeError unknown attribute: first_name &gt;</span>
-</pre></div>
+<hr>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">Person</span>.<span class="pl-k">new</span>(<span class="pl-c1">first_name:</span> <span class="pl-s"><span class="pl-pds">"</span>Dustin<span class="pl-pds">"</span></span>, <span class="pl-c1">last_name:</span> <span class="pl-s"><span class="pl-pds">"</span>Zeisler<span class="pl-pds">"</span></span>)
+  =&gt;<span class="pl-c">#&lt;UnknownAttributeError unknown attribute: first_name &gt;</span></pre></div>
 
 <h2>
-<a name="mocking-methods" class="anchor" href="#mocking-methods"><span class="octicon octicon-link"></span></a>Mocking Methods</h2>
+<a id="mocking-methods" class="anchor" href="#mocking-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mocking Methods</h2>
 
 <h3>
-<a name="class-methods" class="anchor" href="#class-methods"><span class="octicon octicon-link"></span></a>Class Methods</h3>
+<a id="class-methods" class="anchor" href="#class-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Class Methods</h3>
 
-<div class="highlight highlight-ruby"><pre><span class="no">Person</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="s1">'baz'</span><span class="p">)</span>
-  <span class="o">=&gt;</span> <span class="no">RuntimeError</span> <span class="p">:</span> <span class="o">::</span> <span class="n">bar</span> <span class="n">is</span> <span class="ow">not</span> <span class="no">Implemented</span> <span class="k">for</span> <span class="no">Class</span> <span class="ss">:PersonMock</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">Person</span>.bar(<span class="pl-s"><span class="pl-pds">'</span>baz<span class="pl-pds">'</span></span>)
+  =&gt; <span class="pl-c1">RuntimeError</span> : :: bar is <span class="pl-k">not</span> <span class="pl-c1">Implemented</span> <span class="pl-k">for</span> <span class="pl-c1">Class</span> <span class="pl-c1">:PersonMock</span>
 
-<span class="c1"># Rspec 3 Mocks</span>
+<span class="pl-c"># Rspec 3 Mocks</span>
 
-<span class="no">RSpec</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">mock_framework</span> <span class="o">=</span> <span class="ss">:rspec</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">mock_with</span> <span class="ss">:rspec</span> <span class="k">do</span> <span class="o">|</span><span class="n">mocks</span><span class="o">|</span>
-    <span class="n">mocks</span><span class="o">.</span><span class="n">verify_doubled_constant_names</span> <span class="o">=</span> <span class="kp">true</span>
-    <span class="n">mocks</span><span class="o">.</span><span class="n">verify_partial_doubles</span> <span class="o">=</span> <span class="kp">true</span>
-  <span class="k">end</span>
-<span class="k">end</span>
+<span class="pl-c1">RSpec</span>.configure <span class="pl-k">do </span>|<span class="pl-smi">config</span>|
+  config.mock_framework <span class="pl-k">=</span> <span class="pl-c1">:rspec</span>
+  config.mock_with <span class="pl-c1">:rspec</span> <span class="pl-k">do </span>|<span class="pl-smi">mocks</span>|
+    mocks.verify_doubled_constant_names <span class="pl-k">=</span> <span class="pl-c1">true</span>
+    mocks.verify_partial_doubles <span class="pl-k">=</span> <span class="pl-c1">true</span>
+  <span class="pl-k">end</span>
+<span class="pl-k">end</span>
 
-<span class="n">allow</span><span class="p">(</span><span class="no">Person</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:bar</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="kp">nil</span><span class="o">|</span>
-  <span class="s2">"Now implemented with </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> and </span><span class="si">#{</span><span class="n">type</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
+allow(<span class="pl-c1">Person</span>).to receive(<span class="pl-c1">:bar</span>) <span class="pl-k">do </span>|<span class="pl-smi">name</span>, <span class="pl-smi">type</span>=<span class="pl-smi">nil</span>|
+  <span class="pl-s"><span class="pl-pds">"</span>Now implemented with <span class="pl-pse">#{</span><span class="pl-s1">name</span><span class="pl-pse"><span class="pl-s1">}</span></span> and <span class="pl-pse">#{</span><span class="pl-s1">type</span><span class="pl-pse"><span class="pl-s1">}</span></span><span class="pl-pds">"</span></span>
+<span class="pl-k">end</span>
 
-<span class="no">Person</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">,</span> <span class="s1">'type'</span><span class="p">)</span>
-<span class="o">=&gt;</span> <span class="s2">"Now implemented with foo and type"</span>
+<span class="pl-c1">Person</span>.bar(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span>)
+=&gt; <span class="pl-s"><span class="pl-pds">"</span>Now implemented with foo and type<span class="pl-pds">"</span></span>
 
-<span class="c1"># Rspec 3 mock class method</span>
-<span class="n">allow_any_instance_of</span><span class="p">(</span><span class="no">Person</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:bar</span><span class="p">)</span> <span class="k">do</span>
-  <span class="s2">"Now implemented"</span>
-<span class="k">end</span>
-</pre></div>
+<span class="pl-c"># Rspec 3 mock class method</span>
+allow_any_instance_of(<span class="pl-c1">Person</span>).to receive(<span class="pl-c1">:bar</span>) <span class="pl-k">do</span>
+  <span class="pl-s"><span class="pl-pds">"</span>Now implemented<span class="pl-pds">"</span></span>
+<span class="pl-k">end</span></pre></div>
 
 <h4>
-<a name="when-the-model-changes-the-mock-fails" class="anchor" href="#when-the-model-changes-the-mock-fails"><span class="octicon octicon-link"></span></a>When the model changes, the mock fails</h4>
+<a id="when-the-model-changes-the-mock-fails" class="anchor" href="#when-the-model-changes-the-mock-fails" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>When the model changes, the mock fails</h4>
 
 <p>(Requires a regeneration of the mocks files.)</p>
 
-<div class="highlight highlight-ruby"><pre><span class="c1">#app/models/person.rb</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c">#app/models/person.rb</span>
 
-<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="n">belongs_to</span> <span class="ss">:account</span>
+<span class="pl-k">class</span> <span class="pl-en">Person<span class="pl-e"> &lt; ActiveRecord::Base</span></span>
+  belongs_to <span class="pl-c1">:account</span>
 
-  <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="nb">name</span>
-  <span class="k">end</span>
+  <span class="pl-k">def</span> <span class="pl-en">bar</span>(<span class="pl-smi">name</span>)
+    puts name
+  <span class="pl-k">end</span>
 
-<span class="k">end</span>
-</pre></div>
+<span class="pl-k">end</span></pre></div>
 
-<hr><div class="highlight highlight-ruby"><pre><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">,</span> <span class="s1">'type'</span><span class="p">)</span>
-  <span class="o">=&gt;</span> <span class="ss">ArgumentError</span><span class="p">:</span> <span class="n">wrong</span> <span class="n">number</span> <span class="n">of</span> <span class="n">arguments</span> <span class="p">(</span><span class="mi">2</span> <span class="k">for</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
+<hr>
 
-<hr><div class="highlight highlight-ruby"><pre><span class="c1">#app/models/person.rb</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">Person</span>.<span class="pl-k">new</span>.bar(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span>)
+  =&gt; <span class="pl-c1">ArgumentError:</span> wrong number of arguments (<span class="pl-c1">2</span> <span class="pl-k">for</span> <span class="pl-c1">1</span>)</pre></div>
 
-<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="n">belongs_to</span> <span class="ss">:account</span>
+<hr>
 
-  <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
-    <span class="nb">puts</span> <span class="nb">name</span>
-  <span class="k">end</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c">#app/models/person.rb</span>
 
-<span class="k">end</span>
-</pre></div>
+<span class="pl-k">class</span> <span class="pl-en">Person<span class="pl-e"> &lt; ActiveRecord::Base</span></span>
+  belongs_to <span class="pl-c1">:account</span>
 
-<hr><div class="highlight highlight-ruby"><pre><span class="c1"># Rspec 3 Mocks</span>
-<span class="n">allow</span><span class="p">(</span><span class="n">person</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:bar</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="kp">nil</span><span class="o">|</span>
-  <span class="s2">"Now implemented with </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> and </span><span class="si">#{</span><span class="n">type</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
-<span class="o">=&gt;</span> <span class="no">NoMethodError</span> <span class="p">:</span> <span class="n">undefined</span> <span class="nb">method</span> <span class="sb">`bar' for class `</span> <span class="no">PersonMock</span> <span class="err">'</span>
-</pre></div>
+  <span class="pl-k">def</span> <span class="pl-en">foo</span>(<span class="pl-smi">name</span>, <span class="pl-smi">type</span><span class="pl-k">=</span><span class="pl-c1">nil</span>)
+    puts name
+  <span class="pl-k">end</span>
+
+<span class="pl-k">end</span></pre></div>
+
+<hr>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c"># Rspec 3 Mocks</span>
+allow(person).to receive(<span class="pl-c1">:bar</span>) <span class="pl-k">do </span>|<span class="pl-smi">name</span>, <span class="pl-smi">type</span>=<span class="pl-smi">nil</span>|
+  <span class="pl-s"><span class="pl-pds">"</span>Now implemented with <span class="pl-pse">#{</span><span class="pl-s1">name</span><span class="pl-pse"><span class="pl-s1">}</span></span> and <span class="pl-pse">#{</span><span class="pl-s1">type</span><span class="pl-pse"><span class="pl-s1">}</span></span><span class="pl-pds">"</span></span>
+<span class="pl-k">end</span>
+=&gt; <span class="pl-c1">NoMethodError</span> : undefined method <span class="pl-s"><span class="pl-pds">`</span>bar' for class <span class="pl-pds">`</span></span> <span class="pl-c1">PersonMock</span> <span class="pl-s"><span class="pl-pds">'</span></span></pre></div>
 
 <h3>
-<a name="constants-and-modules-are-available" class="anchor" href="#constants-and-modules-are-available"><span class="octicon octicon-link"></span></a>Constants and Modules are Available.</h3>
+<a id="constants-and-modules-are-available" class="anchor" href="#constants-and-modules-are-available" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Constants and Modules are Available.</h3>
 
 <ul>
 <li>Any locally defined modules will not be included or extended.</li>
-</ul><hr><div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-  <span class="no">CONSTANT_VALUE</span> <span class="o">=</span> <span class="mi">13</span>
-<span class="k">end</span>
-</pre></div>
+</ul>
 
-<hr><div class="highlight highlight-ruby"><pre><span class="no">PersonMock</span><span class="o">::</span><span class="no">CONSTANT_VALUE</span>
-  <span class="o">=&gt;</span> <span class="mi">13</span>
-</pre></div>
+<hr>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">class</span> <span class="pl-en">Person<span class="pl-e"> &lt; ActiveRecord::Base</span></span>
+  <span class="pl-c1">CONSTANT_VALUE</span> <span class="pl-k">=</span> <span class="pl-c1">13</span>
+<span class="pl-k">end</span></pre></div>
+
+<hr>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">PersonMock</span>::<span class="pl-c1">CONSTANT_VALUE</span>
+  =&gt; <span class="pl-c1">13</span></pre></div>
 
 <h3>
-<a name="scoped-methods" class="anchor" href="#scoped-methods"><span class="octicon octicon-link"></span></a>Scoped Methods</h3>
+<a id="scoped-methods" class="anchor" href="#scoped-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scoped Methods</h3>
 
 <ul>
 <li>As long the mock file that holds the scope method is required it will be available but raise an <code>unimplemented error</code> when called.</li>
-</ul><h3>
-<a name="managing-mocks" class="anchor" href="#managing-mocks"><span class="octicon octicon-link"></span></a>Managing Mocks</h3>
+</ul>
+
+<h3>
+<a id="managing-mocks" class="anchor" href="#managing-mocks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Managing Mocks</h3>
 
 <p>Deletes All Records for Loaded Mocks - (Useful in after(:each) to clean up state between examples)</p>
 
-<div class="highlight highlight-ruby"><pre><span class="no">ActiveMocker</span><span class="o">::</span><span class="no">LoadedMocks</span><span class="o">.</span><span class="n">delete_all</span>
-</pre></div>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c1">ActiveMocker</span>::<span class="pl-c1">LoadedMocks</span>.delete_all</pre></div>
 
 <h3>
-<a name="activerecord-supported-methods" class="anchor" href="#activerecord-supported-methods"><span class="octicon octicon-link"></span></a>ActiveRecord supported methods</h3>
+<a id="activerecord-supported-methods" class="anchor" href="#activerecord-supported-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ActiveRecord supported methods</h3>
 
 <p>See <a href="http://rdoc.info/github/zeisler/active_mocker/master/ActiveMocker">Documentation</a> for a complete list of methods and usage.</p>
 
@@ -317,7 +346,9 @@
 <li>create/create!</li>
 <li>column_names/attribute_names</li>
 <li>delete_all/destroy_all</li>
-</ul><p><strong>Query Methods</strong></p>
+</ul>
+
+<p><strong>Query Methods</strong></p>
 
 <ul>
 <li>all</li>
@@ -343,7 +374,9 @@
 <li>order(:field_name)</li>
 <li>reverse_order</li>
 <li>limit</li>
-</ul><p><strong>Relation Methods</strong></p>
+</ul>
+
+<p><strong>Relation Methods</strong></p>
 
 <ul>
 <li>concat</li>
@@ -355,7 +388,9 @@
 <li>replace</li>
 <li>any?</li>
 <li>many?</li>
-</ul><p><strong>instance methods</strong></p>
+</ul>
+
+<p><strong>instance methods</strong></p>
 
 <ul>
 <li>attributes</li>
@@ -369,7 +404,9 @@
 <li>attribute_names</li>
 <li>attribute_present?</li>
 <li>has_attribute?</li>
-</ul><p><strong>has_one/belongs_to/has_many</strong></p>
+</ul>
+
+<p><strong>has_one/belongs_to/has_many</strong></p>
 
 <ul>
 <li>build_&lt; association &gt;</li>
@@ -377,15 +414,19 @@
 <li>create_&lt; association &gt;!</li>
 <li>&lt; association &gt;.create</li>
 <li>&lt; association &gt;.build</li>
-</ul><h3>
-<a name="schemamigration-option-support" class="anchor" href="#schemamigration-option-support"><span class="octicon octicon-link"></span></a>Schema/Migration Option Support</h3>
+</ul>
+
+<h3>
+<a id="schemamigration-option-support" class="anchor" href="#schemamigration-option-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Schema/Migration Option Support</h3>
 
 <ul>
 <li>All schema types are supported and coerced by <a href="https://github.com/solnic/virtus">Virtus</a>. If coercion fails the passed value will be retained.</li>
 <li>Default value is supported.</li>
 <li>Scale and Precision are not supported.</li>
-</ul><h3>
-<a name="known-limitations" class="anchor" href="#known-limitations"><span class="octicon octicon-link"></span></a>Known Limitations</h3>
+</ul>
+
+<h3>
+<a id="known-limitations" class="anchor" href="#known-limitations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Known Limitations</h3>
 
 <ul>
 <li>Model names and table names must follow the default ActiveRecord naming pattern.</li>
@@ -398,13 +439,15 @@
 </li>
 <li><p>Validation/Callbacks are not present in mocks. A Work around is putting the method into a module with required ActiveSupport/ActiveModel dependencies and make sure the code is supported by the mock. </p></li>
 <li>Sql queries, joins, etc will never be supported.</li>
-</ul><h2>
-<a name="inspiration" class="anchor" href="#inspiration"><span class="octicon octicon-link"></span></a>Inspiration</h2>
+</ul>
+
+<h2>
+<a id="inspiration" class="anchor" href="#inspiration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inspiration</h2>
 
 <p>Thanks to Jeff Olfert for being my original inspiration for this project.</p>
 
 <h2>
-<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
 
 <p>Your contribution are welcome!</p>
 
@@ -416,12 +459,17 @@
 <li>Create new Pull Request</li>
 </ol>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/zeisler">zeisler</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Active mocker maintained by <a href="https://github.com/zeisler">zeisler</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>

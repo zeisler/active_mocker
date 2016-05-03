@@ -24,6 +24,15 @@ describe ActiveMocker::MockCreator do
     DissociatedIntrospection::RubyCode.build_from_source(code).source_from_ast
   end
 
+  class ModelStandInForARVersion
+    module PostMethods
+    end
+
+    include PostMethods
+  end
+
+  let(:active_record_model) { ModelStandInForARVersion }
+
   describe "#create" do
     subject do
       lambda do |partials|
@@ -32,10 +41,12 @@ describe ActiveMocker::MockCreator do
                                 schema_scrapper:      stub_schema_scrapper,
                                 enabled_partials:     partials,
                                 klasses_to_be_mocked: [],
-                                mock_append_name:     "Mock").create
+                                mock_append_name:     "Mock",
+                                active_record_model:  active_record_model).create
         expect(s.errors).to eq []
         format_code(File.open(file_out.path).read)
-      end end
+      end
+    end
 
     let(:file_out) do
       Tempfile.new("fileOut")
@@ -90,7 +101,8 @@ describe ActiveMocker::MockCreator do
                             schema_scrapper:      stub_schema_scrapper,
                             enabled_partials:     [],
                             klasses_to_be_mocked: [],
-                            mock_append_name:     "Mock").create
+                            mock_append_name:     "Mock",
+                            active_record_model:  active_record_model).create
       end
       describe "has no parent class" do
         let(:model_string) do
@@ -115,7 +127,8 @@ describe ActiveMocker::MockCreator do
                               enabled_partials:     [],
                               klasses_to_be_mocked: [],
                               mock_append_name:     "Mock",
-                             ).create
+                              active_record_model:  active_record_model
+          ).create
         end
         let(:model_string) do
           <<-RUBY.strip_heredoc
@@ -250,7 +263,7 @@ describe ActiveMocker::MockCreator do
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
           MY_CONSTANT_VALUE = 3
-          prepend PostMethods
+          prepend ModelStandInForARVersion::PostMethods
         end
       RUBY
     end

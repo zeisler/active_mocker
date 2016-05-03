@@ -167,10 +167,14 @@ module ActiveMocker
         isolated_module_names = reject_local_const(class_introspector.public_send(type)).map(&:referenced_name)
         real_module_names = get_real_module(type).map(&:name).compact
         isolated_module_names.map do |isolated_name|
-          real_name = real_module_names.find do |rmn|
+          real_name = real_module_names.detect do |rmn|
             real_parts = rmn.split("::")
             total_parts_count = active_record_model.name.split("::").count + isolated_name.split("::").count
-            real_parts.include?(active_record_model.name) && real_parts.include?(isolated_name) && total_parts_count == real_parts.count
+            [
+              real_parts.include?(active_record_model.name),
+              real_parts.include?(isolated_name),
+              (total_parts_count == real_parts.count)
+            ].all?
           end
           real_name ? real_name : isolated_name
         end
@@ -187,15 +191,6 @@ module ActiveMocker
       def reject_local_const(source)
         source.reject do |n|
           class_introspector.locally_defined_constants.values.include?(n)
-        end
-      end
-
-      def find_fully_specified_version(source)
-        active_record_model
-        source
-
-        active_record_model.singleton_class.included_modules do |_module|
-          _module.name.split("::").last
         end
       end
     end

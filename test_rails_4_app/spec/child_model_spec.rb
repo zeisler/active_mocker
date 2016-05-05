@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require "rails_helper"
+require "active_mocker/rspec_helper"
 require_mock "user_mock"
 require_mock "child_model_mock"
 
@@ -35,5 +36,15 @@ describe ChildModel do
   it "stubbed parent methods are stubbed on child" do
     allow_any_instance_of(UserMock).to receive(:feed) { "Feed!" }
     expect(ChildModelMock.new.feed).to eq "Feed!"
+  end
+
+  context "auto stubbing", active_mocker: true do
+    it "is a mock" do
+      expect(ChildModel <= ActiveMocker::Base).to eq true
+    end
+
+    it "can be searched for" do
+      expect(active_mocker.find("ChildMock") <= ActiveMocker::Base).to eq true
+    end
   end
 end

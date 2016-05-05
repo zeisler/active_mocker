@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.2.2 - 2016-05-05
+### Fix
+- When using "active_mocker/rspec_helper" with active_mocker:true tag, subclassed mocks were not getting auto stubbed.
+- colorize gem was not being required.
+
 ## 2.2.1 - 2016-05-03
 ### Fix
 - Remove hack for String#colorize that would cause the error: "NoMethodError: super: no superclass method `colorize' for #<String>"

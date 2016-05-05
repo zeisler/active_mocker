@@ -40,11 +40,11 @@ describe ChildModel do
 
   context "auto stubbing", active_mocker: true do
     it "is a mock" do
-      expect(ChildModel <= ActiveMocker::Base).to eq true
+      expect(ChildModel.ancestors).to include(ActiveMocker::Base)
     end
 
     it "can be searched for" do
-      expect(active_mocker.find("ChildMock") <= ActiveMocker::Base).to eq true
+      expect(active_mocker.find("ChildModel").ancestors).to include(ActiveMocker::Base)
     end
   end
 end

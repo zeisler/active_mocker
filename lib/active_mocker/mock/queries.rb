@@ -60,7 +60,7 @@ module ActiveMocker
     def delete_all(conditions = nil)
       check_for_limit_scope!
 
-      collection = conditions.nil? ?  to_a.each(&:delete).clear : where(conditions)
+      collection = conditions.nil? ? to_a.each(&:delete).clear : where(conditions)
       collection.map(&:delete).count
     end
 

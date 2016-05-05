@@ -15,6 +15,11 @@ end
 
 desc "run tests"
 task :test do
+  if ENV["TRAVIS"]
+    require "codeclimate-test-reporter"
+    CodeClimate::TestReporter.start
+  end
+
   Rake::Task["unit"].invoke
   Rake::Task["integration"].invoke
 end

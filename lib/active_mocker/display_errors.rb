@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require "colorize"
+
 module ActiveMocker
   class DisplayErrors
     attr_reader :errors, :model_count, :out

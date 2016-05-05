@@ -4,7 +4,6 @@ require "active_mocker/display_errors"
 require "active_mocker/error_object"
 require "active_mocker/config"
 require "ostruct"
-require "colorize"
 
 RSpec.describe ActiveMocker::DisplayErrors do
   class StringOutPut

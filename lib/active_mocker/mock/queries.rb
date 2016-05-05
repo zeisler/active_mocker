@@ -58,12 +58,10 @@ module ActiveMocker
     #   Post.limit(100).delete_all
     #   # => ActiveMocker::Error: delete_all doesn't support limit scope
     def delete_all(conditions = nil)
-      raise ActiveMocker::Error.new("delete_all doesn't support limit scope") if from_limit?
-      if conditions.nil?
-        to_a.map(&:delete)
-        return to_a.clear
-      end
-      where(conditions).map(&:delete).count
+      check_for_limit_scope!
+
+      collection = conditions.nil? ?  to_a.each(&:delete).clear : where(conditions)
+      collection.map(&:delete).count
     end
 
     alias destroy_all delete_all
@@ -345,6 +343,10 @@ module ActiveMocker
     end
 
     private
+
+    def check_for_limit_scope!
+      raise ActiveMocker::Error.new("delete_all doesn't support limit scope") if from_limit?
+    end
 
     def values_by_key(key)
       all.map { |obj| obj.send(key) }

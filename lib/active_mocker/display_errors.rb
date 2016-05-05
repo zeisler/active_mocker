@@ -28,43 +28,92 @@ module ActiveMocker
       @uniq_errors ||= errors.flatten.compact.uniq.sort_by(&:class_name)
     end
 
+    def any_errors?
+      uniq_errors.count > 0
+    end
+
     def display_errors
       uniq_errors.each do |e|
         next unless ENV["DEBUG"] || !(e.level == :debug)
-        if ActiveMocker::Config.error_verbosity == 3
-          out.puts "#{e.class_name} has the following errors:"
-          out.puts e.message.colorize(e.level_color)
-          out.puts e.level
-          out.puts e.original_error.message.colorize(e.level_color) if e.original_error?
-          out.puts e.original_error.backtrace if e.original_error?
-          out.puts e.original_error.class.name.colorize(e.level_color) if e.original_error?
-        elsif ActiveMocker::Config.error_verbosity == 2
-          out.puts "#{e.class_name} has the following errors:"
-          out.puts e.message.colorize(e.level_color)
-        end
+
+        display_verbosity_three(e) || display_verbosity_two(e)
       end
-      if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
-        out.puts "Error Summary"
-        error_summary
-      end
-      failure_count_message
-      if ActiveMocker::Config.error_verbosity > 0 && uniq_errors.count > 0
-        out.puts "To see more/less detail set error_verbosity = 0, 1, 2, 3"
-      end
+
+      display_verbosity_one
     end
 
     def error_summary
-      error_count = uniq_errors.count { |e| [:red].include?(e.level_color) }
-      warn        = uniq_errors.count { |e| [:yellow].include?(e.level_color) }
-      info        = uniq_errors.count { |e| [:default].include?(e.level_color) }
-      out.puts "errors: #{error_count}, warn: #{warn}, info: #{info}"
-      out.puts "Failed models: #{failed_models.join(", ")}" if failed_models.count > 0
+      display "Error Summary"
+      display "errors: #{error_count}, warn: #{warn}, info: #{info}"
+      display "Failed models: #{failed_models.join(", ")}" if failed_models.count > 0
     end
 
     def failure_count_message
-      if ActiveMocker::Config.error_verbosity > 0 && (success_count < model_count || uniq_errors.count > 0)
-        out.puts "#{model_count - success_count} mock(s) out of #{model_count} failed."
+      if success_count < model_count || any_errors?
+        display "#{model_count - success_count} mock(s) out of #{model_count} failed."
       end
+    end
+
+    private
+
+    def display(msg)
+      out.puts(msg)
+    end
+
+    def display_verbosity_three(error)
+      return unless ActiveMocker::Config.error_verbosity == 3
+
+      display_error_header(error)
+      display error.level
+
+      display_original_error(error)
+    end
+
+    def display_original_error(e)
+      original = e.original_error
+      return unless original
+
+      display original.message.colorize(e.level_color)
+      display original.backtrace
+      display original.class.name.colorize(e.level_color)
+    end
+
+    def display_verbosity_two(e)
+      return unless ActiveMocker::Config.error_verbosity == 2
+
+      display_error_header(e)
+    end
+
+    def display_error_header(e)
+      display "#{e.class_name} has the following errors:"
+      display e.message.colorize(e.level_color)
+    end
+
+    def display_verbosity_one
+      return unless ActiveMocker::Config.error_verbosity > 0
+
+      error_summary if any_errors?
+
+      failure_count_message
+
+      return unless any_errors?
+      display "To see more/less detail set error_verbosity = 0, 1, 2, 3"
+    end
+
+    def error_count
+      errors_for(:red)
+    end
+
+    def warn
+      errors_for(:yellow)
+    end
+
+    def info
+      errors_for(:default)
+    end
+
+    def errors_for(level)
+      uniq_errors.count { |e| [level].include? e.level_color }
     end
   end
 end

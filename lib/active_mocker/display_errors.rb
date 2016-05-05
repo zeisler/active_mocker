@@ -57,19 +57,22 @@ module ActiveMocker
     private
 
     def display(msg)
-      out.display msg
+      out.puts(msg)
     end
 
-    def display_verbosity_three(e)
+    def display_verbosity_three(error)
       return unless ActiveMocker::Config.error_verbosity == 3
 
-      display_error_header(e)
-      display e.level
+      display_error_header(error)
+      display error.level
 
-      display_original_error(error, e.original) if e.original
+      display_original_error(error)
     end
 
-    def display_original_error(e, original)
+    def display_original_error(e)
+      original = e.original_error
+      return unless original
+
       display original.message.colorize(e.level_color)
       display original.backtrace
       display original.class.name.colorize(e.level_color)
@@ -110,7 +113,7 @@ module ActiveMocker
     end
 
     def errors_for(level)
-      uniq_errors.count { |e| [level].include?(e.level_color) }
+      uniq_errors.count { |e| [level].include? e.level_color }
     end
   end
 end

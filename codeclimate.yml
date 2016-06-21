@@ -1,0 +1,7 @@
+languages:
+  Ruby: true
+exclude_paths:
+- "sample_app_rails_4/*"
+- "sample_app_rails_4/*"
+- "test_rails_4_app/*"
+- "spec/*"

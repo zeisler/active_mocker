@@ -22,5 +22,4 @@ SampleApp::Application.configure do
   config.active_record.migration_error = :page_load
 
   # Debug mode disables concatenation and preprocessing of assets.
-  config.assets.debug = true
 end

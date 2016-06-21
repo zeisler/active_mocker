@@ -1,11 +1,31 @@
 appraise "rails-4.0" do
-  gem "rails", "~>4.0"
+  gem "rails", "~> 4.0"
+   group :development, :test do
+      gem "rspec", "~> 3.4"
+      gem "rspec-rails", "~>3.4"
+   end
 end
 
 appraise "rails-4.1" do
-  gem "rails", "~>4.1"
+  gem "rails", "~> 4.1"
+   group :development, :test do
+      gem "rspec", "~> 3.4"
+      gem "rspec-rails", "~>3.4"
+   end
 end
 
 appraise "rails-4.2" do
-  gem "rails", "~>4.2"
+  gem "rails", "~> 4.2"
+  group :development, :test do
+    gem "rspec", "~> 3.4"
+    gem "rspec-rails", "~>3.4"
+  end
+end
+
+appraise "rails-5.0" do
+  gem "rails",  ">= 5.0.0.rc1", "< 5.1"
+  group :development, :test do
+    gem "rspec", "3.5.0.beta4"
+    gem "rspec-rails", "3.5.0.beta4"
+  end
 end

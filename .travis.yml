@@ -4,9 +4,9 @@ rvm:
   - 2.2.5
   - 2.3.1
 gemfile:
-  - test_rails_4_app/gemfiles/rails_4.0.gemfile
   - test_rails_4_app/gemfiles/rails_4.1.gemfile
   - test_rails_4_app/gemfiles/rails_4.2.gemfile
+  - test_rails_4_app/gemfiles/rails_5.0.gemfile
 env:
   global:
     TRAVIS: true

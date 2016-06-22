@@ -13,3 +13,7 @@ env:
 sudo: false
 cache: bundler
 CODECLIMATE_REPO_TOKEN: 11158e372b49d660cd14d15f351b0326e7bcdd29e7e31f271a2055530212f3e3
+matrix:
+  exclude:
+    - rvm: 2.1.8
+      gemfile: test_rails_4_app/gemfiles/rails_5.0.gemfile

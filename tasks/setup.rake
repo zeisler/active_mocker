@@ -13,6 +13,6 @@ task :setup do
     end
   end
   Dir.chdir("test_rails_4_app") do
-    sh "rake db:setup"
+    sh "RAILS_ENV=test rake db:setup"
   end
 end

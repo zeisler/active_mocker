@@ -263,6 +263,7 @@ describe ActiveMocker::MockCreator do
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
           MY_CONSTANT_VALUE = 3
+          MY_OBJECT = ActiveMocker::UNREPRESENTABLE_CONST_VALUE
           prepend ModelStandInForARVersion::PostMethods
         end
       RUBY

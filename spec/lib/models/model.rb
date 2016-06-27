@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class Model < ActiveRecord::Base
   MY_CONSTANT_VALUE = 3
+  MY_OBJECT = Object.new
   module FooBar
   end
 

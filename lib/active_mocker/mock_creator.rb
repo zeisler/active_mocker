@@ -145,10 +145,26 @@ module ActiveMocker
     end
 
     module ModulesConstants
+      require "active_mocker/mock/unrepresentable_const_value"
+
+      class Inspectable
+
+        attr_reader :inspect
+
+        def initialize(inspect)
+          @inspect = inspect
+        end
+      end
+
       def constants
         class_introspector.get_class.constants.each_with_object({}) do |v, const|
-          c        = class_introspector.get_class.const_get(v)
-          const[v] = c unless c.class == Module || c.class == Class
+          c = class_introspector.get_class.const_get(v)
+          next if [Module, Class].include?(c.class)
+          if /\A#</ =~ c.inspect
+            const[v] = Inspectable.new("ActiveMocker::UNREPRESENTABLE_CONST_VALUE")
+          else
+            const[v] =  c
+          end
         end
       end
 

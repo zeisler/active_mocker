@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 require "#{Rails.root}/lib/post_methods"
+require "#{Rails.root}/app/models/mircopost/core"
 
 class Micropost < ActiveRecord::Base
-  require "#{Rails.root}/app/models/mircopost/core"
   belongs_to :user
   default_scope -> { order("created_at DESC") }
   MAGIC_ID_NUMBER = 90
   MAGIC_ID_STRING = "F-1"
+  MAGIC_OBJECT = Object.new
 
   include PostMethods
   extend PostMethods
-  include Core
+  include Micropost::Core
 
   module DoNotIncludeInMock
     def sample_method

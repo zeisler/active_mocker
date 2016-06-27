@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.2.2 - 2016-06-27
+### Fix
+- Constant values assigned to non sudo primitives objects causing issues. https://github.com/zeisler/active_mocker/issues/72
+
+## Enhancement
+- Tested support for Rails RC2
+
 ## 2.2.2 - 2016-05-05
 ### Fix
 - When using "active_mocker/rspec_helper" with active_mocker:true tag, subclassed mocks were not getting auto stubbed.

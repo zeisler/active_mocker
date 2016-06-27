@@ -199,7 +199,7 @@ DEPENDENCIES
   active_mocker!
   appraisal
   omniauth-identity
-  rails (~> 4.2)
+  rails (~> 4.1)
   rspec (~> 3.4)
   rspec-rails (~> 3.4)
   sqlite3 (~> 1.3)

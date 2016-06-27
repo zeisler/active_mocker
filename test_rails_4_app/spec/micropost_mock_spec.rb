@@ -19,6 +19,12 @@ describe MicropostMock do
     end
   end
 
+  describe "::MAGIC_OBJECT" do
+    it "has constant from model" do
+      expect(MicropostMock::MAGIC_OBJECT).to eq ActiveMocker::UNREPRESENTABLE_CONST_VALUE
+    end
+  end
+
   context "included methods" do
     it "has methods" do
       expect(MicropostMock.new.respond_to?(:sample_method)).to eq true

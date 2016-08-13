@@ -129,7 +129,7 @@ describe UserMock do
 
   describe "::column_names" do
     it "returns an array of column names found from the schema.rb file" do
-      expect(UserMock.column_names).to eq(%w(id name email credits created_at updated_at password_digest remember_token admin))
+      expect(UserMock.column_names).to eq(%w(id name email credits requested_at created_at updated_at password_digest remember_token admin))
     end
   end
 

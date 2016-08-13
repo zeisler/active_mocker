@@ -33,6 +33,12 @@ module Api
     def key_arg_opt(key: nil)
     end
 
+    def key_arg_rest(**key_rest)
+    end
+
+    def arg_rest(*key_rest)
+    end
+
     private
 
     def create_remember_token

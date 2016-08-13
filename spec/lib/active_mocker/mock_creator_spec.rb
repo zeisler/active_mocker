@@ -71,7 +71,20 @@ describe ActiveMocker::MockCreator do
 
     let(:sample_attributes) do
       a = ActiveRecordSchemaScrapper::Attributes.new(model: rails_model)
-      allow(a).to receive(:to_a) { [ActiveRecordSchemaScrapper::Attribute.new(name: "example_attribute", type: :string)] }
+      allow(a).to receive(:to_a) {
+        [
+          ActiveRecordSchemaScrapper::Attribute.new(
+            name:    "example_attribute",
+            type:    :string,
+            default: "something"
+          ),
+          ActiveRecordSchemaScrapper::Attribute.new(
+            name:    "example_decimal",
+            type:    :decimal,
+            default: -1.0,
+          )
+        ]
+      }
       a
     end
 
@@ -167,6 +180,14 @@ describe ActiveMocker::MockCreator do
             write_attribute(:example_attribute, val)
           end
 
+          def example_decimal
+            read_attribute(:example_decimal)
+          end
+
+          def example_decimal=(val)
+            write_attribute(:example_decimal, val)
+          end
+
           def id
             read_attribute(:id)
           end
@@ -180,32 +201,6 @@ describe ActiveMocker::MockCreator do
       end
     end
 
-    it "partial :attributes" do
-      expect(subject.call([:attributes])).to eq format_code <<-RUBY.strip_heredoc
-        require 'active_mocker/mock'
-
-        class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
-          def example_attribute
-            read_attribute(:example_attribute)
-          end
-
-          def example_attribute=(val)
-            write_attribute(:example_attribute, val)
-          end
-
-          def id
-            read_attribute(:id)
-          end
-
-          def id=(val)
-            write_attribute(:id, val)
-          end
-
-        end
-      RUBY
-    end
-
     it "partial :class_methods" do
       expect(subject.call([:class_methods])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
@@ -214,11 +209,11 @@ describe ActiveMocker::MockCreator do
           created_with('#{ActiveMocker::VERSION}')
           class << self
             def attributes
-              @attributes ||= HashWithIndifferentAccess.new({"example_attribute"=>nil, "id"=>nil}).merge(super)
+              @attributes ||= HashWithIndifferentAccess.new({example_attribute: "something", example_decimal: BigDecimal("-1.0"), id: nil}).merge(super)
             end
 
             def types
-              @types ||= ActiveMocker::HashProcess.new({ example_attribute: String, id: Fixnum }, method(:build_type)).merge(super)
+              @types ||= ActiveMocker::HashProcess.new({ example_attribute: String, example_decimal: BigDecimal, id: Fixnum }, method(:build_type)).merge(super)
             end
 
             def associations
@@ -236,7 +231,7 @@ describe ActiveMocker::MockCreator do
             private :mocked_class
 
             def attribute_names
-              @attribute_names ||= ["example_attribute", "id"] | super
+              @attribute_names ||= attributes.stringify_keys.keys
             end
 
             def primary_key

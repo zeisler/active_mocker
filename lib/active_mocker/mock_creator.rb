@@ -277,7 +277,7 @@ module ActiveMocker
       def scope_methods
         class_introspector.class_macros.select { |h| h.keys.first == :scope }.map do |h|
           a = h.values.first.first
-          Method.new(a[0], ReverseParameters.new(a[1], blocks_as_values: true))
+          Method.new(a[0], ReverseParameters.new(a[1]))
         end
       end
     end
@@ -322,8 +322,7 @@ module ActiveMocker
 
       def create_method(m, type)
         Method.new(m,
-                   ReverseParameters.new(class_introspector.get_class.send(type, m).parameters,
-                                         blocks_as_values: true))
+                   ReverseParameters.new(class_introspector.get_class.send(type, m).parameters))
       end
     end
 

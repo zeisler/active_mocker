@@ -4,7 +4,7 @@
 
   <% scope_methods.each do |method| -%>
   def <%= method.name %><%= "(#{method.arguments.parameters})" unless method.arguments.parameters.to_a.empty? %>
-      ActiveMocker::LoadedMocks.find('<%= class_name %>').send(:call_mock_method, method: '<%= method.name %>', caller: Kernel.caller, arguments: [<%= method.arguments.arguments %>])
+      ActiveMocker::LoadedMocks.find('<%= class_name %>').send(:call_mock_method, method: '<%= method.name %>', caller: Kernel.caller, arguments: [<%= method.arguments.arguments(blocks_as_values: true) %>])
     end
 
   <% end -%>

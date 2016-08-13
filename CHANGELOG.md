@@ -1,7 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.2.2 - 2016-06-27
+## 2.2.4 - 2016-06-27
+### Fix
+- `BigDecimal`, `Date`, `DateTime`, and `Time` when used as defaults in the schema caused mock generation failures.
+
+## 2.2.3 - 2016-06-27
 ### Fix
 - Constant values assigned to non sudo primitives objects causing issues. https://github.com/zeisler/active_mocker/issues/72
 

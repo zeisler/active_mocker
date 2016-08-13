@@ -1,7 +1,7 @@
 #_class_methods.erb
   class << self
     def attributes
-      @attributes ||= HashWithIndifferentAccess.new(<%= attributes_with_defaults %>).merge(super)
+      @attributes ||= HashWithIndifferentAccess.new(<%= attributes_with_defaults.map {|key,value| %Q[#{key}: #{value.inspect}]}.join(", ") %>).merge(super)
     end
 
     def types
@@ -23,7 +23,7 @@
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= <%= attribute_names %> | super
+      @attribute_names ||= attributes.stringify_keys.keys
     end
 
     def primary_key

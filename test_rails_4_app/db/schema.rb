@@ -21,29 +21,7 @@ ActiveRecord::Schema.define(version: 20160621215939) do
   create_table "cusomters", force: :cascade do |t|
     t.string   "name"
     t.string   "email",                                    default: ""
-    t.decimal  "credits",         precision: 19, scale: 6
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "password_digest"
-    t.boolean  "remember_token",                           default: true
-    t.boolean  "admin",                                    default: false
-  end
-
-  create_table "customer", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email",                                    default: ""
-    t.decimal  "credits",         precision: 19, scale: 6
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "password_digest"
-    t.boolean  "remember_token",                           default: true
-    t.boolean  "admin",                                    default: false
-  end
-
-  create_table "customers", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email",                                    default: ""
-    t.decimal  "credits",         precision: 19, scale: 6
+    t.decimal  "credits",         precision: 19, scale: 6, default: -1.0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
@@ -53,8 +31,8 @@ ActiveRecord::Schema.define(version: 20160621215939) do
 
   create_table "identities", force: :cascade do |t|
     t.string   "name"
-    t.string   "email",                                    default: ""
-    t.decimal  "credits",         precision: 19, scale: 6
+    t.string   "email",                                    default: "n/a"
+    t.decimal  "credits",         precision: 19, scale: 6, default: -2.0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
@@ -88,7 +66,8 @@ ActiveRecord::Schema.define(version: 20160621215939) do
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "email",                                    default: ""
-    t.decimal  "credits",         precision: 19, scale: 6
+    t.decimal  "credits",         precision: 19, scale: 6, default: -1.0
+    t.datetime "requested_at", default: DateTime.parse("3rd Feb 2001 04:05:06+03:30")
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"

@@ -1,6 +1,11 @@
 # frozen_string_literal: true
+
+require "active_mocker/inspectable"
+
 module ActiveMocker
   class MockCreator
+
+    using ActiveMocker::Inspectable
     def initialize(file:,
                    file_out:,
                    schema_scrapper:,

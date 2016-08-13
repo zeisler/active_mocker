@@ -14,7 +14,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   describe "instance only methods" do
     describe '#attribute_names' do
       it "Returns an array of names for the attributes available on this object" do
-        expect(user_class.new.attribute_names).to eq %w(id name email credits created_at updated_at password_digest remember_token admin)
+        expect(user_class.new.attribute_names).to eq %w(id name email credits requested_at created_at updated_at password_digest remember_token admin)
       end
     end
 
@@ -104,7 +104,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   end
 
   it '#attributes' do
-    expect(user_class.new(attributes).attributes).to eq("id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false)
+    expect(user_class.new(attributes).attributes).to eq("id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => BigDecimal("-1.0"), "requested_at" => DateTime.parse("3rd Feb 2001 04:05:06+03:30"), "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false)
   end
 
   describe "associations" do
@@ -114,17 +114,20 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     let(:user) { user_class.new(create_attributes) }
 
     it "the Mock when adding an association will not set the _id attribute, do it manually" do
-      expect(user.attributes).to eq("id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => nil, "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false)
+      expect(user.attributes[:id]).to eq(nil)
+      expect(micropost.user_id).to eq(nil)
       expect(user.microposts).to eq [micropost]
     end
   end
 
+  let(:attribute_names){ %w(id name email credits requested_at created_at updated_at password_digest remember_token admin) }
+
   it "::column_names" do
-    expect(user_class.column_names).to eq(%w(id name email credits created_at updated_at password_digest remember_token admin))
+    expect(user_class.column_names).to eq(attribute_names)
   end
 
   it "::attribute_names" do
-    expect(user_class.attribute_names).to eq(%w(id name email credits created_at updated_at password_digest remember_token admin))
+    expect(user_class.attribute_names).to eq(attribute_names)
   end
 
   it "::all" do

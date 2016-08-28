@@ -2,15 +2,15 @@
 require "colorize"
 module ActiveMocker
   class DisplayErrors
-    attr_reader :errors, :model_count, :out
-    attr_accessor :success_count, :failed_models
+    attr_reader :errors, :klass_count, :out
+    attr_accessor :success_count, :failed_classes, :klass_count
 
-    def initialize(model_count, out: STDERR)
-      @errors        = []
-      @success_count = 0
-      @model_count   = model_count
-      @failed_models = []
-      @out           = out
+    def initialize(klass_count: nil, out: STDERR)
+      @errors         = []
+      @success_count  = 0
+      @klass_count    = klass_count
+      @failed_classes = []
+      @out            = out
     end
 
     def add(errors)
@@ -46,12 +46,12 @@ module ActiveMocker
     def error_summary
       display "Error Summary"
       display "errors: #{error_count}, warn: #{warn}, info: #{info}"
-      display "Failed models: #{failed_models.join(", ")}" if failed_models.count > 0
+      display "Failed models: #{failed_classes.join(", ")}" if failed_classes.count > 0
     end
 
     def failure_count_message
-      if success_count < model_count || any_errors?
-        display "#{model_count - success_count} mock(s) out of #{model_count} failed."
+      if success_count < klass_count || any_errors?
+        display "#{klass_count - success_count} mock(s) out of #{klass_count} failed."
       end
     end
 

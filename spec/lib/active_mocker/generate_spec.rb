@@ -109,7 +109,7 @@ RSpec.describe ActiveMocker::Generate do
 
         it "ignores non ActiveRecord subclasses" do
           result = described_class.new.call
-          expect(result.active_record_models).to eq [Model]
+          expect(result.klass_constants).to eq [Model]
         end
       end
     end

@@ -1,10 +1,11 @@
 module ActiveMocker
   class FileWriter
     include Virtus.model
-    delegate :name, to: :model, prefix: true
+    delegate :name, to: :const, prefix: true
 
-    attribute :model, Object
+    attribute :const, Object
     attribute :file, String
+    attribute :mock_file_path, String
     attribute :display_errors
     attribute :config
     attribute :model_names, Array
@@ -18,7 +19,7 @@ module ActiveMocker
     private
 
     def process!(file_out)
-      result = create_mock(file_out, model)
+      result = create_mock(file_out, const)
       status = collect_errors(result.errors)
 
       ok = result.completed? && status.successful?
@@ -38,22 +39,14 @@ module ActiveMocker
     end
 
     def rescue_clean_up(e, file_out)
-      display_errors.failed_models << model_name
+      display_errors.failed_classes << const.name
       file_out.close unless file_out.closed?
       File.delete(file_out.path) if File.exist?(file_out.path)
-      display_errors.wrap_an_exception(e, model_name)
+      display_errors.wrap_an_exception(e, const.name)
     end
 
     def scrapper
-      @scrapper ||= ActiveRecordSchemaScrapper.new(model: model)
-    end
-
-    def mock_file_path
-      File.join(Config.mock_dir, mock_file_name)
-    end
-
-    def mock_file_name
-      "#{model_name.underscore}_#{config.mock_append_name.underscore}.rb"
+      @scrapper ||= ActiveRecordSchemaScrapper.new(model: const)
     end
 
     def assure_dir_path_exists!
@@ -62,14 +55,14 @@ module ActiveMocker
       end
     end
 
-    def create_mock(file_out, model)
+    def create_mock(file_out, const)
       MockCreator.new(file:                 File.open(file),
                       file_out:             file_out,
                       schema_scrapper:      scrapper,
                       klasses_to_be_mocked: model_names,
                       enabled_partials:     enabled_partials,
                       mock_append_name:     config.mock_append_name,
-                      active_record_model:  model).create
+                      active_record_model:  const).create
     end
 
     OtherErrors = Struct.new(:successful?)
@@ -105,7 +98,7 @@ module ActiveMocker
     end
 
     def schema
-      @schema ||= Schema.new(ActiveRecordSchemaScrapper.new(model: model))
+      @schema ||= Schema.new(ActiveRecordSchemaScrapper.new(model: const))
     end
 
     class Schema < SimpleDelegator

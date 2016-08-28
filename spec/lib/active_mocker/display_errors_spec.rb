@@ -19,7 +19,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
 
   let(:string_io) { StringOutPut.new }
 
-  subject { described_class.new(1, out: string_io) }
+  subject { described_class.new(klass_count: 1, out: string_io) }
 
   describe "#display_errors" do
     context "when error_verbosity is three" do

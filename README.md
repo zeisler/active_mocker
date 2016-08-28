@@ -176,6 +176,19 @@ Person.new(first_name: "Dustin", last_name: "Zeisler")
   =>#<UnknownAttributeError unknown attribute: first_name >
 ```
 
+### Creating Custom collections
+
+If you want to create custom set of record that is not part of the global collection for model. (ie. for stubbing in a test)
+
+```ruby
+User::ScopeRelation.new([User.new, User.new])
+```
+
+This give the full query API (ie. find_by, where, etc). 
+
+This is not feature available in ActiveRecord as such do not include this where you intend to swap in ActiveRecord.
+
+
 ## Mocking Methods
 
 #### Rspec 3 Mocks - verify double

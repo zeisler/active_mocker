@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Current
+### Feature
+- Added `#first_or_create`, `#first_or_create!`, and `#first_or_initialize`
+
 ## 2.2.5 - 2016-08-28
 ### Fix
 - Ensure '#update' calls save. Addressing the case where an object had not been saved prior would not get persisted.

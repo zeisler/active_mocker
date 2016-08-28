@@ -1,7 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.2.4 - 2016-06-27
+## 2.2.5 - 2016-08-28
+### Fix
+- Ensure '#update' calls save. Addressing the case where an object had not been saved prior would not get persisted.
+
+### Enhancement
+- Add documentation to `#assign_attributes`
+
+## 2.2.4 - 2016-08-13
 ### Fix
 - `BigDecimal`, `Date`, `DateTime`, and `Time` when used as defaults in the schema caused mock generation failures.
 
@@ -9,7 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Fix
 - Constant values assigned to non sudo primitives objects causing issues. https://github.com/zeisler/active_mocker/issues/72
 
-## Enhancement
+### Enhancement
 - Tested support for Rails RC2
 
 ## 2.2.2 - 2016-05-05

@@ -103,6 +103,15 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     end
   end
 
+  describe "#update" do
+    it "saves the record" do
+      record = user_class.new
+      expect(record.update(email: "9", name: "Tim")).to eq(true)
+      expect(record.persisted?).to eq true
+      expect(record.id).to_not be_nil
+    end
+  end
+
   it '#attributes' do
     expect(user_class.new(attributes).attributes).to eq("id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => BigDecimal("-1.0"), "requested_at" => DateTime.parse("3rd Feb 2001 04:05:06+03:30"), "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false)
   end

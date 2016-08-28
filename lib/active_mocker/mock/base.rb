@@ -186,6 +186,7 @@ module ActiveMocker
 
     def update(attributes = {})
       assign_attributes(attributes)
+      save
     end
 
     # @api private

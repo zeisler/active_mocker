@@ -210,6 +210,55 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     expect(user_class.create(attributes)).to eq user_class.find_by(attributes)
   end
 
+  it "::find_or_create_by" do
+    person = user_class.find_or_create_by(name: "dustin")
+    expect(user_class.find_by(name: "dustin")).to eq person
+    user_class.find_or_create_by(name: "dustin")
+    expect(user_class.count).to eq 1
+  end
+
+  it "::find_or_create_by with update" do
+    user_class.create(name: "dustin")
+    person = user_class.find_or_create_by(name: "dustin")
+    person.update(email: "Zeisler")
+    expect(user_class.first.attributes).to eq person.attributes
+    expect(user_class.count).to eq 1
+  end
+
+  it "::find_or_initialize_by" do
+    person = user_class.find_or_initialize_by(name: "dustin")
+    expect(person.persisted?).to eq false
+    user_class.create(name: "dustin")
+    person = user_class.find_or_initialize_by(name: "dustin")
+    expect(person.persisted?).to eq true
+  end
+
+  it "::first_or_create" do
+    first_person = user_class.create(name: "dustin")
+    user_class.create(name: "dustin", email: "1")
+    first_person_from_query = user_class.first_or_create(name: "dustin")
+    expect(first_person_from_query).to eq first_person
+    expect(first_person_from_query.persisted?).to eq true
+  end
+
+  it "::first_or_initialize" do
+    first_person = user_class.create(name: "dustin", email: "1")
+    user_class.create(name: "dustin", email: "2")
+    first_person_from_query = user_class.first_or_initialize(name: "dustin")
+    expect(first_person_from_query).to eq first_person
+    expect(first_person_from_query.persisted?).to eq true
+  end
+
+  it "::first_or_initialize" do
+    person = user_class.find_or_initialize_by(name: "dustin")
+    expect(person.persisted?).to eq false
+    first_person = user_class.create(name: "dustin", email: "1")
+    user_class.create(name: "dustin", email: "2")
+    first_person_from_query = user_class.first_or_initialize(name: "dustin")
+    expect(first_person_from_query.persisted?).to eq true
+    expect(first_person_from_query).to eq first_person
+  end
+
   describe "::where" do
     let(:record) { user_class.create(attributes) }
 

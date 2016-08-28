@@ -236,6 +236,18 @@ module ActiveMocker
       find_by(attributes) || new(attributes, &block)
     end
 
+    def first_or_create(attributes = nil, &block) # :nodoc:
+      first || create(attributes, &block)
+    end
+
+    def first_or_create!(attributes = nil, &block) # :nodoc:
+      first || create!(attributes, &block)
+    end
+
+    def first_or_initialize(attributes = nil, &block) # :nodoc:
+      first || new(attributes, &block)
+    end
+
     # Count the records.
     #
     #   PersonMock.count

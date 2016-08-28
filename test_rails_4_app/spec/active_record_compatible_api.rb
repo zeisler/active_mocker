@@ -221,7 +221,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     user_class.create(name: "dustin")
     person = user_class.find_or_create_by(name: "dustin")
     person.update(email: "Zeisler")
-    expect(user_class.first.attributes).to eq person.attributes
+    expect(user_class.first.attributes).to eq person.reload.attributes
     expect(user_class.count).to eq 1
   end
 

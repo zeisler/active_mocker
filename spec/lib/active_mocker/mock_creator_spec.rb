@@ -213,7 +213,7 @@ describe ActiveMocker::MockCreator do
             end
 
             def types
-              @types ||= ActiveMocker::HashProcess.new({ example_attribute: String, example_decimal: BigDecimal, id: Fixnum }, method(:build_type)).merge(super)
+              @types ||= ActiveMocker::HashProcess.new({ example_attribute: String, example_decimal: BigDecimal, id: Integer }, method(:build_type)).merge(super)
             end
 
             def associations

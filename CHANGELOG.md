@@ -1,9 +1,26 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Current
+## 2.3.0 - 2016-08-29
 ### Feature
 - Added `#first_or_create`, `#first_or_create!`, and `#first_or_initialize`
+
+### Enhancement
+- Improved API for registering unknown types and defaults. See https://github.com/zeisler/active_record_schema_scrapper#registering-types
+
+### Deprecation
+- `ActiveRecordSchemaScrapper::Attributes.register_default` gives a deprecation warning if given keys :name and :klass.
+New names are :default and :replacement_default.
+
+Example usage:
+```ruby
+ActiveRecordSchemaScrapper::Attributes.register_default(
+  default:             "{}", 
+  replacement_default: [], 
+  cast_type:           -> (c) { c.class.name.include?("Array") } 
+)
+```
+https://github.com/zeisler/active_record_schema_scrapper/blob/master/lib/active_record_schema_scrapper/attributes.rb#L36
 
 ## 2.2.5 - 2016-08-28
 ### Fix
@@ -41,7 +58,7 @@ All notable changes to this project will be documented in this file.
 - When an include/extended module is not locally defined, but defined in the same namespace as the mock it was not correctly namespaced
 - Fix issue NoMethodError in Rails 5.beta when introspection activerecord model.
 
-## Enhancement
+### Enhancement
 -  Ignore all non ActiveRecord::Base subclasses
 - Make rake dependency less strict `>= 10.0`
 

@@ -1,0 +1,23 @@
+---
+engines:
+  csslint:
+    enabled: false
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+  eslint:
+    enabled: false
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: true
+ratings:
+  paths:
+  - "**.erb"
+  - "**.rb"
+exclude_paths:
+- spec/
+- test_rails_4_app/
+- example_rails_app/

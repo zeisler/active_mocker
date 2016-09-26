@@ -48,7 +48,7 @@ describe ActiveMocker::Base do
 
   describe "::classes" do
     it "raises an error if not loaded" do
-      expect{described_class.send(:classes, "Abc", true)}.to raise_error(ActiveMocker::MockNotLoaded, "The ActiveMocker version of Abc has not been required.")
+      expect{described_class.send(:classes, "Abc", true)}.to raise_error(ActiveMocker::MockNotLoaded, "The ActiveMocker version of Abc is not required.")
     end
   end
 

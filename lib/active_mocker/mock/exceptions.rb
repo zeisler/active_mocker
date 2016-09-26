@@ -38,5 +38,4 @@ module ActiveMocker
 
   class MockNotLoaded < BaseError
   end
-
 end

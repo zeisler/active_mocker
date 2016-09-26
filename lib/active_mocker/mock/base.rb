@@ -107,7 +107,7 @@ module ActiveMocker
 
       def classes(klass, fail_hard=false)
         ActiveMocker::LoadedMocks.find(klass).tap do |found_class|
-          raise MockNotLoaded, "The ActiveMocker version of #{klass} has not been required." if fail_hard && !found_class
+          raise MockNotLoaded, "The ActiveMocker version of #{klass} is not required." if fail_hard && !found_class
           found_class
         end
       end
@@ -155,7 +155,7 @@ module ActiveMocker
 
     private :call_mock_method
 
-    def classes(klass, fail_hard=false)
+    def classes(klass, fail_hard = false)
       self.class.send(:classes, klass, fail_hard)
     end
 

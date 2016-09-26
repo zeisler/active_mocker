@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.3.1 - 2016-09-26
+### Fix
+- `create_<association>` failed to set the foreign key.
+
+### Enhancement
+- Specific ActiveMocker exceptions now all inherit from `ActiveMocker::BaseError`
+
 ## 2.3.0 - 2016-08-29
 ### Feature
 - Added `#first_or_create`, `#first_or_create!`, and `#first_or_initialize`

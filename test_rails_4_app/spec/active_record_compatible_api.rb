@@ -608,6 +608,14 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
       expect(post.user_id).to eq user.id
     end
 
+    describe "#create_user" do
+      it "populate the foreign key and the association" do
+        post = micropost_class.create(content: "post")
+        post.create_user(name: "Jason")
+        expect(post.user_id).to eq(post.user.id)
+      end
+    end
+
     it "will persist the association and set the foreign key" do
       user = user_class.new
       post = micropost_class.create(user: user)

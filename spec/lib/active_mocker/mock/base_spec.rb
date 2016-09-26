@@ -3,6 +3,7 @@ require "spec_helper"
 require "logger"
 require "active_mocker/mock"
 require_relative "queriable_shared_example"
+require "active_mocker/mock/exceptions"
 describe ActiveMocker::Base do
   class ActiveMocker::Base
     class << self
@@ -42,6 +43,12 @@ describe ActiveMocker::Base do
       allow(ActiveMocker::Base).to receive(:associations_by_class) { { "User" => [:customers] } }
       result = described_class._find_associations_by_class("User")
       expect(result).to eq [:customers]
+    end
+  end
+
+  describe "::classes" do
+    it "raises an error if not loaded" do
+      expect{described_class.send(:classes, "Abc", true)}.to raise_error(ActiveMocker::MockNotLoaded, "The ActiveMocker version of Abc has not been required.")
     end
   end
 

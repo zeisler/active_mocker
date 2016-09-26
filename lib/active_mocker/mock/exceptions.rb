@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 module ActiveMocker
-  class RecordNotFound < StandardError
+  class BaseError < StandardError
+  end
+  class RecordNotFound < BaseError
   end
 
   module Mock
@@ -8,7 +10,7 @@ module ActiveMocker
     RecordNotFound = ActiveMocker::RecordNotFound
   end
 
-  class IdError < StandardError
+  class IdError < BaseError
   end
 
   # Raised when unknown attributes are supplied via mass assignment.
@@ -22,15 +24,19 @@ module ActiveMocker
     end
   end
 
-  class UpdateMocksError < Exception
+  class UpdateMocksError < BaseError
     def initialize(name, mock_version, gem_version)
       super("#{name} was built with #{mock_version} but the gem version is #{gem_version}. Run `rake active_mocker:build` to update.")
     end
   end
 
-  class NotImplementedError < Exception
+  class NotImplementedError < BaseError
   end
 
-  class Error < Exception
+  class Error < BaseError
   end
+
+  class MockNotLoaded < BaseError
+  end
+
 end

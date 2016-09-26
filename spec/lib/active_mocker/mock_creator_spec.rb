@@ -343,13 +343,11 @@ describe ActiveMocker::MockCreator do
           end
 
           def build_user(attributes={}, &block)
-            association = classes('User').try(:new, attributes, &block)
-            write_association(:user, association) unless association.nil?
+            self.user = classes("User", true).new(attributes, &block)
           end
 
           def create_user(attributes={}, &block)
-            association = classes('User').try(:create,attributes, &block)
-            write_association(:user, association) unless association.nil?
+            self.user = classes("User", true).create(attributes, &block)
           end
 
           alias_method :create_user!, :create_user
@@ -363,11 +361,11 @@ describe ActiveMocker::MockCreator do
           end
 
           def build_account(attributes={}, &block)
-            write_association(:account, classes('Account').new(attributes, &block)) if classes('Account')
+            self.account = classes("Account", true).new(attributes, &block)
           end
 
           def create_account(attributes={}, &block)
-            write_association(:account, classes('Account').new(attributes, &block)) if classes('Account')
+            self.account = classes("Account", true).new(attributes, &block)
           end
           alias_method :create_account!, :create_account
 

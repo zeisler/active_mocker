@@ -15,16 +15,14 @@ read_association(:<%= meth.name %>) || write_association(:<%= meth.name %>, clas
   def build_<%= meth.name %>(attributes={}, &block)
   <% association = relation_find(:name, meth.name).first -%>
   <% if association -%>
-association = classes('<%= association.class_name %>').try(:new, attributes, &block)
-    write_association(:<%= meth.name %>, association) unless association.nil?
+self.<%= meth.name %> = classes('<%= association.class_name %>', true).new(attributes, &block)
   <% end -%>
 end
 
   def create_<%= meth.name %>(attributes={}, &block)
   <% association = relation_find(:name, meth.name).first -%>
   <% if association -%>
-association = classes('<%= association.class_name %>').try(:create,attributes, &block)
-    write_association(:<%= meth.name %>, association) unless association.nil?
+self.<%= meth.name %> = classes('<%= association.class_name %>', true).create(attributes, &block)
   <% end -%>
 end
   alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>
@@ -45,14 +43,14 @@ end
   def build_<%= meth.name %>(attributes={}, &block)
   <% association = relation_find(:name, meth.name).first -%>
   <% if association -%>
-write_association(:<%= meth.name %>, classes('<%= association.class_name %>').new(attributes, &block)) if classes('<%= association.class_name %>')
+self.<%= meth.name %>= classes('<%= association.class_name %>', true).new(attributes, &block)
 <% end -%>
   end
 
   def create_<%= meth.name %>(attributes={}, &block)
   <% association = relation_find(:name, meth.name).first -%>
   <% if association -%>
-write_association(:<%= meth.name %>, classes('<%= association.class_name %>').new(attributes, &block)) if classes('<%= association.class_name %>')
+        self.<%= meth.name %>= classes('<%= association.class_name %>', true).new(attributes, &block)
   <% end -%>
 end
   alias_method :create_<%= meth.name %>!, :create_<%= meth.name %>

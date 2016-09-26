@@ -105,8 +105,11 @@ module ActiveMocker
         @@built_types[type] ||= Virtus::Attribute.build(type)
       end
 
-      def classes(klass)
-        ActiveMocker::LoadedMocks.find(klass)
+      def classes(klass, fail_hard=false)
+        ActiveMocker::LoadedMocks.find(klass).tap do |found_class|
+          raise MockNotLoaded, "The ActiveMocker version of #{klass} is not required." if fail_hard && !found_class
+          found_class
+        end
       end
 
       # @param [Array<ActiveMocker::Base>] collection, an array of mock instances
@@ -152,8 +155,8 @@ module ActiveMocker
 
     private :call_mock_method
 
-    def classes(klass)
-      self.class.send(:classes, klass)
+    def classes(klass, fail_hard = false)
+      self.class.send(:classes, klass, fail_hard)
     end
 
     private :classes

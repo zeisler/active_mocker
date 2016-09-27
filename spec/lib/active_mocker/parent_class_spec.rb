@@ -96,6 +96,21 @@ RSpec.describe ActiveMocker::ParentClass do
         end
       end
 
+      context "when parent_class_name is root namespaced" do
+        let(:parsed_source) do
+          instance_double(DissociatedIntrospection::RubyClass,
+                          has_parent_class?: true,
+                          class_name:        "ChildOfSTI",
+                          parent_class_name: "::STIModel")
+        end
+
+        describe "#parent_mock_name" do
+          it "returns the default parent class" do
+            expect(subject.parent_mock_name).to eq "::STIModelMockTest"
+          end
+        end
+      end
+
       describe "#error" do
         it "returns nil" do
           expect(subject.error).to eq nil

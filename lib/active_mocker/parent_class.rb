@@ -36,7 +36,7 @@ module ActiveMocker
 
     def deal_with_parent
       if parent_class <= active_record_base_klass
-        @parent_mock_name = parent_class_name if klasses_to_be_mocked.include?(parent_class_name)
+        @parent_mock_name = parent_class_name if included_mocked_class?
       else
         create_error("#{class_name} does not inherit from ActiveRecord::Base")
       end
@@ -61,6 +61,16 @@ module ActiveMocker
 
     def parent_class
       parent_class_name.constantize
+    end
+
+    def included_mocked_class?
+      sanitize_consts(klasses_to_be_mocked).include?(sanitize_consts(parent_class_name).first)
+    end
+
+    def sanitize_consts(consts)
+      [*consts].map do |const|
+        const.split("::").reject(&:empty?).join("::")
+      end
     end
   end
 end

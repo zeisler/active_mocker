@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20160621215939) do
     t.decimal "balance"
   end
 
-  create_table "cusomters", force: :cascade do |t|
+  create_table "customers", force: :cascade do |t|
     t.string   "name"
     t.string   "email",                                    default: ""
     t.decimal  "credits",         precision: 19, scale: 6, default: -1.0

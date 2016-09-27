@@ -1,5 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## 2.3.2 - 2016-09-26
+### Fix
+- Fix case where parent class was not being set and set was set to `ActiveMocker::Base`.
+- Stop generating Mocks when table cannot be found.
 
 ## 2.3.1 - 2016-09-26
 ### Fix

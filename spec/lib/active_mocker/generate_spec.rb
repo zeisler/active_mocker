@@ -14,11 +14,14 @@ RSpec.describe ActiveMocker::Generate do
         config.progress_bar     = false
       end
       stub_const("ActiveRecord::Base", class_double("ActiveRecord::Base"))
-      stub_const("Model", class_double("Model", ancestors: [ActiveRecord::Base]))
+      stub_const("Model", class_double("Model", ancestors: [ActiveRecord::Base], abstract_class?: false))
       stub_const("SomeNamespace::SomeModule", class_double("SomeNamespace::SomeModule", ancestors: [Module]))
     end
 
     before do
+      allow_any_instance_of(ActiveMocker::FileWriter::Schema).to receive(:attribute_errors?) { false }
+      allow_any_instance_of(ActiveMocker::FileWriter::Schema).to receive(:attribute_errors) { [] }
+      allow_any_instance_of(ActiveMocker::FileWriter::Schema).to receive(:association_errors) { [] }
       FileUtils.rm_rf not_found_dir
     end
 

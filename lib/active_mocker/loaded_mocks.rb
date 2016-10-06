@@ -25,6 +25,52 @@ module ActiveMocker
       # @deprecated Use {#delete_all} instead of this method.
       alias clear_all delete_all
 
+      def features
+        @features ||= Features.instance
+      end
+
+      class Features
+        include Singleton
+        DEFAULTS = { timestamps: false }
+        def initialize
+          reset
+        end
+
+        def each(&block)
+          @features.each(&block)
+        end
+
+        def enable(feature)
+          update(feature, true)
+        end
+
+        def disable(feature)
+          update(feature, false)
+        end
+
+        def [](feature)
+          @features[feature]
+        end
+
+        def reset
+          @features = DEFAULTS.dup
+        end
+
+        def to_h
+          @features
+        end
+
+        private
+
+        def update(feature, value)
+          if @features.has_key?(feature)
+            @features[feature] = value
+          else
+            raise KeyError, "#{feature} is not an available feature."
+          end
+        end
+      end
+
       class Collection
         include Enumerable
 

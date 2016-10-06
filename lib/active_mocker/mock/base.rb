@@ -37,7 +37,9 @@ module ActiveMocker
           attributes.collect { |attr| create(attr, &block) }
         else
           record = new(id: attributes.delete(:id) || attributes.delete("id"))
+
           record.save
+          record.touch(:created_at, :created_on) if ActiveMocker::LoadedMocks.features[:timestamps]
           record.assign_attributes(attributes, &block)
           record._create_caller_locations = caller_locations
           record
@@ -228,10 +230,26 @@ module ActiveMocker
 
     def save(*_args)
       self.class.send(:insert, self) unless self.class.exists?(self)
+      touch if ActiveMocker::LoadedMocks.features[:timestamps]
       true
     end
 
     alias save! save
+
+    def touch(*names)
+      raise ActiveMocker::Error, "cannot touch on a new record object" unless persisted?
+
+      attributes = [:updated_at, :update_on]
+      attributes.concat(names)
+
+      current_time = Time.now
+
+      attributes.each do |column|
+        column          = column.to_s
+        write_attribute(column, current_time) if self.class.attribute_names.include?(column)
+      end
+      true
+    end
 
     def records
       self.class.send(:records)

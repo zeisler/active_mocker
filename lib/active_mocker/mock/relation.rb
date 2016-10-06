@@ -11,7 +11,7 @@ module ActiveMocker
     def inspect
       entries     = to_a.take(11).map!(&:inspect)
       entries[10] = "..." if entries.size == 11
-      "#<#{self.class.name} [#{entries.join(", ")}]>"
+      "#<#{name} [#{entries.join(", ")}]>"
     end
 
     def from_limit?
@@ -22,6 +22,10 @@ module ActiveMocker
 
     def set_from_limit
       @from_limit = true
+    end
+
+    def name
+      self.class.name
     end
   end
 end

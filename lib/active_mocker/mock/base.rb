@@ -301,7 +301,7 @@ module ActiveMocker
     end
 
     def inspect
-      ObjectInspect.new(self.class.name, attributes).to_s
+      ObjectInspect.new(name, attributes).to_s
     end
 
     # Will not allow attributes to be changed
@@ -312,6 +312,12 @@ module ActiveMocker
     def freeze
       @attributes.freeze; self
     end
+
+    def name
+      self.class.name
+    end
+
+    private :name
 
     module PropertiesGetterAndSetter
       # Returns the value of the attribute identified by <tt>attr_name</tt> after

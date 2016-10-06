@@ -242,7 +242,7 @@ module ActiveMocker
       attributes = [:updated_at, :update_on]
       attributes.concat(names)
 
-      current_time = Time.now
+      current_time = Time.now.utc
 
       attributes.each do |column|
         column          = column.to_s

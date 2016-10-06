@@ -31,7 +31,7 @@ module ActiveMocker
 
       class Features
         include Singleton
-        DEFAULTS = { timestamps: false }
+        DEFAULTS = { timestamps: false }.freeze
         def initialize
           reset
         end
@@ -63,7 +63,7 @@ module ActiveMocker
         private
 
         def update(feature, value)
-          if @features.has_key?(feature)
+          if @features.key?(feature)
             @features[feature] = value
           else
             raise KeyError, "#{feature} is not an available feature."

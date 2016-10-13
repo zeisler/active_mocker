@@ -19,4 +19,12 @@ RSpec.configure do |config|
   config.before(:all, active_mocker: true) do
     ActiveMocker::LoadedMocks.delete_all
   end
+
+  config.after(:each, active_mocker: true) do
+    ActiveMocker::LoadedMocks.delete_all if active_mocker.features[:delete_all_before_example]
+  end
+
+  config.before(:each, active_mocker: true) do
+    ActiveMocker::LoadedMocks.delete_all if active_mocker.features[:delete_all_before_example]
+  end
 end

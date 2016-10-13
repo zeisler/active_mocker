@@ -1,8 +1,13 @@
+require "singleton"
+
 module ActiveMocker
   class LoadedMocks
     class Features
       include Singleton
-      DEFAULTS = { timestamps: false }.freeze
+      DEFAULTS = {
+        timestamps:                false,
+        delete_all_before_example: false,
+      }.freeze
 
       def initialize
         reset

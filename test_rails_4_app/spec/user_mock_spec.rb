@@ -1,31 +1,32 @@
 # frozen_string_literal: true
 require "spec_helper"
+require "active_mocker/rspec_helper"
 require_relative "../lib/post_methods"
+require "app/models/mircopost/core"
 require_mock "micropost_mock"
 require_mock "user_mock"
 require_mock "relationship_mock"
 require_mock "account_mock"
 require_relative "active_record_compatible_api"
 
-describe UserMock do
+describe UserMock, active_mocker: true do
   it_behaves_like "ActiveRecord", MicropostMock, AccountMock
 
-  before(:each) do
-    UserMock.clear_mock
-    AccountMock.clear_mock
+  before do
+    active_mocker.delete_all
   end
 
   describe "::find_by_name" do
     it "will start the backtrace at the point where the method was called" do
       begin
-        UserMock.find_by_name("name")
+        User.find_by_name("name")
       rescue ActiveMocker::NotImplementedError => e
         expect(e.backtrace.first).to match(/\/.*\/spec\/user_mock_spec.rb/)
       end
     end
 
     it "raise descriptive error if not stubbed" do
-      expect { UserMock.find_by_name("name") }.to raise_error("::find_by_name for Class: UserMock. To continue stub the method.")
+      expect { User.find_by_name("name") }.to raise_error("::find_by_name for Class: UserMock. To continue stub the method.")
     end
   end
 
@@ -37,7 +38,7 @@ describe UserMock do
     end
 
     it do
-      expect(subject.microposts.relation_class).to eq MicropostMock
+      expect(subject.microposts.relation_class).to eq Micropost
     end
 
     it do
@@ -49,7 +50,7 @@ describe UserMock do
     end
 
     it "will set foreign_key with the foreign_id on all micropost" do
-      user = described_class.create(microposts: [MicropostMock.create])
+      user = described_class.create(microposts: [Micropost.create])
       expect(user.microposts.first.user_id).to eq user.id
     end
   end
@@ -62,7 +63,7 @@ describe UserMock do
     end
 
     it do
-      expect(subject.relationships.relation_class).to eq RelationshipMock
+      expect(subject.relationships.relation_class).to eq Relationship
     end
 
     it do
@@ -82,7 +83,7 @@ describe UserMock do
     end
 
     it do
-      expect(subject.followed_users.relation_class).to eq UserMock
+      expect(subject.followed_users.relation_class).to eq User
     end
 
     it do
@@ -116,20 +117,20 @@ describe UserMock do
 
   describe "has one account" do
     it "will set the foreign_key from the objects id" do
-      user = described_class.create(account: AccountMock.create)
+      user = described_class.create(account: Account.create)
       expect(user.account.user_id).to eq user.id
     end
   end
 
   describe "::mocked_class" do
     it "returns the name of the class being mocked" do
-      expect(UserMock.send(:mocked_class)).to eq("User")
+      expect(User.send(:mocked_class)).to eq("User")
     end
   end
 
   describe "::column_names" do
     it "returns an array of column names found from the schema.rb file" do
-      expect(UserMock.column_names).to eq(%w(id name email credits requested_at created_at updated_at password_digest remember_token admin))
+      expect(User.column_names).to eq(%w(id name email credits requested_at created_at updated_at password_digest remember_token admin))
     end
   end
 

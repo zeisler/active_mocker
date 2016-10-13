@@ -26,7 +26,7 @@ def mock_path
                   elsif defined? Rails
                     "rails_#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
                   else
-                    raise "Can't find mock path"
+                    "rails_5.0"
                   end
   File.join(APP_ROOT, "spec/mocks/#{rails_version}")
 end

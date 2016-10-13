@@ -1,5 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## 2.3.3 - 2016-10-13
+### Enhancement
+-  Auto stubbing of ActiveRecord::RecordNotFound with requiring "active_mocker/rspec_helper"
+
+### Fix 
+- NoMethodError when calling #find_by! on an association when the record could not be found.
+
 ## 2.3.2 - 2016-09-26
 ### Fix
 - Fix case where parent class was not being set and set was set to `ActiveMocker::Base`.

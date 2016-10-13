@@ -9,6 +9,7 @@ RSpec.configure do |config|
     unless ENV["RUN_WITH_RAILS"] && self.class.metadata[:rails_compatible]
       active_mocker.mocks.each { |class_name, mock| stub_const(class_name, mock) }
     end
+    stub_const("ActiveRecord::RecordNotFound", ActiveMocker::RecordNotFound)
   end
 
   config.after(:all, active_mocker: true) do

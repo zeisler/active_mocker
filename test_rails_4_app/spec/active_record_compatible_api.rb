@@ -145,6 +145,10 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
       expect(micropost.user_id).to eq(nil)
       expect(user.microposts).to eq [micropost]
     end
+
+    it "find_by!" do
+      expect { user.microposts.find_by!(id: 10000000000) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   let(:attribute_names){ %w(id name email credits requested_at created_at updated_at password_digest remember_token admin) }

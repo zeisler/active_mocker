@@ -2,6 +2,7 @@
 require "spec_helper"
 require "active_mocker/rspec_helper"
 require_relative "../lib/post_methods"
+require "app/models/mircopost/core"
 require_mock "micropost_mock"
 require_mock "user_mock"
 require_mock "relationship_mock"

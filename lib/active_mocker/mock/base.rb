@@ -245,7 +245,7 @@ module ActiveMocker
       current_time = Time.now.utc
 
       attributes.each do |column|
-        column          = column.to_s
+        column = column.to_s
         write_attribute(column, current_time) if self.class.attribute_names.include?(column)
       end
       true

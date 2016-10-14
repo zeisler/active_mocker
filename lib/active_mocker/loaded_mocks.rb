@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require_relative "loaded_mocks/features"
+
 module ActiveMocker
   class LoadedMocks
     class << self
@@ -24,6 +26,10 @@ module ActiveMocker
 
       # @deprecated Use {#delete_all} instead of this method.
       alias clear_all delete_all
+
+      def features
+        @features ||= Features.instance
+      end
 
       class Collection
         include Enumerable

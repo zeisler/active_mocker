@@ -25,6 +25,7 @@ Examples from a real apps
   * [Generate](#generate_mocks)
 * [Dependencies](#dependencies)
 * [Usage](#usage)
+* [Optional Features](#optional-features)
 * [Mocking Methods](#mocking-methods)
 * [Managing Mocks](#managing-mocks)
 * [ActiveRecord supported methods](#activerecord-supported-methods)
@@ -187,6 +188,21 @@ This give the full query API (ie. find_by, where, etc).
 
 This is not feature available in ActiveRecord as such do not include this where you intend to swap in ActiveRecord.
 
+
+## Optional Features
+
+Use theses defaults if you are starting fresh
+
+```ruby
+ActiveMocker::LoadedMocks.features.enable(:timestamps)
+ActiveMocker::LoadedMocks.features.enable(:delete_all_before_example)
+```
+
+### timestamps
+Enables created_at and updated_at to be update on save and create
+
+### delete_all_before_example
+When using "active_mocker/rspec_helper" it delete all records from all mocks before each example.
 
 ## Mocking Methods
 

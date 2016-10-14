@@ -1,6 +1,27 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.4.0.pre1 - 2016-10-13
+### Enhancement
+- Option to delete all records before each example
+    It can be enabled for specific test context.
+    ```ruby
+    before(:all) { active_mocker.features.enable(:delete_all_before_example) }
+    after(:all) { active_mocker.features.disable(:delete_all_before_example) }
+    ```
+    
+    Or it can be enabled as the default
+    
+    ```ruby
+    ActiveMocker::LoadedMocks.features.enable(:delete_all_before_example)
+    ```
+
+- Option to enable timestamps
+
+    ```ruby
+    ActiveMocker::LoadedMocks.features.enable(:timestamps)
+    ```
+    
 ## 2.3.3 - 2016-10-13
 ### Enhancement
 -  Auto stubbing of ActiveRecord::RecordNotFound with requiring "active_mocker/rspec_helper"

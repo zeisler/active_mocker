@@ -53,6 +53,14 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
         expect { record.name = "Justin" }.to raise_error(RuntimeError, /[c|C]an't modify frozen/)
       end
     end
+
+    describe "#touch" do
+      it "touches the updated_at column" do
+        record = user_class.create(name: "Dustin")
+        record.touch
+        expect(record.updated_at).to_not eq(nil)
+      end
+    end
   end
 
   describe "::create" do
@@ -85,6 +93,17 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
       expect(user.name).to eq "David"
       expect(user.admin).to eq true
     end
+
+    context "with timestamps feature" do
+      before { ActiveMocker::LoadedMocks.features.enable(:timestamps) }
+      after { ActiveMocker::LoadedMocks.features.disable(:timestamps) }
+
+      it "touches updated_at and created_at" do
+        record = user_class.create(create_attributes)
+        expect(record.updated_at).to_not be_nil
+        expect(record.created_at).to_not be_nil
+      end
+    end
   end
 
   describe "::update" do
@@ -109,6 +128,18 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
       expect(record.update(email: "9", name: "Tim")).to eq(true)
       expect(record.persisted?).to eq true
       expect(record.id).to_not be_nil
+    end
+
+    context "with timestamps feature" do
+      before { ActiveMocker::LoadedMocks.features.enable(:timestamps) }
+      after { ActiveMocker::LoadedMocks.features.disable(:timestamps) }
+
+      it "saves the record" do
+        record           = user_class.create(email: "9", name: "Tim")
+        first_updated_at = record.updated_at
+        record.update(name: "Jim")
+        expect(record.updated_at).to_not eq(first_updated_at)
+      end
     end
   end
 

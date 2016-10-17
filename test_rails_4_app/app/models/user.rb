@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   scope :no_arg_scope, -> { where(name: "name") }
 
   alias_attribute :first_and_last_name, :name
-
+  enum status: { active: 0, archived: 1 }
   def self.new_remember_token
     SecureRandom.urlsafe_base64
   end

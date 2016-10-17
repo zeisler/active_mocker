@@ -1,11 +1,11 @@
 # _attributes.erb
 <% attributes.each do |meth| -%>
   def <%= meth.name %>
-    read_attribute(:<%= meth.name %>)
+    <%= meth.attribute_reader %>
   end
 
 
   def <%= meth.name %>=(val)
-    write_attribute(:<%= meth.name %>, val)
+    <%= meth.attribute_writer %>
   end
 <% end -%>

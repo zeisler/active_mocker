@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20160621215939) do
     t.boolean  "admin",                                    default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_token"], name: "index_users_on_remember_token"
+    t.integer :status, default: 0
   end
 
 end

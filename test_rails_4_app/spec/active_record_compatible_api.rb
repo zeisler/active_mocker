@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   let(:user_class) { described_class }
-
+  let(:status_active_value) {
+    if ENV["RAILS_VERSION"] == "rails_5.0"
+      "active"
+    else
+      0
+    end
+  }
   before do
     micropost_class.delete_all
     user_class.delete_all
@@ -14,7 +20,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   describe "instance only methods" do
     describe '#attribute_names' do
       it "Returns an array of names for the attributes available on this object" do
-        expect(user_class.new.attribute_names).to eq %w(id name email credits requested_at created_at updated_at password_digest remember_token admin)
+        expect(user_class.new.attribute_names).to eq %w(id name email credits requested_at created_at updated_at password_digest remember_token admin status)
       end
     end
 
@@ -162,7 +168,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   end
 
   it '#attributes' do
-    expect(user_class.new(attributes).attributes).to eq("id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => BigDecimal("-1.0"), "requested_at" => DateTime.parse("3rd Feb 2001 04:05:06+03:30"), "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false)
+    expect(user_class.new(attributes).attributes).to eq("id" => nil, "name" => "Dustin Zeisler", "email" => "dustin@example.com", "credits" => BigDecimal("-1.0"), "requested_at" => DateTime.parse("3rd Feb 2001 04:05:06+03:30"), "created_at" => nil, "updated_at" => nil, "password_digest" => nil, "remember_token" => true, "admin" => false, "status" => status_active_value)
   end
 
   describe "associations" do
@@ -182,7 +188,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     end
   end
 
-  let(:attribute_names){ %w(id name email credits requested_at created_at updated_at password_digest remember_token admin) }
+  let(:attribute_names) { %w(id name email credits requested_at created_at updated_at password_digest remember_token admin status) }
 
   it "::column_names" do
     expect(user_class.column_names).to eq(attribute_names)
@@ -803,7 +809,30 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
 
   describe ".attribute_aliases" do
     it "return a hash of the new attribute name mapped to the old attribute name" do
-      expect(user_class.attribute_aliases).to eq({"first_and_last_name"=>"name"})
+      expect(user_class.attribute_aliases).to eq({ "first_and_last_name" => "name" })
+    end
+  end
+
+  describe "Enums" do
+    it "can set any enum value and return it" do
+      expect(user_class.create(name: "My Name1", email: "1", status: :active).status).to eq("active")
+      expect(user_class.create(name: "My Name2", email: "2", status: :archived).status).to eq("archived")
+    end
+
+    it "defaults to active" do
+      expect(user_class.create(name: "My Name").status).to eq("active")
+    end
+
+    it "attribute non default" do
+      expect(user_class.create(name: "My Name1", email: "1", status: :active).attributes.slice("status")).to eq({ "status" => status_active_value })
+    end
+
+    it "read_attribute" do
+      expect(user_class.create(name: "My Name1", email: "1", status: :active).read_attribute("status")).to eq(status_active_value)
+    end
+
+    it "failure use case" do
+      expect { user_class.create(name: "My Name", status: :something_else) }.to raise_error(ArgumentError, "'something_else' is not a valid status")
     end
   end
 end

@@ -362,7 +362,7 @@ module ActiveMocker
         @associations[attr.to_sym] = value
       end
 
-      protected :read_attribute, :write_attribute, :read_association, :write_association
+      protected :read_association, :write_association
     end
 
     include PropertiesGetterAndSetter

@@ -22,7 +22,7 @@ module ActiveMocker
         end
 
         def to_s
-          "ActiveMocker::AttributeTypes::Enum.build(ignore_value: #{self.ignore_value}, db_value_type: #{self.db_value_type}, table_name: :#{self.table_name}, attribute: :#{self.attribute}, enums: #{enums.inspect})"
+          "ActiveMocker::AttributeTypes::Enum.build(ignore_value: #{ignore_value}, db_value_type: #{db_value_type}, table_name: :#{table_name}, attribute: :#{attribute}, enums: #{enums.inspect})"
         end
 
         attr_accessor :enums, :table_name, :attribute, :db_value_type, :key_type, :ignore_value

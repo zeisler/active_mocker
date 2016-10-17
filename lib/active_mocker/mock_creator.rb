@@ -245,8 +245,8 @@ module ActiveMocker
               attr.default = Virtus::Attribute.build(enum_type).get_key(attr.default)
             end
           elsif ActiveRecord::VERSION::MAJOR == 4
-            attr.attribute_writer = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type.to_s})\nwrite_attribute(:#{attr.name}, @#{attr.name}_enum_type.coerce(val))"
-            attr.attribute_reader = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type.to_s})\n@#{attr.name}_enum_type.get_key(read_attribute(:#{attr.name}))"
+            attr.attribute_writer = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})\nwrite_attribute(:#{attr.name}, @#{attr.name}_enum_type.coerce(val))"
+            attr.attribute_reader = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})\n@#{attr.name}_enum_type.get_key(read_attribute(:#{attr.name}))"
             if attr.default
               attr.default = Virtus::Attribute.build(attr.type).coerce(attr.default)
             end
@@ -256,7 +256,19 @@ module ActiveMocker
       end
 
       def enums(attribute)
-        @enums ||= class_introspector.class_macros.select { |hash| hash.key?(:enum) }.try! { map { |hash| hash[:enum].flatten.first }.each_with_object({}) { |v, h| h.merge!(v) } } || {}
+        @enums ||= begin
+          raw_enums = class_introspector
+                        .class_macros
+                        .select { |hash| hash.key?(:enum) }
+          if raw_enums
+            raw_enums
+              .map { |hash| hash[:enum].flatten.first }
+              .each_with_object({}) { |v, h| h.merge!(v) }
+          else
+            {}
+          end
+        end
+
         @enums.fetch(attribute.to_sym, {})
       end
     end

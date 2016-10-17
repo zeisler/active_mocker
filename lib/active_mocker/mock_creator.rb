@@ -245,7 +245,6 @@ module ActiveMocker
               attr.default = Virtus::Attribute.build(enum_type).get_key(attr.default)
             end
           elsif ActiveRecord::VERSION::MAJOR == 4
-            puts enum_type.to_s
             attr.attribute_writer = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type.to_s})\nwrite_attribute(:#{attr.name}, @#{attr.name}_enum_type.coerce(val))"
             attr.attribute_reader = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type.to_s})\n@#{attr.name}_enum_type.get_key(read_attribute(:#{attr.name}))"
             if attr.default

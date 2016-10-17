@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.4.0.pre2 - 2016-10-17
+### Enhancement
+- ActiveRecord Enum support
+Compatible with ActiveRecord versions 5 and 4. Generating using different version of ActiveRecord creates different mock files.
+
 ## 2.4.0.pre1 - 2016-10-13
 ### Enhancement
 - Option to delete all records before each example
@@ -21,7 +26,7 @@ All notable changes to this project will be documented in this file.
     ```ruby
     ActiveMocker::LoadedMocks.features.enable(:timestamps)
     ```
-    
+
 ## 2.3.3 - 2016-10-13
 ### Enhancement
 -  Auto stubbing of ActiveRecord::RecordNotFound with requiring "active_mocker/rspec_helper"

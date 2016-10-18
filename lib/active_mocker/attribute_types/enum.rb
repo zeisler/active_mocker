@@ -1,3 +1,5 @@
+require "virtus"
+
 module ActiveMocker
   module AttributeTypes
     class Enum < Virtus::Attribute
@@ -60,5 +62,3 @@ module ActiveMocker
     end
   end
 end
-
-ActiveRecordSchemaScrapper::Attributes.register_type(name: :enum, klass: String)

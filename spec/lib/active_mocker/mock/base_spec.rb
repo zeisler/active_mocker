@@ -25,9 +25,13 @@ describe ActiveMocker::Base do
 
   it_behaves_like "Queriable", -> (*args) {
     ActiveMocker::Base.clear_mock
-    ActiveMocker::Base.send(:records=, ActiveMocker::Records.new(args.flatten))
+    ActiveMocker::Base.send(:records=, args.flatten)
     ActiveMocker::Base
   }
+
+  before do
+    ActiveMocker::Base.send(:records=, ActiveMocker::Records.new)
+  end
 
   describe "destroy" do
     subject { described_class.create }

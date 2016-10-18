@@ -20,9 +20,31 @@ describe ActiveMocker::Records do
     end
   end
 
+  describe "#update" do
+    let(:updated_record){ record.dup }
+
+    it "overwrites a previously inserted record" do
+      subject.insert(record)
+      subject.update(updated_record)
+      expect(subject.find(updated_record.id)).to eq(updated_record)
+    end
+  end
+
+  describe "#find" do
+    it "returns the record for a given id" do
+      subject.insert(record)
+      expect(subject.find(record.id)).to eq(record)
+    end
+
+    it "returns nil for an unknown record id" do
+      expect(subject.find(10)).to eq(nil)
+    end
+  end
+
   describe '#insert' do
     it "adds to records" do
-      expect(subject.insert(record).to_a).to include(record)
+      subject.insert(record)
+      expect(subject.to_a).to include(record)
     end
 
     it "gets next id" do
@@ -106,7 +128,7 @@ describe ActiveMocker::Records do
     it "clears records array and record_index hash" do
       subject.insert(record)
       subject.reset
-      expect(subject.send(:records)).to eq([])
+      expect(subject.send(:records)).to eq({})
     end
   end
 end

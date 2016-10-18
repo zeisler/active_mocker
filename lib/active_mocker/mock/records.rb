@@ -2,25 +2,33 @@
 module ActiveMocker
   class Records
     extend Forwardable
-    def_delegators :records, :<<, :count, :length, :to_a
+    def_delegators :records, :count, :length
 
     attr_reader :records
     private :records
 
-    def initialize(records = [])
-      @records = records
+    def initialize(records = {})
+      if records.is_a?(Array)
+        @records = {}
+        records.each(&method(:insert))
+      else
+        @records = records
+      end
     end
 
     def insert(record)
-      records << validate_id((record.id ||= next_id), record)
+      record = validate_id((record.id ||= next_id), record)
+      records.merge!(record.id => record)
     end
 
+    alias_method :<<, :insert
+
     def delete(record)
-      raise RecordNotFound, "Record has not been created." unless records.delete(record)
+      raise RecordNotFound, "Record has not been created." unless records.delete(record.id)
     end
 
     def exists?(record)
-      records.include?(record)
+      records.keys.include?(record.id)
     end
 
     def new_record?(record)
@@ -35,10 +43,24 @@ module ActiveMocker
       records.clear
     end
 
+    alias_method :clear, :reset
+
+    def update(record)
+      records[record.id] = record
+    end
+
+    def to_a
+      records.values.tap{|v| v.map(&:dup) }
+    end
+
+    def find(id)
+      records[id]
+    end
+
     private
 
     def ids
-      records.map(&:id)
+      records.keys
     end
 
     def next_id

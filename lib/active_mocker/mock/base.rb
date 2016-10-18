@@ -87,7 +87,7 @@ module ActiveMocker
       #
       #   Post.where(person_id: 5).where(category: ['Something', 'Else']).delete_all
       def delete_all(conditions = nil)
-        return records.reset if conditions.nil?
+        return records.clear if conditions.nil?
         super
       end
 

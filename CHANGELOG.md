@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.4.0.pre3 - 2016-10-18
+### Fix
+- Add missing requires
+
 ## 2.4.0.pre2 - 2016-10-17
 ### Enhancement
 - ActiveRecord Enum support

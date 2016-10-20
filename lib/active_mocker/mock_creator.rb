@@ -379,7 +379,7 @@ module ActiveMocker
       def safe_methods
         @safe_methods ||= class_introspector.parsed_source.comments.flat_map do |comment|
           if comment.text.include?("ActiveMocker.safe_methods")
-            ActiveMocker.module_eval(comment.text.gsub("#", ""))
+            ActiveMocker.module_eval(comment.text.delete("#"))
           end
         end
       end

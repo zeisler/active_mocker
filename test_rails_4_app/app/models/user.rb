@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# ActiveMocker.safe_methods :initialize, :safe_method1, :safe_method2
 class User < ActiveRecord::Base
   has_many :microposts, -> { order("created_at DESC") }
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
@@ -42,6 +43,19 @@ class User < ActiveRecord::Base
   end
 
   def key_arg_opt(key:nil)
+  end
+
+  def initialize(*args)
+    @test_that_this_was_run = true
+    super
+  end
+
+  def safe_method1
+    1+1
+  end
+
+  def safe_method2
+    2+2
   end
 
   private

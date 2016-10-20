@@ -1,11 +1,11 @@
 PATH
   remote: ../../
   specs:
-    active_mocker (2.4.0.pre3)
+    active_mocker (2.4.0.pre4)
       active_record_schema_scrapper (~> 0.6.0)
       activesupport (>= 4.0)
       colorize (~> 0.7)
-      dissociated_introspection (~> 0.5.0)
+      dissociated_introspection (~> 0.7.1)
       rake (>= 10.0)
       reverse_parameters (~> 0.4.0)
       ruby-progressbar (~> 1.7)
@@ -82,7 +82,7 @@ GEM
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
-    dissociated_introspection (0.5.0)
+    dissociated_introspection (0.7.1)
       parser (~> 2.2)
       unparser (~> 0.2)
     equalizer (0.0.11)

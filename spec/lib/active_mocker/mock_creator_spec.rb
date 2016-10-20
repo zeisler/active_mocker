@@ -306,7 +306,7 @@ describe ActiveMocker::MockCreator do
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
           def foo(foobar, value)
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [foobar, value])
+            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
           end
           def superman
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
@@ -315,7 +315,7 @@ describe ActiveMocker::MockCreator do
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
           end
           def self.duper(value, *args)
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [value, args])
+            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
           end
           def self.foo
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])

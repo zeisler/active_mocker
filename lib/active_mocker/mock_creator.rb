@@ -102,6 +102,13 @@ module ActiveMocker
 
     # -- END defaults -- #
 
+    def parent_class_constant
+      v                      = ParentClass.new(parsed_source:        class_introspector.parsed_source,
+                                               klasses_to_be_mocked: klasses_to_be_mocked,
+                                               mock_append_name:     mock_append_name).call
+      @parent_class_constant = v.parent_class
+    end
+
     def verify_class
       v = ParentClass.new(parsed_source:        class_introspector.parsed_source,
                           klasses_to_be_mocked: klasses_to_be_mocked,
@@ -320,13 +327,13 @@ module ActiveMocker
       end
     end
 
-    Method = Struct.new(:name, :arguments)
+    Method = Struct.new(:name, :arguments, :body)
 
     module Scopes
       def scope_methods
         class_introspector.class_macros.select { |h| h.keys.first == :scope }.map do |h|
           a = h.values.first.first
-          Method.new(a[0], ReverseParameters.new(a[1], blocks_as_values: true))
+          Method.new(a[0], ReverseParameters.new(a[1], blocks_as_values: true), nil)
         end
       end
     end
@@ -352,11 +359,11 @@ module ActiveMocker
 
     module DefinedMethods
       def instance_methods
-        class_introspector
-          .get_class
-          .public_instance_methods(false)
-          .sort
-          .map { |m| create_method(m, :instance_method) }
+        meths = class_introspector.get_class.public_instance_methods(false).sort
+        if safe_methods.include?(:initialize)
+          meths << :initialize
+        end
+        meths.map { |m| create_method(m, :instance_method) }
       end
 
       def class_methods
@@ -369,10 +376,38 @@ module ActiveMocker
 
       private
 
+      def safe_methods
+        @safe_methods ||= class_introspector.parsed_source.comments.flat_map do |comment|
+          if comment.text.include?("ActiveMocker.safe_methods")
+            ActiveMocker.module_eval(comment.text.delete("#"))
+          end
+        end
+      end
+
+      module ActiveMocker
+        def self.safe_methods(*methods)
+          methods
+        end
+      end
+
       def create_method(m, type)
-        Method.new(m,
-                   ReverseParameters.new(class_introspector.get_class.send(type, m).parameters,
-                                         blocks_as_values: true))
+        if safe_methods.include?(m)
+          def_method = class_introspector.parsed_source.defs.detect { |meth| meth.name == m }
+          Method.new(
+            m,
+            def_method.arguments,
+            def_method.body
+          )
+        else
+          Method.new(
+            m,
+            ReverseParameters.new(
+              class_introspector.get_class.send(type, m).parameters,
+              blocks_as_values: true
+            ).parameters,
+            "call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])"
+          )
+        end
       end
     end
 

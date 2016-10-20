@@ -16,6 +16,20 @@ describe UserMock, active_mocker: true do
     active_mocker.delete_all
   end
 
+  context "safe_methods" do
+    it "safe_method1" do
+      expect(UserMock.new.safe_method1).to eq(2)
+    end
+
+    it "safe_method2" do
+      expect(UserMock.new.safe_method2).to eq(4)
+    end
+
+    it "new" do
+      expect(UserMock.new.instance_variable_get("@test_that_this_was_run")).to eq(true)
+    end
+  end
+
   describe "::find_by_name" do
     it "will start the backtrace at the point where the method was called" do
       begin

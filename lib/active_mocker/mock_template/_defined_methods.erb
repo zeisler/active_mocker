@@ -1,10 +1,10 @@
 <% instance_methods.each do |method| -%>
-  def <%= method.name %><%= "(#{method.arguments.parameters})" unless method.arguments.parameters.to_a.empty? %>
-    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [<%= method.arguments.arguments %>])
+  def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.blank? %>
+    <%= method.body %>
   end
 <% end -%>
 <% class_methods.each do |method| -%>
-  def self.<%= method.name %><%= "(#{method.arguments.parameters})" unless method.arguments.parameters.to_a.empty? %>
-    call_mock_method(method: __method__, caller: Kernel.caller, arguments: [<%= method.arguments.arguments %>])
+  def self.<%= method.name %><%= "(#{method.arguments})" unless method.arguments.blank? %>
+    <%= method.body %>
   end
 <% end -%>

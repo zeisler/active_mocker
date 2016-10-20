@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.4.0.pre3 - 2016-10-20
+### Enhancement
+- Whitelist methods to import into mock code by adding a comment with `ActiveMocker.safe_methods(*methods)`
+```ruby
+# ActiveMocker.safe_methods :full_name
+class User < ActiveRecord::Base
+  def full_name
+    "#{last_name}, #{first_name}"
+  end
+end
+```
+
 ## 2.4.0.pre3 - 2016-10-18
 ### Fix
 - Add missing requires

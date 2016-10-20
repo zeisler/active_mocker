@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.4.0.pre3 - 2016-10-20
+## 2.4.0.pre4 - 2016-10-20
 ### Enhancement
 - Whitelist methods to import into mock code by adding a comment with `ActiveMocker.safe_methods(*methods)`
 ```ruby

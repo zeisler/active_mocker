@@ -1,7 +1,62 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.2.2 - 2016-06-27
+## 2.3.4 - 2016-10-21
+### Fix
+- Passing a single record when to collection association now causes a failure. 
+
+## 2.3.3 - 2016-10-13
+### Enhancement
+-  Auto stubbing of ActiveRecord::RecordNotFound with requiring "active_mocker/rspec_helper"
+
+### Fix 
+- NoMethodError when calling #find_by! on an association when the record could not be found.
+
+## 2.3.2 - 2016-09-26
+### Fix
+- Fix case where parent class was not being set and set was set to `ActiveMocker::Base`.
+- Stop generating Mocks when table cannot be found.
+
+## 2.3.1 - 2016-09-26
+### Fix
+- `create_<association>` failed to set the foreign key.
+
+### Enhancement
+- Specific ActiveMocker exceptions now all inherit from `ActiveMocker::BaseError`
+
+## 2.3.0 - 2016-08-29
+### Feature
+- Added `#first_or_create`, `#first_or_create!`, and `#first_or_initialize`
+
+### Enhancement
+- Improved API for registering unknown types and defaults. See https://github.com/zeisler/active_record_schema_scrapper#registering-types
+
+### Deprecation
+- `ActiveRecordSchemaScrapper::Attributes.register_default` gives a deprecation warning if given keys :name and :klass.
+New names are :default and :replacement_default.
+
+Example usage:
+```ruby
+ActiveRecordSchemaScrapper::Attributes.register_default(
+  default:             "{}", 
+  replacement_default: [], 
+  cast_type:           -> (c) { c.class.name.include?("Array") } 
+)
+```
+https://github.com/zeisler/active_record_schema_scrapper/blob/master/lib/active_record_schema_scrapper/attributes.rb#L36
+
+## 2.2.5 - 2016-08-28
+### Fix
+- Ensure '#update' calls save. Addressing the case where an object had not been saved prior would not get persisted.
+
+### Enhancement
+- Add documentation to `#assign_attributes`
+
+## 2.2.4 - 2016-08-13
+### Fix
+- `BigDecimal`, `Date`, `DateTime`, and `Time` when used as defaults in the schema caused mock generation failures.
+
+## 2.2.3 - 2016-06-27
 ### Fix
 - Constant values assigned to non sudo primitives objects causing issues. https://github.com/zeisler/active_mocker/issues/72
 

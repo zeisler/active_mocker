@@ -589,6 +589,10 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
       expect(user.microposts.map(&:user_id)).to eq posts.map(&:user_id)
       expect(posts.map(&:user_id)).to eq [user.id, user.id, user.id]
     end
+
+    it "must pass collection into has many" do
+      expect{user_class.create(microposts: micropost_class.create)}.to raise_error(NoMethodError, /undefined method `each' for/)
+    end
   end
 
   it "can build new object from collection" do

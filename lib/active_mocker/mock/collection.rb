@@ -9,7 +9,7 @@ module ActiveMocker
     alias distinct uniq
 
     def initialize(collection = [])
-      @collection = [*collection]
+      @collection = collection
     end
 
     def <<(*records)

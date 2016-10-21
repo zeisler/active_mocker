@@ -43,6 +43,10 @@ Compatible with ActiveRecord versions 5 and 4. Generating using different versio
     ActiveMocker::LoadedMocks.features.enable(:timestamps)
     ```
 
+## 2.3.4 - 2016-10-21
+### Fix
+- Passing a single record when to collection association now causes a failure. 
+
 ## 2.3.3 - 2016-10-13
 ### Enhancement
 -  Auto stubbing of ActiveRecord::RecordNotFound with requiring "active_mocker/rspec_helper"

@@ -1,6 +1,6 @@
 require 'active_mocker/mock'
 
-class <%= class_name + mock_append_name %> < <%= parent_class %>
+class <%= class_name + mock_append_name %> < <%= parent_class_inspector.parent_mock_name %>
 
   created_with('<%= ActiveMocker::VERSION %>')
 

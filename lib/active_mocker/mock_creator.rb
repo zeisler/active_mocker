@@ -1,11 +1,19 @@
 # frozen_string_literal: true
-
 require "active_mocker/inspectable"
 
 module ActiveMocker
   class MockCreator
-
     using ActiveMocker::Inspectable
+    ENABLED_PARTIALS_DEFAULT = [
+      :modules_constants,
+      :class_methods,
+      :attributes,
+      :scopes,
+      :recreate_class_method_calls,
+      :defined_methods,
+      :associations,
+    ].freeze
+
     def initialize(file:,
                    file_out:,
                    schema_scrapper:,
@@ -21,7 +29,7 @@ module ActiveMocker
       @schema_scrapper          = schema_scrapper
       @template_creator         = template_creator || template_creator_default(file_out)
       @class_introspector       = class_introspector || class_introspector_default
-      @enabled_partials         = enabled_partials || self.class.enabled_partials_default
+      @enabled_partials         = enabled_partials || ENABLED_PARTIALS_DEFAULT
       @klasses_to_be_mocked     = klasses_to_be_mocked
       @active_record_base_klass = active_record_base_klass
       @mock_append_name         = mock_append_name
@@ -32,16 +40,17 @@ module ActiveMocker
 
     def create
       verify_class
-      if errors.empty?
-        begin
-          template_creator.render
-        rescue => e
-          raise e unless error_already_collected?(e)
-        end
-        file_out.close
-        @completed = true
-      end
+      render { file_out.close } if errors.empty?
       self
+    end
+
+    def render
+      template_creator.render
+    rescue => e
+      raise e unless error_already_collected?(e)
+    ensure
+      yield
+      @completed = true
     end
 
     def completed?
@@ -60,7 +69,8 @@ module ActiveMocker
                 :enabled_partials,
                 :klasses_to_be_mocked,
                 :active_record_base_klass,
-                :mock_append_name
+                :mock_append_name,
+                :active_record_model
 
     def error_already_collected?(e)
       errors.any? { |eo| eo.original_error == e }
@@ -84,37 +94,20 @@ module ActiveMocker
       DissociatedIntrospection::Inspection.new(file: file)
     end
 
-    class << self
-      def enabled_partials_default
-        [
-          :modules_constants,
-          :class_methods,
-          :attributes,
-          :scopes,
-          :recreate_class_method_calls,
-          :defined_methods,
-          :associations,
-        ]
-      end
-
-      public :enabled_partials_default
-    end
-
     # -- END defaults -- #
 
-    def parent_class_constant
-      v                      = ParentClass.new(parsed_source:        class_introspector.parsed_source,
-                                               klasses_to_be_mocked: klasses_to_be_mocked,
-                                               mock_append_name:     mock_append_name).call
-      @parent_class_constant = v.parent_class
+    def parent_class_inspector
+      @parent_class_inspector ||= ParentClass.new(parsed_source:        class_introspector.parsed_source,
+                                                  klasses_to_be_mocked: klasses_to_be_mocked,
+                                                  mock_append_name:     mock_append_name).call
+    end
+
+    def verify_parent_class
+      errors << parent_class_inspector.error if parent_class_inspector.error
     end
 
     def verify_class
-      v = ParentClass.new(parsed_source:        class_introspector.parsed_source,
-                          klasses_to_be_mocked: klasses_to_be_mocked,
-                          mock_append_name:     mock_append_name).call
-      errors << v.error if v.error
-      @parent_class = v.parent_mock_name
+      verify_parent_class
     end
 
     public
@@ -123,7 +116,7 @@ module ActiveMocker
       OpenStruct.new(enabled_partials.each_with_object({}) do |p, hash|
         begin
           file = File.new(File.join(File.dirname(__FILE__), "mock_template/_#{p}.erb"))
-          extend("ActiveMocker::MockCreator::#{p.to_s.camelize}".constantize)
+          extend(ActiveMocker::MockCreator.const_get(p.to_s.camelize))
           hash[p] = ERB.new(file.read, nil, "-", "_sub#{p}").result(binding)
         rescue => e
           errors << ErrorObject.new(class_name:     class_name,
@@ -150,291 +143,8 @@ module ActiveMocker
       end
     end
 
-    attr_reader :parent_class, :active_record_model
-
     def primary_key
       @primary_key ||= ActiveRecordSchemaScrapper::Attribute.new(name: "id", type: :integer)
-    end
-
-    module ModulesConstants
-      require "active_mocker/mock/unrepresentable_const_value"
-
-      class Inspectable
-        attr_reader :inspect
-
-        def initialize(inspect)
-          @inspect = inspect
-        end
-      end
-
-      def constants
-        class_introspector.get_class.constants.each_with_object({}) do |v, const|
-          c = class_introspector.get_class.const_get(v)
-          next if [Module, Class].include?(c.class)
-          if /\A#</ =~ c.inspect
-            const[v] = Inspectable.new("ActiveMocker::UNREPRESENTABLE_CONST_VALUE")
-          else
-            const[v] = c
-          end
-        end
-      end
-
-      def modules
-        @modules ||= begin
-          {
-            included: get_module_by_reference(:included_modules),
-            extended: get_module_by_reference(:extended_modules),
-          }
-        end
-      end
-
-      private
-
-      def get_module_by_reference(type)
-        isolated_module_names = reject_local_const(class_introspector.public_send(type)).map(&:referenced_name)
-        real_module_names = get_real_module(type).map(&:name).compact
-        isolated_module_names.map do |isolated_name|
-          real_name = real_module_names.detect do |rmn|
-            real_parts = rmn.split("::")
-            total_parts_count = active_record_model.name.split("::").count + isolated_name.split("::").count
-            [
-              real_parts.include?(active_record_model.name),
-              real_parts.include?(isolated_name),
-              (total_parts_count == real_parts.count)
-            ].all?
-          end
-          real_name ? real_name : isolated_name
-        end
-      end
-
-      def get_real_module(type)
-        if type == :extended_modules
-          active_record_model.singleton_class.included_modules
-        else
-          active_record_model.included_modules
-        end
-      end
-
-      def reject_local_const(source)
-        source.reject do |n|
-          class_introspector.locally_defined_constants.values.include?(n)
-        end
-      end
-    end
-
-    module Attributes
-      def attributes
-        @attributes ||= begin
-          a = schema_scrapper.attributes.to_a
-          a << primary_key unless a.any? { |aa| aa.name == "id" }
-          a.map(&method(:process_attr))
-          a
-        end
-      end
-
-      def process_attr(attr)
-        enums                 = enums(attr.name)
-        attr.default          = Virtus::Attribute.build(attr.type).coerce(attr.default)
-        attr.attribute_writer = "write_attribute(:#{attr.name}, val)"
-        attr.attribute_reader = "read_attribute(:#{attr.name})"
-
-        unless enums.empty?
-          enum_type = ActiveMocker::AttributeTypes::Enum.build(
-            enums:         enums,
-            table_name:    table_name,
-            attribute:     attr.name,
-            db_value_type: attr.type,
-          )
-          if ActiveRecord::VERSION::MAJOR == 5
-            enum_type.ignore_value = true
-            attr.type              = enum_type
-            if attr.default
-              attr.default = Virtus::Attribute.build(enum_type).get_key(attr.default)
-            end
-          elsif ActiveRecord::VERSION::MAJOR == 4
-            attr.attribute_writer = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})\nwrite_attribute(:#{attr.name}, @#{attr.name}_enum_type.coerce(val))"
-            attr.attribute_reader = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})\n@#{attr.name}_enum_type.get_key(read_attribute(:#{attr.name}))"
-            if attr.default
-              attr.default = Virtus::Attribute.build(attr.type).coerce(attr.default)
-            end
-          end
-          attr
-        end
-      end
-
-      def enums(attribute)
-        @enums ||= begin
-          raw_enums = class_introspector
-                        .class_macros
-                        .select { |hash| hash.key?(:enum) }
-          if raw_enums
-            raw_enums
-              .map { |hash| hash[:enum].flatten.first }
-              .each_with_object({}) { |v, h| h.merge!(v) }
-          else
-            {}
-          end
-        end
-
-        @enums.fetch(attribute.to_sym, {})
-      end
-    end
-
-    module ClassMethods
-      include Attributes
-
-      def attributes_with_defaults
-        types_hash
-        attributes.each_with_object({}) do |attr, hash|
-          hash[attr.name] = attr.default
-        end
-      end
-
-      def types_hash
-        @types_hash ||= attributes.each_with_object(HashNewStyle.new) do |attr, types|
-          types[attr.name] = attr.type.to_s
-        end.inspect
-      end
-
-      def associations
-        @associations ||= schema_scrapper.associations.to_a.each_with_object({}) do |a, h|
-          h[a.name] = nil
-        end
-      end
-
-      def associations_by_class
-        schema_scrapper.associations.to_a.each_with_object({}) do |r, hash|
-          hash[r.class_name.to_s]         ||= {}
-          hash[r.class_name.to_s][r.type] ||= []
-          hash[r.class_name.to_s][r.type] << r.name
-        end
-      end
-
-      def attribute_names
-        attributes.map(&:name)
-      end
-
-      def abstract_class
-        schema_scrapper.abstract_class?
-      end
-
-      def table_name
-        schema_scrapper.table_name
-      end
-
-      def mocked_class
-        [nested_modules, class_name].compact.reject(&:empty?).join("::")
-      end
-    end
-
-    Method = Struct.new(:name, :arguments, :body)
-
-    module Scopes
-      def scope_methods
-        class_introspector.class_macros.select { |h| h.keys.first == :scope }.map do |h|
-          a = h.values.first.first
-          Method.new(a[0], ReverseParameters.new(a[1], blocks_as_values: true), nil)
-        end
-      end
-    end
-
-    AliasAttributeMethod = Struct.new(:new_name, :old_name)
-    module RecreateClassMethodCalls
-      def class_method_calls
-        @class_method_calls ||= class_introspector
-                                  .class_macros
-                                  .select { |h| h.keys.first == :alias_attribute }
-                                  .map do |h|
-          a = h.values.first.first
-          AliasAttributeMethod.new(a[0].to_s, a[1].to_s)
-        end
-      end
-
-      def attribute_aliases
-        class_method_calls.each_with_object({}) do |alias_attr, hash|
-          hash[alias_attr.new_name] = alias_attr.old_name
-        end
-      end
-    end
-
-    module DefinedMethods
-      def instance_methods
-        meths = class_introspector.get_class.public_instance_methods(false).sort
-        if safe_methods.include?(:initialize)
-          meths << :initialize
-        end
-        meths.map { |m| create_method(m, :instance_method) }
-      end
-
-      def class_methods
-        class_introspector
-          .get_class
-          .methods(false)
-          .sort
-          .map { |m| create_method(m, :method) }
-      end
-
-      private
-
-      def safe_methods
-        @safe_methods ||= class_introspector.parsed_source.comments.flat_map do |comment|
-          if comment.text.include?("ActiveMocker.safe_methods")
-            ActiveMocker.module_eval(comment.text.delete("#"))
-          end
-        end
-      end
-
-      module ActiveMocker
-        def self.safe_methods(*methods)
-          methods
-        end
-      end
-
-      def create_method(m, type)
-        if safe_methods.include?(m)
-          def_method = class_introspector.parsed_source.defs.detect { |meth| meth.name == m }
-          Method.new(
-            m,
-            def_method.arguments,
-            def_method.body
-          )
-        else
-          Method.new(
-            m,
-            ReverseParameters.new(
-              class_introspector.get_class.send(type, m).parameters,
-              blocks_as_values: true
-            ).parameters,
-            "call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])"
-          )
-        end
-      end
-    end
-
-    module Associations
-      def has_many
-        relation_find(:type, __method__)
-      end
-
-      def has_one
-        relation_find(:type, __method__)
-      end
-
-      def belongs_to
-        relation_find(:type, __method__)
-      end
-
-      def has_and_belongs_to_many
-        relation_find(:type, __method__)
-      end
-
-      def relation_find(key, value)
-        association_collection.select { |r| r.send(key).to_sym == value }
-      end
-
-      def association_collection
-        @association_collection ||= schema_scrapper.associations.to_a
-      end
     end
   end
 end

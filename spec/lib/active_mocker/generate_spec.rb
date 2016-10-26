@@ -83,7 +83,7 @@ RSpec.describe ActiveMocker::Generate do
           ActiveMocker::Config.model_dir = models_dir
 
           # This will allow it to create a shell of a class
-          allow(ActiveMocker::MockCreator).to receive(:enabled_partials_default) { [] }
+          stub_const("ActiveMocker::MockCreator::ENABLED_PARTIALS_DEFAULT", [])
         end
 
         it "delete all and only regenerates the ones with models" do

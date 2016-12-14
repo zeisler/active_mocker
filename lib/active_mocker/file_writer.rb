@@ -98,9 +98,9 @@ module ActiveMocker
 
     def enabled_partials
       if config.disable_modules_and_constants
-        MockCreator.enabled_partials_default - [*:modules_constants]
+        MockCreator::ENABLED_PARTIALS_DEFAULT - [*:modules_constants]
       else
-        MockCreator.enabled_partials_default
+        MockCreator::ENABLED_PARTIALS_DEFAULT
       end
     end
 

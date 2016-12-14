@@ -1,6 +1,6 @@
 # _scopes.erb
   module Scopes
-    include <%= parent_class %>::Scopes
+include <%= parent_class_inspector.parent_mock_name %>::Scopes
 
   <% scope_methods.each do |method| -%>
   def <%= method.name %><%= "(#{method.arguments.parameters})" unless method.arguments.parameters.to_a.empty? %>

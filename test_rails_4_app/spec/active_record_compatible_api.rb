@@ -839,4 +839,13 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
       expect { user_class.create(name: "My Name", status: :something_else) }.to raise_error(ArgumentError, "'something_else' is not a valid status")
     end
   end
+
+  describe "::transaction" do
+    it "works" do
+      user_class.transaction(requires_new: true) do
+        user_class.create
+      end
+      expect(user_class.count).to eq(1)
+    end
+  end
 end

@@ -6,7 +6,7 @@ module ActiveMocker
     end
 
     module ClassMethods
-      def transaction
+      def transaction(*)
         yield
       rescue LocalJumpError => err
         raise err

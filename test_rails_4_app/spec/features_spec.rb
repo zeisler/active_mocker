@@ -47,6 +47,15 @@ describe "ActiveMocker::Features", active_mocker: true do
         expect(record.updated_at).to_not be_nil
         expect(record.created_at).to_not be_nil
       end
+
+      context "when touch is called" do
+        it "increments the updated at" do
+          record     = User.create
+          first_time = record.updated_at
+          record.touch
+          expect(record.updated_at > first_time).to eq(true)
+        end
+      end
     end
 
     context "when disabled" do
@@ -55,6 +64,14 @@ describe "ActiveMocker::Features", active_mocker: true do
         expect(record.updated_at).to be_nil
         expect(record.created_at).to be_nil
       end
+    end
+  end
+
+  describe "stub_active_record_exceptions", active_mocker: true do
+    it "can load these exceptions" do
+      ActiveRecord::RecordNotFound
+      ActiveRecord::RecordNotUnique
+      ActiveRecord::UnknownAttributeError
     end
   end
 end

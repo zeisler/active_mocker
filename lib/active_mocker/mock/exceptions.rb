@@ -4,6 +4,8 @@ module ActiveMocker
   end
   class RecordNotFound < BaseError
   end
+  class RecordNotUnique < BaseError
+  end
 
   module Mock
     # @deprecated

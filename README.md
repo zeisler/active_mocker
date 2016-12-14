@@ -196,13 +196,37 @@ Use theses defaults if you are starting fresh
 ```ruby
 ActiveMocker::LoadedMocks.features.enable(:timestamps)
 ActiveMocker::LoadedMocks.features.enable(:delete_all_before_example)
+ActiveMocker::LoadedMocks.features.enable(:stub_active_record_exceptions)
 ```
 
 ### timestamps
-Enables created_at and updated_at to be update on save and create
+
+  Enables created_at and updated_at to be update on save and create
 
 ### delete_all_before_example
-When using "active_mocker/rspec_helper" it delete all records from all mocks before each example.
+
+  When using "active_mocker/rspec_helper" it delete all records from all mocks before each example.
+
+### stub_active_record_exceptions
+
+  When requiring "active_mocker/rspec_helper", and adding `active_mocker: true` to the describe metadata, these errors will be auto stubbed:
+    * ActiveRecord::RecordNotFound
+    * ActiveRecord::RecordNotUnique
+    * ActiveRecord::UnknownAttributeError
+    
+### Copy over Mock safe methods into the generated mock
+  
+  Adding the comment `ActiveMocker.safe_methods` at the top of a class marks it as safe to copy to the mock.
+  Be careful that it does not contain anything that ActiveMocker cannot run.
+  
+  ```ruby
+  # ActiveMocker.safe_methods :full_name
+  class User
+    def full_name
+      "#{first_name} + #{last_name}
+    end
+  end
+  ```
 
 ## Mocking Methods
 
@@ -382,57 +406,6 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
   * create_< association >!
   * < association >.create
   * < association >.build
-  
-### Other Features
-  
-  #### stub_active_record_exceptions
-  
-  When requiring "active_mocker/rspec_helper", and adding `active_mocker: true` to the describe metadata, these errors will be auto stubbed:
-    * ActiveRecord::RecordNotFound
-    * ActiveRecord::RecordNotUnique
-    * ActiveRecord::UnknownAttributeError
-    
-    To add to this list:
-    
-    ```ruby
-    ActiveMocker::LoadedMocker::Features::STUB_ACTIVE_MOCKER_EXCEPTIONS.merge!({ "ActiveRecord::OtherError" => ActiveMocker::BaseError })
-    ```
-    
-    To disable
-    
-    ```ruby
-      active_mocker.features.disable(:stub_active_record_exceptions)
-    ```
-   
-  #### timestamps
-  
-  Disabled by default, to enable:
-  
-  ```ruby
-    active_mocker.features.enable(:timestamps)
-  ```
-  
-  #### delete_all_before_example
-  
-  Disabled by default, to enable:
-    
-    ```ruby
-      active_mocker.features.enable(:delete_all_before_example)
-    ```
-    
-  #### Copy over Mock safe methods into the generated mock
-  
-  Adding the comment `ActiveMocker.safe_methods` at the top of a class marks it as safe to copy to the mock.
-  Be careful that it does not contain anything that ActiveMocker cannot run.
-  
-  ```ruby
-  # ActiveMocker.safe_methods :full_name
-  class User
-    def full_name
-      "#{first_name} + #{last_name}
-    end
-  end
-  ```
 
 ### Schema/Migration Option Support
 * A db/schema.rb is not required.

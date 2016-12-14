@@ -13,8 +13,8 @@ describe ChildModel do
     expect(ChildModelMock.table_name).to eq ChildModel.table_name
   end
 
-  it "associations" do
-    expect(ChildModelMock.associations).to eq UserMock.associations.merge(accounts: nil)
+  it "reflections" do
+    expect(ChildModelMock.reflections).to eq UserMock.reflections.merge("accounts" => nil)
   end
 
   it "has parent class of UserMock" do

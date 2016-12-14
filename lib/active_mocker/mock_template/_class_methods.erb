@@ -1,5 +1,7 @@
 #_class_methods.erb
   class << self
+private
+
     def attributes
       @attributes ||= HashWithIndifferentAccess.new(<%= attributes_with_defaults.map {|key,value| %Q[#{key}: #{value.inspect}]}.join(", ") %>).merge(super)
     end
@@ -20,7 +22,7 @@
       <%= mocked_class.inspect %>
     end
 
-    private :mocked_class
+public
 
     def attribute_names
       @attribute_names ||= attributes.stringify_keys.keys

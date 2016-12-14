@@ -208,6 +208,8 @@ describe ActiveMocker::MockCreator do
         class ModelMock < ActiveMocker::Base
           created_with('#{ActiveMocker::VERSION}')
           class << self
+            private
+
             def attributes
               @attributes ||= HashWithIndifferentAccess.new({example_attribute: "something", example_decimal: BigDecimal("-1.0"), id: nil}).merge(super)
             end
@@ -228,7 +230,7 @@ describe ActiveMocker::MockCreator do
               "Model"
             end
 
-            private :mocked_class
+            public
 
             def attribute_names
               @attribute_names ||= attributes.stringify_keys.keys

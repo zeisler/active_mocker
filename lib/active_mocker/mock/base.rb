@@ -133,6 +133,14 @@ module ActiveMocker
         associations_by_class[klass_name.to_s]
       end
 
+      # Not fully Implemented
+      # Returns association reflections names with nil values
+      #
+      #   #=> { "user" => nil, "order" => nil }
+      def reflections
+        associations.each_with_object({}) { |(k, _), h| h[k.to_s] = nil }
+      end
+
       private
 
       def created_with(version)

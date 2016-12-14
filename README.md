@@ -210,9 +210,10 @@ ActiveMocker::LoadedMocks.features.enable(:stub_active_record_exceptions)
 ### stub_active_record_exceptions
 
   When requiring "active_mocker/rspec_helper", and adding `active_mocker: true` to the describe metadata, these errors will be auto stubbed:
-    * ActiveRecord::RecordNotFound
-    * ActiveRecord::RecordNotUnique
-    * ActiveRecord::UnknownAttributeError
+  
+  * ActiveRecord::RecordNotFound
+  * ActiveRecord::RecordNotUnique
+  * ActiveRecord::UnknownAttributeError
     
 ### Copy over Mock safe methods into the generated mock
   

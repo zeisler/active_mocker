@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ActiveMocker
   class MockCreator
     module ModulesConstants
@@ -29,7 +30,6 @@ module ActiveMocker
           end
         end
       end
-
 
       private
       def reject_local_const(source)

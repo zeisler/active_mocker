@@ -171,7 +171,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
+          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           def example_attribute
             read_attribute(:example_attribute)
           end
@@ -206,7 +206,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
+          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           class << self
             private
 
@@ -258,7 +258,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
+          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           MY_CONSTANT_VALUE = 3
           MY_OBJECT = ActiveMocker::UNREPRESENTABLE_CONST_VALUE
           prepend ModelStandInForARVersion::PostMethods
@@ -272,7 +272,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
+          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           module Scopes
             include ActiveMocker::Base::Scopes
 
@@ -306,7 +306,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
+          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           def foo(foobar, value)
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
           end
@@ -332,7 +332,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
+          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           def user
             read_association(:user) || write_association(:user, classes("User").try do |k|
               k.find_by(id: user_id)
@@ -395,7 +395,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          created_with('#{ActiveMocker::VERSION}')
+          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           def self.attribute_aliases
             @attribute_aliases ||= { "full_name" => "name" }.merge(super)
           end

@@ -27,8 +27,8 @@ module ActiveMocker
   end
 
   class UpdateMocksError < BaseError
-    def initialize(name, mock_version, gem_version)
-      super("#{name} was built with #{mock_version} but the gem version is #{gem_version}. Run `rake active_mocker:build` to update.")
+    def initialize(name, mock_build_version, mock_current_version)
+      super("#{name} was built with #{mock_build_version} but the mock current version is #{mock_current_version}. Run `rake active_mocker:build` to update.")
     end
   end
 

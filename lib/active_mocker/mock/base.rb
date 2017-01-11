@@ -143,8 +143,8 @@ module ActiveMocker
 
       private
 
-      def created_with(version)
-        raise UpdateMocksError.new(name, version, ActiveMocker::VERSION) if version != ActiveMocker::VERSION
+      def mock_build_version(version)
+        raise UpdateMocksError.new(name, version, ActiveMocker::Mock::VERSION) if version != ActiveMocker::Mock::VERSION
       end
 
       # @deprecated

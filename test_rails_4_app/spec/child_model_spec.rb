@@ -9,6 +9,13 @@ describe ChildModel do
     expect(ChildModelMock.column_names).to eq ChildModel.column_names
   end
 
+  context "mutatable objects " do
+    it "email" do
+      ChildModelMock.new.email << "@"
+      expect(ChildModelMock.new.email).to eq("")
+    end
+  end
+
   it "table_name" do
     expect(ChildModelMock.table_name).to eq ChildModel.table_name
   end

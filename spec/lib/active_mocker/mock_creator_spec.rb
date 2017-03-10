@@ -277,11 +277,11 @@ describe ActiveMocker::MockCreator do
             include ActiveMocker::Base::Scopes
 
             def named(name, value=nil, options=nil)
-              call_mock_method(method: 'named', caller: Kernel.caller, arguments: [name, value, options])
+              Model.send(:call_mock_method, method: 'named', caller: Kernel.caller, arguments: [name, value, options])
             end
 
             def other_named
-              call_mock_method(method: 'other_named', caller: Kernel.caller, arguments: [])
+              Model.send(:call_mock_method, method: 'other_named', caller: Kernel.caller, arguments: [])
             end
 
           end

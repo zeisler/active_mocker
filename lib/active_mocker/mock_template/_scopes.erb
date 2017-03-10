@@ -4,7 +4,7 @@ include <%= parent_class_inspector.parent_mock_name %>::Scopes
 
   <% scope_methods.each do |method| -%>
   def <%= method.name %><%= "(#{method.arguments.parameters})" unless method.arguments.parameters.to_a.empty? %>
-    call_mock_method(method: '<%= method.name %>', caller: Kernel.caller, arguments: [<%= method.arguments.arguments %>])
+    <%= class_name %>.send(:call_mock_method, method: '<%= method.name %>', caller: Kernel.caller, arguments: [<%= method.arguments.arguments %>])
     end
 
   <% end -%>

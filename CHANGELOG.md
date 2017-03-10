@@ -1,5 +1,8 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## 2.4.4 - 2017-03-10
+### Fix
+- Really fix: scope methods returned `undefined method `call_mock_method' for nil:NilClass` for Mocks nested in modules. 
 
 ## 2.4.3 - 2017-03-10
 ### Fix

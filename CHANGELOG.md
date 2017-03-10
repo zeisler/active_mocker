@@ -1,10 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.4.0.pre5 - 2016-10-21
-- Up port 2.3.4 changes 
+## 2.4.3 - 2017-03-10
+### Fix
+- scope methods returned `undefined method `call_mock_method' for nil:NilClass` for Mocks nested in modules. 
 
-## 2.4.0.pre4 - 2016-10-20
+## 2.4.2 - 2017-01-11
+### Enhancement
+- Semantically version mock generation separately.
+
+## 2.4.1 - 2017-01-11
+### Fix
+- When a type was an Array state could be shared between records.
+
+## 2.4.0 - 2016-12-14
+
 ### Enhancement
 - Whitelist methods to import into mock code by adding a comment with `ActiveMocker.safe_methods(*methods)`
 ```ruby

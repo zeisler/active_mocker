@@ -1,7 +1,7 @@
 PATH
   remote: ../../
   specs:
-    active_mocker (2.4.2)
+    active_mocker (2.4.3)
       active_record_schema_scrapper (~> 0.6.0)
       activesupport (>= 4.0)
       colorize (~> 0.7)
@@ -114,7 +114,7 @@ GEM
     omniauth-identity (1.1.1)
       bcrypt-ruby (~> 3.0)
       omniauth (~> 1.0)
-    parser (2.3.1.4)
+    parser (2.3.3.1)
       ast (~> 2.2)
     pkg-config (1.1.7)
     procto (0.0.3)

@@ -118,17 +118,17 @@ module ActiveMocker
           file = File.new(File.join(File.dirname(__FILE__), "mock_template/_#{p}.erb"))
           extend(ActiveMocker::MockCreator.const_get(p.to_s.camelize))
           hash[p] = ERB.new(file.read, nil, "-", "_sub#{p}").result(binding)
-        # rescue => e
-        #   errors << ErrorObject.new(class_name:     class_name,
-        #                             original_error: e, type: :generation,
-        #                             level:          :error,
-        #                             message:        e.message)
-        #   errors << ErrorObject.new(class_name:     class_name,
-        #                             original_error: e,
-        #                             type:           :erb,
-        #                             level:          :debug,
-        #                             message:        "Erb template: #{p} failed.\n#{file.path}")
-        #   raise e
+        rescue => e
+          errors << ErrorObject.new(class_name:     class_name,
+                                    original_error: e, type: :generation,
+                                    level:          :error,
+                                    message:        e.message)
+          errors << ErrorObject.new(class_name:     class_name,
+                                    original_error: e,
+                                    type:           :erb,
+                                    level:          :debug,
+                                    message:        "Erb template: #{p} failed.\n#{file.path}")
+          raise e
         end
       end)
     end

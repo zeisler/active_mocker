@@ -1,5 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## 2.5.0 - 2017-03-17
+### Feature
+- In comment Macro `ActiveMocker.safe_methods(*instance_methods, scopes: [], instance_methods: [])` Now accepts scope methods
+
 ## 2.4.4 - 2017-03-10
 ### Fix
 - Really fix: scope methods returned `undefined method `call_mock_method' for nil:NilClass` for Mocks nested in modules. 

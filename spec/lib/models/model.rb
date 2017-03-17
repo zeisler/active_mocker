@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# ActiveMocker.safe_methods :superman, scopes: [:named], instance_methods: [:foo]
 class Model < ActiveRecord::Base
   MY_CONSTANT_VALUE = 3
   MY_OBJECT = Object.new
@@ -21,8 +22,8 @@ class Model < ActiveRecord::Base
   def self.duper(value, *args)
   end
 
-  scope :named, ->(name, value = nil, options = {}) {}
-  scope :other_named, -> {}
+  scope :named, ->(name, value = nil, options = {}) { 2 + 2}
+  scope :other_named, -> { 1 + 1}
   alias_attribute :full_name, :name
   def foo(foobar, value)
   end
@@ -31,6 +32,7 @@ class Model < ActiveRecord::Base
   end
 
   def superman
+    __method__
   end
 
   def self.bang!

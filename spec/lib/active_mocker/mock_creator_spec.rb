@@ -12,6 +12,14 @@ require "active_record_schema_scrapper"
 require "dissociated_introspection"
 require "reverse_parameters"
 require "tempfile"
+require "lib/active_mocker/mock_creator/associations"
+require "lib/active_mocker/mock_creator/attributes"
+require "lib/active_mocker/mock_creator/class_methods"
+require "lib/active_mocker/mock_creator/defined_methods"
+require "lib/active_mocker/mock_creator/modules_constants"
+require "lib/active_mocker/mock_creator/recreate_class_method_calls"
+require "lib/active_mocker/mock_creator/scopes"
+require "lib/active_mocker/attribute"
 
 describe ActiveMocker::MockCreator do
   before do
@@ -277,7 +285,7 @@ describe ActiveMocker::MockCreator do
             include ActiveMocker::Base::Scopes
 
             def named(name, value=nil, options=nil)
-              Model.send(:call_mock_method, method: 'named', caller: Kernel.caller, arguments: [name, value, options])
+              2 + 2
             end
 
             def other_named
@@ -308,10 +316,9 @@ describe ActiveMocker::MockCreator do
         class ModelMock < ActiveMocker::Base
           mock_build_version('#{ActiveMocker::Mock::VERSION}')
           def foo(foobar, value)
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
           end
           def superman
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
+            __method__
           end
           def self.bang!
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])

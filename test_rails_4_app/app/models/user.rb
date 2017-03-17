@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# ActiveMocker.safe_methods :initialize, :safe_method1, :safe_method2
+# ActiveMocker.safe_methods :initialize, :safe_method1, :safe_method2, scopes: [ :by_name ]
 class User < ActiveRecord::Base
   has_many :microposts, -> { order("created_at DESC") }
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy

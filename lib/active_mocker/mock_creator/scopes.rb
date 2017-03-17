@@ -6,8 +6,13 @@ module ActiveMocker
 
       def scope_methods
         class_introspector.class_macros.select { |h| h.keys.first == :scope }.map do |h|
-          a = h.values.first.first
-          Method.new(a[0], ReverseParameters.new(a[1], blocks_as_values: true), nil)
+          name, args = h.values.first.first
+          arguments  = ReverseParameters.new(args, blocks_as_values: true)
+          Method.new(
+            name,
+            arguments,
+            "#{class_name}.send(:call_mock_method, method: '#{name}', caller: Kernel.caller, arguments: [#{arguments.arguments}])"
+          )
         end
       end
     end

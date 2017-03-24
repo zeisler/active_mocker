@@ -221,7 +221,7 @@ ActiveMocker::LoadedMocks.features.enable(:stub_active_record_exceptions)
   Be careful that it does not contain anything that ActiveMocker cannot run.
   
   ```ruby
-  # ActiveMocker.safe_methods(scopes: [], instance_methods: [:full_name])
+  # ActiveMocker.safe_methods(scopes: [], instance_methods: [:full_name], class_methods: [])
   class User
     def full_name
       "#{first_name} + #{last_name}"

@@ -321,7 +321,7 @@ describe ActiveMocker::MockCreator do
             __method__
           end
           def self.bang!
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
+            :!
           end
           def self.duper(value, *args)
             call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])

@@ -19,8 +19,8 @@ RSpec.describe ActiveMocker::ParentClass do
     end
     let(:parsed_source) do
       instance_double(DissociatedIntrospection::RubyClass,
-        has_parent_class?: false,
-        class_name:        "ParentLessChild")
+                      parent_class?: false,
+                      class_name:    "ParentLessChild")
     end
     context "When no parent class" do
       describe "#parent_mock_name" do
@@ -40,9 +40,9 @@ RSpec.describe ActiveMocker::ParentClass do
       let(:child_class) { Class.new(active_record_stub_class) }
       let(:parsed_source) do
         instance_double(DissociatedIntrospection::RubyClass,
-          has_parent_class?: true,
-          class_name:        "ChildOfAR",
-          parent_class_name: "MyClassInheritsFromAR")
+                        parent_class?:     true,
+                        class_name:        "ChildOfAR",
+                        parent_class_name: "MyClassInheritsFromAR")
       end
 
       describe "#parent_mock_name" do
@@ -61,9 +61,9 @@ RSpec.describe ActiveMocker::ParentClass do
     context "When it has a parent class that does not inherits from ActiveRecord" do
       let(:parsed_source) do
         instance_double(DissociatedIntrospection::RubyClass,
-          has_parent_class?: true,
-          class_name:        "ChildOfNonAr",
-          parent_class_name: "NoneArInheritor")
+                        parent_class?:     true,
+                        class_name:        "ChildOfNonAr",
+                        parent_class_name: "NoneArInheritor")
       end
       let(:child_class) { Class.new }
 
@@ -84,9 +84,9 @@ RSpec.describe ActiveMocker::ParentClass do
       let(:child_class) { Class.new(active_record_stub_class) }
       let(:parsed_source) do
         instance_double(DissociatedIntrospection::RubyClass,
-          has_parent_class?: true,
-          class_name:        "ChildOfSTI",
-          parent_class_name: "STIModel")
+                        parent_class?:     true,
+                        class_name:        "ChildOfSTI",
+                        parent_class_name: "STIModel")
       end
       let(:klasses_to_be_mocked) { ["STIModel"] }
 
@@ -99,7 +99,7 @@ RSpec.describe ActiveMocker::ParentClass do
       context "when parent_class_name is root namespaced" do
         let(:parsed_source) do
           instance_double(DissociatedIntrospection::RubyClass,
-                          has_parent_class?: true,
+                          parent_class?:     true,
                           class_name:        "ChildOfSTI",
                           parent_class_name: "::STIModel")
         end

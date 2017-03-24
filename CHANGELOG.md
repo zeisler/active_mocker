@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Unreleased 
+### Feature
+- In comment Macro `ActiveMocker.safe_methods(*instance_methods, scopes: [], instance_methods: [], class_methods: [])` Now accepts class methods
+
 ## 2.5.0 - 2017-03-17
 ### Feature
 - In comment Macro `ActiveMocker.safe_methods(*instance_methods, scopes: [], instance_methods: [])` Now accepts scope methods

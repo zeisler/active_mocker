@@ -25,8 +25,7 @@ module ActiveMocker
       def create_method(m, type)
         plural_type = (type.to_s + "s").to_sym
         if safe_methods[plural_type].include?(m)
-          raise "ActiveMocker.safe_methods(class_methods: []) is currently unsupported." if type == :method
-          def_method = class_introspector.parsed_source.defs.detect { |meth| meth.name == m }
+          def_method = class_introspector.parsed_source.inspect_methods(plural_type).detect { |meth| meth.name == m }
           Method.new(
             m,
             def_method.arguments,

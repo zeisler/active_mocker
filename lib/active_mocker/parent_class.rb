@@ -11,7 +11,7 @@ module ActiveMocker
     attr_reader :error
 
     def call
-      if has_parent_class?
+      if parent_class?
         deal_with_parent
       else
         create_error("#{class_name} is missing a parent class.")
@@ -47,8 +47,8 @@ module ActiveMocker
                               message:    message)
     end
 
-    def has_parent_class?
-      parsed_source.has_parent_class?
+    def parent_class?
+      parsed_source.parent_class?
     end
 
     def parent_class_name

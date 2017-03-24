@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rake", ">= 10.0"
   spec.add_runtime_dependency "reverse_parameters", "~> 0.4.0"
   spec.add_runtime_dependency "active_record_schema_scrapper", "~> 0.6.0"
-  spec.add_runtime_dependency "dissociated_introspection", "~> 0.7.1"
+  spec.add_runtime_dependency "dissociated_introspection", "~> 0.8.1"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rubocop", "~> 0.38.0"

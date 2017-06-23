@@ -1,8 +1,10 @@
 # frozen_string_literal: true
+require "rubygems/version"
+
 shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   let(:user_class) { described_class }
   let(:status_active_value) {
-    if ENV["RAILS_VERSION"] == "rails_5.0"
+    if %w(5.0 5.1).include?(ENV["RAILS_VERSION"])
       "active"
     else
       0
@@ -598,10 +600,19 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     end
   end
 
-  it "::delete_all(conditions = nil)" do
-    user = user_class.create
-    expect(user_class.delete_all(id: user.id)).to eq 1
-    expect(user_class.count).to eq 0
+  if Gem::Version.create(ENV["RAILS_VERSION"]) < Gem::Version.create("5.1")
+    it "::delete_all(conditions = nil)" do
+      user = user_class.create
+      expect(user_class.delete_all(id: user.id)).to eq 1
+      expect(user_class.count).to eq 0
+    end
+  else
+    it "::delete_all(conditions = nil)" do
+      user = user_class.create
+      expect { user_class.delete_all(id: user.id) }.to raise_error(ArgumentError)
+      user_class.delete_all
+      expect(user_class.count).to eq 0
+    end
   end
 
   it "::limit" do

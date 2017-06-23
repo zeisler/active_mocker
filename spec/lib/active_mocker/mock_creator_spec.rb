@@ -18,12 +18,16 @@ require "lib/active_mocker/mock_creator/class_methods"
 require "lib/active_mocker/mock_creator/defined_methods"
 require "lib/active_mocker/mock_creator/modules_constants"
 require "lib/active_mocker/mock_creator/recreate_class_method_calls"
+require "lib/active_mocker/mock_creator/mock_build_version"
 require "lib/active_mocker/mock_creator/scopes"
 require "lib/active_mocker/attribute"
 
 describe ActiveMocker::MockCreator do
   before do
     stub_const("ActiveRecord::Base", active_record_stub_class)
+    stub_const("ActiveRecord::VERSION::MAJOR", 5)
+    stub_const("ActiveRecord::VERSION::MINOR", 0)
+    stub_const("ActiveRecord::VERSION::STRING", "5.0.0")
   end
 
   let(:active_record_stub_class) { Class.new }
@@ -179,7 +183,6 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           def example_attribute
             read_attribute(:example_attribute)
           end
@@ -209,12 +212,38 @@ describe ActiveMocker::MockCreator do
       end
     end
 
+    it "partial :mock_build_version" do
+      expect(subject.call([:mock_build_version])).to eq format_code <<-RUBY.strip_heredoc
+        require 'active_mocker/mock'
+
+        class ModelMock < ActiveMocker::Base
+          mock_build_version("2", active_record: "#{ActiveRecord::VERSION::MAJOR}.#{ActiveRecord::VERSION::MINOR}")
+        end
+      RUBY
+    end
+
+    context "rails 5.1" do
+      before do
+        stub_const("ActiveRecord::VERSION::MAJOR", 5)
+        stub_const("ActiveRecord::VERSION::MINOR", 1)
+      end
+
+      it "partial :mock_build_version rails 5.1" do
+        expect(subject.call([:mock_build_version])).to eq format_code <<-RUBY.strip_heredoc
+        require 'active_mocker/mock'
+
+        class ModelMock < ActiveMocker::Base
+          mock_build_version("2", active_record: "5.1")
+        end
+        RUBY
+      end
+    end
+
     it "partial :class_methods" do
       expect(subject.call([:class_methods])).to eq format_code <<-RUBY.strip_heredoc
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           class << self
             private
 
@@ -266,7 +295,6 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           MY_CONSTANT_VALUE = 3
           MY_OBJECT = ActiveMocker::UNREPRESENTABLE_CONST_VALUE
           prepend ModelStandInForARVersion::PostMethods
@@ -280,7 +308,6 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           module Scopes
             include ActiveMocker::Base::Scopes
 
@@ -314,7 +341,6 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          mock_build_version('#{ActiveMocker::Mock::VERSION}')
           def foo(foobar, value)
           end
           def superman
@@ -339,7 +365,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          mock_build_version('#{ActiveMocker::Mock::VERSION}')
+         
           def user
             read_association(:user) || write_association(:user, classes("User").try do |k|
               k.find_by(id: user_id)
@@ -402,7 +428,7 @@ describe ActiveMocker::MockCreator do
         require 'active_mocker/mock'
 
         class ModelMock < ActiveMocker::Base
-          mock_build_version('#{ActiveMocker::Mock::VERSION}')
+
           def self.attribute_aliases
             @attribute_aliases ||= { "full_name" => "name" }.merge(super)
           end

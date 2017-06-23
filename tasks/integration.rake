@@ -10,7 +10,8 @@ task :integration do
                end
     Bundler.with_clean_env do
       gemfiles.each do |gemfile|
-        rails_version = Pathname(gemfile).basename.to_s.gsub(".gemfile", "")
+        Pathname(gemfile).basename.to_s =~ /rails_(\d\.\d).*/
+        rails_version = $1
         mock_dir      = File.expand_path(File.join(root, "test_rails_4_app/spec/mocks", rails_version))
         sh "RAILS_VERSION=#{rails_version} MOCK_DIR=#{mock_dir} MUTE_PROGRESS_BAR=true ERROR_VERBOSITY=#{error_verbosity} BUNDLE_GEMFILE=#{gemfile} bundle exec rake active_mocker:build"
         sh "RAILS_VERSION=#{rails_version} BUNDLE_GEMFILE=#{gemfile} bundle exec rspec"

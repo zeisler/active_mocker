@@ -9,7 +9,7 @@ module ActiveMocker
       def scope_methods
         class_introspector.class_macros.select { |h| h.keys.first == :scope }.map do |h|
           name, args = h.values.first.first
-          arguments  = ReverseParameters.new(args, blocks_as_values: true)
+          arguments  = ReverseParameters.new(args)
           body       = scope_body(arguments, name)
           Method.new(name, arguments, body)
         end

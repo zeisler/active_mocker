@@ -36,8 +36,7 @@ module ActiveMocker
           Method.new(
             m,
             ReverseParameters.new(
-              class_introspector.get_class.send(type, m).parameters,
-              blocks_as_values: true
+              class_introspector.get_class.send(type, m).parameters
             ).parameters,
             "call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])"
           )

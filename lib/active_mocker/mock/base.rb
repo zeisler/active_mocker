@@ -141,9 +141,18 @@ module ActiveMocker
         associations.each_with_object({}) { |(k, _), h| h[k.to_s] = nil }
       end
 
+      def __active_record_build_version__
+        @active_record_build_version
+      end
+
       private
 
-      def mock_build_version(version)
+      def mock_build_version(version, active_record: nil)
+        @active_record_build_version = Gem::Version.create(active_record)
+        if __active_record_build_version__ >= Gem::Version.create("5.1")
+          require "active_mocker/mock/compatibility/base/ar51"
+          extend AR51
+        end
         raise UpdateMocksError.new(name, version, ActiveMocker::Mock::VERSION) if version != ActiveMocker::Mock::VERSION
       end
 

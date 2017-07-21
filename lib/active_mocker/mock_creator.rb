@@ -5,6 +5,7 @@ module ActiveMocker
   class MockCreator
     using ActiveMocker::Inspectable
     ENABLED_PARTIALS_DEFAULT = [
+      :mock_build_version,
       :modules_constants,
       :class_methods,
       :attributes,

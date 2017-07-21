@@ -131,12 +131,13 @@ RSpec.describe ActiveMocker::Generate do
           expect(ActiveMocker::MockCreator)
             .to receive(:new)
                   .with(hash_including(enabled_partials: [
+                                                           :mock_build_version,
                                                            :class_methods,
                                                            :attributes,
                                                            :scopes,
                                                            :recreate_class_method_calls,
                                                            :defined_methods,
-                                                           :associations
+                                                           :associations,
                                                          ]))
           described_class.new.call
         end
@@ -148,13 +149,14 @@ RSpec.describe ActiveMocker::Generate do
           expect(ActiveMocker::MockCreator)
             .to receive(:new)
                   .with(hash_including(enabled_partials: [
+                                                           :mock_build_version,
                                                            :modules_constants,
                                                            :class_methods,
                                                            :attributes,
                                                            :scopes,
                                                            :recreate_class_method_calls,
                                                            :defined_methods,
-                                                           :associations
+                                                           :associations,
                                                          ]))
           described_class.new.call
         end

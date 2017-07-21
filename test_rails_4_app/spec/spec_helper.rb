@@ -24,9 +24,9 @@ def mock_path
   rails_version = if ENV["RAILS_VERSION"]
                     ENV["RAILS_VERSION"]
                   elsif defined? Rails
-                    "rails_#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+                    "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
                   else
-                    "rails_5.0"
+                    "5.0"
                   end
   File.join(APP_ROOT, "spec/mocks/#{rails_version}")
 end

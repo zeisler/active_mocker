@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.5.1 - 2017-07-21
+### Feature
+- Support ActiveRecord v5.1 when generating under that version delete_all does not accept any arguments.
+
 ## 2.5.0 - 2017-03-17
 ### Feature
 - In comment Macro `ActiveMocker.safe_methods(*instance_methods, scopes: [], instance_methods: [])` Now accepts scope methods

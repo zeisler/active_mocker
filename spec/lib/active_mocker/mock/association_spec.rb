@@ -2,6 +2,7 @@
 require "spec_helper"
 require "active_mocker/mock/queries"
 require "active_mocker/mock/collection"
+require "active_mocker/mock/mockable_method"
 require "active_mocker/mock/relation"
 require "active_mocker/mock/association"
 require "active_mocker/mock/has_many"

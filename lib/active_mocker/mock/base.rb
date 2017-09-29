@@ -5,6 +5,8 @@ module ActiveMocker
     include TemplateMethods
     extend Queries
     extend AliasAttribute
+    extend MockableMethod
+    include MockableMethod
 
     def self.inherited(subclass)
       ActiveMocker::LoadedMocks.send(:add, subclass)
@@ -154,16 +156,6 @@ module ActiveMocker
           extend AR51
         end
         raise UpdateMocksError.new(name, version, ActiveMocker::Mock::VERSION) if version != ActiveMocker::Mock::VERSION
-      end
-
-      # @deprecated
-      def call_mock_method(method:, caller:, arguments: [])
-        is_implemented(method, "::", caller)
-      end
-
-      # @deprecated
-      def is_implemented(method, type, call_stack)
-        raise NotImplementedError, "#{type}#{method} for Class: #{name}. To continue stub the method.", call_stack
       end
     end
 

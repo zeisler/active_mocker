@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Latest
+### Feature
+- Add mockable class methods to relations.
+
+### Enhancement
+- Better error message when calling mockable method. Shows RSpec syntax to stub method.
+
+### Removed
+- `ActiveMocker::MockAbilities` required by "active_mocker/deprecated_components/mock_abilities"
+- `mock_method('ClassName')` required by "active_mocker/deprecated_components/rspec" Use `active_mocker.mocks.find('ClassName')` instead
+
 ## 2.5.1 - 2017-07-21
 ### Feature
 - Support ActiveRecord v5.1 when generating under that version delete_all does not accept any arguments.

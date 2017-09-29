@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require "rspec"
+ENV["RAILS_VERSION"] ||= "4.2"
 $LOAD_PATH.unshift File.expand_path("../../", __FILE__)
 APP_ROOT = File.expand_path("../../", __FILE__) unless defined? APP_ROOT
 

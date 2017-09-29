@@ -19,10 +19,13 @@ module ActiveMocker
         if safe_methods[:scopes].include?(name)
           find_scope_body_from_ast(name)
         else
-          "#{class_name}.send(:call_mock_method, " \
-                           "method: '#{name}', " \
-                           "caller: Kernel.caller, " \
-                           "arguments: [#{arguments.arguments}])"
+          <<-METHOD
+            __am_raise_not_mocked_error(
+              method: "#{name}",
+              caller: Kernel.caller,
+              type: "::"
+            )
+          METHOD
         end
       end
 

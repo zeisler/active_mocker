@@ -349,13 +349,13 @@ describe ActiveMocker::MockCreator do
           end
           module ClassMethods
             def bang!
-              __am_raise_not_mocked_error(method: __method__, caller: Kernel.caller, type: "::")
+              :boom!
             end
             def duper(value, *args)
               __am_raise_not_mocked_error(method: __method__, caller: Kernel.caller, type: "::")
             end
             def foo
-              __am_raise_not_mocked_error(method: __method__, caller: Kernel.caller, type: "::")
+              :buz
             end
           end
           extend(ClassMethods)

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# ActiveMocker.safe_methods :superman, scopes: [:named], instance_methods: [:foo]
+# ActiveMocker.safe_methods :superman, scopes: [:named], instance_methods: [:foo], class_methods: [:bang!, :foo]
 class Model < ActiveRecord::Base
   MY_CONSTANT_VALUE = 3
   MY_OBJECT = Object.new
@@ -28,7 +28,10 @@ class Model < ActiveRecord::Base
   def foo(foobar, value)
   end
 
-  def self.foo
+  class << self
+    def foo
+      :buz
+    end
   end
 
   def superman
@@ -36,6 +39,7 @@ class Model < ActiveRecord::Base
   end
 
   def self.bang!
+    :boom!
   end
 
   private

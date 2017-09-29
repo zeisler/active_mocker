@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Latest
+## 2.5.2 - 2017-09-29
 ### Feature
 - Add mockable class methods to relations.
 - In ActiveRecord model comment Macro `ActiveMocker.safe_methods` now allow class_methods 

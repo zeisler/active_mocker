@@ -2,6 +2,7 @@
 module ActiveMocker
   class Relation < Collection
     include Queries
+    include MockableMethod
 
     def initialize(collection = [])
       super
@@ -18,14 +19,14 @@ module ActiveMocker
       @from_limit
     end
 
+    def name
+      self.class.name
+    end
+
     private
 
     def set_from_limit
       @from_limit = true
-    end
-
-    def name
-      self.class.name
     end
   end
 end

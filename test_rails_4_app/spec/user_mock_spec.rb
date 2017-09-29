@@ -40,7 +40,15 @@ describe UserMock, active_mocker: true do
     end
 
     it "raise descriptive error if not stubbed" do
-      expect { User.find_by_name("name") }.to raise_error("::find_by_name for Class: UserMock. To continue stub the method.")
+      expect { User.find_by_name("name") }.to raise_error <<-ERROR.strip_heredoc
+      Unknown implementation for mock method: UserMock.find_by_name
+      Stub method to continue.
+
+      RSpec:
+        allow(
+          UserMock
+        ).to receive(:find_by_name).and_return(:some_expected_result)
+      ERROR
     end
   end
 
@@ -181,7 +189,15 @@ describe UserMock, active_mocker: true do
     it "will raise exception for Not Implemented methods" do
       expect(UserMock.new.method(:following?).parameters).to eq [[:req, :other_user]]
       expect { UserMock.new.following? }.to raise_error ArgumentError
-      expect { UserMock.new.following?("foo") }.to raise_error(ActiveMocker::NotImplementedError, '#following? for Class: UserMock. To continue stub the method.')
+      expect { UserMock.new.following?("foo") }.to raise_error(ActiveMocker::NotImplementedError, <<-ERROR.strip_heredoc)
+        Unknown implementation for mock method: user_mock_record.following?
+        Stub method to continue.
+
+        RSpec:
+          allow(
+            user_mock_record
+          ).to receive(:following?).and_return(:some_expected_result)
+      ERROR
     end
 
     it "can be implemented dynamically" do
@@ -196,14 +212,37 @@ describe UserMock, active_mocker: true do
 
   describe "class methods" do
     it "will raise exception for Not Implemented methods" do
-      expect { UserMock.new_remember_token }.to raise_error(ActiveMocker::NotImplementedError, "::new_remember_token for Class: UserMock. To continue stub the method.")
+      expect { UserMock.new_remember_token }.to raise_error(ActiveMocker::NotImplementedError, <<-ERROR.strip_heredoc)
+      Unknown implementation for mock method: UserMock.new_remember_token
+      Stub method to continue.
+
+      RSpec:
+        allow(
+          UserMock
+        ).to receive(:new_remember_token).and_return(:some_expected_result)
+      ERROR
+    end
+
+    it "will raise exception for Not Implemented methods for relations" do
+      expect { UserMock.all.new_remember_token }.to raise_error(ActiveMocker::NotImplementedError, <<-ERROR.strip_heredoc)
+      Unknown implementation for mock method: user_mock_relation.new_remember_token
+      Stub method to continue.
+
+      RSpec:
+        allow(
+          user_mock_relation
+        ).to receive(:new_remember_token).and_return(:some_expected_result)
+      ERROR
     end
 
     it "can be implemented as follows" do
-      allow(UserMock).to receive(:new_remember_token) do
-        "Now implemented"
-      end
+      allow(UserMock).to(receive(:new_remember_token)) { "Now implemented" }
       expect(UserMock.new_remember_token).to eq("Now implemented")
+    end
+
+    it "adds class_methods to any Relation" do
+      allow_any_instance_of(UserMock.all.class).to receive(:new_remember_token) { "Now implemented" }
+      expect(UserMock.all.new_remember_token).to eq("Now implemented")
     end
   end
 

@@ -207,6 +207,12 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     expect(user_class.all).to eq array
   end
 
+  context "class methods" do
+    it "puts methods on the relation" do
+      expect(user_class.all.respond_to?(:new_remember_token)).to eq(true)
+    end
+  end
+
   it "::average" do
     [user_class.create!(credits: 12, email: "1"),
      user_class.create!(credits: 2, email: "2"),

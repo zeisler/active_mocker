@@ -9,9 +9,9 @@ module ActiveMocker
       :modules_constants,
       :class_methods,
       :attributes,
-      :scopes,
       :recreate_class_method_calls,
       :defined_methods,
+      :scopes,
       :associations,
     ].freeze
 

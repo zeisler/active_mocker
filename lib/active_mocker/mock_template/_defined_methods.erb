@@ -3,8 +3,12 @@
     <%= method.body %>
   end
 <% end -%>
+module ClassMethods
 <% class_methods.each do |method| -%>
-  def self.<%= method.name %><%= "(#{method.arguments})" unless method.arguments.blank? %>
+    def <%= method.name %><%= "(#{method.arguments})" unless method.arguments.blank? %>
     <%= method.body %>
   end
 <% end -%>
+end
+
+extend ClassMethods

@@ -33,12 +33,13 @@ module ActiveMocker
             def_method.body
           )
         else
+          type_symbol = type == :method ? "::" : "#"
           Method.new(
             m,
             ReverseParameters.new(
               class_introspector.get_class.send(type, m).parameters
             ).parameters,
-            "call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])"
+            "__am_raise_not_mocked_error(method: __method__, caller: Kernel.caller, type: '#{type_symbol}')"
           )
         end
       end

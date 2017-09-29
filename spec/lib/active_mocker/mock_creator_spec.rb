@@ -316,7 +316,7 @@ describe ActiveMocker::MockCreator do
             end
 
             def other_named
-              Model.send(:call_mock_method, method: 'other_named', caller: Kernel.caller, arguments: [])
+              __am_raise_not_mocked_error(method: "other_named", caller: Kernel.caller, type: "::")
             end
 
           end
@@ -325,6 +325,7 @@ describe ActiveMocker::MockCreator do
 
           class ScopeRelation < ActiveMocker::Association
             include ModelMock::Scopes
+            include(ClassMethods)
           end
 
           def self.__new_relation__(collection)
@@ -346,15 +347,18 @@ describe ActiveMocker::MockCreator do
           def superman
             __method__
           end
-          def self.bang!
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
+          module ClassMethods
+            def bang!
+              __am_raise_not_mocked_error(method: __method__, caller: Kernel.caller, type: "::")
+            end
+            def duper(value, *args)
+              __am_raise_not_mocked_error(method: __method__, caller: Kernel.caller, type: "::")
+            end
+            def foo
+              __am_raise_not_mocked_error(method: __method__, caller: Kernel.caller, type: "::")
+            end
           end
-          def self.duper(value, *args)
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
-          end
-          def self.foo
-            call_mock_method(method: __method__, caller: Kernel.caller, arguments: [])
-          end
+          extend(ClassMethods)
 
         end
       RUBY

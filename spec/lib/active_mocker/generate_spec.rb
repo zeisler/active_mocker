@@ -134,9 +134,9 @@ RSpec.describe ActiveMocker::Generate do
                                                            :mock_build_version,
                                                            :class_methods,
                                                            :attributes,
-                                                           :scopes,
                                                            :recreate_class_method_calls,
                                                            :defined_methods,
+                                                           :scopes,
                                                            :associations,
                                                          ]))
           described_class.new.call
@@ -153,9 +153,9 @@ RSpec.describe ActiveMocker::Generate do
                                                            :modules_constants,
                                                            :class_methods,
                                                            :attributes,
-                                                           :scopes,
                                                            :recreate_class_method_calls,
                                                            :defined_methods,
+                                                           :scopes,
                                                            :associations,
                                                          ]))
           described_class.new.call

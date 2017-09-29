@@ -4,9 +4,22 @@ All notable changes to this project will be documented in this file.
 ## Latest
 ### Feature
 - Add mockable class methods to relations.
+- In ActiveRecord model comment Macro `ActiveMocker.safe_methods` now allow class_methods 
+```ruby
+ActiveMocker.safe_methods(*instance_methods, scopes: [], instance_methods: [], class_methods: [])
+```
 
 ### Enhancement
 - Better error message when calling mockable method. Shows RSpec syntax to stub method.
+```ruby     
+    Unknown implementation for mock method: UserMock.new_remember_token
+    Stub method to continue.
+    
+    RSpec:
+    allow(
+      UserMock
+    ).to receive(:new_remember_token).and_return(:some_expected_result)
+```
 
 ### Removed
 - `ActiveMocker::MockAbilities` required by "active_mocker/deprecated_components/mock_abilities"

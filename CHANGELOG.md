@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.5.3 - 2017-10-01
+### Fix
+- Update gem dependency to fix Macro `ActiveMocker.safe_methods` when marking class_methods.
+
 ## 2.5.2 - 2017-09-29
 ### Feature
 - Add mockable class methods to relations.

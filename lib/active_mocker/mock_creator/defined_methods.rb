@@ -27,6 +27,7 @@ module ActiveMocker
         if safe_methods[plural_type].include?(m)
           def_type   = type == :method ? :class_defs : :defs
           def_method = class_introspector.parsed_source.public_send(def_type).detect { |meth| meth.name == m }
+          raise "ActiveMocker.safe_methods is unable to find #{plural_type}: #{m}" unless def_method
           Method.new(
             m,
             def_method.arguments,

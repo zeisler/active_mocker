@@ -6,17 +6,19 @@
 [![Gittip](http://img.shields.io/gittip/zeisler.svg)](https://www.gittip.com/zeisler/)
 
 ## Description
-ActiveMocker creates mock classes from ActiveRecord models, 
-allowing your test suite to run at breakneck speed.
- This is done by not loading Rails or hitting the database.
-  The models are read dynamically/statically so that ActiveMocker can generate a Ruby file to require within a test. 
-  The mock file can be run standalone and comes with many use parts of ActiveRecord included.
-   Attributes and associations can be used the same as in ActiveRecord. 
-   Method signatures can be brought over for stubbing or ActiveMocker friendly code can be brought over in it's entirety.
-   Mocks are regenerated when the schema is modified so your mocks won't go stale, 
-   preventing the case where your units tests pass but production code fails.
+Creates stub classes from any ActiveRecord model. 
 
-Examples from a real apps
+By using stubs in your tests you don't need to load Rails or the database, sometimes resulting in a 10x speed improvement. 
+
+ActiveMocker analyzes the methods and database columns to generate a Ruby class file. 
+
+The stub file can be run standalone and comes included with many useful parts of ActiveRecord.
+
+Stubbed out methods contain their original argument signatures or ActiveMocker friendly code can be brought over in its entirety.
+
+Mocks are regenerated when the schema is modified so your mocks won't go stale, preventing the case where your unit tests pass but production code fails.
+
+*Examples from a real apps*
 
 		Finished in 1 seconds
 		374 examples, 0 failures

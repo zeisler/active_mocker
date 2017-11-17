@@ -48,6 +48,11 @@ describe UserMock, active_mocker: true do
         allow(
           UserMock
         ).to receive(:find_by_name).and_return(:some_expected_result)
+
+      OR Whitelist the method as safe to copy/run in the context of ActiveMocker (requires mock rebuild)
+      # ActiveMocker.safe_methods class_methods: [:find_by_name]
+      class User < ActiveRecord::Base
+      end
       ERROR
     end
   end
@@ -197,6 +202,11 @@ describe UserMock, active_mocker: true do
           allow(
             user_mock_record
           ).to receive(:following?).and_return(:some_expected_result)
+
+        OR Whitelist the method as safe to copy/run in the context of ActiveMocker (requires mock rebuild)
+        # ActiveMocker.safe_methods instance_methods: [:following?]
+        class User < ActiveRecord::Base
+        end
       ERROR
     end
 
@@ -220,6 +230,11 @@ describe UserMock, active_mocker: true do
         allow(
           UserMock
         ).to receive(:new_remember_token).and_return(:some_expected_result)
+
+      OR Whitelist the method as safe to copy/run in the context of ActiveMocker (requires mock rebuild)
+      # ActiveMocker.safe_methods class_methods: [:new_remember_token]
+      class User < ActiveRecord::Base
+      end
       ERROR
     end
 
@@ -232,6 +247,11 @@ describe UserMock, active_mocker: true do
         allow(
           user_mock_relation
         ).to receive(:new_remember_token).and_return(:some_expected_result)
+
+      OR Whitelist the method as safe to copy/run in the context of ActiveMocker (requires mock rebuild)
+      # ActiveMocker.safe_methods scopes: [:new_remember_token]
+      class User < ActiveRecord::Base
+      end
       ERROR
     end
 

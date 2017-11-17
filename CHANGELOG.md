@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.5.4 - 2017-11-17
+### Fix
+- has_and_belongs_to_many association did not contain scoped methods.
+
+### Enhancement
+- Error message when calling stubbed methods show safe_methods syntax along with RSpec syntax.
+
 ## 2.5.3 - 2017-10-01
 ### Fix
 - Update gem dependency to fix Macro `ActiveMocker.safe_methods` when marking class_methods.

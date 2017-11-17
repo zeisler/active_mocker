@@ -417,11 +417,13 @@ describe ActiveMocker::MockCreator do
           end
 
           def other
-            read_association(:other, ->{ ActiveMocker::HasAndBelongsToMany.new([]) })
+            read_association(:other, lambda do
+              ActiveMocker::HasAndBelongsToMany.new([], foreign_key: "other_id", foreign_id: self.id, relation_class: classes("Other"), source: "")
+            end)
           end
 
           def other=(val)
-            write_association(:other, ActiveMocker::HasAndBelongsToMany.new(val))
+            write_association(:other, ActiveMocker::HasAndBelongsToMany.new(val, foreign_key: "other_id", foreign_id: self.id, relation_class: classes("Other"), source: ""))
           end
         end
       RUBY

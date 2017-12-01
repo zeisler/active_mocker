@@ -10,7 +10,7 @@ module ActiveMocker
                                             ["#{klass}_relation", klass.camelize, :scopes]
                                           elsif type == "#"
                                             klass = self.class.name
-                                            ["#{klass.underscore}_record", klass, :instance_methods]
+                                            ["#{klass.underscore.split("/").first}_record", klass, :instance_methods]
                                           else
                                             [name, name, :class_methods]
                                           end

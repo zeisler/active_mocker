@@ -15,8 +15,8 @@ module ActiveMocker
         end
       end
 
-      def scope_body(arguments, name)
-        if safe_methods[:scopes].include?(name)
+      def scope_body(_arguments, name)
+        if safe_method?(:scope, name)
           find_scope_body_from_ast(name)
         else
           <<-METHOD

@@ -38,8 +38,9 @@ RSpec.describe ActiveMocker::DisplayErrors do
                                         "\e[0;31;49mnone\e[0m", :error,
                                         "\e[0;31;49mOriginal Error message\e[0m",
                                         ["this this the backtrace"], "\e[0;31;49mOpenStruct\e[0m",
-                                        "Error Summary", "errors: 1, warn: 0, info: 0", "1 mock(s) out of 1 failed.",
-                                        "To see more/less detail set error_verbosity = 0, 1, 2, 3"]
+                                        "errors: 1, warn: 0, info: 0",
+                                        "Mocked 0 ActiveRecord Models out of 1 file.",
+                                        "To see more/less detail set ERROR_VERBOSITY = 0, 1, 2, 3"]
         end
       end
 
@@ -47,7 +48,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
         it "displays all good message" do
           allow(ActiveMocker::Config).to receive(:error_verbosity) { 3 }
           subject.display_errors
-          expect(string_io.to_a).to eq ["1 mock(s) out of 1 failed."]
+          expect(string_io.to_a).to eq ["Mocked 0 ActiveRecord Models out of 1 file."]
         end
       end
     end
@@ -66,16 +67,16 @@ RSpec.describe ActiveMocker::DisplayErrors do
           subject.display_errors
           expect(string_io.to_a).to eq ["Buggy has the following errors:",
                                         "\e[0;31;49mThis is the Message\e[0m",
-                                        "Error Summary",
-                                        "errors: 1, warn: 0, info: 0", "1 mock(s) out of 1 failed.",
-                                        "To see more/less detail set error_verbosity = 0, 1, 2, 3"]
+                                        "errors: 1, warn: 0, info: 0",
+                                        "Mocked 0 ActiveRecord Models out of 1 file.",
+                                        "To see more/less detail set ERROR_VERBOSITY = 0, 1, 2, 3"]
         end
       end
       context "when there are no errors" do
         it "displays all good message" do
           allow(ActiveMocker::Config).to receive(:error_verbosity) { 2 }
           subject.display_errors
-          expect(string_io.to_a).to eq ["1 mock(s) out of 1 failed."]
+          expect(string_io.to_a).to eq ["Mocked 0 ActiveRecord Models out of 1 file."]
         end
       end
     end
@@ -94,8 +95,8 @@ RSpec.describe ActiveMocker::DisplayErrors do
       context "when a mock has failed" do
         it "lists out x out y failed message" do
           allow(ActiveMocker::Config).to receive(:error_verbosity) { 1 }
-          subject.failure_count_message
-          expect(string_io.to_a.first).to eq "1 mock(s) out of 1 failed."
+          subject.number_models_mocked
+          expect(string_io.to_a.first).to eq "Mocked 0 ActiveRecord Models out of 1 file."
         end
       end
 
@@ -104,8 +105,8 @@ RSpec.describe ActiveMocker::DisplayErrors do
           allow(ActiveMocker::Config).to receive(:error_verbosity) { 1 }
           subject.add(ActiveMocker::ErrorObject.new(level: :error, message: "none", class_name: "Buggy", type: :overload))
           subject.success_count += 1
-          subject.failure_count_message
-          expect(string_io.to_a).to eq ["0 mock(s) out of 1 failed."]
+          subject.number_models_mocked
+          expect(string_io.to_a).to eq ["Mocked 1 ActiveRecord Model out of 1 file."]
         end
       end
 
@@ -113,7 +114,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
         it "lists out nothing" do
           allow(ActiveMocker::Config).to receive(:error_verbosity) { 1 }
           subject.success_count += 1
-          subject.failure_count_message
+          subject.number_models_mocked
           expect(string_io.to_a).to eq []
         end
       end
@@ -135,7 +136,7 @@ RSpec.describe ActiveMocker::DisplayErrors do
       it "outputs only warnings" do
         subject.success_count += 1
         subject.error_summary
-        expect(string_io.to_a).to eq ["Error Summary", "errors: 0, warn: 0, info: 0"]
+        expect(string_io.to_a).to eq ["errors: 0, warn: 0, info: 0"]
       end
     end
 

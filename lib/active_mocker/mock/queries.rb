@@ -311,8 +311,50 @@ module ActiveMocker
     #   User.order('name')
     #
     #   User.order(:name)
-    def order(key)
-      __new_relation__(all.sort_by { |item| item.send(key) })
+    #
+    #   User.order(email: :desc)
+    #
+    #   User.order(:name, email: :desc)
+    def order(*args)
+      options = args.extract_options!
+      if options.empty? && args.count == 1
+        __new_relation__(all.sort_by { |item| item.send(args.first) })
+      else
+        __new_relation__(Sort.order_mixed_args(all, args, options))
+      end
+    end
+
+    module Sort
+      class DESC
+        attr_reader :r
+
+        def initialize(r)
+          @r = r
+        end
+
+        def <=>(other)
+          -(r <=> other.r) # Flip negative/positive result
+        end
+      end
+
+      class << self
+        def desc(r)
+          DESC.new(r)
+        end
+
+        def asc(r)
+          r
+        end
+
+        def order_mixed_args(all, args, options)
+          options.merge!(args.each_with_object({}) { |a, h| h[a] = :asc }) # Add non specified direction keys
+          all.sort { |a, b| build_order(a, options) <=> build_order(b, options) }
+        end
+
+        def build_order(a, options)
+          options.map { |k, v| send(v, a.send(k)) }
+        end
+      end
     end
 
     # Reverse the existing order clause on the relation.

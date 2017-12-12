@@ -509,21 +509,34 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
                    user_class.create!(email: "3", name: "Sam")]
         expect(user_class.all.where(name: "fred")).to eq([records[0], records[1]])
       end
+    end
 
-      context "order" do
-        it "where.order" do
-          records = [user_class.create!(email: "2", name: "fred"),
-                     user_class.create!(email: "1", name: "fred"),
-                     user_class.create!(email: "3", name: "Sam")]
-          expect(user_class.where(name: "fred").order(:email)).to eq([records[1], records[0]])
-        end
+    context "order" do
+      let!(:records) {
+        [
+          user_class.create!(email: "2", name: "fred"),
+          user_class.create!(email: "1", name: "fred"),
+          user_class.create!(email: "3", name: "Sam")
+        ]
+      }
+      it "where.order" do
+        expect(user_class.where(name: "fred").order(:email)).to eq([records[1], records[0]])
+      end
 
-        it "where.order.reverse_order" do
-          records = [user_class.create!(email: "2", name: "fred"),
-                     user_class.create!(email: "1", name: "fred"),
-                     user_class.create!(email: "3", name: "Sam")]
-          expect(user_class.where(name: "fred").order(:email).reverse_order).to eq([records[0], records[1]])
-        end
+      it "where.order.reverse_order" do
+        expect(user_class.where(name: "fred").order(:email).reverse_order).to eq([records[0], records[1]])
+      end
+
+      it "order(name: :desc)" do
+        expect(user_class.order(name: :desc)).to eq([records[0], records[1], records[2]])
+      end
+
+      it "order(:name, :email)" do
+        expect(user_class.order(:name, :email)).to eq([records[2], records[1], records[0]])
+      end
+
+      it "order(name: :desc, email: :asc)" do
+        expect(user_class.order(name: :desc, email: :asc)).to eq([records[1], records[0], records[2]])
       end
     end
   end

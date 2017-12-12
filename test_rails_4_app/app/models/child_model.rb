@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# ActiveMocker.all_methods_safe
 class ChildModel < User
   has_many :accounts
 

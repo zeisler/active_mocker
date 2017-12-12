@@ -1,6 +1,41 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.6.0 - 2017-12-01
+### Feature
+- Relation#order now accepts all non-SQL arguments
+
+Example usage:
+```ruby
+  User.order('name')
+
+  User.order(:name)
+
+  User.order(email: :desc)
+
+  User.order(:name, email: :desc)
+  
+  User.order(name: :desc, email: :asc)
+```
+
+### Enhancement
+- Improved output for `rake active_mocker:build`. When all mocks built successfully the messaging could be misleading. 
+- Error message for calling stubbed methods better formats RSpec syntax for variable names.
+- Now whitelist all locally defined methods as safe to copy/run within mock 
+```ruby
+# ActiveMocker.all_methods_safe
+class User < ActiveRecord::Base
+end
+```
+
+OR blacklist methods from being safe.
+
+```ruby
+# ActiveMocker.all_methods_safe except: { instance_methods: [], class_methods: [], scopes: [] }
+class User < ActiveRecord::Base
+end
+```
+
 ## 2.5.4 - 2017-11-17
 ### Fix
 - has_and_belongs_to_many association did not contain scoped methods.

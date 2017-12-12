@@ -44,18 +44,21 @@ module ActiveMocker
     end
 
     def error_summary
-      display "Error Summary"
       display "errors: #{error_count}, warn: #{warn}, info: #{info}"
       display "Failed models: #{failed_models.join(", ")}" if failed_models.count > 0
     end
 
-    def failure_count_message
+    def number_models_mocked
       if success_count < model_count || any_errors?
-        display "#{model_count - success_count} mock(s) out of #{model_count} failed."
+        display "Mocked #{success_count} ActiveRecord #{plural("Model", success_count)} out of #{model_count} #{plural("file", model_count)}."
       end
     end
 
     private
+
+    def plural(string, count, plural="s")
+      count > 1 || count.zero? ? "#{string}#{plural}" : string
+    end
 
     def display(msg)
       out.puts(msg)
@@ -95,10 +98,10 @@ module ActiveMocker
 
       error_summary if any_errors?
 
-      failure_count_message
+      number_models_mocked
 
       return unless any_errors?
-      display "To see more/less detail set error_verbosity = 0, 1, 2, 3"
+      display "To see more/less detail set ERROR_VERBOSITY = 0, 1, 2, 3"
     end
 
     def error_count

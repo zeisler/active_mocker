@@ -24,7 +24,7 @@ Mocks are regenerated when the schema is modified so your mocks won't go stale, 
 		374 examples, 0 failures
 
 ## Around the web
-["Mocking ActiveRecord with ActiveMocker" by Envy](http://madewithenvy.com/ecosystem/articles/2015/mocking-activerecord-with-activemocker/)
+["Mocking ActiveRecord with ActiveMocker" by Envy](https://web.archive.org/web/20150511052653/http://madewithenvy.com/ecosystem/articles/2015/mocking-activerecord-with-activemocker/)
 
 ------------------------------------------
 

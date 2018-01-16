@@ -32,7 +32,7 @@ module ActiveMocker
       def ast_scopes
         @ast_scopes ||= class_introspector
                           .parsed_source
-                          .class_begin
+                          .send(:class_begin)
                           .children
                           .select { |n| n.try(:type) == :send && n.try { children[1] == :scope } }
       end

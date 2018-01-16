@@ -13,6 +13,7 @@ task :setup do
     end
   end
   Dir.chdir("test_rails_4_app") do
+    sh "bin/rails db:environment:set RAILS_ENV=development"
     sh "rake db:setup"
   end
 end

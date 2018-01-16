@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Current
+### Enhancement
+- Locally defined modules are imported and included.
+
 ## 2.6.0 - 2017-12-01
 ### Feature
 - Relation#order now accepts all non-SQL arguments

@@ -6,7 +6,7 @@ class Model < ActiveRecord::Base
   module FooBar
   end
 
-  # include FooBar
+  include FooBar
   # extend Baz
   include PostMethods
   # include ModelCore::PlanService::Dah

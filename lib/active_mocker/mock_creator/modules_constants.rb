@@ -23,12 +23,16 @@ module ActiveMocker
         class_introspector.get_class.constants.each_with_object({}) do |v, const|
           c = class_introspector.get_class.const_get(v)
           next if [Module, Class].include?(c.class)
-          if /\A#</ =~ c.inspect
-            const[v] = Inspectable.new("ActiveMocker::UNREPRESENTABLE_CONST_VALUE")
-          else
-            const[v] = c
-          end
+          const[v] = if /\A#</ =~ c.inspect
+                       Inspectable.new("ActiveMocker::UNREPRESENTABLE_CONST_VALUE")
+                     else
+                       c
+                     end
         end
+      end
+
+      def defined_nested_modules
+        class_introspector.parsed_source.defined_nested_modules.map(&:source)
       end
 
       private
@@ -47,7 +51,7 @@ module ActiveMocker
       end
 
       def get_module_by_reference(type)
-        isolated_module_names = reject_local_const(class_introspector.public_send(type)).map(&:referenced_name)
+        isolated_module_names = class_introspector.public_send(type).map(&:referenced_name)
         real_module_names     = get_real_module(type).map(&:name).compact
         isolated_module_names.map do |isolated_name|
           real_name = real_module_names.detect do |rmn|
@@ -56,7 +60,7 @@ module ActiveMocker
             [
               real_parts.include?(active_record_model.name),
               real_parts.include?(isolated_name),
-              (total_parts_count == real_parts.count)
+              (total_parts_count == real_parts.count),
             ].all?
           end
           real_name ? real_name : isolated_name

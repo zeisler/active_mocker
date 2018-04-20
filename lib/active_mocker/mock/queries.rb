@@ -1,45 +1,10 @@
 # frozen_string_literal: true
+require "active_mocker/mock/queries/order"
+require "active_mocker/mock/queries/find"
+require "active_mocker/mock/queries/where_not_chain"
+
 module ActiveMocker
   module Queries
-    class Find
-      def initialize(record)
-        @record = record
-      end
-
-      def is_of(conditions = {})
-        conditions.all? do |col, match|
-          if match.is_a? Enumerable
-            any_match(col, match)
-          else
-            compare(col, match)
-          end
-        end
-      end
-
-      private
-
-      def any_match(col, match)
-        match.any? { |m| compare(col, m) }
-      end
-
-      def compare(col, match)
-        @record.send(col) == match
-      end
-    end
-
-    class WhereNotChain
-      def initialize(collection, parent_class)
-        @collection   = collection
-        @parent_class = parent_class
-      end
-
-      def not(conditions = {})
-        @parent_class.call(@collection.reject do |record|
-          Find.new(record).is_of(conditions)
-        end)
-      end
-    end
-
     # Deletes the records matching +conditions+ by instantiating each
     # record and calling its +delete+ method.
     #
@@ -126,7 +91,7 @@ module ActiveMocker
     #
     # <tt>ActiveMocker::RecordNotFound</tt> will be raised if one or more ids are not found.
     def find(ids)
-      raise RecordNotFound.new("Couldn't find #{name} without an ID") if ids.nil?
+      raise RecordNotFound, "Couldn't find #{name} without an ID" if ids.nil?
       results = [*ids].map do |id|
         find_by!(id: id.to_i)
       end
@@ -198,7 +163,7 @@ module ActiveMocker
     def find_by!(conditions = {})
       result = find_by(conditions)
       if result.nil?
-        raise RecordNotFound.new("Couldn't find #{name} with '#{conditions.keys.first}'=#{conditions.values.first}")
+        raise RecordNotFound, "Couldn't find #{name} with '#{conditions.keys.first}'=#{conditions.values.first}"
       end
       result
     end
@@ -286,7 +251,7 @@ module ActiveMocker
     #   PersonMock.average(:age) # => 35.8
     def average(key)
       values = values_by_key(key)
-      total  = values.inject { |sum, n| sum + n }
+      total  = values.inject { |a, e| a + e }
       BigDecimal.new(total) / BigDecimal.new(values.count)
     end
 
@@ -316,45 +281,7 @@ module ActiveMocker
     #
     #   User.order(:name, email: :desc)
     def order(*args)
-      options = args.extract_options!
-      if options.empty? && args.count == 1
-        __new_relation__(all.sort_by { |item| item.send(args.first) })
-      else
-        __new_relation__(Sort.order_mixed_args(all, args, options))
-      end
-    end
-
-    module Sort
-      class DESC
-        attr_reader :r
-
-        def initialize(r)
-          @r = r
-        end
-
-        def <=>(other)
-          -(r <=> other.r) # Flip negative/positive result
-        end
-      end
-
-      class << self
-        def desc(r)
-          DESC.new(r)
-        end
-
-        def asc(r)
-          r
-        end
-
-        def order_mixed_args(all, args, options)
-          options.merge!(args.each_with_object({}) { |a, h| h[a] = :asc }) # Add non specified direction keys
-          all.sort { |a, b| build_order(a, options) <=> build_order(b, options) }
-        end
-
-        def build_order(a, options)
-          options.map { |k, v| send(v, a.send(k)) }
-        end
-      end
+      __new_relation__(Order.call(args, all))
     end
 
     # Reverse the existing order clause on the relation.
@@ -391,7 +318,6 @@ module ActiveMocker
     #       Post.none # It can't be chained if [] is returned.
     #     end
     #   end
-    #
     def none
       __new_relation__([])
     end
@@ -399,7 +325,7 @@ module ActiveMocker
     private
 
     def check_for_limit_scope!
-      raise ActiveMocker::Error.new("delete_all doesn't support limit scope") if from_limit?
+      raise ActiveMocker::Error, "delete_all doesn't support limit scope" if from_limit?
     end
 
     def values_by_key(key)

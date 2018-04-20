@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require "active_support/core_ext/array/extract_options"
+
 shared_examples_for "Queriable" do |klass|
   subject do
     new_class.call
@@ -142,6 +144,85 @@ shared_examples_for "Queriable" do |klass|
       it "count" do
         expect(subject.none.count).to eq 0
       end
+    end
+  end
+
+  describe "#order" do
+    subject { new_class.call(given_collection) }
+    let(:given_collection) {
+      [
+        OpenStruct.new(age: 4, name: "D"),
+        OpenStruct.new(age: 1, name: "A"),
+        OpenStruct.new(age: 2, name: "A"),
+        OpenStruct.new(age: 3, name: "B"),
+        OpenStruct.new(age: 2, name: "E"),
+        OpenStruct.new(age: 5, name: "CB"),
+        OpenStruct.new(age: 5, name: "CA"),
+      ]
+    }
+
+    it "orders with age" do
+      expect(subject.order(:age).map(&:age)).to eq([1, 2, 2, 3, 4, 5, 5])
+    end
+
+    it "orders with age: :desc" do
+      expect(subject.order(age: :desc).to_a.map(&:age)).to eq([5, 5, 4, 3, 2, 2, 1])
+    end
+
+    it "orders with name" do
+      expect(subject.order(:name).to_a.map(&:name)).to eq(%w(A A B CA CB D E))
+    end
+
+    it "orders with name: desc" do
+      expect(subject.order(name: :desc).to_a.map(&:name)).to eq(%w(E D CB CA B A A ))
+    end
+
+    it "orders with :name, age: :desc" do
+      expect(subject.order("name", age: :desc).to_a.map(&:to_h)).to eq([
+                                                                         { age: 2, name: "A" },
+                                                                         { age: 1, name: "A" },
+                                                                         { age: 3, name: "B" },
+                                                                         { age: 5, name: "CA" },
+                                                                         { age: 5, name: "CB" },
+                                                                         { age: 4, name: "D" },
+                                                                         { age: 2, name: "E" }
+                                                                       ])
+    end
+
+    it "orders with name: :desc, age: :desc" do
+      expect(subject.order(name: :desc, age: :desc).to_a.map(&:to_h)).to eq([
+                                                                              { age: 2, name: "E" },
+                                                                              { age: 4, name: "D" },
+                                                                              { age: 5, name: "CB" },
+                                                                              { age: 5, name: "CA" },
+                                                                              { age: 3, name: "B" },
+                                                                              { age: 2, name: "A" },
+                                                                              { age: 1, name: "A" }
+                                                                            ])
+    end
+
+    it "orders with name: :desc, age: :asc" do
+      expect(subject.order(name: :desc, age: :asc).to_a.map(&:to_h)).to eq([
+                                                                             { age: 2, name: "E" },
+                                                                             { age: 4, name: "D" },
+                                                                             { age: 5, name: "CB" },
+                                                                             { age: 5, name: "CA" },
+                                                                             { age: 3, name: "B" },
+                                                                             { age: 1, name: "A" },
+                                                                             { age: 2, name: "A" }
+                                                                           ])
+    end
+
+    it "orders with name: :asc, age: :desc" do
+      expect(subject.order(name: :asc, age: :desc).to_a.map(&:to_h)).to eq([
+                                                                             { age: 2, name: "A" },
+                                                                             { age: 1, name: "A" },
+                                                                             { age: 3, name: "B" },
+                                                                             { age: 5, name: "CA" },
+                                                                             { age: 5, name: "CB" },
+                                                                             { age: 4, name: "D" },
+                                                                             { age: 2, name: "E" }
+                                                                           ])
     end
   end
 end

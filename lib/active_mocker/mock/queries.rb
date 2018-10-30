@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 module ActiveMocker
   module Queries
+    extend LateInclusion
+
     class Find
       def initialize(record)
         @record = record

@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Feature
 * Actively support Rails 5.2
 * Add tested support for Ruby 2.4 and 2.5
+* When using Rails 5.2 now supports `ActiveMocker::Mock.limit(10).delete_all` while previous version raised an error, in accordance with it's Rails version.
 
 ### Removed
 * Remove tested support for Rails 5.0 (Currently supported 4.2, 5.1, 5.2)

@@ -496,10 +496,6 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
         user.microposts.delete_all
         expect(user_class.count).to eq 1
       end
-
-      it "If a limit scope is supplied, +delete_all+ raises an ActiveMocker error:" do
-        expect { user_class.limit(100).delete_all }.to raise_error(/delete_all doesn't support limit/)
-      end
     end
 
     context "where" do
@@ -641,8 +637,16 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   end
 
   context "limit(10).delete_all" do
-    it "If a limit scope is supplied, delete_all raises an ActiveRecord error:" do
-      expect { user_class.limit(10).delete_all }.to raise_error(/delete_all doesn't support limit/)
+    if ENV["RAILS_VERSION"] == "5.2"
+      it "If a limit scope is supplied, delete_all still works" do
+        [user_class.create!(email: "1", name: "fred"), user_class.create!(email: "2", name: "Dan"), user_class.create!(email: "3", name: "Sam")]
+        user_class.limit(2).delete_all
+        expect(user_class.count).to eq(1)
+      end
+    else
+      it "If a limit scope is supplied, delete_all raises an ActiveRecord error:" do
+        expect { user_class.limit(10).delete_all }.to raise_error(/delete_all doesn't support limit/)
+      end
     end
   end
 
@@ -749,7 +753,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
     end
 
     it "must pass collection into has many" do
-      expect{user_class.create(microposts: micropost_class.create)}.to raise_error(NoMethodError, /undefined method `each' for/)
+      expect { user_class.create(microposts: micropost_class.create) }.to raise_error(NoMethodError, /undefined method `each' for/)
     end
   end
 

@@ -19,5 +19,5 @@ ratings:
   - "**.rb"
 exclude_paths:
 - spec/
-- test_rails_4_app/
+- test_rails_app/
 - example_rails_app/

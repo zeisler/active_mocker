@@ -1,9 +1,7 @@
 # ActiveMocker
 [![Gem Version](https://badge.fury.io/rb/active_mocker.svg)](http://badge.fury.io/rb/active_mocker)
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.svg?branch=master)](https://travis-ci.org/zeisler/active_mocker)
-[![Dependency Status](https://gemnasium.com/zeisler/active_mocker.svg)](https://gemnasium.com/zeisler/active_mocker)
 [![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.svg)](https://gitter.im/zeisler/active_mocker)
-[![Gittip](http://img.shields.io/gittip/zeisler.svg)](https://www.gittip.com/zeisler/)
 
 ## Description
 Creates stub classes from any ActiveRecord model. 
@@ -77,9 +75,8 @@ Or install it yourself as:
     $ gem install active_mocker
 
 ## Dependencies
-* Tested with Rails 4.1, 4.2, 5.0
-* Requires Ruby MRI >= 2.1.x
-
+* Tested with Rails 4.2, 5.1, 5.2
+* Requires Ruby MRI >= 2.3.x
 
 ## Setup
 

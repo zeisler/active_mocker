@@ -3,7 +3,7 @@ AllCops:
   DisplayStyleGuide: true
   Exclude:
     - spec/**/*.rb
-    - test_rails_4_app/**/*.rb
+    - test_rails_app/**/*.rb
 Rails:
   Enabled: true
 

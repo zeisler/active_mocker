@@ -4,10 +4,10 @@ require "rubygems/version"
 shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   let(:user_class) { described_class }
   let(:status_active_value) {
-    if %w(5.0 5.1).include?(ENV["RAILS_VERSION"])
-      "active"
-    else
+    if %w(4.2).include?(ENV["RAILS_VERSION"])
       0
+    else
+      "active"
     end
   }
   before do

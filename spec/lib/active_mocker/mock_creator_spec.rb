@@ -26,8 +26,8 @@ describe ActiveMocker::MockCreator do
   before do
     stub_const("ActiveRecord::Base", active_record_stub_class)
     stub_const("ActiveRecord::VERSION::MAJOR", 5)
-    stub_const("ActiveRecord::VERSION::MINOR", 0)
-    stub_const("ActiveRecord::VERSION::STRING", "5.0.0")
+    stub_const("ActiveRecord::VERSION::MINOR", 2)
+    stub_const("ActiveRecord::VERSION::STRING", "5.2.1")
   end
 
   let(:active_record_stub_class) { Class.new }

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   module LateInclusion
     module Extension
@@ -16,7 +17,7 @@ module ActiveMocker
         end
       end
     end
-    
+
     def extended(const)
       __extended_onto__ << const
     end
@@ -30,7 +31,7 @@ module ActiveMocker
     end
 
     def __included_onto__
-      @included_onto ||= []
+      @__included_onto__ ||= []
     end
   end
 end

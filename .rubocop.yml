@@ -11,7 +11,7 @@ Rails:
 Metrics/LineLength:
   Max: 120
 
-Style/AlignParameters:
+Layout/AlignParameters:
   # Alignment of parameters in multi-line method calls.
   #
   # The `with_first_parameter` style aligns the following lines along the same

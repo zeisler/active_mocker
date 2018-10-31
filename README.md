@@ -1,9 +1,7 @@
 # ActiveMocker
 [![Gem Version](https://badge.fury.io/rb/active_mocker.svg)](http://badge.fury.io/rb/active_mocker)
-[![Build Status](https://travis-ci.org/zeisler/active_mocker.png?branch=master)](https://travis-ci.org/zeisler/active_mocker)
-[![Dependency Status](https://gemnasium.com/zeisler/active_mocker.svg)](https://gemnasium.com/zeisler/active_mocker)
-[![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.png)](https://gitter.im/zeisler/active_mocker)
-[![Gittip](http://img.shields.io/gittip/zeisler.svg)](https://www.gittip.com/zeisler/)
+[![Build Status](https://travis-ci.org/zeisler/active_mocker.svg?branch=master)](https://travis-ci.org/zeisler/active_mocker)
+[![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.svg)](https://gitter.im/zeisler/active_mocker)
 
 ## Description
 Creates stub classes from any ActiveRecord model. 
@@ -14,17 +12,17 @@ ActiveMocker analyzes the methods and database columns to generate a Ruby class 
 
 The stub file can be run standalone and comes included with many useful parts of ActiveRecord.
 
-Stubbed out methods contain their original argument signatures or ActiveMocker friendly code can be brought over in its entirety.
+Stubbed out methods contain their original argument signatures or ActiveMocker's friendly code can be brought over in its entirety.
 
 Mocks are regenerated when the schema is modified so your mocks won't go stale, preventing the case where your unit tests pass but production code fails.
 
-*Examples from a real apps*
+*Examples from a real app*
 
 		Finished in 1 seconds
 		374 examples, 0 failures
 
 ## Around the web
-["Mocking ActiveRecord with ActiveMocker" by Envy](http://madewithenvy.com/ecosystem/articles/2015/mocking-activerecord-with-activemocker/)
+["Mocking ActiveRecord with ActiveMocker" by Envy](https://web.archive.org/web/20150511052653/http://madewithenvy.com/ecosystem/articles/2015/mocking-activerecord-with-activemocker/)
 
 ------------------------------------------
 
@@ -67,8 +65,8 @@ group :development, :test do
   gem 'active_mocker'
 end
 ```
-It needs to be in development as well as test because development is where mocks will be generated.
-And then execute:
+It needs to be in development as well as test groups, as the development environment is where mocks will be generated.
+Then execute:
 
     $ bundle
 
@@ -77,9 +75,8 @@ Or install it yourself as:
     $ gem install active_mocker
 
 ## Dependencies
-* Tested with Rails 4.1, 4.2, 5.0
-* Requires Ruby MRI >= 2.1.x
-
+* Tested with Rails 4.2, 5.1, 5.2
+* Requires Ruby MRI >= 2.3.x
 
 ## Setup
 
@@ -89,7 +86,7 @@ Or install it yourself as:
 
 ### Generate Mocks
 
-Running this rake task builds/rebuilds the mocks. It will be ran automatically after every schema modification. If the model changes this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.
+Running this rake task builds/rebuilds the mocks. It will be ran automatically after every schema modification. If the model changes, this rake task needs to be called manually. You could add a file watcher for when your models change and have it run the rake task.
 
     rake active_mocker:build
 
@@ -144,7 +141,7 @@ end
 
 * Assigning the tag `active_mocker:true` will stub any ActiveRecord model Constants for Mock classes in an `it` or a `before/after(:each)`. This removes any need for dependency injection. Write tests and code like you would normally.
 * To stub any Constants in `before(:all)`, `after(:all)` use `active_mocker.find('ClassName')`.
-* Mock state will be cleaned up for you in an `after(:all)`. To clean state your self use `active_mocker.delete_all`.
+* Mock state will be cleaned up for you in an `after(:all)`. To clean state by yourself, use `active_mocker.delete_all`.
 
 ---------
     
@@ -188,15 +185,15 @@ Person.new(first_name: "Dustin", last_name: "Zeisler")
 
 ### Creating Custom collections
 
-If you want to create custom set of record that is not part of the global collection for model. (ie. for stubbing in a test)
+If you want to create a custom set of records that is not part of the global collection for model. (ie. for stubbing in a test)
 
 ```ruby
 User::ScopeRelation.new([User.new, User.new])
 ```
 
-This give the full query API (ie. find_by, where, etc). 
+This gives the full query API (ie. `find_by`, `where`, etc). 
 
-This is not feature available in ActiveRecord as such do not include this where you intend to swap in ActiveRecord.
+This is not a feature available in ActiveRecord, so do not include this where you intend to swap for ActiveRecord.
 
 
 ## Optional Features
@@ -211,15 +208,15 @@ ActiveMocker::LoadedMocks.features.enable(:stub_active_record_exceptions)
 
 ### timestamps
 
-  Enables created_at and updated_at to be update on save and create
+  Enables `created_at` and `updated_at` to be updated on save and create
 
 ### delete_all_before_example
 
-  When using "active_mocker/rspec_helper" it delete all records from all mocks before each example.
+  When using "active_mocker/rspec_helper", it deletes all records from all mocks before each example.
 
 ### stub_active_record_exceptions
 
-  When requiring "active_mocker/rspec_helper", and adding `active_mocker: true` to the describe metadata, these errors will be auto stubbed:
+  When requiring "active_mocker/rspec_helper", and adding `active_mocker: true` to the `describe` metadata, these errors will be auto stubbed:
   
   * ActiveRecord::RecordNotFound
   * ActiveRecord::RecordNotUnique
@@ -228,7 +225,7 @@ ActiveMocker::LoadedMocks.features.enable(:stub_active_record_exceptions)
 ### Copy over Mock safe methods into the generated mock
   
   Adding the comment `ActiveMocker.safe_methods` at the top of a class marks it as safe to copy to the mock.
-  Be careful that it does not contain anything that ActiveMocker cannot run.
+  Be careful. It should not contain anything that ActiveMocker cannot run.
   
   ```ruby
   # ActiveMocker.safe_methods(scopes: [], instance_methods: [:full_name], class_methods: [])
@@ -242,8 +239,8 @@ ActiveMocker::LoadedMocks.features.enable(:stub_active_record_exceptions)
 ## Mocking Methods
 
 #### Rspec 3 Mocks - verify double
-Verifying doubles are a stricter alternative to normal doubles that provide guarantees about
-what is being verified. When using verifying doubles, RSpec will check that the methods
+Verifying doubles is a stricter alternative to normal doubles that provides guarantees about
+what is being verified. When using verifying doubles, RSpec will check if the methods
 being stubbed are actually present on the underlying object if it is available.
 [rspec-mocks/docs/verifying-doubles](https://relishapp.com/rspec/rspec-mocks/docs/verifying-doubles)
 ```ruby
@@ -326,7 +323,7 @@ PersonMock::CONSTANT_VALUE
 ```
 
 ### Scoped Methods 
-* Any chained scoped methods will be available when the mock file that defines it is required. When called it raises a `NotImplementedError`, stub the method with a value to continue.
+* Any chained scoped methods will be available when the mock file that defines it is required. When called, it raises a `NotImplementedError`. Stub the method with a value to continue.
 
 ### Managing Mocks  
 
@@ -420,7 +417,7 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 
 ### Schema/Migration Option Support
 * A db/schema.rb is not required.
-* All schema types are supported and coerced by [Virtus](https://github.com/solnic/virtus). If coercion fails the passed value will be retained.
+* All schema types are supported and coerced by [Virtus](https://github.com/solnic/virtus). If coercion fails, the passed value will be retained.
 * Default value is supported.
 * Scale and Precision are not supported.
 
@@ -429,15 +426,15 @@ See [Documentation](http://rdoc.info/github/zeisler/active_mocker/master/ActiveM
 * When an association is set in one object it may not always be reflective in other objects, especially when it is a non standard/custom association. See [test_rails_4_app/spec/active_record_compatible_api.rb](https://github.com/zeisler/active_mocker/blob/master/test_rails_4_app/spec/active_record_compatible_api.rb) for a complete list of supported associations. 
 * Validation/Callbacks are not supported.
 * Sql queries, joins, etc will never be supported.
-* A record that has been created and then is modified will persist changes without calling `#save`, beware of this difference.
+* A record that has been created and then is modified will persist changes without calling `#save`. Beware of this difference.
 * This is not a full replacement for ActiveRecord.
-* Primary key will always default to `id`. If this is an causes a problem open an issue. 
+* Primary key will always default to `id`. If this is causing a problem, feel free to open an issue (or even better, a PR =)). 
 
 ## Inspiration
 Thanks to Jeff Olfert for being my original inspiration for this project.
 
 ## Contributing
-Your contribution are welcome!
+Your contributions are welcome!
 
 1. Fork it ( http://github.com/zeisler/active_mocker/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)

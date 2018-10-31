@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 ### Enhancement
 - Locally defined modules are imported and included.
 
+## 2.6.1 - 2018-10-30
+### Feature
+* Actively support Rails 5.2
+* Add tested support for Ruby 2.4 and 2.5
+* When using Rails 5.2 now supports `ActiveMocker::Mock.limit(10).delete_all` while previous version raised an error, in accordance with it's Rails version.
+
+### Removed
+* Remove tested support for Rails 5.0 (Currently supported 4.2, 5.1, 5.2)
+* Remove support for Ruby 2.1 and 2.2
+
 ## 2.6.0 - 2017-12-01
 ### Feature
 - Relation#order now accepts all non-SQL arguments

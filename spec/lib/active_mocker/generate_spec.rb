@@ -4,12 +4,12 @@ require "lib/active_mocker"
 
 RSpec.describe ActiveMocker::Generate do
   describe ".new" do
-    let(:not_found_dir) { File.expand_path("../test_mock_dir", __FILE__) }
+    let(:mock_dir) {Dir.mktmpdir("test_mock_dir") }
 
     before do
       ActiveMocker::Config.set do |config|
         config.model_dir        = File.expand_path("../", __FILE__)
-        config.mock_dir         = not_found_dir
+        config.mock_dir         = mock_dir
         config.error_verbosity  = 0
         config.progress_bar     = false
       end
@@ -22,11 +22,10 @@ RSpec.describe ActiveMocker::Generate do
       allow_any_instance_of(ActiveMocker::FileWriter::Schema).to receive(:attribute_errors?) { false }
       allow_any_instance_of(ActiveMocker::FileWriter::Schema).to receive(:attribute_errors) { [] }
       allow_any_instance_of(ActiveMocker::FileWriter::Schema).to receive(:association_errors) { [] }
-      FileUtils.rm_rf not_found_dir
+      FileUtils.rm_rf mock_dir
     end
 
     after do
-      FileUtils.rmdir not_found_dir
       ActiveMocker::Config.load_defaults
     end
 
@@ -64,20 +63,20 @@ RSpec.describe ActiveMocker::Generate do
 
       context "when ActiveMocker::Config.mock_dir cannot be found it will be created" do
         it do
-          expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return(not_found_dir)
-          expect(Dir.exist?(not_found_dir)).to eq false
+          expect(ActiveMocker::Config).to receive(:mock_dir).at_least(:once).and_return(mock_dir)
+          expect(Dir.exist?(mock_dir)).to eq false
           described_class.new
-          expect(Dir.exist?(not_found_dir)).to eq true
+          expect(Dir.exist?(mock_dir)).to eq true
         end
       end
 
       context "when old mock exist" do
-        let(:current_mock_path) { File.join(not_found_dir, "model_mock.rb") }
-        let(:old_mock_path) { File.join(not_found_dir, "old_mock_from_deleted_model_mock.rb") }
+        let(:current_mock_path) { File.join(mock_dir, "model_mock.rb") }
+        let(:old_mock_path) { File.join(mock_dir, "old_mock_from_deleted_model_mock.rb") }
         let(:models_dir) { File.expand_path("../../models", __FILE__) }
 
         before do
-          FileUtils.mkdir_p(not_found_dir)
+          FileUtils.mkdir_p(mock_dir)
           File.open(old_mock_path, "w") { |w| w.write "" }
           File.open(current_mock_path, "w") { |w| w.write "" }
           ActiveMocker::Config.model_dir = models_dir

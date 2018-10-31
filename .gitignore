@@ -17,12 +17,12 @@ test/version_tmp
 tmp
 sample_app_rails_4/log/*
 log/active_mocker.log
-test_rails_4_app/db/development.sqlite3
-test_rails_4_app/log/*
-test_rails_4_app/.idea/*
+test_rails_app/db/development.sqlite3
+test_rails_app/log/*
+test_rails_app/.idea/*
 example_rails_app/.idea/*
 .idea/*
 cookbooks/*
 .vagrant/*
-test_rails_4_app/spec/mocks/*
+test_rails_app/spec/mocks/*
 *.sqlite3

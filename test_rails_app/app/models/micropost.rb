@@ -2,7 +2,6 @@
 require "#{Rails.root}/lib/post_methods"
 
 class Micropost < ActiveRecord::Base
-  require "#{Rails.root}/app/models/mircopost/core"
   belongs_to :user
   default_scope -> { order("created_at DESC") }
   MAGIC_ID_NUMBER = 90

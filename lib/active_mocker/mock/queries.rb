@@ -5,6 +5,8 @@ require "active_mocker/mock/queries/where_not_chain"
 
 module ActiveMocker
   module Queries
+    extend LateInclusion
+
     # Deletes the records matching +conditions+ by instantiating each
     # record and calling its +delete+ method.
     #

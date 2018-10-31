@@ -155,6 +155,11 @@ module ActiveMocker
           require "active_mocker/mock/compatibility/base/ar51"
           extend AR51
         end
+
+        if __active_record_build_version__ >= Gem::Version.create("5.2")
+          require "active_mocker/mock/compatibility/queries/ar52"
+          Queries.prepend(Queries::AR52)
+        end
         raise UpdateMocksError.new(name, version, ActiveMocker::Mock::VERSION) if version != ActiveMocker::Mock::VERSION
       end
     end

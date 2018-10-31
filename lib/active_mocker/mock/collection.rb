@@ -1,11 +1,30 @@
 # frozen_string_literal: true
+
 require "forwardable"
 
 module ActiveMocker
   class Collection
     include Enumerable
     extend ::Forwardable
-    def_delegators :@collection, :[], :take, :push, :clear, :first, :last, :concat, :replace, :uniq, :count, :size, :length, :empty?, :any?, :many?, :include?, :delete
+    def_delegators :@collection,
+                   :[],
+                   :take,
+                   :push,
+                   :clear,
+                   :first,
+                   :last,
+                   :concat,
+                   :replace,
+                   :uniq,
+                   :count,
+                   :size,
+                   :length,
+                   :empty?,
+                   :any?,
+                   :many?,
+                   :include?,
+                   :delete
+
     alias distinct uniq
 
     def initialize(collection = [])
@@ -34,8 +53,8 @@ module ActiveMocker
       @collection.hash
     end
 
-    def ==(val)
-      @collection == val
+    def ==(other)
+      @collection == other
     end
 
     def blank?

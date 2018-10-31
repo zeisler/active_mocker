@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "singleton"
 require "active_mocker/mock/exceptions"
 
@@ -9,12 +10,12 @@ module ActiveMocker
       STUB_ACTIVE_RECORD_EXCEPTIONS = {
         "ActiveRecord::RecordNotFound"        => ActiveMocker::RecordNotFound,
         "ActiveRecord::RecordNotUnique"       => ActiveMocker::RecordNotUnique,
-        "ActiveRecord::UnknownAttributeError" => ActiveMocker::UnknownAttributeError,
-      }
-      DEFAULTS                      = {
+        "ActiveRecord::UnknownAttributeError" => ActiveMocker::UnknownAttributeError
+      }.freeze
+      DEFAULTS = {
         timestamps:                    false,
         delete_all_before_example:     false,
-        stub_active_record_exceptions: STUB_ACTIVE_RECORD_EXCEPTIONS,
+        stub_active_record_exceptions: STUB_ACTIVE_RECORD_EXCEPTIONS
       }.freeze
 
       def initialize

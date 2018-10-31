@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class MockCreator
     module ModulesConstants
@@ -14,7 +15,7 @@ module ActiveMocker
         @modules ||= begin
           {
             included: get_module_by_reference(:included_modules),
-            extended: get_module_by_reference(:extended_modules),
+            extended: get_module_by_reference(:extended_modules)
           }
         end
       end
@@ -36,6 +37,7 @@ module ActiveMocker
       end
 
       private
+
       def reject_local_const(source)
         source.reject do |n|
           class_introspector.locally_defined_constants.values.include?(n)
@@ -55,16 +57,20 @@ module ActiveMocker
         real_module_names     = get_real_module(type).map(&:name).compact
         isolated_module_names.map do |isolated_name|
           real_name = real_module_names.detect do |rmn|
-            real_parts        = rmn.split("::")
-            total_parts_count = active_record_model.name.split("::").count + isolated_name.split("::").count
-            [
-              real_parts.include?(active_record_model.name),
-              real_parts.include?(isolated_name),
-              (total_parts_count == real_parts.count),
-            ].all?
+            compare(isolated_name, rmn)
           end
           real_name ? real_name : isolated_name
         end
+      end
+
+      def compare(isolated_name, rmn)
+        real_parts        = rmn.split("::")
+        total_parts_count = active_record_model.name.split("::").count + isolated_name.split("::").count
+        [
+          real_parts.include?(active_record_model.name),
+          real_parts.include?(isolated_name),
+          (total_parts_count == real_parts.count)
+        ].all?
       end
     end
   end

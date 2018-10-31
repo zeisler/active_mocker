@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class MockCreator
     module Attributes
@@ -24,21 +25,28 @@ module ActiveMocker
             attribute:     attr.name,
             db_value_type: attr.type,
           )
-          if ActiveRecord::VERSION::MAJOR == 5
-            enum_type.ignore_value = true
-            attr.type              = enum_type
-            if attr.default
-              attr.default = Virtus::Attribute.build(enum_type).get_key(attr.default)
-            end
-          elsif ActiveRecord::VERSION::MAJOR == 4
-            attr.attribute_writer = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})\nwrite_attribute(:#{attr.name}, @#{attr.name}_enum_type.coerce(val))"
-            attr.attribute_reader = "@#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})\n@#{attr.name}_enum_type.get_key(read_attribute(:#{attr.name}))"
-            if attr.default
-              attr.default = Virtus::Attribute.build(attr.type).coerce(attr.default)
-            end
-          end
+          send("version_#{ActiveRecord::VERSION::MAJOR}", enum_type, attr)
           attr
         end
+      end
+
+      def version_4(enum_type, attr)
+        attr.attribute_writer = <<~RUBY
+          @#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})
+          write_attribute(:#{attr.name}, @#{attr.name}_enum_type.coerce(val))
+        RUBY
+        attr.attribute_reader = <<~RUBY
+          @#{attr.name}_enum_type ||= Virtus::Attribute.build(#{enum_type})
+          @#{attr.name}_enum_type.get_key(read_attribute(:#{attr.name}))
+        RUBY
+
+        attr.default = Virtus::Attribute.build(attr.type).coerce(attr.default) if attr.default
+      end
+
+      def version_5(enum_type, attr)
+        enum_type.ignore_value = true
+        attr.type              = enum_type
+        attr.default           = Virtus::Attribute.build(enum_type).get_key(attr.default) if attr.default
       end
 
       def enums(attribute)

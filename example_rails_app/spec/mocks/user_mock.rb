@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "active_mocker/mock"
 
 class UserMock < ActiveMocker::Base
@@ -12,7 +13,7 @@ class UserMock < ActiveMocker::Base
     end
 
     def types
-      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, name: String, age: Fixnum, admin: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Integer, name: String, age: Integer, admin: Axiom::Types::Boolean, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -30,7 +31,7 @@ class UserMock < ActiveMocker::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= %w(id name age admin created_at updated_at) | super
+      @attribute_names ||= %w[id name age admin created_at updated_at] | super
     end
 
     def primary_key

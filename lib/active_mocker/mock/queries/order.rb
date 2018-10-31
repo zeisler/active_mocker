@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module ActiveMocker
   module Queries
     # @private
+    # rubocop:disable Naming/UncommunicativeMethodParamName
     module Order
       class << self
         def call(args, all)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActiveMocker
   class FileWriter
     include Virtus.model

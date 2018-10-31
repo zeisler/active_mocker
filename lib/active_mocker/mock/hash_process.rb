@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   # @api private
   class HashProcess

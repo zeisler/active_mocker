@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class Config
     class << self
@@ -29,19 +30,18 @@ module ActiveMocker
       end
 
       def reset_all
-        [:model_dir,
-         :mock_dir,
-         :log_location,
-         :single_model_path,
-         :progress_bar,
-         :error_verbosity,
-         :mock_append_name,
-        ].each { |ivar| instance_variable_set("@#{ivar}", nil) }
+        %i[model_dir
+           mock_dir
+           log_location
+           single_model_path
+           progress_bar
+           error_verbosity
+           mock_append_name].each { |ivar| instance_variable_set("@#{ivar}", nil) }
       end
 
       def rails_defaults
-        @model_dir = File.join(Rails.root, "app/models") unless @model_dir
-        @mock_dir  = File.join(Rails.root, "spec/mocks") unless @mock_dir
+        @model_dir = Rails.root.join("app/models") unless @model_dir
+        @mock_dir  = Rails.root.join("spec/mocks") unless @mock_dir
       end
 
       def progress_class

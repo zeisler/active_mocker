@@ -1,5 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 # This file originally created at http://rove.io/70b9e033e9d63eea7548469647e3efd3
 
 # -*- mode: ruby -*-
@@ -21,8 +22,8 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "git"
     chef.json = {
       git: {
-        prefix: "/usr/local",
-      },
+        prefix: "/usr/local"
+      }
     }
   end
 end

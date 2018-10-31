@@ -1,9 +1,11 @@
 # frozen_string_literal: true
+
 require "active_mocker/mock/queries/order"
 require "active_mocker/mock/queries/find"
 require "active_mocker/mock/queries/where_not_chain"
 
 module ActiveMocker
+  # rubocop:disable Metrics/ModuleLength
   module Queries
     extend LateInclusion
 
@@ -173,14 +175,14 @@ module ActiveMocker
     # Finds the first record with the given attributes, or creates a record
     # with the attributes if one is not found:
     #
-    #   # Find the first user named "Penélope" or create a new one.
-    #   UserMock.find_or_create_by(first_name: 'Penélope')
-    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #   # Find the first user named "Penelope" or create a new one.
+    #   UserMock.find_or_create_by(first_name: 'Penelope')
+    #   # => #<User id: 1, first_name: "Penelope", last_name: nil>
     #
-    #   # Find the first user named "Penélope" or create a new one.
+    #   # Find the first user named "Penelope" or create a new one.
     #   # We already have one so the existing record will be returned.
-    #   UserMock.find_or_create_by(first_name: 'Penélope')
-    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #   UserMock.find_or_create_by(first_name: 'Penelope')
+    #   # => #<User id: 1, first_name: "Penelope", last_name: nil>
     #
     # This method accepts a block, which is passed down to +create+. The last example
     # above can be alternatively written this way:

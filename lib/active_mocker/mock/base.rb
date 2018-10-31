@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class Base
     include DoNothingActiveRecordMethods
@@ -104,12 +105,13 @@ module ActiveMocker
         true
       end
 
+      # rubocop:disable Style/ClassVars
       def build_type(type)
         @@built_types       ||= {}
         @@built_types[type] ||= Virtus::Attribute.build(type)
       end
 
-      def classes(klass, fail_hard=false)
+      def classes(klass, fail_hard = false)
         ActiveMocker::LoadedMocks.find(klass).tap do |found_class|
           raise MockNotLoaded, "The ActiveMocker version of #{klass} is not required." if fail_hard && !found_class
           found_class
@@ -123,8 +125,6 @@ module ActiveMocker
       end
 
       private :classes, :build_type, :__new_relation__
-
-      public
 
       # @deprecated
       def clear_mock
@@ -165,8 +165,8 @@ module ActiveMocker
     end
 
     # @deprecated
-    def call_mock_method(method:, caller:, arguments: [])
-      self.class.send(:is_implemented, method, '#', caller)
+    def call_mock_method(method:, caller:, **_)
+      self.class.send(:is_implemented, method, "#", caller)
     end
 
     private :call_mock_method
@@ -253,7 +253,7 @@ module ActiveMocker
     def touch(*names)
       raise ActiveMocker::Error, "cannot touch on a new record object" unless persisted?
 
-      attributes = [:updated_at, :update_on]
+      attributes = %i[updated_at update_on]
       attributes.concat(names)
 
       current_time = Time.now.utc

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "active_mocker/mock"
 
 class CommentMock < ActiveMocker::Mock::Base
@@ -12,7 +13,7 @@ class CommentMock < ActiveMocker::Mock::Base
     end
 
     def types
-      @types ||= ActiveMocker::HashProcess.new({ id: Fixnum, user_id: Fixnum, text: String, votes: Fixnum, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
+      @types ||= ActiveMocker::HashProcess.new({ id: Integer, user_id: Integer, text: String, votes: Integer, created_at: DateTime, updated_at: DateTime }, method(:build_type)).merge(super)
     end
 
     def associations
@@ -30,7 +31,7 @@ class CommentMock < ActiveMocker::Mock::Base
     private :mocked_class
 
     def attribute_names
-      @attribute_names ||= %w(id user_id text votes created_at updated_at) | super
+      @attribute_names ||= %w[id user_id text votes created_at updated_at] | super
     end
 
     def primary_key

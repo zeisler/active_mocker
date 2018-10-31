@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class HashNewStyle < Hash
     def inspect

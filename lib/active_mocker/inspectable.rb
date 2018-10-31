@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "active_mocker/inspectable/bigdecimal"
 require "active_mocker/inspectable/date"
 require "active_mocker/inspectable/dir"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActiveMocker
   module AliasAttribute
     # Is +new_name+ an alias?

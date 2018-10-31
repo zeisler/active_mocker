@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class MockCreator
     module SafeMethods
@@ -43,7 +44,7 @@ module ActiveMocker
               instance_methods: arg_methods.concat(instance_methods),
               scopes:           scopes,
               methods:          class_methods,
-              all_methods_safe: all_methods_safe,
+              all_methods_safe: all_methods_safe
             }
           end
 
@@ -55,7 +56,7 @@ module ActiveMocker
             {
               instance_methods: except.fetch(:instance_methods, []),
               scopes:           except.fetch(:scopes, []),
-              methods:          except.fetch(:class_methods, []),
+              methods:          except.fetch(:class_methods, [])
             }
           end
         end

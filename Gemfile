@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 source "https://rubygems.org"
+gem "appraisal"
 gem "rails"
 gem "sqlite3"
-gem "appraisal"
 
 group :development, :test do
   gem "rspec"

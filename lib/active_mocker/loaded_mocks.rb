@@ -1,7 +1,9 @@
 # frozen_string_literal: true
+
 require_relative "loaded_mocks/features"
 
 module ActiveMocker
+  # rubocop:disable Lint/DuplicateMethods
   class LoadedMocks
     class << self
       extend Forwardable
@@ -83,7 +85,7 @@ module ActiveMocker
 
         def get_item(args, k, v)
           args.map do |e|
-            if [:to_str, :to_sym].any? { |i| e.respond_to? i }
+            if %i[to_str to_sym].any? { |i| e.respond_to? i }
               e.to_s == k
             else
               e == v

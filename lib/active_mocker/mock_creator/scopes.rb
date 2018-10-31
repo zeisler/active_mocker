@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "safe_methods"
 module ActiveMocker
   class MockCreator

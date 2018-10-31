@@ -3,7 +3,7 @@ AllCops:
   DisplayStyleGuide: true
   Exclude:
     - spec/**/*.rb
-    - test_rails_4_app/**/*.rb
+    - test_rails_app/**/*.rb
 Rails:
   Enabled: true
 
@@ -11,7 +11,7 @@ Rails:
 Metrics/LineLength:
   Max: 120
 
-Style/AlignParameters:
+Layout/AlignParameters:
   # Alignment of parameters in multi-line method calls.
   #
   # The `with_first_parameter` style aligns the following lines along the same
@@ -53,18 +53,26 @@ Style/TrailingCommaInArguments:
     - comma
     - consistent_comma
     - no_comma
-
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   # If `comma`, the cop requires a comma after the last item in an array or
   # hash, but only when each item is on its own line.
   # If `consistent_comma`, the cop requires a comma after the last item of all
   # non-empty array and hash literals.
   EnforcedStyleForMultiline: comma
   SupportedStyles:
-    - comma
-    - consistent_comma
-    - no_comma
-
+  - comma
+  - consistent_comma
+  - no_comma
+Style/TrailingCommaInHashLiteral:
+  # If `comma`, the cop requires a comma after the last item in an array or
+  # hash, but only when each item is on its own line.
+  # If `consistent_comma`, the cop requires a comma after the last item of all
+  # non-empty array and hash literals.
+  EnforcedStyleForMultiline: comma
+  SupportedStyles:
+  - comma
+  - consistent_comma
+  - no_comma
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

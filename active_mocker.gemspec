@@ -30,6 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dissociated_introspection", "~> 0.8", ">= 0.8.4"
 
   spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rubocop", "~> 0.38.0"
+  spec.add_development_dependency "rubocop", "~> 0.49.0"
   spec.add_development_dependency "rspec", "~> 3.4"
 end

@@ -2,6 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/active_mocker.svg)](http://badge.fury.io/rb/active_mocker)
 [![Build Status](https://travis-ci.org/zeisler/active_mocker.svg?branch=master)](https://travis-ci.org/zeisler/active_mocker)
 [![Gitter chat](https://badges.gitter.im/zeisler/active_mocker.svg)](https://gitter.im/zeisler/active_mocker)
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 ## Description
 Creates stub classes from any ActiveRecord model. 

@@ -1,12 +1,12 @@
 language: ruby
 rvm:
   - 2.3.8
-  - 2.4.5
-  - 2.5.3
+  - 2.5.5
+  - 2.6.3
 gemfile:
   - test_rails_app/gemfiles/rails_4.2.gemfile
-  - test_rails_app/gemfiles/rails_5.1.gemfile
   - test_rails_app/gemfiles/rails_5.2.gemfile
+  - test_rails_app/gemfiles/rails_6.0.gemfile
 env:
   global:
     TRAVIS: true

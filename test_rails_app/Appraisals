@@ -4,14 +4,15 @@ appraise "rails-4.2" do
   gem "rspec-rails", "~>3.4"
 end
 
-appraise "rails-5.1" do
-  gem "rails",  "~> 5.1.1"
-  gem "rspec", "3.5.0"
-  gem "rspec-rails", "3.5.0"
-end
-
 appraise "rails-5.2" do
   gem "rails",  "~> 5.2.1"
   gem "rspec", "3.7.0"
   gem "rspec-rails", "3.7.0"
+end
+
+appraise "rails-6.0" do
+  gem "rails",  "6.0.0.rc2"
+  gem "actionpack",  "6.0.0.rc2"
+  gem "rspec", "3.8.0"
+  gem "rspec-rails", "4.0.0.beta2"
 end

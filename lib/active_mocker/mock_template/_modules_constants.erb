@@ -1,6 +1,6 @@
 # _modules_constants.erb
-<% constants.each do |constant| -%>
-  <%= constant.first %> = <%= constant.last.inspect %>
+<% constants.each do |constant, value| -%>
+  <%= constant %> = <%= value.inspect %>
 <% end -%>
 <% modules[:included].each do |constant| -%>
   prepend <%= constant %>

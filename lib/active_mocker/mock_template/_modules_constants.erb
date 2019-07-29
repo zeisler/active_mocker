@@ -2,6 +2,9 @@
 <% constants.each do |constant| -%>
   <%= constant.first %> = <%= constant.last.inspect %>
 <% end -%>
+<% defined_nested_modules.each do |m| -%>
+  <%= m %>
+<% end -%>
 <% modules[:included].each do |constant| -%>
   prepend <%= constant %>
 <% end -%>

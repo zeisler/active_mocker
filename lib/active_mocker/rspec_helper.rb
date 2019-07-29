@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "active_mocker/loaded_mocks"
 require "active_mocker/rspec"
 

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   module Inspectable
     refine Date do
       def inspect
-        "Date.new(%s, %s, %s)" % [year, month, day]
+        format("Date.new(%s, %s, %s)", year, month, day)
       end
     end
 

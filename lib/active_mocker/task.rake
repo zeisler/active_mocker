@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 namespace :active_mocker do
   desc("Rebuild mocks.")
   task build: :environment do

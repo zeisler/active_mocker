@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class ParentClass
     def initialize(parsed_source:, klasses_to_be_mocked:, mock_append_name:, active_record_base_klass: ::ActiveRecord::Base)

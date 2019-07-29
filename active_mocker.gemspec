@@ -1,9 +1,10 @@
 # coding: utf-8
 # frozen_string_literal: true
+
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "active_mocker/version"
-
+# rubocop:disable Metrics/LineLength
 Gem::Specification.new do |spec|
   spec.name        = "active_mocker"
   spec.version     = ActiveMocker::VERSION
@@ -27,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rake", ">= 10.0"
   spec.add_runtime_dependency "reverse_parameters", "~> 1.1", ">= 1.1.1"
   spec.add_runtime_dependency "active_record_schema_scrapper", "~> 0.6", ">= 0.6.0"
-  spec.add_runtime_dependency "dissociated_introspection", "~> 0.8", ">= 0.8.4"
+  spec.add_runtime_dependency "dissociated_introspection", "~> 0.9", ">= 0.9.1"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rubocop", "~> 0.49.0"

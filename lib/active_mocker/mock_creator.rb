@@ -1,20 +1,22 @@
 # frozen_string_literal: true
+
 require "active_mocker/inspectable"
 
 module ActiveMocker
   class MockCreator
     using ActiveMocker::Inspectable
-    ENABLED_PARTIALS_DEFAULT = [
-      :mock_build_version,
-      :modules_constants,
-      :class_methods,
-      :attributes,
-      :recreate_class_method_calls,
-      :defined_methods,
-      :scopes,
-      :associations,
+    ENABLED_PARTIALS_DEFAULT = %i[
+      mock_build_version
+      modules_constants
+      class_methods
+      attributes
+      recreate_class_method_calls
+      defined_methods
+      scopes
+      associations
     ].freeze
 
+    # rubocop:disable Metrics/ParameterLists
     def initialize(file:,
                    file_out:,
                    schema_scrapper:,
@@ -111,6 +113,18 @@ module ActiveMocker
       verify_parent_class
     end
 
+    def save_errors(e, file, p)
+      errors << ErrorObject.new(class_name:     class_name,
+                                original_error: e, type: :generation,
+                                level:          :error,
+                                message:        e.message)
+      errors << ErrorObject.new(class_name:     class_name,
+                                original_error: e,
+                                type:           :erb,
+                                level:          :debug,
+                                message:        "Erb template: #{p} failed.\n#{file.path}")
+    end
+
     public
 
     def partials
@@ -120,15 +134,7 @@ module ActiveMocker
           extend(ActiveMocker::MockCreator.const_get(p.to_s.camelize))
           hash[p] = ERB.new(file.read, nil, "-", "_sub#{p}").result(binding)
         rescue => e
-          errors << ErrorObject.new(class_name:     class_name,
-                                    original_error: e, type: :generation,
-                                    level:          :error,
-                                    message:        e.message)
-          errors << ErrorObject.new(class_name:     class_name,
-                                    original_error: e,
-                                    type:           :erb,
-                                    level:          :debug,
-                                    message:        "Erb template: #{p} failed.\n#{file.path}")
+          save_errors(e, file, p)
           raise e
         end
       end)

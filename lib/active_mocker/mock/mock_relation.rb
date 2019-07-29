@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class MockRelation
     # @param [ActiveMocker::Base] mock, a generated mock class

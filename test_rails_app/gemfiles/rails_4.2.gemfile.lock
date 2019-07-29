@@ -1,11 +1,11 @@
 PATH
   remote: ../..
   specs:
-    active_mocker (2.6.1)
+    active_mocker (2.6.2.beta)
       active_record_schema_scrapper (~> 0.6, >= 0.6.0)
       activesupport (>= 4.1)
       colorize (~> 0.7, >= 0.7)
-      dissociated_introspection (~> 0.8, >= 0.8.4)
+      dissociated_introspection (~> 0.9, >= 0.9.1)
       rake (>= 10.0)
       reverse_parameters (~> 1.1, >= 1.1.1)
       ruby-progressbar (~> 1.7)
@@ -85,7 +85,7 @@ GEM
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.0)
     crass (1.0.4)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -101,7 +101,7 @@ GEM
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)

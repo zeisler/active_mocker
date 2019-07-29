@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "attributes"
 
 module ActiveMocker
@@ -41,9 +42,7 @@ module ActiveMocker
         schema_scrapper.abstract_class?
       end
 
-      def table_name
-        schema_scrapper.table_name
-      end
+      delegate :table_name, to: :schema_scrapper
 
       def mocked_class
         [nested_modules, class_name].compact.reject(&:empty?).join("::")

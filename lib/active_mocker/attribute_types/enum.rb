@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "virtus"
 
 module ActiveMocker
@@ -25,7 +26,15 @@ module ActiveMocker
         end
 
         def to_s
-          "ActiveMocker::AttributeTypes::Enum.build(ignore_value: #{ignore_value}, db_value_type: #{db_value_type}, table_name: :#{table_name}, attribute: :#{attribute}, enums: #{enums.inspect})"
+          <<~RUBY
+            ActiveMocker::AttributeTypes::Enum.build(
+              ignore_value: #{ignore_value},
+              db_value_type: #{db_value_type},
+              table_name: :#{table_name},
+              attribute: :#{attribute},
+              enums: #{enums.inspect}
+            )
+          RUBY
         end
 
         attr_accessor :enums, :table_name, :attribute, :db_value_type, :key_type, :ignore_value
@@ -34,14 +43,11 @@ module ActiveMocker
       def coerce(key)
         return if key.nil?
         coerced_key = key_type.coerce(key)
-        if key && self.class.enums.key?(coerced_key)
-          if self.class.ignore_value
-            coerced_key
-          else
-            get_value(key)
-          end
+        key_not_valid!(coerced_key) unless key && self.class.enums.key?(coerced_key)
+        if self.class.ignore_value
+          coerced_key
         else
-          raise ArgumentError, "'#{coerced_key}' is not a valid #{self.class.attribute}"
+          get_value(key)
         end
       end
 
@@ -59,6 +65,12 @@ module ActiveMocker
 
       def db_value_type
         Virtus::Attribute.build(self.class.db_value_type)
+      end
+
+      private
+
+      def key_not_valid!(coerced_key)
+        raise ArgumentError, "'#{coerced_key}' is not a valid #{self.class.attribute}"
       end
     end
   end

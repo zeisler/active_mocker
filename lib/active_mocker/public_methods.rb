@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class << self
     # Override default Configurations

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class SingleRelation
     attr_reader :item
 
-    def initialize(item, child_self:, foreign_key:)
+    def initialize(item, child_self:, **_)
       @item = item
       assign_associations(child_self, item) if item.class <= Base
     end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveMocker
   class ErrorObject
     attr_reader :message, :level, :original_error, :type, :class_name
@@ -13,7 +14,7 @@ module ActiveMocker
 
     def self.build_from(object: nil, exception: nil, class_name: nil, type: nil)
       if object
-        args = [:message, :original_error, :level, :type, :class_name].each_with_object({}) do |meth, hash|
+        args = %i[message original_error level type class_name].each_with_object({}) do |meth, hash|
           hash[meth] = object.public_send(meth) if object.respond_to? meth
         end
         args[:type]       = type unless type.nil?

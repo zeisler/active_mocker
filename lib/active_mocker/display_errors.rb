@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "colorize"
 module ActiveMocker
   class DisplayErrors
@@ -18,7 +19,13 @@ module ActiveMocker
     end
 
     def wrap_errors(errors, model_name, type: nil)
-      add errors.map { |e| ErrorObject.build_from(object: e, class_name: model_name, type: type ? type : e.try(:type)) }
+      add errors.map do |e|
+        ErrorObject.build_from(
+          object:     e,
+          class_name: model_name,
+          type:       (type ? type : e.try(:type)),
+        )
+      end
     end
 
     def wrap_an_exception(e, model_name)
@@ -30,12 +37,12 @@ module ActiveMocker
     end
 
     def any_errors?
-      uniq_errors.count > 0
+      uniq_errors.count.positive?
     end
 
     def display_errors
       uniq_errors.each do |e|
-        next unless ENV["DEBUG"] || !(e.level == :debug)
+        next unless ENV["DEBUG"] || e.level != :debug
 
         display_verbosity_three(e) || display_verbosity_two(e)
       end
@@ -45,7 +52,7 @@ module ActiveMocker
 
     def error_summary
       display "errors: #{error_count}, warn: #{warn}, info: #{info}"
-      display "Failed models: #{failed_models.join(", ")}" if failed_models.count > 0
+      display "Failed models: #{failed_models.join(", ")}" if failed_models.count.positive?
     end
 
     def number_models_mocked
@@ -56,7 +63,7 @@ module ActiveMocker
 
     private
 
-    def plural(string, count, plural="s")
+    def plural(string, count, plural = "s")
       count > 1 || count.zero? ? "#{string}#{plural}" : string
     end
 
@@ -94,7 +101,7 @@ module ActiveMocker
     end
 
     def display_verbosity_one
-      return unless ActiveMocker::Config.error_verbosity > 0
+      return unless ActiveMocker::Config.error_verbosity.positive?
 
       error_summary if any_errors?
 

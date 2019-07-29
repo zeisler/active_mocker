@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Current
+### Enhancement
+- Locally defined modules are imported and included.
+
 ## 2.6.1 - 2018-10-30
 ### Feature
 * Actively support Rails 5.2

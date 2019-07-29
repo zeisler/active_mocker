@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "file_writer"
 
 module ActiveMocker
@@ -38,9 +39,7 @@ module ActiveMocker
     def check_directory!(type)
       value = config.send(type)
 
-      if value.nil? || value.empty?
-        raise_missing_arg(type)
-      end
+      raise_missing_arg(type) if value.blank?
     end
 
     def raise_missing_arg(type)
@@ -53,7 +52,8 @@ module ActiveMocker
         file: file,
         display_errors: display_errors,
         config: config,
-        model_names: model_names)
+        model_names: model_names,
+      )
 
       writer.write!
     end
@@ -89,7 +89,7 @@ module ActiveMocker
     def model_name_from(file)
       FilePathToRubyClass.new(
         base_path: config.model_dir,
-        class_path: file
+        class_path: file,
       ).to_s
     end
 

@@ -18,15 +18,15 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = ">= 2.1"
+  spec.required_ruby_version = ">= 2.3"
 
-  spec.add_runtime_dependency "activesupport", ">= 4.1"
+  spec.add_runtime_dependency "activesupport", ">= 4.2"
   spec.add_runtime_dependency "virtus", "~> 1.0"
   spec.add_runtime_dependency "ruby-progressbar", "~> 1.7"
   spec.add_runtime_dependency "colorize", "~> 0.7", ">= 0.7"
   spec.add_runtime_dependency "rake", ">= 10.0"
   spec.add_runtime_dependency "reverse_parameters", "~> 1.1", ">= 1.1.1"
-  spec.add_runtime_dependency "active_record_schema_scrapper", "~> 0.6", ">= 0.6.0"
+  spec.add_runtime_dependency "active_record_schema_scrapper", "~> 0.8"
   spec.add_runtime_dependency "dissociated_introspection", "~> 0.8", ">= 0.8.4"
 
   spec.add_development_dependency "bundler", "~> 1.10"

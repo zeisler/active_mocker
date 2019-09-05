@@ -24,7 +24,7 @@ module ActiveMocker
             attribute:     attr.name,
             db_value_type: attr.type,
           )
-          if ActiveRecord::VERSION::MAJOR == 5
+          if ActiveRecord::VERSION::MAJOR >= 5
             enum_type.ignore_value = true
             attr.type              = enum_type
             if attr.default

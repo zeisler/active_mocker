@@ -20,15 +20,16 @@ module ActiveMocker
       end
 
       def constants
-        class_introspector.get_class.constants.each_with_object({}) do |v, const|
+        class_introspector.get_class.constants.map do |v|
           c = class_introspector.get_class.const_get(v)
           next if [Module, Class].include?(c.class)
-          if /\A#</ =~ c.inspect
-            const[v] = Inspectable.new("ActiveMocker::UNREPRESENTABLE_CONST_VALUE")
-          else
-            const[v] = c
-          end
-        end
+          const = if /\A#</ =~ c.inspect
+                    Inspectable.new("ActiveMocker::UNREPRESENTABLE_CONST_VALUE")
+                  else
+                    c
+                  end
+          [v, const]
+        end.compact.sort
       end
 
       private

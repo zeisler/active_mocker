@@ -75,8 +75,8 @@ Or install it yourself as:
     $ gem install active_mocker
 
 ## Dependencies
-* Tested with Rails 4.2, 5.1, 5.2
-* Requires Ruby MRI >= 2.3.x
+* Tested with Rails 4.x, 5.x, 6.x
+* Requires Ruby MRI >= 2.4.x
 
 ## Setup
 

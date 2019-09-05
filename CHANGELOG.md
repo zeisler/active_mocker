@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.6.2 - 2019-09-04
+### Enhancement
+* Add Rails 6 Support
+
 ## 2.6.1 - 2018-10-30
 ### Feature
 * Actively support Rails 5.2

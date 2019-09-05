@@ -1,8 +1,8 @@
 language: ruby
 rvm:
-  - 2.3.8
+  - 2.4.7
   - 2.5.5
-  - 2.6.3
+  - 2.6.4
 gemfile:
   - test_rails_app/gemfiles/rails_4.2.gemfile
   - test_rails_app/gemfiles/rails_5.2.gemfile
@@ -13,3 +13,7 @@ env:
 sudo: false
 cache: bundler
 CODECLIMATE_REPO_TOKEN: 11158e372b49d660cd14d15f351b0326e7bcdd29e7e31f271a2055530212f3e3
+matrix:
+  exclude:
+    - rvm: 2.4.7
+      gemfile: test_rails_app/gemfiles/rails_6.0.gemfile

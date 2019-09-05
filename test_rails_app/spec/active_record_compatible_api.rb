@@ -637,7 +637,7 @@ shared_examples_for "ActiveRecord" do |micropost_class, account_class|
   end
 
   context "limit(10).delete_all" do
-    if ENV["RAILS_VERSION"] == "5.2"
+    if Gem::Version.create(ENV["RAILS_VERSION"]) >= Gem::Version.create("5.2")
       it "If a limit scope is supplied, delete_all still works" do
         [user_class.create!(email: "1", name: "fred"), user_class.create!(email: "2", name: "Dan"), user_class.create!(email: "3", name: "Sam")]
         user_class.limit(2).delete_all
